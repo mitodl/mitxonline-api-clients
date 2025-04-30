@@ -59,7 +59,7 @@ export type BlankEnum = typeof BlankEnum[keyof typeof BlankEnum];
 /**
  * * `None` - ---- * `1` - Small/Start-up (1+ employees) * `9` - Small/Home office (1-9 employees) * `99` - Small (10-99 employees) * `999` - Small to medium-sized (100-999 employees) * `9999` - Medium-sized (1000-9999 employees) * `10000` - Large Enterprise (10,000+ employees) * `0` - Other (N/A or Don\'t know)
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const CompanySizeEnum = {
@@ -800,7 +800,7 @@ export interface LearnerProgramRecordShare {
      * @type {number}
      * @memberof LearnerProgramRecordShare
      */
-    'partner_school': number | null;
+    'partner_school'?: number | null;
 }
 /**
  * Gathers the various data needed to display the learner\'s program record. Pass the program you want the record for and attach the learner via context object.
@@ -922,7 +922,6 @@ export type NodeTypeEnum = typeof NodeTypeEnum[keyof typeof NodeTypeEnum];
  */
 
 export const NullEnum = {
-    Null: 'null'
 } as const;
 
 export type NullEnum = typeof NullEnum[keyof typeof NullEnum];
@@ -2615,7 +2614,7 @@ export interface V2ProgramTopicsInner {
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const YearsExperienceEnum = {
@@ -2885,9 +2884,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async apiProfileDetailsCreate(RegisterDetailsRequest: RegisterDetailsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiProfileDetailsCreate(RegisterDetailsRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiProfileDetailsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiProfileDetailsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Processes a request
@@ -2897,9 +2896,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async apiProfileExtraCreate(RegisterExtraDetailsRequest: RegisterExtraDetailsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiProfileExtraCreate(RegisterExtraDetailsRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiProfileExtraCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiProfileExtraCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
@@ -2909,9 +2908,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async apiRecordsProgramRevokeCreate(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiRecordsProgramRevokeCreate(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiRecordsProgramRevokeCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiRecordsProgramRevokeCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Sets up a sharing link for the learner\'s record. Returns back the entire learner record.
@@ -2922,9 +2921,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async apiRecordsProgramShareCreate(id: number, PartnerSchoolRequest: PartnerSchoolRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiRecordsProgramShareCreate(id, PartnerSchoolRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiRecordsProgramShareCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiRecordsProgramShareCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get learner record using program ID
@@ -2934,9 +2933,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async learnerRecordRetrieveById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.learnerRecordRetrieveById(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.learnerRecordRetrieveById']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.learnerRecordRetrieveById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get learner record using share UUID
@@ -2946,9 +2945,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async learnerRecordRetrieveByUuid(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.learnerRecordRetrieveByUuid(uuid, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.learnerRecordRetrieveByUuid']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.learnerRecordRetrieveByUuid']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -3281,9 +3280,9 @@ export const CourseRunsApiFp = function(configuration?: Configuration) {
          */
         async courseRunsList(id?: number, live?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V1CourseRunWithCourse>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsList(id, live, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CourseRunsApi.courseRunsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for CourseRuns
@@ -3293,9 +3292,9 @@ export const CourseRunsApiFp = function(configuration?: Configuration) {
          */
         async courseRunsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1CourseRunWithCourse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CourseRunsApi.courseRunsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -3619,9 +3618,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV1CoursesList(courserun_is_enrollable?: boolean, id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV1CourseWithCourseRunsList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1CoursesList(courserun_is_enrollable, id, live, page, page__live, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV1CoursesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV1CoursesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a specific course - API v1
@@ -3631,9 +3630,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV1CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1CourseWithCourseRuns>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1CoursesRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV1CoursesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV1CoursesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List all courses - API v2
@@ -3649,9 +3648,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(courserun_is_enrollable, id, live, page, page__live, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a specific course - API v2
@@ -3661,9 +3660,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV2CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRuns>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -4055,9 +4054,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsListV1(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DepartmentWithCount>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsListV1(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsListV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsListV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List departments - v2
@@ -4066,9 +4065,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsListV2(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DepartmentWithCoursesAndPrograms>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsListV2(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsListV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsListV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get department details - v1
@@ -4078,9 +4077,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsRetrieveV1(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DepartmentWithCount>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsRetrieveV1(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get department details - v2
@@ -4090,9 +4089,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsRetrieveV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DepartmentWithCoursesAndPrograms>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsRetrieveV2(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -4446,9 +4445,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async apiEnrollmentsCreate(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiEnrollmentsCreate(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.apiEnrollmentsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.apiEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -4458,9 +4457,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsCreate(CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsCreate(CourseRunEnrollmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -4470,9 +4469,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -4481,9 +4480,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollment>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -4494,9 +4493,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsPartialUpdate(id: number, PatchedCourseRunEnrollmentRequest?: PatchedCourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsPartialUpdate(id, PatchedCourseRunEnrollmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -4507,9 +4506,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsUpdate(id: number, CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsUpdate(id, CourseRunEnrollmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -4810,9 +4809,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async programEnrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProgramEnrollmentDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns a unified set of program and course enrollments for the current user.
@@ -4822,9 +4821,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async programEnrollmentsList(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserProgramEnrollmentDetail>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsList(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -5124,9 +5123,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsListV1(id?: number, live?: boolean, page?: number, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV1ProgramList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV1(id, live, page, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsListV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsListV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List Programs - v2
@@ -5141,9 +5140,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsListV2(id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(id, live, page, page__live, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsListV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsListV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Programs - v1
@@ -5153,9 +5152,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsRetrieveV1(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1Program>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV1(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsRetrieveV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsRetrieveV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Programs - v2
@@ -5165,9 +5164,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsRetrieveV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2Program>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV2(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
