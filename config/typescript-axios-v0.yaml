@@ -1,5 +1,5 @@
 generatorName: typescript-axios
-outputDir: mitxonline-clients/src/typescript/mitxonline-api-axios/src/v0
+outputDir: mitxonline-api-clients/src/typescript/mitxonline-api-axios/src/v0
 inputSpec: mitxonline/openapi/specs/v0.yaml
 ignoreFileOverride: mitxonline-api-clients/.openapi-generator-ignore
 additionalProperties:
