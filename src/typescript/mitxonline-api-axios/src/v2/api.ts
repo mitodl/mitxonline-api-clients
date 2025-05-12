@@ -1047,6 +1047,12 @@ export interface OrganizationPage {
      * @memberof OrganizationPage
      */
     'slug': string;
+    /**
+     * 
+     * @type {Array<ContractPage>}
+     * @memberof OrganizationPage
+     */
+    'contracts': Array<ContractPage>;
 }
 /**
  * 
