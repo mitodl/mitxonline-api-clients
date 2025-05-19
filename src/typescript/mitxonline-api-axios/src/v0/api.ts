@@ -57,6 +57,64 @@ export type BlankEnum = typeof BlankEnum[keyof typeof BlankEnum];
 
 
 /**
+ * Serializer for starting a user email change
+ * @export
+ * @interface ChangeEmailRequestCreate
+ */
+export interface ChangeEmailRequestCreate {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChangeEmailRequestCreate
+     */
+    'new_email': string;
+}
+/**
+ * Serializer for starting a user email change
+ * @export
+ * @interface ChangeEmailRequestCreateRequest
+ */
+export interface ChangeEmailRequestCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChangeEmailRequestCreateRequest
+     */
+    'new_email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChangeEmailRequestCreateRequest
+     */
+    'password': string;
+}
+/**
+ * Serializer for confirming a user email change
+ * @export
+ * @interface ChangeEmailRequestUpdate
+ */
+export interface ChangeEmailRequestUpdate {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChangeEmailRequestUpdate
+     */
+    'confirmed': boolean;
+}
+/**
+ * Serializer for confirming a user email change
+ * @export
+ * @interface ChangeEmailRequestUpdateRequest
+ */
+export interface ChangeEmailRequestUpdateRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChangeEmailRequestUpdateRequest
+     */
+    'confirmed': boolean;
+}
+/**
  * * `None` - ---- * `1` - Small/Start-up (1+ employees) * `9` - Small/Home office (1-9 employees) * `99` - Small (10-99 employees) * `999` - Small to medium-sized (100-999 employees) * `9999` - Medium-sized (1000-9999 employees) * `10000` - Large Enterprise (10,000+ employees) * `0` - Other (N/A or Don\'t know)
  * @export
  * @enum {string}
@@ -159,6 +217,31 @@ export interface ContractPage {
 }
 
 
+/**
+ * Serializer for pycountry countries, with states for US/CA
+ * @export
+ * @interface Country
+ */
+export interface Country {
+    /**
+     * Get the country alpha_2 code
+     * @type {string}
+     * @memberof Country
+     */
+    'code': string;
+    /**
+     * Get the country name (common name preferred if available)
+     * @type {string}
+     * @memberof Country
+     */
+    'name': string;
+    /**
+     * Get a list of states/provinces if USA or Canada
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof Country
+     */
+    'states': Array<{ [key: string]: any; }>;
+}
 /**
  * Course model serializer
  * @export
@@ -1088,6 +1171,37 @@ export interface PaginatedCourseWithCourseRunsList {
 /**
  * 
  * @export
+ * @interface PaginatedStaffDashboardUserList
+ */
+export interface PaginatedStaffDashboardUserList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedStaffDashboardUserList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedStaffDashboardUserList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedStaffDashboardUserList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<StaffDashboardUser>}
+     * @memberof PaginatedStaffDashboardUserList
+     */
+    'results': Array<StaffDashboardUser>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedV1CourseWithCourseRunsList
  */
 export interface PaginatedV1CourseWithCourseRunsList {
@@ -1235,6 +1349,19 @@ export interface PartnerSchoolRequest {
     'email': string;
 }
 /**
+ * Serializer for confirming a user email change
+ * @export
+ * @interface PatchedChangeEmailRequestUpdateRequest
+ */
+export interface PatchedChangeEmailRequestUpdateRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PatchedChangeEmailRequestUpdateRequest
+     */
+    'confirmed'?: boolean;
+}
+/**
  * CourseRunEnrollment model serializer
  * @export
  * @interface PatchedCourseRunEnrollmentRequest
@@ -1252,6 +1379,55 @@ export interface PatchedCourseRunEnrollmentRequest {
      * @memberof PatchedCourseRunEnrollmentRequest
      */
     'run_id'?: number;
+}
+/**
+ * Serializer for users
+ * @export
+ * @interface PatchedUserRequest
+ */
+export interface PatchedUserRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedUserRequest
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedUserRequest
+     */
+    'name'?: string;
+    /**
+     * Returns the email or None in the case of AnonymousUser
+     * @type {string}
+     * @memberof PatchedUserRequest
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedUserRequest
+     */
+    'password'?: string;
+    /**
+     * 
+     * @type {LegalAddressRequest}
+     * @memberof PatchedUserRequest
+     */
+    'legal_address'?: LegalAddressRequest | null;
+    /**
+     * 
+     * @type {UserProfileRequest}
+     * @memberof PatchedUserRequest
+     */
+    'user_profile'?: UserProfileRequest | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PatchedUserRequest
+     */
+    'is_active'?: boolean;
 }
 /**
  * * `marketing` - marketing * `sales` - sales * `financial-assistance` - financial-assistance * `customer-support` - customer-support * `staff` - staff * `legacy` - legacy
@@ -1451,6 +1627,43 @@ export interface ProgramPage {
     'price': string;
 }
 /**
+ * Serializer for public user data
+ * @export
+ * @interface PublicUser
+ */
+export interface PublicUser {
+    /**
+     * 
+     * @type {number}
+     * @memberof PublicUser
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PublicUser
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PublicUser
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PublicUser
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PublicUser
+     */
+    'updated_on': string;
+}
+/**
  * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
  * @export
  * @enum {string}
@@ -1571,6 +1784,158 @@ export interface RegisterExtraDetailsRequest {
      * @memberof RegisterExtraDetailsRequest
      */
     'highest_education'?: string;
+}
+/**
+ * Serializer for data we care about in the staff dashboard
+ * @export
+ * @interface StaffDashboardUser
+ */
+export interface StaffDashboardUser {
+    /**
+     * 
+     * @type {number}
+     * @memberof StaffDashboardUser
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof StaffDashboardUser
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StaffDashboardUser
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StaffDashboardUser
+     */
+    'email': string;
+    /**
+     * 
+     * @type {LegalAddress}
+     * @memberof StaffDashboardUser
+     */
+    'legal_address': LegalAddress | null;
+    /**
+     * The user can access the admin site
+     * @type {boolean}
+     * @memberof StaffDashboardUser
+     */
+    'is_staff'?: boolean;
+    /**
+     * Designates that this user has all permissions without explicitly assigning them.
+     * @type {boolean}
+     * @memberof StaffDashboardUser
+     */
+    'is_superuser'?: boolean;
+}
+/**
+ * Serializer for users
+ * @export
+ * @interface User
+ */
+export interface User {
+    /**
+     * 
+     * @type {number}
+     * @memberof User
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'name'?: string;
+    /**
+     * Returns the email or None in the case of AnonymousUser
+     * @type {string}
+     * @memberof User
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {LegalAddress}
+     * @memberof User
+     */
+    'legal_address': LegalAddress | null;
+    /**
+     * 
+     * @type {UserProfile}
+     * @memberof User
+     */
+    'user_profile'?: UserProfile | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User
+     */
+    'is_anonymous': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User
+     */
+    'is_authenticated': boolean;
+    /**
+     * Returns True if the user has editor permissions for the CMS
+     * @type {boolean}
+     * @memberof User
+     */
+    'is_editor': boolean;
+    /**
+     * The user can access the admin site
+     * @type {boolean}
+     * @memberof User
+     */
+    'is_staff': boolean;
+    /**
+     * Designates that this user has all permissions without explicitly assigning them.
+     * @type {boolean}
+     * @memberof User
+     */
+    'is_superuser': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'updated_on': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof User
+     */
+    'grants': Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User
+     */
+    'is_active'?: boolean;
+    /**
+     * Get the organizations for the user
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof User
+     */
+    'b2b_organizations': Array<{ [key: string]: any; }>;
 }
 /**
  * Serializer for profile
@@ -3618,6 +3983,407 @@ export class B2bApi extends BaseAPI {
      */
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ChangeEmailsApi - axios parameter creator
+ * @export
+ */
+export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {ChangeEmailRequestCreateRequest} ChangeEmailRequestCreateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeEmailsCreate: async (ChangeEmailRequestCreateRequest: ChangeEmailRequestCreateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ChangeEmailRequestCreateRequest' is not null or undefined
+            assertParamExists('changeEmailsCreate', 'ChangeEmailRequestCreateRequest', ChangeEmailRequestCreateRequest)
+            const localVarPath = `/api/v0/change-emails/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ChangeEmailRequestCreateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {string} code 
+         * @param {PatchedChangeEmailRequestUpdateRequest} [PatchedChangeEmailRequestUpdateRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeEmailsPartialUpdate: async (code: string, PatchedChangeEmailRequestUpdateRequest?: PatchedChangeEmailRequestUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('changeEmailsPartialUpdate', 'code', code)
+            const localVarPath = `/api/v0/change-emails/{code}/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedChangeEmailRequestUpdateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {string} code 
+         * @param {ChangeEmailRequestUpdateRequest} ChangeEmailRequestUpdateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeEmailsUpdate: async (code: string, ChangeEmailRequestUpdateRequest: ChangeEmailRequestUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('changeEmailsUpdate', 'code', code)
+            // verify required parameter 'ChangeEmailRequestUpdateRequest' is not null or undefined
+            assertParamExists('changeEmailsUpdate', 'ChangeEmailRequestUpdateRequest', ChangeEmailRequestUpdateRequest)
+            const localVarPath = `/api/v0/change-emails/{code}/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ChangeEmailRequestUpdateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ChangeEmailsApi - functional programming interface
+ * @export
+ */
+export const ChangeEmailsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChangeEmailsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {ChangeEmailRequestCreateRequest} ChangeEmailRequestCreateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async changeEmailsCreate(ChangeEmailRequestCreateRequest: ChangeEmailRequestCreateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChangeEmailRequestCreate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.changeEmailsCreate(ChangeEmailRequestCreateRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ChangeEmailsApi.changeEmailsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {string} code 
+         * @param {PatchedChangeEmailRequestUpdateRequest} [PatchedChangeEmailRequestUpdateRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async changeEmailsPartialUpdate(code: string, PatchedChangeEmailRequestUpdateRequest?: PatchedChangeEmailRequestUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChangeEmailRequestUpdate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.changeEmailsPartialUpdate(code, PatchedChangeEmailRequestUpdateRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ChangeEmailsApi.changeEmailsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {string} code 
+         * @param {ChangeEmailRequestUpdateRequest} ChangeEmailRequestUpdateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async changeEmailsUpdate(code: string, ChangeEmailRequestUpdateRequest: ChangeEmailRequestUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChangeEmailRequestUpdate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.changeEmailsUpdate(code, ChangeEmailRequestUpdateRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ChangeEmailsApi.changeEmailsUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ChangeEmailsApi - factory interface
+ * @export
+ */
+export const ChangeEmailsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChangeEmailsApiFp(configuration)
+    return {
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {ChangeEmailsApiChangeEmailsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeEmailsCreate(requestParameters: ChangeEmailsApiChangeEmailsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ChangeEmailRequestCreate> {
+            return localVarFp.changeEmailsCreate(requestParameters.ChangeEmailRequestCreateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {ChangeEmailsApiChangeEmailsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeEmailsPartialUpdate(requestParameters: ChangeEmailsApiChangeEmailsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ChangeEmailRequestUpdate> {
+            return localVarFp.changeEmailsPartialUpdate(requestParameters.code, requestParameters.PatchedChangeEmailRequestUpdateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Viewset for creating and updating email change requests
+         * @param {ChangeEmailsApiChangeEmailsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        changeEmailsUpdate(requestParameters: ChangeEmailsApiChangeEmailsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ChangeEmailRequestUpdate> {
+            return localVarFp.changeEmailsUpdate(requestParameters.code, requestParameters.ChangeEmailRequestUpdateRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for changeEmailsCreate operation in ChangeEmailsApi.
+ * @export
+ * @interface ChangeEmailsApiChangeEmailsCreateRequest
+ */
+export interface ChangeEmailsApiChangeEmailsCreateRequest {
+    /**
+     * 
+     * @type {ChangeEmailRequestCreateRequest}
+     * @memberof ChangeEmailsApiChangeEmailsCreate
+     */
+    readonly ChangeEmailRequestCreateRequest: ChangeEmailRequestCreateRequest
+}
+
+/**
+ * Request parameters for changeEmailsPartialUpdate operation in ChangeEmailsApi.
+ * @export
+ * @interface ChangeEmailsApiChangeEmailsPartialUpdateRequest
+ */
+export interface ChangeEmailsApiChangeEmailsPartialUpdateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChangeEmailsApiChangeEmailsPartialUpdate
+     */
+    readonly code: string
+
+    /**
+     * 
+     * @type {PatchedChangeEmailRequestUpdateRequest}
+     * @memberof ChangeEmailsApiChangeEmailsPartialUpdate
+     */
+    readonly PatchedChangeEmailRequestUpdateRequest?: PatchedChangeEmailRequestUpdateRequest
+}
+
+/**
+ * Request parameters for changeEmailsUpdate operation in ChangeEmailsApi.
+ * @export
+ * @interface ChangeEmailsApiChangeEmailsUpdateRequest
+ */
+export interface ChangeEmailsApiChangeEmailsUpdateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChangeEmailsApiChangeEmailsUpdate
+     */
+    readonly code: string
+
+    /**
+     * 
+     * @type {ChangeEmailRequestUpdateRequest}
+     * @memberof ChangeEmailsApiChangeEmailsUpdate
+     */
+    readonly ChangeEmailRequestUpdateRequest: ChangeEmailRequestUpdateRequest
+}
+
+/**
+ * ChangeEmailsApi - object-oriented interface
+ * @export
+ * @class ChangeEmailsApi
+ * @extends {BaseAPI}
+ */
+export class ChangeEmailsApi extends BaseAPI {
+    /**
+     * Viewset for creating and updating email change requests
+     * @param {ChangeEmailsApiChangeEmailsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChangeEmailsApi
+     */
+    public changeEmailsCreate(requestParameters: ChangeEmailsApiChangeEmailsCreateRequest, options?: RawAxiosRequestConfig) {
+        return ChangeEmailsApiFp(this.configuration).changeEmailsCreate(requestParameters.ChangeEmailRequestCreateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Viewset for creating and updating email change requests
+     * @param {ChangeEmailsApiChangeEmailsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChangeEmailsApi
+     */
+    public changeEmailsPartialUpdate(requestParameters: ChangeEmailsApiChangeEmailsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ChangeEmailsApiFp(this.configuration).changeEmailsPartialUpdate(requestParameters.code, requestParameters.PatchedChangeEmailRequestUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Viewset for creating and updating email change requests
+     * @param {ChangeEmailsApiChangeEmailsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChangeEmailsApi
+     */
+    public changeEmailsUpdate(requestParameters: ChangeEmailsApiChangeEmailsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ChangeEmailsApiFp(this.configuration).changeEmailsUpdate(requestParameters.code, requestParameters.ChangeEmailRequestUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * CountriesApi - axios parameter creator
+ * @export
+ */
+export const CountriesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Get generator for countries/states list
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        countriesList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/countries/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CountriesApi - functional programming interface
+ * @export
+ */
+export const CountriesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CountriesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Get generator for countries/states list
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async countriesList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Country>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.countriesList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CountriesApi.countriesList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * CountriesApi - factory interface
+ * @export
+ */
+export const CountriesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CountriesApiFp(configuration)
+    return {
+        /**
+         * Get generator for countries/states list
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        countriesList(options?: RawAxiosRequestConfig): AxiosPromise<Array<Country>> {
+            return localVarFp.countriesList(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CountriesApi - object-oriented interface
+ * @export
+ * @class CountriesApi
+ * @extends {BaseAPI}
+ */
+export class CountriesApi extends BaseAPI {
+    /**
+     * Get generator for countries/states list
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CountriesApi
+     */
+    public countriesList(options?: RawAxiosRequestConfig) {
+        return CountriesApiFp(this.configuration).countriesList(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -5825,6 +6591,622 @@ export class ProgramsApi extends BaseAPI {
      */
     public programsRetrieveV2(requestParameters: ProgramsApiProgramsRetrieveV2Request, options?: RawAxiosRequestConfig) {
         return ProgramsApiFp(this.configuration).programsRetrieveV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * UserSearchApi - axios parameter creator
+ * @export
+ */
+export const UserSearchApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Provides an API for listing system users. This is for the staff dashboard.
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
+         * @param {string} [search] A search term.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSearchList: async (l?: number, o?: number, search?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/user_search/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (l !== undefined) {
+                localVarQueryParameter['l'] = l;
+            }
+
+            if (o !== undefined) {
+                localVarQueryParameter['o'] = o;
+            }
+
+            if (search !== undefined) {
+                localVarQueryParameter['search'] = search;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Provides an API for listing system users. This is for the staff dashboard.
+         * @param {number} id A unique integer value identifying this user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSearchRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('userSearchRetrieve', 'id', id)
+            const localVarPath = `/api/v0/user_search/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * UserSearchApi - functional programming interface
+ * @export
+ */
+export const UserSearchApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = UserSearchApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Provides an API for listing system users. This is for the staff dashboard.
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
+         * @param {string} [search] A search term.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userSearchList(l?: number, o?: number, search?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedStaffDashboardUserList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userSearchList(l, o, search, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserSearchApi.userSearchList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Provides an API for listing system users. This is for the staff dashboard.
+         * @param {number} id A unique integer value identifying this user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userSearchRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StaffDashboardUser>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userSearchRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserSearchApi.userSearchRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * UserSearchApi - factory interface
+ * @export
+ */
+export const UserSearchApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = UserSearchApiFp(configuration)
+    return {
+        /**
+         * Provides an API for listing system users. This is for the staff dashboard.
+         * @param {UserSearchApiUserSearchListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSearchList(requestParameters: UserSearchApiUserSearchListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedStaffDashboardUserList> {
+            return localVarFp.userSearchList(requestParameters.l, requestParameters.o, requestParameters.search, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Provides an API for listing system users. This is for the staff dashboard.
+         * @param {UserSearchApiUserSearchRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSearchRetrieve(requestParameters: UserSearchApiUserSearchRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<StaffDashboardUser> {
+            return localVarFp.userSearchRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for userSearchList operation in UserSearchApi.
+ * @export
+ * @interface UserSearchApiUserSearchListRequest
+ */
+export interface UserSearchApiUserSearchListRequest {
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof UserSearchApiUserSearchList
+     */
+    readonly l?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof UserSearchApiUserSearchList
+     */
+    readonly o?: number
+
+    /**
+     * A search term.
+     * @type {string}
+     * @memberof UserSearchApiUserSearchList
+     */
+    readonly search?: string
+}
+
+/**
+ * Request parameters for userSearchRetrieve operation in UserSearchApi.
+ * @export
+ * @interface UserSearchApiUserSearchRetrieveRequest
+ */
+export interface UserSearchApiUserSearchRetrieveRequest {
+    /**
+     * A unique integer value identifying this user.
+     * @type {number}
+     * @memberof UserSearchApiUserSearchRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * UserSearchApi - object-oriented interface
+ * @export
+ * @class UserSearchApi
+ * @extends {BaseAPI}
+ */
+export class UserSearchApi extends BaseAPI {
+    /**
+     * Provides an API for listing system users. This is for the staff dashboard.
+     * @param {UserSearchApiUserSearchListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserSearchApi
+     */
+    public userSearchList(requestParameters: UserSearchApiUserSearchListRequest = {}, options?: RawAxiosRequestConfig) {
+        return UserSearchApiFp(this.configuration).userSearchList(requestParameters.l, requestParameters.o, requestParameters.search, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Provides an API for listing system users. This is for the staff dashboard.
+     * @param {UserSearchApiUserSearchRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserSearchApi
+     */
+    public userSearchRetrieve(requestParameters: UserSearchApiUserSearchRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return UserSearchApiFp(this.configuration).userSearchRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * UsersApi - axios parameter creator
+ * @export
+ */
+export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {PatchedUserRequest} [PatchedUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersCurrentUserPartialUpdate: async (PatchedUserRequest?: PatchedUserRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/users/current_user/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUserRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersCurrentUserRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/users/current_user/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {PatchedUserRequest} [PatchedUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersMePartialUpdate: async (PatchedUserRequest?: PatchedUserRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/users/me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUserRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersMeRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/users/me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * User retrieve viewsets
+         * @param {number} id A unique integer value identifying this user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('usersRetrieve', 'id', id)
+            const localVarPath = `/api/v0/users/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * UsersApi - functional programming interface
+ * @export
+ */
+export const UsersApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = UsersApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {PatchedUserRequest} [PatchedUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersCurrentUserPartialUpdate(PatchedUserRequest?: PatchedUserRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersCurrentUserPartialUpdate(PatchedUserRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UsersApi.usersCurrentUserPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersCurrentUserRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersCurrentUserRetrieve(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UsersApi.usersCurrentUserRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {PatchedUserRequest} [PatchedUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersMePartialUpdate(PatchedUserRequest?: PatchedUserRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersMePartialUpdate(PatchedUserRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UsersApi.usersMePartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersMeRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersMeRetrieve(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UsersApi.usersMeRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * User retrieve viewsets
+         * @param {number} id A unique integer value identifying this user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicUser>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UsersApi.usersRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * UsersApi - factory interface
+ * @export
+ */
+export const UsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = UsersApiFp(configuration)
+    return {
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {UsersApiUsersCurrentUserPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersCurrentUserPartialUpdate(requestParameters: UsersApiUsersCurrentUserPartialUpdateRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<User> {
+            return localVarFp.usersCurrentUserPartialUpdate(requestParameters.PatchedUserRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersCurrentUserRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<User> {
+            return localVarFp.usersCurrentUserRetrieve(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {UsersApiUsersMePartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersMePartialUpdate(requestParameters: UsersApiUsersMePartialUpdateRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<User> {
+            return localVarFp.usersMePartialUpdate(requestParameters.PatchedUserRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * User retrieve and update viewsets for the current user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersMeRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<User> {
+            return localVarFp.usersMeRetrieve(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * User retrieve viewsets
+         * @param {UsersApiUsersRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersRetrieve(requestParameters: UsersApiUsersRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<PublicUser> {
+            return localVarFp.usersRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for usersCurrentUserPartialUpdate operation in UsersApi.
+ * @export
+ * @interface UsersApiUsersCurrentUserPartialUpdateRequest
+ */
+export interface UsersApiUsersCurrentUserPartialUpdateRequest {
+    /**
+     * 
+     * @type {PatchedUserRequest}
+     * @memberof UsersApiUsersCurrentUserPartialUpdate
+     */
+    readonly PatchedUserRequest?: PatchedUserRequest
+}
+
+/**
+ * Request parameters for usersMePartialUpdate operation in UsersApi.
+ * @export
+ * @interface UsersApiUsersMePartialUpdateRequest
+ */
+export interface UsersApiUsersMePartialUpdateRequest {
+    /**
+     * 
+     * @type {PatchedUserRequest}
+     * @memberof UsersApiUsersMePartialUpdate
+     */
+    readonly PatchedUserRequest?: PatchedUserRequest
+}
+
+/**
+ * Request parameters for usersRetrieve operation in UsersApi.
+ * @export
+ * @interface UsersApiUsersRetrieveRequest
+ */
+export interface UsersApiUsersRetrieveRequest {
+    /**
+     * A unique integer value identifying this user.
+     * @type {number}
+     * @memberof UsersApiUsersRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * UsersApi - object-oriented interface
+ * @export
+ * @class UsersApi
+ * @extends {BaseAPI}
+ */
+export class UsersApi extends BaseAPI {
+    /**
+     * User retrieve and update viewsets for the current user
+     * @param {UsersApiUsersCurrentUserPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public usersCurrentUserPartialUpdate(requestParameters: UsersApiUsersCurrentUserPartialUpdateRequest = {}, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).usersCurrentUserPartialUpdate(requestParameters.PatchedUserRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * User retrieve and update viewsets for the current user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public usersCurrentUserRetrieve(options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).usersCurrentUserRetrieve(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * User retrieve and update viewsets for the current user
+     * @param {UsersApiUsersMePartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public usersMePartialUpdate(requestParameters: UsersApiUsersMePartialUpdateRequest = {}, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).usersMePartialUpdate(requestParameters.PatchedUserRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * User retrieve and update viewsets for the current user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public usersMeRetrieve(options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).usersMeRetrieve(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * User retrieve viewsets
+     * @param {UsersApiUsersRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public usersRetrieve(requestParameters: UsersApiUsersRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).usersRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
