@@ -167,13 +167,13 @@ export interface ContractPage {
      */
     'id': number;
     /**
-     * The name of the contract
+     * The name of the contract.
      * @type {string}
      * @memberof ContractPage
      */
     'name': string;
     /**
-     * Any useful extra information about the contract
+     * Any useful extra information about the contract.
      * @type {string}
      * @memberof ContractPage
      */
@@ -185,7 +185,7 @@ export interface ContractPage {
      */
     'integration_type': IntegrationTypeEnum;
     /**
-     * The organization this contract is with
+     * The organization this contract is with.
      * @type {number}
      * @memberof ContractPage
      */
