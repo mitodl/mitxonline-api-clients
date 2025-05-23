@@ -1931,11 +1931,54 @@ export interface User {
      */
     'is_active'?: boolean;
     /**
-     * Get the organizations for the user
-     * @type {Array<{ [key: string]: any; }>}
+     * 
+     * @type {Array<UserOrganization>}
      * @memberof User
      */
-    'b2b_organizations': Array<{ [key: string]: any; }>;
+    'b2b_organizations': Array<UserOrganization>;
+}
+/**
+ * Serializer for user organization data.  Slightly different from the OrganizationPageSerializer; we only need the user\'s orgs and contracts.
+ * @export
+ * @interface UserOrganization
+ */
+export interface UserOrganization {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserOrganization
+     */
+    'id': number;
+    /**
+     * The name of the organization
+     * @type {string}
+     * @memberof UserOrganization
+     */
+    'name': string;
+    /**
+     * Any useful extra information about the organization
+     * @type {string}
+     * @memberof UserOrganization
+     */
+    'description': string;
+    /**
+     * The organization\'s logo. Will be displayed in the app in various places.
+     * @type {string}
+     * @memberof UserOrganization
+     */
+    'logo': string;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     * @type {string}
+     * @memberof UserOrganization
+     */
+    'slug': string;
+    /**
+     * 
+     * @type {Array<ContractPage>}
+     * @memberof UserOrganization
+     */
+    'contracts': Array<ContractPage>;
 }
 /**
  * Serializer for profile
@@ -6186,6 +6229,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
          * List Programs - v2
          * @param {number} [id] 
          * @param {boolean} [live] 
+         * @param {number} [org_id] 
          * @param {number} [page] A page number within the paginated result set.
          * @param {boolean} [page__live] 
          * @param {number} [page_size] Number of results to return per page.
@@ -6193,7 +6237,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programsListV2: async (id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        programsListV2: async (id?: number, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/programs/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6212,6 +6256,10 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (live !== undefined) {
                 localVarQueryParameter['live'] = live;
+            }
+
+            if (org_id !== undefined) {
+                localVarQueryParameter['org_id'] = org_id;
             }
 
             if (page !== undefined) {
@@ -6337,6 +6385,7 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          * List Programs - v2
          * @param {number} [id] 
          * @param {boolean} [live] 
+         * @param {number} [org_id] 
          * @param {number} [page] A page number within the paginated result set.
          * @param {boolean} [page__live] 
          * @param {number} [page_size] Number of results to return per page.
@@ -6344,8 +6393,8 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programsListV2(id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(id, live, page, page__live, page_size, readable_id, options);
+        async programsListV2(id?: number, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(id, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramsApi.programsListV2']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -6400,7 +6449,7 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
          * @throws {RequiredError}
          */
         programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramList> {
-            return localVarFp.programsListV2(requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.programsListV2(requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * API view set for Programs - v1
@@ -6486,6 +6535,13 @@ export interface ProgramsApiProgramsListV2Request {
     readonly live?: boolean
 
     /**
+     * 
+     * @type {number}
+     * @memberof ProgramsApiProgramsListV2
+     */
+    readonly org_id?: number
+
+    /**
      * A page number within the paginated result set.
      * @type {number}
      * @memberof ProgramsApiProgramsListV2
@@ -6568,7 +6624,7 @@ export class ProgramsApi extends BaseAPI {
      * @memberof ProgramsApi
      */
     public programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig) {
-        return ProgramsApiFp(this.configuration).programsListV2(requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return ProgramsApiFp(this.configuration).programsListV2(requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
