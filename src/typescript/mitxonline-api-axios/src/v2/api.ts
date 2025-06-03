@@ -2903,6 +2903,12 @@ export interface V2CourseRun {
      * @memberof V2CourseRun
      */
     'approved_flexible_price_exists': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2CourseRun
+     */
+    'b2b_contract'?: number | null;
 }
 /**
  * Program Model Serializer v2
@@ -4750,7 +4756,9 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * List all courses - API v2
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
          * @param {Array<number>} [id] Multiple values may be separated by commas.
+         * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
+         * @param {number} [org_id] Only show courses beloning to this B2B/UAI organization
          * @param {number} [page] A page number within the paginated result set.
          * @param {boolean} [page__live] 
          * @param {number} [page_size] Number of results to return per page.
@@ -4758,7 +4766,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesList: async (courserun_is_enrollable?: boolean, id?: Array<number>, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV2CoursesList: async (courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/courses/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4779,8 +4787,16 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['id'] = id.join(COLLECTION_FORMATS.csv);
             }
 
+            if (include_approved_financial_aid !== undefined) {
+                localVarQueryParameter['include_approved_financial_aid'] = include_approved_financial_aid;
+            }
+
             if (live !== undefined) {
                 localVarQueryParameter['live'] = live;
+            }
+
+            if (org_id !== undefined) {
+                localVarQueryParameter['org_id'] = org_id;
             }
 
             if (page !== undefined) {
@@ -4887,7 +4903,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * List all courses - API v2
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
          * @param {Array<number>} [id] Multiple values may be separated by commas.
+         * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
+         * @param {number} [org_id] Only show courses beloning to this B2B/UAI organization
          * @param {number} [page] A page number within the paginated result set.
          * @param {boolean} [page__live] 
          * @param {number} [page_size] Number of results to return per page.
@@ -4895,8 +4913,8 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(courserun_is_enrollable, id, live, page, page__live, page_size, readable_id, options);
+        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(courserun_is_enrollable, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -4948,7 +4966,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsList> {
-            return localVarFp.apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieve a specific course - API v2
@@ -5053,11 +5071,25 @@ export interface CoursesApiApiV2CoursesListRequest {
     readonly id?: Array<number>
 
     /**
+     * Include approved financial assistance information
+     * @type {boolean}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly include_approved_financial_aid?: boolean
+
+    /**
      * 
      * @type {boolean}
      * @memberof CoursesApiApiV2CoursesList
      */
     readonly live?: boolean
+
+    /**
+     * Only show courses beloning to this B2B/UAI organization
+     * @type {number}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly org_id?: number
 
     /**
      * A page number within the paginated result set.
@@ -5139,7 +5171,7 @@ export class CoursesApi extends BaseAPI {
      * @memberof CoursesApi
      */
     public apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
