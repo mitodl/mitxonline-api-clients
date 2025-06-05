@@ -613,6 +613,39 @@ export interface CourseWithCourseRuns {
     'courseruns': Array<V2CourseRun>;
 }
 /**
+ * Serializer for the result from create_b2b_enrollment.  There\'s always a result, and it should be one of the B2B messages that are defined in main.constants. The other fields appear or not depending on the result type.
+ * @export
+ * @interface CreateB2BEnrollment
+ */
+export interface CreateB2BEnrollment {
+    /**
+     * 
+     * @type {ResultEnum}
+     * @memberof CreateB2BEnrollment
+     */
+    'result': ResultEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateB2BEnrollment
+     */
+    'order': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateB2BEnrollment
+     */
+    'price': string;
+    /**
+     * 
+     * @type {GenerateCheckoutPayload}
+     * @memberof CreateB2BEnrollment
+     */
+    'checkout_result'?: GenerateCheckoutPayload;
+}
+
+
+/**
  * Department model serializer
  * @export
  * @interface Department
@@ -851,6 +884,43 @@ export const GenderEnum = {
 export type GenderEnum = typeof GenderEnum[keyof typeof GenderEnum];
 
 
+/**
+ * Serializer for the result from ecommerce.api.generate_checkout_payload.  The B2B enrollment API will return the result of the checkout call if the user needs to pay for the cart because of an error creating the checkout payload. In that case, we really just need the error states; it will also include a HttpResponseRedirect that we don\'t really care about for the API\'s purposes.
+ * @export
+ * @interface GenerateCheckoutPayload
+ */
+export interface GenerateCheckoutPayload {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateCheckoutPayload
+     */
+    'country_blocked'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateCheckoutPayload
+     */
+    'purchased_same_courserun'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateCheckoutPayload
+     */
+    'purchased_non_upgradeable_courserun'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateCheckoutPayload
+     */
+    'invalid_discounts'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateCheckoutPayload
+     */
+    'no_checkout'?: boolean | null;
+}
 /**
  * * `None` - ---- * `Doctorate` - Doctorate * `Master\'s or professional degree` - Master\'s or professional degree * `Bachelor\'s degree` - Bachelor\'s degree * `Associate degree` - Associate degree * `Secondary/high school` - Secondary/high school * `Junior secondary/junior high/middle school` - Junior secondary/junior high/middle school * `Elementary/primary school` - Elementary/primary school * `No formal education` - No formal education * `Other education` - Other education
  * @export
@@ -1785,6 +1855,46 @@ export interface RegisterExtraDetailsRequest {
      */
     'highest_education'?: string;
 }
+/**
+ * * `b2b-disallowed` - b2b-disallowed * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-enroll-success` - b2b-enroll-success
+ * @export
+ * @enum {string}
+ */
+
+export const ResultEnum = {
+    /**
+    * b2b-disallowed
+    */
+    Disallowed: 'b2b-disallowed',
+    /**
+    * b2b-error-no-contract
+    */
+    ErrorNoContract: 'b2b-error-no-contract',
+    /**
+    * b2b-error-no-product
+    */
+    ErrorNoProduct: 'b2b-error-no-product',
+    /**
+    * b2b-error-missing-enrollment-code
+    */
+    ErrorMissingEnrollmentCode: 'b2b-error-missing-enrollment-code',
+    /**
+    * b2b-error-invalid-enrollment-code
+    */
+    ErrorInvalidEnrollmentCode: 'b2b-error-invalid-enrollment-code',
+    /**
+    * b2b-error-requires-checkout
+    */
+    ErrorRequiresCheckout: 'b2b-error-requires-checkout',
+    /**
+    * b2b-enroll-success
+    */
+    EnrollSuccess: 'b2b-enroll-success'
+} as const;
+
+export type ResultEnum = typeof ResultEnum[keyof typeof ResultEnum];
+
+
 /**
  * Serializer for data we care about in the staff dashboard
  * @export
@@ -3793,6 +3903,39 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Create an enrollment for the given course run.
+         * @param {string} readable_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bEnrollCreate: async (readable_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'readable_id' is not null or undefined
+            assertParamExists('b2bEnrollCreate', 'readable_id', readable_id)
+            const localVarPath = `/api/v0/b2b/enroll/{readable_id}/`
+                .replace(`{${"readable_id"}}`, encodeURIComponent(String(readable_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Viewset for the OrganizationPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3888,6 +4031,18 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Create an enrollment for the given course run.
+         * @param {string} readable_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bEnrollCreate(readable_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateB2BEnrollment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bEnrollCreate(readable_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bEnrollCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Viewset for the OrganizationPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3938,6 +4093,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bContractsRetrieve(requestParameters.contract_slug, options).then((request) => request(axios, basePath));
         },
         /**
+         * Create an enrollment for the given course run.
+         * @param {B2bApiB2bEnrollCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bEnrollCreate(requestParameters: B2bApiB2bEnrollCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CreateB2BEnrollment> {
+            return localVarFp.b2bEnrollCreate(requestParameters.readable_id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Viewset for the OrganizationPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3969,6 +4133,20 @@ export interface B2bApiB2bContractsRetrieveRequest {
      * @memberof B2bApiB2bContractsRetrieve
      */
     readonly contract_slug: string
+}
+
+/**
+ * Request parameters for b2bEnrollCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bEnrollCreateRequest
+ */
+export interface B2bApiB2bEnrollCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bEnrollCreate
+     */
+    readonly readable_id: string
 }
 
 /**
@@ -4011,6 +4189,17 @@ export class B2bApi extends BaseAPI {
      */
     public b2bContractsRetrieve(requestParameters: B2bApiB2bContractsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bContractsRetrieve(requestParameters.contract_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create an enrollment for the given course run.
+     * @param {B2bApiB2bEnrollCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bEnrollCreate(requestParameters: B2bApiB2bEnrollCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bEnrollCreate(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
