@@ -42,7 +42,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@mitodl/mitxonline-api-axios@workspace:."
   dependencies:
-    "@types/node": "npm:^20.11.19"
+    "@types/node": "npm:^22.0.0"
     axios: "npm:^1.6.5"
     ts-node: "npm:10.9.2"
     typescript: "npm:5.8.3"
@@ -77,12 +77,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.11.19":
-  version: 20.19.1
-  resolution: "@types/node@npm:20.19.1"
+"@types/node@npm:^22.0.0":
+  version: 22.15.33
+  resolution: "@types/node@npm:22.15.33"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/4f1c3c8ec24c79af6802b376fa307904abf19accb9ac291de0bfc02220494c8b027d3ef733dbf64cc09b37594f22f679a15eabb30f3785bcfcc13bd9bbd8c0e2
+  checksum: 10c0/ee040c29c891aa37fffc27d04a8529318c391356346933646b7692eaf62236831ad532f6ebaf43ebd6a2ef1f0f091860d8a0a83a4e3c5a4f66d37aa1b2c99f31
   languageName: node
   linkType: hard
 
