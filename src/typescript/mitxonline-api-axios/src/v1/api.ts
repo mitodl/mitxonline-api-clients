@@ -1432,23 +1432,17 @@ export interface PatchedChangeEmailRequestUpdateRequest {
     'confirmed'?: boolean;
 }
 /**
- * CourseRunEnrollment model serializer
+ * 
  * @export
- * @interface PatchedCourseRunEnrollmentRequest
+ * @interface PatchedUpdateCourseRunEnrollmentRequest
  */
-export interface PatchedCourseRunEnrollmentRequest {
+export interface PatchedUpdateCourseRunEnrollmentRequest {
     /**
-     * 
+     * Whether to receive course emails
      * @type {boolean}
-     * @memberof PatchedCourseRunEnrollmentRequest
+     * @memberof PatchedUpdateCourseRunEnrollmentRequest
      */
-    'edx_emails_subscription'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PatchedCourseRunEnrollmentRequest
-     */
-    'run_id'?: number;
+    'receive_emails'?: boolean;
 }
 /**
  * Serializer for users
@@ -1757,104 +1751,6 @@ export const RedemptionTypeEnum = {
 export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof RedemptionTypeEnum];
 
 
-/**
- * Serializer for registration details
- * @export
- * @interface RegisterDetailsRequest
- */
-export interface RegisterDetailsRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterDetailsRequest
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterDetailsRequest
-     */
-    'username': string;
-    /**
-     * 
-     * @type {LegalAddressRequest}
-     * @memberof RegisterDetailsRequest
-     */
-    'legal_address': LegalAddressRequest;
-    /**
-     * 
-     * @type {UserProfileRequest}
-     * @memberof RegisterDetailsRequest
-     */
-    'user_profile': UserProfileRequest;
-}
-/**
- * Serializer for extra registration details
- * @export
- * @interface RegisterExtraDetailsRequest
- */
-export interface RegisterExtraDetailsRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'gender': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'birth_year': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'company': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'job_title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'industry'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'job_function'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'years_experience'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'company_size'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'leadership_level'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterExtraDetailsRequest
-     */
-    'highest_education'?: string;
-}
 /**
  * * `b2b-disallowed` - b2b-disallowed * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-enroll-success` - b2b-enroll-success
  * @export
@@ -3310,76 +3206,6 @@ export type YearsExperienceEnum = typeof YearsExperienceEnum[keyof typeof YearsE
 export const ApiApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Processes a request
-         * @param {RegisterDetailsRequest} RegisterDetailsRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiProfileDetailsCreate: async (RegisterDetailsRequest: RegisterDetailsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'RegisterDetailsRequest' is not null or undefined
-            assertParamExists('apiProfileDetailsCreate', 'RegisterDetailsRequest', RegisterDetailsRequest)
-            const localVarPath = `/api/profile/details/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(RegisterDetailsRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Processes a request
-         * @param {RegisterExtraDetailsRequest} RegisterExtraDetailsRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiProfileExtraCreate: async (RegisterExtraDetailsRequest: RegisterExtraDetailsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'RegisterExtraDetailsRequest' is not null or undefined
-            assertParamExists('apiProfileExtraCreate', 'RegisterExtraDetailsRequest', RegisterExtraDetailsRequest)
-            const localVarPath = `/api/profile/extra/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(RegisterExtraDetailsRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
          * @param {number} id 
          * @param {*} [options] Override http request option.
@@ -3528,30 +3354,6 @@ export const ApiApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ApiApiAxiosParamCreator(configuration)
     return {
         /**
-         * Processes a request
-         * @param {RegisterDetailsRequest} RegisterDetailsRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiProfileDetailsCreate(RegisterDetailsRequest: RegisterDetailsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiProfileDetailsCreate(RegisterDetailsRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiProfileDetailsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * Processes a request
-         * @param {RegisterExtraDetailsRequest} RegisterExtraDetailsRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiProfileExtraCreate(RegisterExtraDetailsRequest: RegisterExtraDetailsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiProfileExtraCreate(RegisterExtraDetailsRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiProfileExtraCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
          * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
          * @param {number} id 
          * @param {*} [options] Override http request option.
@@ -3611,24 +3413,6 @@ export const ApiApiFactory = function (configuration?: Configuration, basePath?:
     const localVarFp = ApiApiFp(configuration)
     return {
         /**
-         * Processes a request
-         * @param {ApiApiApiProfileDetailsCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiProfileDetailsCreate(requestParameters: ApiApiApiProfileDetailsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiProfileDetailsCreate(requestParameters.RegisterDetailsRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Processes a request
-         * @param {ApiApiApiProfileExtraCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiProfileExtraCreate(requestParameters: ApiApiApiProfileExtraCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiProfileExtraCreate(requestParameters.RegisterExtraDetailsRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
          * @param {ApiApiApiRecordsProgramRevokeCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -3666,34 +3450,6 @@ export const ApiApiFactory = function (configuration?: Configuration, basePath?:
         },
     };
 };
-
-/**
- * Request parameters for apiProfileDetailsCreate operation in ApiApi.
- * @export
- * @interface ApiApiApiProfileDetailsCreateRequest
- */
-export interface ApiApiApiProfileDetailsCreateRequest {
-    /**
-     * 
-     * @type {RegisterDetailsRequest}
-     * @memberof ApiApiApiProfileDetailsCreate
-     */
-    readonly RegisterDetailsRequest: RegisterDetailsRequest
-}
-
-/**
- * Request parameters for apiProfileExtraCreate operation in ApiApi.
- * @export
- * @interface ApiApiApiProfileExtraCreateRequest
- */
-export interface ApiApiApiProfileExtraCreateRequest {
-    /**
-     * 
-     * @type {RegisterExtraDetailsRequest}
-     * @memberof ApiApiApiProfileExtraCreate
-     */
-    readonly RegisterExtraDetailsRequest: RegisterExtraDetailsRequest
-}
 
 /**
  * Request parameters for apiRecordsProgramRevokeCreate operation in ApiApi.
@@ -3765,28 +3521,6 @@ export interface ApiApiLearnerRecordRetrieveByUuidRequest {
  * @extends {BaseAPI}
  */
 export class ApiApi extends BaseAPI {
-    /**
-     * Processes a request
-     * @param {ApiApiApiProfileDetailsCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ApiApi
-     */
-    public apiProfileDetailsCreate(requestParameters: ApiApiApiProfileDetailsCreateRequest, options?: RawAxiosRequestConfig) {
-        return ApiApiFp(this.configuration).apiProfileDetailsCreate(requestParameters.RegisterDetailsRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Processes a request
-     * @param {ApiApiApiProfileExtraCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ApiApi
-     */
-    public apiProfileExtraCreate(requestParameters: ApiApiApiProfileExtraCreateRequest, options?: RawAxiosRequestConfig) {
-        return ApiApiFp(this.configuration).apiProfileExtraCreate(requestParameters.RegisterExtraDetailsRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
      * @param {ApiApiApiRecordsProgramRevokeCreateRequest} requestParameters Request parameters.
@@ -5823,13 +5557,13 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * API view set for user enrollments
+         * Update enrollment email preferences
          * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {PatchedCourseRunEnrollmentRequest} [PatchedCourseRunEnrollmentRequest] 
+         * @param {PatchedUpdateCourseRunEnrollmentRequest} [PatchedUpdateCourseRunEnrollmentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsPartialUpdate: async (id: number, PatchedCourseRunEnrollmentRequest?: PatchedCourseRunEnrollmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        enrollmentsPartialUpdate: async (id: number, PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('enrollmentsPartialUpdate', 'id', id)
             const localVarPath = `/api/v1/enrollments/{id}/`
@@ -5852,7 +5586,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(PatchedCourseRunEnrollmentRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateCourseRunEnrollmentRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5955,14 +5689,14 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * API view set for user enrollments
+         * Update enrollment email preferences
          * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {PatchedCourseRunEnrollmentRequest} [PatchedCourseRunEnrollmentRequest] 
+         * @param {PatchedUpdateCourseRunEnrollmentRequest} [PatchedUpdateCourseRunEnrollmentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsPartialUpdate(id: number, PatchedCourseRunEnrollmentRequest?: PatchedCourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsPartialUpdate(id, PatchedCourseRunEnrollmentRequest, options);
+        async enrollmentsPartialUpdate(id: number, PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsPartialUpdate(id, PatchedUpdateCourseRunEnrollmentRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsPartialUpdate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -6025,13 +5759,13 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.enrollmentsList(options).then((request) => request(axios, basePath));
         },
         /**
-         * API view set for user enrollments
+         * Update enrollment email preferences
          * @param {EnrollmentsApiEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         enrollmentsPartialUpdate(requestParameters: EnrollmentsApiEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollment> {
-            return localVarFp.enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedCourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
+            return localVarFp.enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedUpdateCourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * API view set for user enrollments
@@ -6088,10 +5822,10 @@ export interface EnrollmentsApiEnrollmentsPartialUpdateRequest {
 
     /**
      * 
-     * @type {PatchedCourseRunEnrollmentRequest}
+     * @type {PatchedUpdateCourseRunEnrollmentRequest}
      * @memberof EnrollmentsApiEnrollmentsPartialUpdate
      */
-    readonly PatchedCourseRunEnrollmentRequest?: PatchedCourseRunEnrollmentRequest
+    readonly PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest
 }
 
 /**
@@ -6165,14 +5899,14 @@ export class EnrollmentsApi extends BaseAPI {
     }
 
     /**
-     * API view set for user enrollments
+     * Update enrollment email preferences
      * @param {EnrollmentsApiEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EnrollmentsApi
      */
     public enrollmentsPartialUpdate(requestParameters: EnrollmentsApiEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedCourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
+        return EnrollmentsApiFp(this.configuration).enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedUpdateCourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
