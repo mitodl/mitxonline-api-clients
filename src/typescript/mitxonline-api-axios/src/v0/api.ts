@@ -3001,11 +3001,11 @@ export interface V2Program {
      */
     'availability'?: AvailabilityEnum;
     /**
-     * 
+     * Get the start date of the program by finding the first available run.
      * @type {string}
      * @memberof V2Program
      */
-    'start_date'?: string | null;
+    'start_date': string | null;
     /**
      * 
      * @type {string}
@@ -4681,7 +4681,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
-         * @param {number} [org_id] Only show courses beloning to this B2B/UAI organization
+         * @param {number} [org_id] Only show courses belonging to this B2B/UAI organization
          * @param {number} [page] A page number within the paginated result set.
          * @param {boolean} [page__live] 
          * @param {number} [page_size] Number of results to return per page.
@@ -4828,7 +4828,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
-         * @param {number} [org_id] Only show courses beloning to this B2B/UAI organization
+         * @param {number} [org_id] Only show courses belonging to this B2B/UAI organization
          * @param {number} [page] A page number within the paginated result set.
          * @param {boolean} [page__live] 
          * @param {number} [page_size] Number of results to return per page.
@@ -5008,7 +5008,7 @@ export interface CoursesApiApiV2CoursesListRequest {
     readonly live?: boolean
 
     /**
-     * Only show courses beloning to this B2B/UAI organization
+     * Only show courses belonging to this B2B/UAI organization
      * @type {number}
      * @memberof CoursesApiApiV2CoursesList
      */
