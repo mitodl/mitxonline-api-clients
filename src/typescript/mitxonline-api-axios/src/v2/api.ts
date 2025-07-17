@@ -1132,26 +1132,6 @@ export interface LegalAddressRequest {
     'state'?: string | null;
 }
 /**
- * * `operator` - operator * `course` - course
- * @export
- * @enum {string}
- */
-
-export const NodeTypeEnum = {
-    /**
-    * operator
-    */
-    Operator: 'operator',
-    /**
-    * course
-    */
-    Course: 'course'
-} as const;
-
-export type NodeTypeEnum = typeof NodeTypeEnum[keyof typeof NodeTypeEnum];
-
-
-/**
  * 
  * @export
  * @enum {string}
@@ -1455,7 +1435,7 @@ export interface PatchedUserRequest {
      * @type {string}
      * @memberof PatchedUserRequest
      */
-    'username'?: string;
+    'username'?: string | null;
     /**
      * 
      * @type {string}
@@ -1463,11 +1443,11 @@ export interface PatchedUserRequest {
      */
     'name'?: string;
     /**
-     * Returns the email or None in the case of AnonymousUser
+     * 
      * @type {string}
      * @memberof PatchedUserRequest
      */
-    'email'?: string;
+    'email'?: string | null;
     /**
      * 
      * @type {string}
@@ -1857,7 +1837,7 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    'username'?: string;
+    'username'?: string | null;
     /**
      * 
      * @type {string}
@@ -1865,11 +1845,11 @@ export interface User {
      */
     'name'?: string;
     /**
-     * Returns the email or None in the case of AnonymousUser
+     * 
      * @type {string}
      * @memberof User
      */
-    'email'?: string;
+    'email'?: string | null;
     /**
      * 
      * @type {LegalAddress}
@@ -2715,16 +2695,22 @@ export interface V1ProgramRequirement {
 export interface V1ProgramRequirementData {
     /**
      * 
-     * @type {NodeTypeEnum}
+     * @type {V1ProgramRequirementDataNodeTypeEnum}
      * @memberof V1ProgramRequirementData
      */
-    'node_type': NodeTypeEnum;
+    'node_type': V1ProgramRequirementDataNodeTypeEnum;
     /**
      * 
      * @type {string}
      * @memberof V1ProgramRequirementData
      */
     'course'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V1ProgramRequirementData
+     */
+    'required_program'?: string | null;
     /**
      * 
      * @type {string}
@@ -2756,6 +2742,30 @@ export interface V1ProgramRequirementData {
      */
     'elective_flag'?: boolean | null;
 }
+
+
+/**
+ * * `operator` - operator * `course` - course * `program` - program
+ * @export
+ * @enum {string}
+ */
+
+export const V1ProgramRequirementDataNodeTypeEnum = {
+    /**
+    * operator
+    */
+    Operator: 'operator',
+    /**
+    * course
+    */
+    Course: 'course',
+    /**
+    * program
+    */
+    Program: 'program'
+} as const;
+
+export type V1ProgramRequirementDataNodeTypeEnum = typeof V1ProgramRequirementDataNodeTypeEnum[keyof typeof V1ProgramRequirementDataNodeTypeEnum];
 
 
 /**
@@ -3102,10 +3112,10 @@ export interface V2ProgramRequirement {
 export interface V2ProgramRequirementData {
     /**
      * 
-     * @type {NodeTypeEnum}
+     * @type {V2ProgramRequirementDataNodeTypeEnum}
      * @memberof V2ProgramRequirementData
      */
-    'node_type': NodeTypeEnum;
+    'node_type': V2ProgramRequirementDataNodeTypeEnum;
     /**
      * 
      * @type {string}
@@ -3143,6 +3153,26 @@ export interface V2ProgramRequirementData {
      */
     'elective_flag'?: boolean | null;
 }
+
+
+/**
+ * * `operator` - operator * `course` - course
+ * @export
+ * @enum {string}
+ */
+
+export const V2ProgramRequirementDataNodeTypeEnum = {
+    /**
+    * operator
+    */
+    Operator: 'operator',
+    /**
+    * course
+    */
+    Course: 'course'
+} as const;
+
+export type V2ProgramRequirementDataNodeTypeEnum = typeof V2ProgramRequirementDataNodeTypeEnum[keyof typeof V2ProgramRequirementDataNodeTypeEnum];
 
 
 /**
