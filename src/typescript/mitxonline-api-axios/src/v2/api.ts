@@ -582,6 +582,18 @@ export interface CourseWithCourseRuns {
      */
     'max_weeks': number | null;
     /**
+     * Get the min price of the product from the CMS page.
+     * @type {number}
+     * @memberof CourseWithCourseRuns
+     */
+    'min_price': number | null;
+    /**
+     * Get the max price of the product from the CMS page.
+     * @type {number}
+     * @memberof CourseWithCourseRuns
+     */
+    'max_price': number | null;
+    /**
      * Get the time commitment of the course from the course page CMS.
      * @type {string}
      * @memberof CourseWithCourseRuns
