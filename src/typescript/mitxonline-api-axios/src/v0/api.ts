@@ -57,6 +57,74 @@ export type BlankEnum = typeof BlankEnum[keyof typeof BlankEnum];
 
 
 /**
+ * Serializer for certificate pages, including overrides and signatory items.
+ * @export
+ * @interface CertificatePage
+ */
+export interface CertificatePage {
+    /**
+     * 
+     * @type {number}
+     * @memberof CertificatePage
+     */
+    'id': number;
+    /**
+     * 
+     * @type {PageMeta}
+     * @memberof CertificatePage
+     */
+    'meta': PageMeta;
+    /**
+     * 
+     * @type {string}
+     * @memberof CertificatePage
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CertificatePage
+     */
+    'product_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CertificatePage
+     */
+    'CEUs': string;
+    /**
+     * 
+     * @type {Array<Override>}
+     * @memberof CertificatePage
+     */
+    'overrides': Array<Override>;
+    /**
+     * 
+     * @type {Array<SignatoryItem>}
+     * @memberof CertificatePage
+     */
+    'signatory_items': Array<SignatoryItem>;
+}
+/**
+ * Serializer for a list of certificate pages.
+ * @export
+ * @interface CertificatePageList
+ */
+export interface CertificatePageList {
+    /**
+     * 
+     * @type {PageListMeta}
+     * @memberof CertificatePageList
+     */
+    'meta': PageListMeta;
+    /**
+     * 
+     * @type {Array<CertificatePage>}
+     * @memberof CertificatePageList
+     */
+    'items': Array<CertificatePage>;
+}
+/**
  * Serializer for starting a user email change
  * @export
  * @interface ChangeEmailRequestCreate
@@ -353,6 +421,188 @@ export interface CoursePage {
     'instructors': Array<any>;
 }
 /**
+ * Serializer for individual course page items, including all relevant fields.
+ * @export
+ * @interface CoursePageItem
+ */
+export interface CoursePageItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof CoursePageItem
+     */
+    'id': number;
+    /**
+     * 
+     * @type {PageMeta}
+     * @memberof CoursePageItem
+     */
+    'meta': PageMeta;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'length': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'effort': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'min_weekly_hours': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'max_weekly_hours': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CoursePageItem
+     */
+    'min_weeks': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CoursePageItem
+     */
+    'max_weeks': number;
+    /**
+     * 
+     * @type {Array<PriceItem>}
+     * @memberof CoursePageItem
+     */
+    'price': Array<PriceItem>;
+    /**
+     * 
+     * @type {number}
+     * @memberof CoursePageItem
+     */
+    'min_price': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CoursePageItem
+     */
+    'max_price': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'prerequisites': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'faq_url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'about': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'what_you_learn': string;
+    /**
+     * 
+     * @type {FeatureImage}
+     * @memberof CoursePageItem
+     */
+    'feature_image': FeatureImage;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'video_url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'faculty_section_title': string;
+    /**
+     * 
+     * @type {Array<Faculty>}
+     * @memberof CoursePageItem
+     */
+    'faculty': Array<Faculty>;
+    /**
+     * 
+     * @type {CertificatePage}
+     * @memberof CoursePageItem
+     */
+    'certificate_page': CertificatePage | null;
+    /**
+     * 
+     * @type {V2Course}
+     * @memberof CoursePageItem
+     */
+    'course_details': V2Course;
+    /**
+     * 
+     * @type {Array<Topic>}
+     * @memberof CoursePageItem
+     */
+    'topic_list': Array<Topic>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CoursePageItem
+     */
+    'include_in_learn_catalog': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CoursePageItem
+     */
+    'ingest_content_files_for_ai': boolean;
+}
+/**
+ * Serializer for a list of course pages, including metadata and items.
+ * @export
+ * @interface CoursePageList
+ */
+export interface CoursePageList {
+    /**
+     * 
+     * @type {PageListMeta}
+     * @memberof CoursePageList
+     */
+    'meta': PageListMeta;
+    /**
+     * 
+     * @type {Array<CoursePageItem>}
+     * @memberof CoursePageList
+     */
+    'items': Array<CoursePageItem>;
+}
+/**
  * Course model serializer
  * @export
  * @interface CourseRequest
@@ -496,133 +746,6 @@ export interface CourseRunGrade {
      * @memberof CourseRunGrade
      */
     'grade_percent': number;
-}
-/**
- * Course model serializer - also serializes child course runs
- * @export
- * @interface CourseWithCourseRuns
- */
-export interface CourseWithCourseRuns {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseWithCourseRuns
-     */
-    'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'readable_id': string;
-    /**
-     * Get next run id
-     * @type {number}
-     * @memberof CourseWithCourseRuns
-     */
-    'next_run_id': number | null;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof CourseWithCourseRuns
-     */
-    'departments': Array<Department>;
-    /**
-     * 
-     * @type {CoursePage}
-     * @memberof CourseWithCourseRuns
-     */
-    'page': CoursePage;
-    /**
-     * 
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof CourseWithCourseRuns
-     */
-    'programs': Array<{ [key: string]: any; }> | null;
-    /**
-     * List topics of a course
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof CourseWithCourseRuns
-     */
-    'topics': Array<{ [key: string]: any; }>;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'certificate_type': string;
-    /**
-     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
-     * @type {boolean}
-     * @memberof CourseWithCourseRuns
-     */
-    'required_prerequisites': boolean;
-    /**
-     * Get the duration of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'duration': string;
-    /**
-     * Get the min weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRuns
-     */
-    'min_weeks': number | null;
-    /**
-     * Get the max weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRuns
-     */
-    'max_weeks': number | null;
-    /**
-     * Get the min price of the product from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRuns
-     */
-    'min_price': number | null;
-    /**
-     * Get the max price of the product from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRuns
-     */
-    'max_price': number | null;
-    /**
-     * Get the time commitment of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'time_commitment': string | null;
-    /**
-     * Get course availability
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'availability': string;
-    /**
-     * Get the min weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'min_weekly_hours': string | null;
-    /**
-     * Get the max weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRuns
-     */
-    'max_weekly_hours': string | null;
-    /**
-     * 
-     * @type {Array<V2CourseRun>}
-     * @memberof CourseWithCourseRuns
-     */
-    'courseruns': Array<V2CourseRun>;
 }
 /**
  * Serializer for the result from create_b2b_enrollment.  There\'s always a result, and it should be one of the B2B messages that are defined in main.constants. The other fields appear or not depending on the result type.
@@ -864,6 +987,80 @@ export const EnrollmentModeEnum = {
 export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof EnrollmentModeEnum];
 
 
+/**
+ * Serializer for faculty details used in course pages.
+ * @export
+ * @interface Faculty
+ */
+export interface Faculty {
+    /**
+     * 
+     * @type {number}
+     * @memberof Faculty
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Faculty
+     */
+    'instructor_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Faculty
+     */
+    'instructor_title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Faculty
+     */
+    'instructor_bio_short': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Faculty
+     */
+    'instructor_bio_long': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Faculty
+     */
+    'feature_image_src': string;
+}
+/**
+ * Serializer for feature images used in course pages.
+ * @export
+ * @interface FeatureImage
+ */
+export interface FeatureImage {
+    /**
+     * 
+     * @type {string}
+     * @memberof FeatureImage
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FeatureImage
+     */
+    'image_url': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof FeatureImage
+     */
+    'height': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FeatureImage
+     */
+    'width': number;
+}
 /**
  * * `m` - Male * `f` - Female * `t` - Transgender * `nb` - Non-binary/non-conforming * `o` - Other/Prefer Not to Say
  * @export
@@ -1200,36 +1397,191 @@ export interface OrganizationPage {
     'contracts': Array<ContractPage>;
 }
 /**
- * 
+ * Serializer for overrides used in certificate pages.
  * @export
- * @interface PaginatedCourseWithCourseRunsList
+ * @interface Override
  */
-export interface PaginatedCourseWithCourseRunsList {
+export interface Override {
+    /**
+     * 
+     * @type {string}
+     * @memberof Override
+     */
+    'type': string;
+    /**
+     * 
+     * @type {OverrideValue}
+     * @memberof Override
+     */
+    'value': OverrideValue;
+    /**
+     * 
+     * @type {string}
+     * @memberof Override
+     */
+    'id': string;
+}
+/**
+ * Serializer for override values used in certificate pages.
+ * @export
+ * @interface OverrideValue
+ */
+export interface OverrideValue {
+    /**
+     * 
+     * @type {string}
+     * @memberof OverrideValue
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OverrideValue
+     */
+    'CEUs': string;
+}
+/**
+ * Serializer for individual Wagtail pages.
+ * @export
+ * @interface Page
+ */
+export interface Page {
     /**
      * 
      * @type {number}
-     * @memberof PaginatedCourseWithCourseRunsList
+     * @memberof Page
      */
-    'count': number;
+    'id': number;
     /**
      * 
      * @type {string}
-     * @memberof PaginatedCourseWithCourseRunsList
+     * @memberof Page
      */
-    'next'?: string | null;
+    'title': string;
     /**
      * 
-     * @type {string}
-     * @memberof PaginatedCourseWithCourseRunsList
+     * @type {PageMeta}
+     * @memberof Page
      */
-    'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<CourseWithCourseRuns>}
-     * @memberof PaginatedCourseWithCourseRunsList
-     */
-    'results': Array<CourseWithCourseRuns>;
+    'meta': PageMeta;
 }
+/**
+ * Serializer for a list of Wagtail pages.
+ * @export
+ * @interface PageList
+ */
+export interface PageList {
+    /**
+     * 
+     * @type {PageListMeta}
+     * @memberof PageList
+     */
+    'meta': PageListMeta;
+    /**
+     * 
+     * @type {Array<Page>}
+     * @memberof PageList
+     */
+    'items': Array<Page>;
+}
+/**
+ * Serializer for metadata of a list of Wagtail pages.
+ * @export
+ * @interface PageListMeta
+ */
+export interface PageListMeta {
+    /**
+     * 
+     * @type {number}
+     * @memberof PageListMeta
+     */
+    'total_count': number;
+}
+/**
+ * Serializer for page metadata used in various Wagtail pages.
+ * @export
+ * @interface PageMeta
+ */
+export interface PageMeta {
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'detail_url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'html_url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'slug': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PageMeta
+     */
+    'show_in_menus': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'seo_title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'search_description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'first_published_at': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'alias_of': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'locale': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PageMeta
+     */
+    'live': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof PageMeta
+     */
+    'last_published_at': string | null;
+}
+/**
+ * @type PagesRetrieve200Response
+ * @export
+ */
+export type PagesRetrieve200Response = CertificatePage | CoursePageItem | Page | ProgramPageItem;
+
 /**
  * 
  * @export
@@ -1322,6 +1674,68 @@ export interface PaginatedV1ProgramList {
      * @memberof PaginatedV1ProgramList
      */
     'results': Array<V1Program>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedV2CourseWithCourseRunsList
+ */
+export interface PaginatedV2CourseWithCourseRunsList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedV2CourseWithCourseRunsList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedV2CourseWithCourseRunsList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedV2CourseWithCourseRunsList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<V2CourseWithCourseRuns>}
+     * @memberof PaginatedV2CourseWithCourseRunsList
+     */
+    'results': Array<V2CourseWithCourseRuns>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedV2ProgramCollectionList
+ */
+export interface PaginatedV2ProgramCollectionList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedV2ProgramCollectionList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedV2ProgramCollectionList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedV2ProgramCollectionList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<V2ProgramCollection>}
+     * @memberof PaginatedV2ProgramCollectionList
+     */
+    'results': Array<V2ProgramCollection>;
 }
 /**
  * 
@@ -1522,6 +1936,31 @@ export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnu
 
 
 /**
+ * Serializer for price items used in course pages.
+ * @export
+ * @interface PriceItem
+ */
+export interface PriceItem {
+    /**
+     * 
+     * @type {string}
+     * @memberof PriceItem
+     */
+    'type': string;
+    /**
+     * 
+     * @type {{ [key: string]: any; }}
+     * @memberof PriceItem
+     */
+    'value': { [key: string]: any; };
+    /**
+     * 
+     * @type {string}
+     * @memberof PriceItem
+     */
+    'id': string;
+}
+/**
  * Simple serializer for Product without related purchasable objects
  * @export
  * @interface ProductFlexibilePrice
@@ -1683,6 +2122,170 @@ export interface ProgramPage {
     'price': string;
 }
 /**
+ * Serializer for individual program page items, including all relevant fields.
+ * @export
+ * @interface ProgramPageItem
+ */
+export interface ProgramPageItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgramPageItem
+     */
+    'id': number;
+    /**
+     * 
+     * @type {PageMeta}
+     * @memberof ProgramPageItem
+     */
+    'meta': PageMeta;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'length': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'effort': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'min_weekly_hours': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'max_weekly_hours': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgramPageItem
+     */
+    'min_weeks': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgramPageItem
+     */
+    'max_weeks': number;
+    /**
+     * 
+     * @type {Array<PriceItem>}
+     * @memberof ProgramPageItem
+     */
+    'price': Array<PriceItem>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'min_price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'max_price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'prerequisites': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'faq_url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'about': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'what_you_learn': string;
+    /**
+     * 
+     * @type {FeatureImage}
+     * @memberof ProgramPageItem
+     */
+    'feature_image': FeatureImage;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'video_url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'faculty_section_title': string;
+    /**
+     * 
+     * @type {Array<Faculty>}
+     * @memberof ProgramPageItem
+     */
+    'faculty': Array<Faculty>;
+    /**
+     * 
+     * @type {CertificatePage}
+     * @memberof ProgramPageItem
+     */
+    'certificate_page': CertificatePage;
+    /**
+     * 
+     * @type {V2Program}
+     * @memberof ProgramPageItem
+     */
+    'program_details': V2Program;
+}
+/**
+ * Serializer for a list of program pages, including metadata and items.
+ * @export
+ * @interface ProgramPageList
+ */
+export interface ProgramPageList {
+    /**
+     * 
+     * @type {PageListMeta}
+     * @memberof ProgramPageList
+     */
+    'meta': PageListMeta;
+    /**
+     * 
+     * @type {Array<ProgramPageItem>}
+     * @memberof ProgramPageList
+     */
+    'items': Array<ProgramPageItem>;
+}
+/**
  * Serializer for public user data
  * @export
  * @interface PublicUser
@@ -1784,6 +2387,43 @@ export type ResultEnum = typeof ResultEnum[keyof typeof ResultEnum];
 
 
 /**
+ * Serializer for signatory items used in certificate pages.
+ * @export
+ * @interface SignatoryItem
+ */
+export interface SignatoryItem {
+    /**
+     * 
+     * @type {string}
+     * @memberof SignatoryItem
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignatoryItem
+     */
+    'title_1': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignatoryItem
+     */
+    'title_2': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignatoryItem
+     */
+    'organization': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignatoryItem
+     */
+    'signature_image': string;
+}
+/**
  * Serializer for data we care about in the staff dashboard
  * @export
  * @interface StaffDashboardUser
@@ -1831,6 +2471,25 @@ export interface StaffDashboardUser {
      * @memberof StaffDashboardUser
      */
     'is_superuser'?: boolean;
+}
+/**
+ * Serializer for topics used in course pages.
+ * @export
+ * @interface Topic
+ */
+export interface Topic {
+    /**
+     * 
+     * @type {string}
+     * @memberof Topic
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Topic
+     */
+    'parent'?: string;
 }
 /**
  * Serializer for users
@@ -2806,6 +3465,139 @@ export interface V1ProgramRequirements {
 export type V1ProgramRequirementsRequiredInner = number;
 
 /**
+ * Course model serializer
+ * @export
+ * @interface V2Course
+ */
+export interface V2Course {
+    /**
+     * 
+     * @type {number}
+     * @memberof V2Course
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2Course
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2Course
+     */
+    'readable_id': string;
+    /**
+     * Get next run id
+     * @type {number}
+     * @memberof V2Course
+     */
+    'next_run_id': number | null;
+    /**
+     * 
+     * @type {Array<Department>}
+     * @memberof V2Course
+     */
+    'departments': Array<Department>;
+    /**
+     * 
+     * @type {CoursePage}
+     * @memberof V2Course
+     */
+    'page': CoursePage;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof V2Course
+     */
+    'programs': Array<{ [key: string]: any; }> | null;
+    /**
+     * List topics of a course
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof V2Course
+     */
+    'topics': Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2Course
+     */
+    'certificate_type': string;
+    /**
+     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
+     * @type {boolean}
+     * @memberof V2Course
+     */
+    'required_prerequisites': boolean;
+    /**
+     * Get the duration of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2Course
+     */
+    'duration': string;
+    /**
+     * Get the min weeks of the course from the CMS page.
+     * @type {number}
+     * @memberof V2Course
+     */
+    'min_weeks': number | null;
+    /**
+     * Get the max weeks of the course from the CMS page.
+     * @type {number}
+     * @memberof V2Course
+     */
+    'max_weeks': number | null;
+    /**
+     * Get the min price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2Course
+     */
+    'min_price': number | null;
+    /**
+     * Get the max price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2Course
+     */
+    'max_price': number | null;
+    /**
+     * Get the time commitment of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2Course
+     */
+    'time_commitment': string | null;
+    /**
+     * Get course availability
+     * @type {string}
+     * @memberof V2Course
+     */
+    'availability': string;
+    /**
+     * Get the min weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2Course
+     */
+    'min_weekly_hours': string | null;
+    /**
+     * Get the max weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2Course
+     */
+    'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2Course
+     */
+    'include_in_learn_catalog': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2Course
+     */
+    'ingest_content_files_for_ai': boolean;
+}
+/**
  * CourseRun model serializer
  * @export
  * @interface V2CourseRun
@@ -2939,6 +3731,145 @@ export interface V2CourseRun {
     'b2b_contract'?: number | null;
 }
 /**
+ * Course model serializer - also serializes child course runs
+ * @export
+ * @interface V2CourseWithCourseRuns
+ */
+export interface V2CourseWithCourseRuns {
+    /**
+     * 
+     * @type {number}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'readable_id': string;
+    /**
+     * Get next run id
+     * @type {number}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'next_run_id': number | null;
+    /**
+     * 
+     * @type {Array<Department>}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'departments': Array<Department>;
+    /**
+     * 
+     * @type {CoursePage}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'page': CoursePage;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'programs': Array<{ [key: string]: any; }> | null;
+    /**
+     * List topics of a course
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'topics': Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'certificate_type': string;
+    /**
+     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
+     * @type {boolean}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'required_prerequisites': boolean;
+    /**
+     * Get the duration of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'duration': string;
+    /**
+     * Get the min weeks of the course from the CMS page.
+     * @type {number}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'min_weeks': number | null;
+    /**
+     * Get the max weeks of the course from the CMS page.
+     * @type {number}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'max_weeks': number | null;
+    /**
+     * Get the min price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'min_price': number | null;
+    /**
+     * Get the max price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'max_price': number | null;
+    /**
+     * Get the time commitment of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'time_commitment': string | null;
+    /**
+     * Get course availability
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'availability': string;
+    /**
+     * Get the min weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'min_weekly_hours': string | null;
+    /**
+     * Get the max weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'include_in_learn_catalog': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'ingest_content_files_for_ai': boolean;
+    /**
+     * 
+     * @type {Array<V2CourseRun>}
+     * @memberof V2CourseWithCourseRuns
+     */
+    'courseruns': Array<V2CourseRun>;
+}
+/**
  * Program Model Serializer v2
  * @export
  * @interface V2Program
@@ -2970,10 +3901,16 @@ export interface V2Program {
     'courses': Array<number>;
     /**
      * 
-     * @type {V1ProgramRequirements}
+     * @type {Array<number>}
      * @memberof V2Program
      */
-    'requirements': V1ProgramRequirements;
+    'collections': Array<number>;
+    /**
+     * 
+     * @type {V2ProgramRequirements}
+     * @memberof V2Program
+     */
+    'requirements': V2ProgramRequirements;
     /**
      * 
      * @type {Array<V2ProgramRequirement>}
@@ -3092,6 +4029,49 @@ export interface V2Program {
 
 
 /**
+ * Serializer for ProgramCollection
+ * @export
+ * @interface V2ProgramCollection
+ */
+export interface V2ProgramCollection {
+    /**
+     * 
+     * @type {number}
+     * @memberof V2ProgramCollection
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramCollection
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramCollection
+     */
+    'description': string;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof V2ProgramCollection
+     */
+    'programs': Array<number>;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramCollection
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramCollection
+     */
+    'updated_on': string;
+}
+/**
  * Serializer for a ProgramRequirement
  * @export
  * @interface V2ProgramRequirement
@@ -3187,6 +4167,63 @@ export const V2ProgramRequirementDataNodeTypeEnum = {
 export type V2ProgramRequirementDataNodeTypeEnum = typeof V2ProgramRequirementDataNodeTypeEnum[keyof typeof V2ProgramRequirementDataNodeTypeEnum];
 
 
+/**
+ * 
+ * @export
+ * @interface V2ProgramRequirements
+ */
+export interface V2ProgramRequirements {
+    /**
+     * 
+     * @type {V2ProgramRequirementsCourses}
+     * @memberof V2ProgramRequirements
+     */
+    'courses'?: V2ProgramRequirementsCourses;
+    /**
+     * 
+     * @type {V2ProgramRequirementsPrograms}
+     * @memberof V2ProgramRequirements
+     */
+    'programs'?: V2ProgramRequirementsPrograms;
+}
+/**
+ * 
+ * @export
+ * @interface V2ProgramRequirementsCourses
+ */
+export interface V2ProgramRequirementsCourses {
+    /**
+     * List of required course IDs
+     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @memberof V2ProgramRequirementsCourses
+     */
+    'required'?: Array<V1ProgramRequirementsRequiredInner>;
+    /**
+     * List of elective course IDs
+     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @memberof V2ProgramRequirementsCourses
+     */
+    'electives'?: Array<V1ProgramRequirementsRequiredInner>;
+}
+/**
+ * 
+ * @export
+ * @interface V2ProgramRequirementsPrograms
+ */
+export interface V2ProgramRequirementsPrograms {
+    /**
+     * List of required program IDs
+     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @memberof V2ProgramRequirementsPrograms
+     */
+    'required'?: Array<V1ProgramRequirementsRequiredInner>;
+    /**
+     * List of elective program IDs
+     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @memberof V2ProgramRequirementsPrograms
+     */
+    'electives'?: Array<V1ProgramRequirementsRequiredInner>;
+}
 /**
  * 
  * @export
@@ -4878,7 +5915,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsList>> {
+        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2CourseWithCourseRunsList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(courserun_is_enrollable, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
@@ -4890,7 +5927,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRuns>> {
+        async apiV2CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseWithCourseRuns>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesRetrieve(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[index]?.url;
@@ -4930,7 +5967,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsList> {
+        apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2CourseWithCourseRunsList> {
             return localVarFp.apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4939,7 +5976,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseWithCourseRuns> {
+        apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2CourseWithCourseRuns> {
             return localVarFp.apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
@@ -5960,6 +6997,635 @@ export class EnrollmentsApi extends BaseAPI {
      */
     public enrollmentsUpdate(requestParameters: EnrollmentsApiEnrollmentsUpdateRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsUpdate(requestParameters.id, requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * PagesApi - axios parameter creator
+ * @export
+ */
+export const PagesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Returns pages of all types
+         * @summary List all Wagtail Pages
+         * @param {string} [fields] Specify fields (e.g. &#x60;*&#x60;)
+         * @param {string} [type] Filter by Wagtail page type
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesList: async (fields?: string, type?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (fields !== undefined) {
+                localVarQueryParameter['fields'] = fields;
+            }
+
+            if (type !== undefined) {
+                localVarQueryParameter['type'] = type;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns details of a specific Wagtail page by ID
+         * @summary Get Wagtail Page Details
+         * @param {number} id ID of the Wagtail page
+         * @param {number} [revision_id] Optional certificate revision ID to retrieve a specific revision of the certificate page
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesRetrieve: async (id: number, revision_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('pagesRetrieve', 'id', id)
+            const localVarPath = `/api/v2/pages/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (revision_id !== undefined) {
+                localVarQueryParameter['revision_id'] = revision_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns pages of type cms.CertificatePage
+         * @summary List all Certificate Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesfieldstypecmsCertificatePageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/?fields=*&type=cms.CertificatePage`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns pages of type cms.CoursePage
+         * @summary List all Course Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesfieldstypecmsCoursePageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/?fields=*&type=cms.CoursePage`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns pages of type cms.ProgramPage
+         * @summary List all Program Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesfieldstypecmsProgramPageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/?fields=*&type=cms.ProgramPage`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * PagesApi - functional programming interface
+ * @export
+ */
+export const PagesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PagesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Returns pages of all types
+         * @summary List all Wagtail Pages
+         * @param {string} [fields] Specify fields (e.g. &#x60;*&#x60;)
+         * @param {string} [type] Filter by Wagtail page type
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pagesList(fields?: string, type?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesList(fields, type, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PagesApi.pagesList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns details of a specific Wagtail page by ID
+         * @summary Get Wagtail Page Details
+         * @param {number} id ID of the Wagtail page
+         * @param {number} [revision_id] Optional certificate revision ID to retrieve a specific revision of the certificate page
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pagesRetrieve(id: number, revision_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PagesRetrieve200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesRetrieve(id, revision_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PagesApi.pagesRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns pages of type cms.CertificatePage
+         * @summary List all Certificate Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pagesfieldstypecmsCertificatePageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CertificatePageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCertificatePageRetrieve(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCertificatePageRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns pages of type cms.CoursePage
+         * @summary List all Course Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pagesfieldstypecmsCoursePageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursePageRetrieve(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursePageRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns pages of type cms.ProgramPage
+         * @summary List all Program Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pagesfieldstypecmsProgramPageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgramPageRetrieve(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgramPageRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * PagesApi - factory interface
+ * @export
+ */
+export const PagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PagesApiFp(configuration)
+    return {
+        /**
+         * Returns pages of all types
+         * @summary List all Wagtail Pages
+         * @param {PagesApiPagesListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesList(requestParameters: PagesApiPagesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PageList> {
+            return localVarFp.pagesList(requestParameters.fields, requestParameters.type, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns details of a specific Wagtail page by ID
+         * @summary Get Wagtail Page Details
+         * @param {PagesApiPagesRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesRetrieve(requestParameters: PagesApiPagesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<PagesRetrieve200Response> {
+            return localVarFp.pagesRetrieve(requestParameters.id, requestParameters.revision_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns pages of type cms.CertificatePage
+         * @summary List all Certificate Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesfieldstypecmsCertificatePageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CertificatePageList> {
+            return localVarFp.pagesfieldstypecmsCertificatePageRetrieve(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns pages of type cms.CoursePage
+         * @summary List all Course Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesfieldstypecmsCoursePageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CoursePageList> {
+            return localVarFp.pagesfieldstypecmsCoursePageRetrieve(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns pages of type cms.ProgramPage
+         * @summary List all Program Pages
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pagesfieldstypecmsProgramPageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<ProgramPageList> {
+            return localVarFp.pagesfieldstypecmsProgramPageRetrieve(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for pagesList operation in PagesApi.
+ * @export
+ * @interface PagesApiPagesListRequest
+ */
+export interface PagesApiPagesListRequest {
+    /**
+     * Specify fields (e.g. &#x60;*&#x60;)
+     * @type {string}
+     * @memberof PagesApiPagesList
+     */
+    readonly fields?: string
+
+    /**
+     * Filter by Wagtail page type
+     * @type {string}
+     * @memberof PagesApiPagesList
+     */
+    readonly type?: string
+}
+
+/**
+ * Request parameters for pagesRetrieve operation in PagesApi.
+ * @export
+ * @interface PagesApiPagesRetrieveRequest
+ */
+export interface PagesApiPagesRetrieveRequest {
+    /**
+     * ID of the Wagtail page
+     * @type {number}
+     * @memberof PagesApiPagesRetrieve
+     */
+    readonly id: number
+
+    /**
+     * Optional certificate revision ID to retrieve a specific revision of the certificate page
+     * @type {number}
+     * @memberof PagesApiPagesRetrieve
+     */
+    readonly revision_id?: number
+}
+
+/**
+ * PagesApi - object-oriented interface
+ * @export
+ * @class PagesApi
+ * @extends {BaseAPI}
+ */
+export class PagesApi extends BaseAPI {
+    /**
+     * Returns pages of all types
+     * @summary List all Wagtail Pages
+     * @param {PagesApiPagesListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApi
+     */
+    public pagesList(requestParameters: PagesApiPagesListRequest = {}, options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesList(requestParameters.fields, requestParameters.type, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns details of a specific Wagtail page by ID
+     * @summary Get Wagtail Page Details
+     * @param {PagesApiPagesRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApi
+     */
+    public pagesRetrieve(requestParameters: PagesApiPagesRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesRetrieve(requestParameters.id, requestParameters.revision_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns pages of type cms.CertificatePage
+     * @summary List all Certificate Pages
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApi
+     */
+    public pagesfieldstypecmsCertificatePageRetrieve(options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsCertificatePageRetrieve(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns pages of type cms.CoursePage
+     * @summary List all Course Pages
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApi
+     */
+    public pagesfieldstypecmsCoursePageRetrieve(options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsCoursePageRetrieve(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns pages of type cms.ProgramPage
+     * @summary List all Program Pages
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApi
+     */
+    public pagesfieldstypecmsProgramPageRetrieve(options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsProgramPageRetrieve(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ProgramCollectionsApi - axios parameter creator
+ * @export
+ */
+export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Readonly viewset for ProgramCollection objects.
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programCollectionsList: async (page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/program-collections/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Readonly viewset for ProgramCollection objects.
+         * @param {number} id A unique integer value identifying this Program Collection.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programCollectionsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('programCollectionsRetrieve', 'id', id)
+            const localVarPath = `/api/v2/program-collections/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProgramCollectionsApi - functional programming interface
+ * @export
+ */
+export const ProgramCollectionsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProgramCollectionsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Readonly viewset for ProgramCollection objects.
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async programCollectionsList(page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramCollectionList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programCollectionsList(page, page_size, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Readonly viewset for ProgramCollection objects.
+         * @param {number} id A unique integer value identifying this Program Collection.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async programCollectionsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCollection>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programCollectionsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ProgramCollectionsApi - factory interface
+ * @export
+ */
+export const ProgramCollectionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProgramCollectionsApiFp(configuration)
+    return {
+        /**
+         * Readonly viewset for ProgramCollection objects.
+         * @param {ProgramCollectionsApiProgramCollectionsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programCollectionsList(requestParameters: ProgramCollectionsApiProgramCollectionsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramCollectionList> {
+            return localVarFp.programCollectionsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Readonly viewset for ProgramCollection objects.
+         * @param {ProgramCollectionsApiProgramCollectionsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programCollectionsRetrieve(requestParameters: ProgramCollectionsApiProgramCollectionsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramCollection> {
+            return localVarFp.programCollectionsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for programCollectionsList operation in ProgramCollectionsApi.
+ * @export
+ * @interface ProgramCollectionsApiProgramCollectionsListRequest
+ */
+export interface ProgramCollectionsApiProgramCollectionsListRequest {
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof ProgramCollectionsApiProgramCollectionsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof ProgramCollectionsApiProgramCollectionsList
+     */
+    readonly page_size?: number
+}
+
+/**
+ * Request parameters for programCollectionsRetrieve operation in ProgramCollectionsApi.
+ * @export
+ * @interface ProgramCollectionsApiProgramCollectionsRetrieveRequest
+ */
+export interface ProgramCollectionsApiProgramCollectionsRetrieveRequest {
+    /**
+     * A unique integer value identifying this Program Collection.
+     * @type {number}
+     * @memberof ProgramCollectionsApiProgramCollectionsRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * ProgramCollectionsApi - object-oriented interface
+ * @export
+ * @class ProgramCollectionsApi
+ * @extends {BaseAPI}
+ */
+export class ProgramCollectionsApi extends BaseAPI {
+    /**
+     * Readonly viewset for ProgramCollection objects.
+     * @param {ProgramCollectionsApiProgramCollectionsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramCollectionsApi
+     */
+    public programCollectionsList(requestParameters: ProgramCollectionsApiProgramCollectionsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return ProgramCollectionsApiFp(this.configuration).programCollectionsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Readonly viewset for ProgramCollection objects.
+     * @param {ProgramCollectionsApiProgramCollectionsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramCollectionsApi
+     */
+    public programCollectionsRetrieve(requestParameters: ProgramCollectionsApiProgramCollectionsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProgramCollectionsApiFp(this.configuration).programCollectionsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
