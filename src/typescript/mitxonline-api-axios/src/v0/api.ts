@@ -760,6 +760,88 @@ export interface CourseRunEnrollmentRequest {
     'run_id': number;
 }
 /**
+ * CourseRunEnrollment model serializer
+ * @export
+ * @interface CourseRunEnrollmentRequestV2
+ */
+export interface CourseRunEnrollmentRequestV2 {
+    /**
+     * 
+     * @type {V2CourseRunWithCourse}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'run': V2CourseRunWithCourse;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'edx_emails_subscription'?: boolean;
+    /**
+     * 
+     * @type {CourseRunCertificate}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'certificate': CourseRunCertificate | null;
+    /**
+     * 
+     * @type {EnrollmentModeEnum}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'enrollment_mode': EnrollmentModeEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'approved_flexible_price_exists': boolean;
+    /**
+     * 
+     * @type {Array<CourseRunGrade>}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'grades': Array<CourseRunGrade>;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'b2b_organization_id': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'b2b_contract_id': number | null;
+}
+
+
+/**
+ * CourseRunEnrollment model serializer
+ * @export
+ * @interface CourseRunEnrollmentRequestV2Request
+ */
+export interface CourseRunEnrollmentRequestV2Request {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunEnrollmentRequestV2Request
+     */
+    'edx_emails_subscription'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentRequestV2Request
+     */
+    'run_id': number;
+}
+/**
  * CourseRunGrade serializer
  * @export
  * @interface CourseRunGrade
@@ -795,6 +877,278 @@ export interface CourseRunGrade {
      * @memberof CourseRunGrade
      */
     'grade_percent': number;
+}
+/**
+ * CourseRun model serializer
+ * @export
+ * @interface CourseRunV2
+ */
+export interface CourseRunV2 {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'expiration_date'?: string | null;
+    /**
+     * Get the courseware URL
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'courseware_url': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'courseware_id': string;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * The date beyond which the learner can not enroll in paid course mode.
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'upgrade_deadline'?: string | null;
+    /**
+     * Check if the course run is upgradable
+     * @type {boolean}
+     * @memberof CourseRunV2
+     */
+    'is_upgradable': boolean;
+    /**
+     * Check if the course run is enrollable
+     * @type {boolean}
+     * @memberof CourseRunV2
+     */
+    'is_enrollable': boolean;
+    /**
+     * Check if the course run is archived
+     * @type {boolean}
+     * @memberof CourseRunV2
+     */
+    'is_archived': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunV2
+     */
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'run_tag': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunV2
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunV2
+     */
+    'live'?: boolean;
+    /**
+     * Get the course number
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'course_number': string;
+    /**
+     * 
+     * @type {Array<ProductFlexibilePrice>}
+     * @memberof CourseRunV2
+     */
+    'products': Array<ProductFlexibilePrice>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunV2
+     */
+    'approved_flexible_price_exists': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunV2
+     */
+    'b2b_contract'?: number | null;
+}
+/**
+ * Course model serializer - also serializes child course runs
+ * @export
+ * @interface CourseWithCourseRunsSerializerV2
+ */
+export interface CourseWithCourseRunsSerializerV2 {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'readable_id': string;
+    /**
+     * Get next run id
+     * @type {number}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'next_run_id': number | null;
+    /**
+     * 
+     * @type {Array<Department>}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'departments': Array<Department>;
+    /**
+     * 
+     * @type {CoursePage}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'page': CoursePage;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'programs': Array<{ [key: string]: any; }> | null;
+    /**
+     * List topics of a course
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'topics': Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'certificate_type': string;
+    /**
+     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
+     * @type {boolean}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'required_prerequisites': boolean;
+    /**
+     * Get the duration of the course from the course page CMS.
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'duration': string;
+    /**
+     * Get the min weeks of the course from the CMS page.
+     * @type {number}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'min_weeks': number | null;
+    /**
+     * Get the max weeks of the course from the CMS page.
+     * @type {number}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'max_weeks': number | null;
+    /**
+     * Get the min price of the product from the CMS page.
+     * @type {number}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'min_price': number | null;
+    /**
+     * Get the max price of the product from the CMS page.
+     * @type {number}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'max_price': number | null;
+    /**
+     * Get the time commitment of the course from the course page CMS.
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'time_commitment': string | null;
+    /**
+     * Get course availability
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'availability': string;
+    /**
+     * Get the min weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'min_weekly_hours': string | null;
+    /**
+     * Get the max weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'include_in_learn_catalog': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'ingest_content_files_for_ai': boolean;
+    /**
+     * 
+     * @type {Array<CourseRunV2>}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'courseruns': Array<CourseRunV2>;
 }
 /**
  * Serializer for the result from create_b2b_enrollment.  There\'s always a result, and it should be one of the B2B messages that are defined in main.constants. The other fields appear or not depending on the result type.
@@ -1713,6 +2067,37 @@ export type PagesRetrieve200Response = CertificatePage | CoursePageItem | Page |
 /**
  * 
  * @export
+ * @interface PaginatedCourseWithCourseRunsSerializerV2List
+ */
+export interface PaginatedCourseWithCourseRunsSerializerV2List {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<CourseWithCourseRunsSerializerV2>}
+     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
+     */
+    'results': Array<CourseWithCourseRunsSerializerV2>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedStaffDashboardUserList
  */
 export interface PaginatedStaffDashboardUserList {
@@ -1802,37 +2187,6 @@ export interface PaginatedV1ProgramList {
      * @memberof PaginatedV1ProgramList
      */
     'results': Array<V1Program>;
-}
-/**
- * 
- * @export
- * @interface PaginatedV2CourseWithCourseRunsList
- */
-export interface PaginatedV2CourseWithCourseRunsList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedV2CourseWithCourseRunsList
-     */
-    'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV2CourseWithCourseRunsList
-     */
-    'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV2CourseWithCourseRunsList
-     */
-    'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<V2CourseWithCourseRuns>}
-     * @memberof PaginatedV2CourseWithCourseRunsList
-     */
-    'results': Array<V2CourseWithCourseRuns>;
 }
 /**
  * 
@@ -3726,137 +4080,23 @@ export interface V2Course {
     'ingest_content_files_for_ai': boolean;
 }
 /**
- * CourseRun model serializer
+ * Course model serializer
  * @export
- * @interface V2CourseRun
+ * @interface V2CourseRequest
  */
-export interface V2CourseRun {
+export interface V2CourseRequest {
     /**
-     * The title of the course. This value is synced automatically with edX studio.
+     * 
      * @type {string}
-     * @memberof V2CourseRun
+     * @memberof V2CourseRequest
      */
     'title': string;
     /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'expiration_date'?: string | null;
-    /**
-     * Get the courseware URL
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'courseware_url': string | null;
-    /**
      * 
      * @type {string}
-     * @memberof V2CourseRun
+     * @memberof V2CourseRequest
      */
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'upgrade_deadline'?: string | null;
-    /**
-     * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof V2CourseRun
-     */
-    'is_upgradable': boolean;
-    /**
-     * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof V2CourseRun
-     */
-    'is_enrollable': boolean;
-    /**
-     * Check if the course run is archived
-     * @type {boolean}
-     * @memberof V2CourseRun
-     */
-    'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRun
-     */
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRun
-     */
-    'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRun
-     */
-    'live'?: boolean;
-    /**
-     * Get the course number
-     * @type {string}
-     * @memberof V2CourseRun
-     */
-    'course_number': string;
-    /**
-     * 
-     * @type {Array<ProductFlexibilePrice>}
-     * @memberof V2CourseRun
-     */
-    'products': Array<ProductFlexibilePrice>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRun
-     */
-    'approved_flexible_price_exists': boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRun
-     */
-    'b2b_contract'?: number | null;
+    'readable_id': string;
 }
 /**
  * Serializer for course certificates.
@@ -3902,143 +4142,228 @@ export interface V2CourseRunCertificate {
     'certificate_page_revision': number | null;
 }
 /**
- * Course model serializer - also serializes child course runs
+ * CourseRun model serializer - also serializes the parent Course.
  * @export
- * @interface V2CourseWithCourseRuns
+ * @interface V2CourseRunWithCourse
  */
-export interface V2CourseWithCourseRuns {
+export interface V2CourseRunWithCourse {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'expiration_date'?: string | null;
+    /**
+     * Get the courseware URL
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'courseware_url': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'courseware_id': string;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * The date beyond which the learner can not enroll in paid course mode.
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'upgrade_deadline'?: string | null;
+    /**
+     * Check if the course run is upgradable
+     * @type {boolean}
+     * @memberof V2CourseRunWithCourse
+     */
+    'is_upgradable': boolean;
+    /**
+     * Check if the course run is enrollable
+     * @type {boolean}
+     * @memberof V2CourseRunWithCourse
+     */
+    'is_enrollable': boolean;
+    /**
+     * Check if the course run is archived
+     * @type {boolean}
+     * @memberof V2CourseRunWithCourse
+     */
+    'is_archived': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2CourseRunWithCourse
+     */
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'run_tag': string;
     /**
      * 
      * @type {number}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourse
      */
     'id': number;
     /**
      * 
+     * @type {boolean}
+     * @memberof V2CourseRunWithCourse
+     */
+    'live'?: boolean;
+    /**
+     * Get the course number
      * @type {string}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourse
+     */
+    'course_number': string;
+    /**
+     * 
+     * @type {Array<ProductFlexibilePrice>}
+     * @memberof V2CourseRunWithCourse
+     */
+    'products': Array<ProductFlexibilePrice>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2CourseRunWithCourse
+     */
+    'approved_flexible_price_exists': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2CourseRunWithCourse
+     */
+    'b2b_contract'?: number | null;
+    /**
+     * 
+     * @type {V2Course}
+     * @memberof V2CourseRunWithCourse
+     */
+    'course': V2Course;
+}
+/**
+ * CourseRun model serializer - also serializes the parent Course.
+ * @export
+ * @interface V2CourseRunWithCourseRequest
+ */
+export interface V2CourseRunWithCourseRequest {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourseRequest
      */
     'title': string;
     /**
-     * 
+     * The day the course begins. This value is synced automatically with edX studio.
      * @type {string}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'readable_id': string;
+    'start_date'?: string | null;
     /**
-     * Get next run id
-     * @type {number}
-     * @memberof V2CourseWithCourseRuns
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'next_run_id': number | null;
+    'end_date'?: string | null;
     /**
-     * 
-     * @type {Array<Department>}
-     * @memberof V2CourseWithCourseRuns
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'departments': Array<Department>;
+    'enrollment_start'?: string | null;
     /**
-     * 
-     * @type {CoursePage}
-     * @memberof V2CourseWithCourseRuns
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'page': CoursePage;
+    'enrollment_end'?: string | null;
     /**
-     * 
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof V2CourseWithCourseRuns
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'programs': Array<{ [key: string]: any; }> | null;
-    /**
-     * List topics of a course
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'topics': Array<{ [key: string]: any; }>;
+    'expiration_date'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'certificate_type': string;
+    'courseware_id': string;
     /**
-     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
-     * @type {boolean}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'required_prerequisites': boolean;
-    /**
-     * Get the duration of the course from the course page CMS.
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
      * @type {string}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'duration': string;
+    'certificate_available_date'?: string | null;
     /**
-     * Get the min weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'min_weeks': number | null;
-    /**
-     * Get the max weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'max_weeks': number | null;
-    /**
-     * Get the min price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'min_price': number | null;
-    /**
-     * Get the max price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'max_price': number | null;
-    /**
-     * Get the time commitment of the course from the course page CMS.
+     * The date beyond which the learner can not enroll in paid course mode.
      * @type {string}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'time_commitment': string | null;
-    /**
-     * Get course availability
-     * @type {string}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'availability': string;
-    /**
-     * Get the min weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'min_weekly_hours': string | null;
-    /**
-     * Get the max weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof V2CourseWithCourseRuns
-     */
-    'max_weekly_hours': string | null;
+    'upgrade_deadline'?: string | null;
     /**
      * 
      * @type {boolean}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'include_in_learn_catalog': boolean;
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof V2CourseRunWithCourseRequest
+     */
+    'run_tag': string;
     /**
      * 
      * @type {boolean}
-     * @memberof V2CourseWithCourseRuns
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'ingest_content_files_for_ai': boolean;
+    'live'?: boolean;
     /**
      * 
-     * @type {Array<V2CourseRun>}
-     * @memberof V2CourseWithCourseRuns
+     * @type {number}
+     * @memberof V2CourseRunWithCourseRequest
      */
-    'courseruns': Array<V2CourseRun>;
+    'b2b_contract'?: number | null;
 }
 /**
  * Program Model Serializer v2
@@ -6247,7 +6572,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2CourseWithCourseRunsList>> {
+        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(courserun_is_enrollable, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
@@ -6259,7 +6584,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseWithCourseRuns>> {
+        async apiV2CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRunsSerializerV2>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesRetrieve(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[index]?.url;
@@ -6299,7 +6624,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2CourseWithCourseRunsList> {
+        apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List> {
             return localVarFp.apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6308,7 +6633,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2CourseWithCourseRuns> {
+        apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseWithCourseRunsSerializerV2> {
             return localVarFp.apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
@@ -7043,6 +7368,113 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Create a new user enrollment - API v2
+         * @param {CourseRunEnrollmentRequestV2Request} CourseRunEnrollmentRequestV2Request 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsCreateV2: async (CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'CourseRunEnrollmentRequestV2Request' is not null or undefined
+            assertParamExists('userEnrollmentsCreateV2', 'CourseRunEnrollmentRequestV2Request', CourseRunEnrollmentRequestV2Request)
+            const localVarPath = `/api/v2/enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CourseRunEnrollmentRequestV2Request, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Unenroll from a course - API v2
+         * @param {number} id A unique integer value identifying this course run enrollment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsDestroyV2: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('userEnrollmentsDestroyV2', 'id', id)
+            const localVarPath = `/api/v2/enrollments/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * @param {number} [org_id] Filter by B2B organization ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsListV2: async (exclude_b2b?: boolean, org_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (exclude_b2b !== undefined) {
+                localVarQueryParameter['exclude_b2b'] = exclude_b2b;
+            }
+
+            if (org_id !== undefined) {
+                localVarQueryParameter['org_id'] = org_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -7125,6 +7557,43 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsUpdate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Create a new user enrollment - API v2
+         * @param {CourseRunEnrollmentRequestV2Request} CourseRunEnrollmentRequestV2Request 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userEnrollmentsCreateV2(CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsCreateV2(CourseRunEnrollmentRequestV2Request, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV2']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Unenroll from a course - API v2
+         * @param {number} id A unique integer value identifying this course run enrollment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userEnrollmentsDestroyV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV2(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV2']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * @param {number} [org_id] Filter by B2B organization ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userEnrollmentsListV2(exclude_b2b?: boolean, org_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollmentRequestV2>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV2(exclude_b2b, org_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV2']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -7186,6 +7655,33 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
          */
         enrollmentsUpdate(requestParameters: EnrollmentsApiEnrollmentsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollment> {
             return localVarFp.enrollmentsUpdate(requestParameters.id, requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create a new user enrollment - API v2
+         * @param {EnrollmentsApiUserEnrollmentsCreateV2Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsCreateV2(requestParameters: EnrollmentsApiUserEnrollmentsCreateV2Request, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentRequestV2> {
+            return localVarFp.userEnrollmentsCreateV2(requestParameters.CourseRunEnrollmentRequestV2Request, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Unenroll from a course - API v2
+         * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsDestroyV2(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV2Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.userEnrollmentsDestroyV2(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseRunEnrollmentRequestV2>> {
+            return localVarFp.userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -7261,6 +7757,55 @@ export interface EnrollmentsApiEnrollmentsUpdateRequest {
 }
 
 /**
+ * Request parameters for userEnrollmentsCreateV2 operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiUserEnrollmentsCreateV2Request
+ */
+export interface EnrollmentsApiUserEnrollmentsCreateV2Request {
+    /**
+     * 
+     * @type {CourseRunEnrollmentRequestV2Request}
+     * @memberof EnrollmentsApiUserEnrollmentsCreateV2
+     */
+    readonly CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request
+}
+
+/**
+ * Request parameters for userEnrollmentsDestroyV2 operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiUserEnrollmentsDestroyV2Request
+ */
+export interface EnrollmentsApiUserEnrollmentsDestroyV2Request {
+    /**
+     * A unique integer value identifying this course run enrollment.
+     * @type {number}
+     * @memberof EnrollmentsApiUserEnrollmentsDestroyV2
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for userEnrollmentsListV2 operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiUserEnrollmentsListV2Request
+ */
+export interface EnrollmentsApiUserEnrollmentsListV2Request {
+    /**
+     * Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+     * @type {boolean}
+     * @memberof EnrollmentsApiUserEnrollmentsListV2
+     */
+    readonly exclude_b2b?: boolean
+
+    /**
+     * Filter by B2B organization ID
+     * @type {number}
+     * @memberof EnrollmentsApiUserEnrollmentsListV2
+     */
+    readonly org_id?: number
+}
+
+/**
  * EnrollmentsApi - object-oriented interface
  * @export
  * @class EnrollmentsApi
@@ -7329,6 +7874,39 @@ export class EnrollmentsApi extends BaseAPI {
      */
     public enrollmentsUpdate(requestParameters: EnrollmentsApiEnrollmentsUpdateRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsUpdate(requestParameters.id, requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a new user enrollment - API v2
+     * @param {EnrollmentsApiUserEnrollmentsCreateV2Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public userEnrollmentsCreateV2(requestParameters: EnrollmentsApiUserEnrollmentsCreateV2Request, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).userEnrollmentsCreateV2(requestParameters.CourseRunEnrollmentRequestV2Request, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Unenroll from a course - API v2
+     * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public userEnrollmentsDestroyV2(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV2Request, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).userEnrollmentsDestroyV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+     * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -8122,14 +8700,43 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Returns a unified set of program and course enrollments for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programEnrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/program_enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve a specific program enrollment.
          * @param {number} id Program enrollment ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programEnrollmentsList: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        programEnrollmentsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('programEnrollmentsList', 'id', id)
-            const localVarPath = `/api/v1/program_enrollments/`
+            assertParamExists('programEnrollmentsRetrieve', 'id', id)
+            const localVarPath = `/api/v1/program_enrollments/{id}/`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8177,14 +8784,25 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Returns a unified set of program and course enrollments for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async programEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserProgramEnrollmentDetail>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Retrieve a specific program enrollment.
          * @param {number} id Program enrollment ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programEnrollmentsList(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserProgramEnrollmentDetail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsList(id, options);
+        async programEnrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProgramEnrollmentDetail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsRetrieve(id, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -8208,12 +8826,20 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
         },
         /**
          * Returns a unified set of program and course enrollments for the current user.
-         * @param {ProgramEnrollmentsApiProgramEnrollmentsListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programEnrollmentsList(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<UserProgramEnrollmentDetail>> {
-            return localVarFp.programEnrollmentsList(requestParameters.id, options).then((request) => request(axios, basePath));
+        programEnrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<UserProgramEnrollmentDetail>> {
+            return localVarFp.programEnrollmentsList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a specific program enrollment.
+         * @param {ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserProgramEnrollmentDetail> {
+            return localVarFp.programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8233,15 +8859,15 @@ export interface ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest {
 }
 
 /**
- * Request parameters for programEnrollmentsList operation in ProgramEnrollmentsApi.
+ * Request parameters for programEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
  * @export
- * @interface ProgramEnrollmentsApiProgramEnrollmentsListRequest
+ * @interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest
  */
-export interface ProgramEnrollmentsApiProgramEnrollmentsListRequest {
+export interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest {
     /**
      * Program enrollment ID
      * @type {number}
-     * @memberof ProgramEnrollmentsApiProgramEnrollmentsList
+     * @memberof ProgramEnrollmentsApiProgramEnrollmentsRetrieve
      */
     readonly id: number
 }
@@ -8266,13 +8892,23 @@ export class ProgramEnrollmentsApi extends BaseAPI {
 
     /**
      * Returns a unified set of program and course enrollments for the current user.
-     * @param {ProgramEnrollmentsApiProgramEnrollmentsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgramEnrollmentsApi
      */
-    public programEnrollmentsList(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsListRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsList(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public programEnrollmentsList(options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a specific program enrollment.
+     * @param {ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
