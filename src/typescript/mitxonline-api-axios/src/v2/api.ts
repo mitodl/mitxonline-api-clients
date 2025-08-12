@@ -5193,6 +5193,39 @@ export class ApiApi extends BaseAPI {
 export const B2bApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+         * @param {string} enrollment_code 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bAttachCreate: async (enrollment_code: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'enrollment_code' is not null or undefined
+            assertParamExists('b2bAttachCreate', 'enrollment_code', enrollment_code)
+            const localVarPath = `/api/v0/b2b/attach/{enrollment_code}/`
+                .replace(`{${"enrollment_code"}}`, encodeURIComponent(String(enrollment_code)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5360,6 +5393,18 @@ export const B2bApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = B2bApiAxiosParamCreator(configuration)
     return {
         /**
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+         * @param {string} enrollment_code 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bAttachCreate(enrollment_code: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ContractPage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bAttachCreate(enrollment_code, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bAttachCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5428,6 +5473,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
     const localVarFp = B2bApiFp(configuration)
     return {
         /**
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+         * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bAttachCreate(requestParameters: B2bApiB2bAttachCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ContractPage>> {
+            return localVarFp.b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5472,6 +5526,20 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
         },
     };
 };
+
+/**
+ * Request parameters for b2bAttachCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bAttachCreateRequest
+ */
+export interface B2bApiB2bAttachCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bAttachCreate
+     */
+    readonly enrollment_code: string
+}
 
 /**
  * Request parameters for b2bContractsRetrieve operation in B2bApi.
@@ -5522,6 +5590,17 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
  * @extends {BaseAPI}
  */
 export class B2bApi extends BaseAPI {
+    /**
+     * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+     * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bAttachCreate(requestParameters: B2bApiB2bAttachCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Viewset for the ContractPage model.
      * @param {*} [options] Override http request option.
