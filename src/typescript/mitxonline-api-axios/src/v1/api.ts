@@ -4130,10 +4130,10 @@ export interface V2CourseRunCertificate {
     'certificate_page': CertificatePageModel;
     /**
      * 
-     * @type {number}
+     * @type {V2CourseRunWithCourse}
      * @memberof V2CourseRunCertificate
      */
-    'course_run': number;
+    'course_run': V2CourseRunWithCourse;
     /**
      * 
      * @type {number}
@@ -4556,10 +4556,10 @@ export interface V2ProgramCertificate {
     'certificate_page': CertificatePageModel;
     /**
      * 
-     * @type {number}
+     * @type {V2Program}
      * @memberof V2ProgramCertificate
      */
-    'program': number;
+    'program': V2Program;
     /**
      * 
      * @type {number}
