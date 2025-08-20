@@ -2784,7 +2784,7 @@ export interface PublicUser {
      * @type {string}
      * @memberof PublicUser
      */
-    'username': string;
+    'username'?: string | null;
     /**
      * 
      * @type {string}
