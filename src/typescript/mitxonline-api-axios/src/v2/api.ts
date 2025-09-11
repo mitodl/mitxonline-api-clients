@@ -427,7 +427,7 @@ export interface CoursePage {
      */
     'page_url': string;
     /**
-     * 
+     * Get cleaned description text.
      * @type {string}
      * @memberof CoursePage
      */
@@ -439,13 +439,13 @@ export interface CoursePage {
      */
     'live': boolean;
     /**
-     * 
+     * Get cleaned length text.
      * @type {string}
      * @memberof CoursePage
      */
     'length': string;
     /**
-     * 
+     * Get cleaned effort text.
      * @type {string}
      * @memberof CoursePage
      */
@@ -457,13 +457,13 @@ export interface CoursePage {
      */
     'financial_assistance_form_url': string;
     /**
-     * 
+     * Get the current price of the course product.
      * @type {number}
      * @memberof CoursePage
      */
     'current_price': number | null;
     /**
-     * 
+     * Get instructor information
      * @type {Array<any>}
      * @memberof CoursePage
      */
@@ -2597,7 +2597,7 @@ export interface ProgramPage {
      */
     'effort'?: string | null;
     /**
-     * 
+     * Get the price text from the program page.
      * @type {string}
      * @memberof ProgramPage
      */
@@ -4733,16 +4733,16 @@ export interface V2ProgramRequirements {
 export interface V2ProgramRequirementsCourses {
     /**
      * List of required course IDs
-     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @type {Array<number>}
      * @memberof V2ProgramRequirementsCourses
      */
-    'required'?: Array<V1ProgramRequirementsRequiredInner>;
+    'required'?: Array<number>;
     /**
      * List of elective course IDs
-     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @type {Array<number>}
      * @memberof V2ProgramRequirementsCourses
      */
-    'electives'?: Array<V1ProgramRequirementsRequiredInner>;
+    'electives'?: Array<number>;
 }
 /**
  * 
@@ -4752,16 +4752,16 @@ export interface V2ProgramRequirementsCourses {
 export interface V2ProgramRequirementsPrograms {
     /**
      * List of required program IDs
-     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @type {Array<number>}
      * @memberof V2ProgramRequirementsPrograms
      */
-    'required'?: Array<V1ProgramRequirementsRequiredInner>;
+    'required'?: Array<number>;
     /**
      * List of elective program IDs
-     * @type {Array<V1ProgramRequirementsRequiredInner>}
+     * @type {Array<number>}
      * @memberof V2ProgramRequirementsPrograms
      */
-    'electives'?: Array<V1ProgramRequirementsRequiredInner>;
+    'electives'?: Array<number>;
 }
 /**
  * 
