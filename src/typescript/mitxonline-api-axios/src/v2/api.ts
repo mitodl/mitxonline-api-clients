@@ -488,53 +488,53 @@ export interface CoursePageItem {
      */
     'meta': PageMeta;
     /**
-     * 
+     * The page title as you\'d like it to be seen by the public
      * @type {string}
      * @memberof CoursePageItem
      */
     'title': string;
     /**
-     * 
+     * The description shown on the home page and product page.
      * @type {string}
      * @memberof CoursePageItem
      */
     'description': string;
     /**
-     * 
+     * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
      * @type {string}
      * @memberof CoursePageItem
      */
     'length': string;
     /**
-     * 
+     * A short description indicating how much effort is required (e.g. 1-3 hours per week).
      * @type {string}
      * @memberof CoursePageItem
      */
-    'effort': string;
+    'effort': string | null;
     /**
-     * 
+     * The minimum number of hours per week required to complete the course.
      * @type {string}
      * @memberof CoursePageItem
      */
     'min_weekly_hours': string;
     /**
-     * 
+     * The maximum number of hours per week required to complete the course.
      * @type {string}
      * @memberof CoursePageItem
      */
     'max_weekly_hours': string;
     /**
-     * 
+     * The minimum number of weeks required to complete the course/program.
      * @type {number}
      * @memberof CoursePageItem
      */
-    'min_weeks': number;
+    'min_weeks': number | null;
     /**
-     * 
+     * The maximum number of weeks required to complete the course/program.
      * @type {number}
      * @memberof CoursePageItem
      */
-    'max_weeks': number;
+    'max_weeks': number | null;
     /**
      * 
      * @type {Array<PriceItem>}
@@ -542,41 +542,41 @@ export interface CoursePageItem {
      */
     'price': Array<PriceItem>;
     /**
-     * 
+     * Specify the minimum product price. This is used by MIT Learn.
      * @type {number}
      * @memberof CoursePageItem
      */
-    'min_price': number;
+    'min_price': number | null;
     /**
-     * 
+     * Specify the maximum product price. This is used by MIT Learn.
      * @type {number}
      * @memberof CoursePageItem
      */
-    'max_price': number;
+    'max_price': number | null;
     /**
-     * 
+     * A short description indicating prerequisites of this course/program.
      * @type {string}
      * @memberof CoursePageItem
      */
-    'prerequisites': string;
+    'prerequisites': string | null;
     /**
-     * 
+     * URL a relevant FAQ page or entry for the course/program.
      * @type {string}
      * @memberof CoursePageItem
      */
-    'faq_url': string;
+    'faq_url': string | null;
     /**
-     * 
+     * Details about this course/program.
      * @type {string}
      * @memberof CoursePageItem
      */
-    'about': string;
+    'about': string | null;
     /**
-     * 
+     * What you will learn from this course.
      * @type {string}
      * @memberof CoursePageItem
      */
-    'what_you_learn': string;
+    'what_you_learn': string | null;
     /**
      * 
      * @type {FeatureImage}
@@ -584,17 +584,17 @@ export interface CoursePageItem {
      */
     'feature_image': FeatureImage;
     /**
-     * 
+     * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
      * @type {string}
      * @memberof CoursePageItem
      */
-    'video_url': string;
+    'video_url': string | null;
     /**
-     * 
+     * The title text to display in the faculty cards section of the product page.
      * @type {string}
      * @memberof CoursePageItem
      */
-    'faculty_section_title': string;
+    'faculty_section_title': string | null;
     /**
      * 
      * @type {Array<Faculty>}
@@ -620,17 +620,17 @@ export interface CoursePageItem {
      */
     'topic_list': Array<Topic>;
     /**
-     * 
+     * If true, Learn should include this in its catalog.
      * @type {boolean}
      * @memberof CoursePageItem
      */
-    'include_in_learn_catalog': boolean;
+    'include_in_learn_catalog': boolean | null;
     /**
-     * 
+     * If true, allow the AI chatbots to ingest the course\'s content files.
      * @type {boolean}
      * @memberof CoursePageItem
      */
-    'ingest_content_files_for_ai': boolean;
+    'ingest_content_files_for_ai': boolean | null;
 }
 /**
  * Serializer for a list of course pages, including metadata and items.
@@ -2622,53 +2622,53 @@ export interface ProgramPageItem {
      */
     'meta': PageMeta;
     /**
-     * 
+     * The page title as you\'d like it to be seen by the public
      * @type {string}
      * @memberof ProgramPageItem
      */
     'title': string;
     /**
-     * 
+     * The description shown on the home page and product page.
      * @type {string}
      * @memberof ProgramPageItem
      */
     'description': string;
     /**
-     * 
+     * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
      * @type {string}
      * @memberof ProgramPageItem
      */
     'length': string;
     /**
-     * 
+     * A short description indicating how much effort is required (e.g. 1-3 hours per week).
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'effort': string;
+    'effort': string | null;
     /**
-     * 
+     * The minimum number of hours per week required to complete the course.
      * @type {string}
      * @memberof ProgramPageItem
      */
     'min_weekly_hours': string;
     /**
-     * 
+     * The maximum number of hours per week required to complete the course.
      * @type {string}
      * @memberof ProgramPageItem
      */
     'max_weekly_hours': string;
     /**
-     * 
+     * The minimum number of weeks required to complete the course/program.
      * @type {number}
      * @memberof ProgramPageItem
      */
-    'min_weeks': number;
+    'min_weeks': number | null;
     /**
-     * 
+     * The maximum number of weeks required to complete the course/program.
      * @type {number}
      * @memberof ProgramPageItem
      */
-    'max_weeks': number;
+    'max_weeks': number | null;
     /**
      * 
      * @type {Array<PriceItem>}
@@ -2676,41 +2676,41 @@ export interface ProgramPageItem {
      */
     'price': Array<PriceItem>;
     /**
-     * 
-     * @type {string}
+     * Specify the minimum product price. This is used by MIT Learn.
+     * @type {number}
      * @memberof ProgramPageItem
      */
-    'min_price': string;
+    'min_price': number | null;
     /**
-     * 
-     * @type {string}
+     * Specify the maximum product price. This is used by MIT Learn.
+     * @type {number}
      * @memberof ProgramPageItem
      */
-    'max_price': string;
+    'max_price': number | null;
     /**
-     * 
+     * A short description indicating prerequisites of this course/program.
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'prerequisites': string;
+    'prerequisites': string | null;
     /**
-     * 
+     * URL a relevant FAQ page or entry for the course/program.
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'faq_url': string;
+    'faq_url': string | null;
     /**
-     * 
+     * Details about this course/program.
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'about': string;
+    'about': string | null;
     /**
-     * 
+     * What you will learn from this course.
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'what_you_learn': string;
+    'what_you_learn': string | null;
     /**
      * 
      * @type {FeatureImage}
@@ -2718,17 +2718,17 @@ export interface ProgramPageItem {
      */
     'feature_image': FeatureImage;
     /**
-     * 
+     * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'video_url': string;
+    'video_url': string | null;
     /**
-     * 
+     * The title text to display in the faculty cards section of the product page.
      * @type {string}
      * @memberof ProgramPageItem
      */
-    'faculty_section_title': string;
+    'faculty_section_title': string | null;
     /**
      * 
      * @type {Array<Faculty>}
@@ -8109,10 +8109,11 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Returns pages of type cms.CoursePage
          * @summary List all Course Pages
+         * @param {string} [readable_id] filter by course readable_id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsCoursePageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pagesfieldstypecmsCoursePageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/pages/?fields=*&type=cms.CoursePage`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8124,6 +8125,10 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (readable_id !== undefined) {
+                localVarQueryParameter['readable_id'] = readable_id;
+            }
 
 
     
@@ -8139,10 +8144,11 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Returns pages of type cms.ProgramPage
          * @summary List all Program Pages
+         * @param {string} [readable_id] filter by program readable_id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsProgramPageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pagesfieldstypecmsProgramPageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/pages/?fields=*&type=cms.ProgramPage`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8154,6 +8160,10 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (readable_id !== undefined) {
+                localVarQueryParameter['readable_id'] = readable_id;
+            }
 
 
     
@@ -8219,11 +8229,12 @@ export const PagesApiFp = function(configuration?: Configuration) {
         /**
          * Returns pages of type cms.CoursePage
          * @summary List all Course Pages
+         * @param {string} [readable_id] filter by course readable_id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pagesfieldstypecmsCoursePageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursePageRetrieve(options);
+        async pagesfieldstypecmsCoursePageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursePageRetrieve(readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursePageRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -8231,11 +8242,12 @@ export const PagesApiFp = function(configuration?: Configuration) {
         /**
          * Returns pages of type cms.ProgramPage
          * @summary List all Program Pages
+         * @param {string} [readable_id] filter by program readable_id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pagesfieldstypecmsProgramPageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgramPageRetrieve(options);
+        async pagesfieldstypecmsProgramPageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgramPageRetrieve(readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgramPageRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -8282,20 +8294,22 @@ export const PagesApiFactory = function (configuration?: Configuration, basePath
         /**
          * Returns pages of type cms.CoursePage
          * @summary List all Course Pages
+         * @param {PagesApiPagesfieldstypecmsCoursePageRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsCoursePageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CoursePageList> {
-            return localVarFp.pagesfieldstypecmsCoursePageRetrieve(options).then((request) => request(axios, basePath));
+        pagesfieldstypecmsCoursePageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursePageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<CoursePageList> {
+            return localVarFp.pagesfieldstypecmsCoursePageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns pages of type cms.ProgramPage
          * @summary List all Program Pages
+         * @param {PagesApiPagesfieldstypecmsProgramPageRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsProgramPageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<ProgramPageList> {
-            return localVarFp.pagesfieldstypecmsProgramPageRetrieve(options).then((request) => request(axios, basePath));
+        pagesfieldstypecmsProgramPageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgramPageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ProgramPageList> {
+            return localVarFp.pagesfieldstypecmsProgramPageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8343,6 +8357,34 @@ export interface PagesApiPagesRetrieveRequest {
 }
 
 /**
+ * Request parameters for pagesfieldstypecmsCoursePageRetrieve operation in PagesApi.
+ * @export
+ * @interface PagesApiPagesfieldstypecmsCoursePageRetrieveRequest
+ */
+export interface PagesApiPagesfieldstypecmsCoursePageRetrieveRequest {
+    /**
+     * filter by course readable_id
+     * @type {string}
+     * @memberof PagesApiPagesfieldstypecmsCoursePageRetrieve
+     */
+    readonly readable_id?: string
+}
+
+/**
+ * Request parameters for pagesfieldstypecmsProgramPageRetrieve operation in PagesApi.
+ * @export
+ * @interface PagesApiPagesfieldstypecmsProgramPageRetrieveRequest
+ */
+export interface PagesApiPagesfieldstypecmsProgramPageRetrieveRequest {
+    /**
+     * filter by program readable_id
+     * @type {string}
+     * @memberof PagesApiPagesfieldstypecmsProgramPageRetrieve
+     */
+    readonly readable_id?: string
+}
+
+/**
  * PagesApi - object-oriented interface
  * @export
  * @class PagesApi
@@ -8387,23 +8429,25 @@ export class PagesApi extends BaseAPI {
     /**
      * Returns pages of type cms.CoursePage
      * @summary List all Course Pages
+     * @param {PagesApiPagesfieldstypecmsCoursePageRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PagesApi
      */
-    public pagesfieldstypecmsCoursePageRetrieve(options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsCoursePageRetrieve(options).then((request) => request(this.axios, this.basePath));
+    public pagesfieldstypecmsCoursePageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursePageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsCoursePageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Returns pages of type cms.ProgramPage
      * @summary List all Program Pages
+     * @param {PagesApiPagesfieldstypecmsProgramPageRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PagesApi
      */
-    public pagesfieldstypecmsProgramPageRetrieve(options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsProgramPageRetrieve(options).then((request) => request(this.axios, this.basePath));
+    public pagesfieldstypecmsProgramPageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgramPageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsProgramPageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
