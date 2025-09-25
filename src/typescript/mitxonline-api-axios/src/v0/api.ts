@@ -4504,6 +4504,18 @@ export interface V2Program {
      */
     'max_weeks': number | null;
     /**
+     * Get the min price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2Program
+     */
+    'min_price': number | null;
+    /**
+     * Get the max price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2Program
+     */
+    'max_price': number | null;
+    /**
      * Get the effort/time_commitment field from the program page CMS.
      * @type {string}
      * @memberof V2Program
