@@ -2,13 +2,9 @@ name: CI - Axios TypeScript Package
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'src/typescript/mitxonline-api-axios/**'
+    branches: [main]
   pull_request:
-    branches: [ main ]
-    paths:
-      - 'src/typescript/mitxonline-api-axios/**'
+    branches: [main]
 
 jobs:
   test-axios-package:
@@ -22,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Enable Corepack
         run: corepack enable
