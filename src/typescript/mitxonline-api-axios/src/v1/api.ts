@@ -1692,13 +1692,13 @@ export interface LegalAddress {
      * @type {string}
      * @memberof LegalAddress
      */
-    'first_name': string;
+    'first_name'?: string;
     /**
      * 
      * @type {string}
      * @memberof LegalAddress
      */
-    'last_name': string;
+    'last_name'?: string;
     /**
      * 
      * @type {string}
@@ -1723,13 +1723,13 @@ export interface LegalAddressRequest {
      * @type {string}
      * @memberof LegalAddressRequest
      */
-    'first_name': string;
+    'first_name'?: string;
     /**
      * 
      * @type {string}
      * @memberof LegalAddressRequest
      */
-    'last_name': string;
+    'last_name'?: string;
     /**
      * 
      * @type {string}
@@ -2892,6 +2892,12 @@ export interface SignatoryItem {
      * @memberof SignatoryItem
      */
     'title_2': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignatoryItem
+     */
+    'title_3': string;
     /**
      * 
      * @type {string}
