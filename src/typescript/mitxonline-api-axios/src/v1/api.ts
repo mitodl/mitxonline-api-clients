@@ -8100,8 +8100,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsCertificatePageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/?fields=*&type=cms.CertificatePage`;
+        pagesfieldstypecmsCertificatepageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/?fields=*&type=cms.certificatepage`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -8131,8 +8131,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsCoursePageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/?fields=*&type=cms.CoursePage`;
+        pagesfieldstypecmsCoursepageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/?fields=*&type=cms.coursepage`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -8166,8 +8166,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsProgramPageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/?fields=*&type=cms.ProgramPage`;
+        pagesfieldstypecmsProgrampageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/pages/?fields=*&type=cms.programpage`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -8238,10 +8238,10 @@ export const PagesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pagesfieldstypecmsCertificatePageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CertificatePageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCertificatePageRetrieve(options);
+        async pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CertificatePageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCertificatepageRetrieve(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCertificatePageRetrieve']?.[index]?.url;
+            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCertificatepageRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -8251,10 +8251,10 @@ export const PagesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pagesfieldstypecmsCoursePageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursePageRetrieve(readable_id, options);
+        async pagesfieldstypecmsCoursepageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursepageRetrieve(readable_id, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursePageRetrieve']?.[index]?.url;
+            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursepageRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -8264,10 +8264,10 @@ export const PagesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pagesfieldstypecmsProgramPageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgramPageRetrieve(readable_id, options);
+        async pagesfieldstypecmsProgrampageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgrampageRetrieve(readable_id, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgramPageRetrieve']?.[index]?.url;
+            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgrampageRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -8306,28 +8306,28 @@ export const PagesApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsCertificatePageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CertificatePageList> {
-            return localVarFp.pagesfieldstypecmsCertificatePageRetrieve(options).then((request) => request(axios, basePath));
+        pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CertificatePageList> {
+            return localVarFp.pagesfieldstypecmsCertificatepageRetrieve(options).then((request) => request(axios, basePath));
         },
         /**
          * Returns pages of type cms.CoursePage
          * @summary List all Course Pages
-         * @param {PagesApiPagesfieldstypecmsCoursePageRetrieveRequest} requestParameters Request parameters.
+         * @param {PagesApiPagesfieldstypecmsCoursepageRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsCoursePageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursePageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<CoursePageList> {
-            return localVarFp.pagesfieldstypecmsCoursePageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
+        pagesfieldstypecmsCoursepageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursepageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<CoursePageList> {
+            return localVarFp.pagesfieldstypecmsCoursepageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns pages of type cms.ProgramPage
          * @summary List all Program Pages
-         * @param {PagesApiPagesfieldstypecmsProgramPageRetrieveRequest} requestParameters Request parameters.
+         * @param {PagesApiPagesfieldstypecmsProgrampageRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pagesfieldstypecmsProgramPageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgramPageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ProgramPageList> {
-            return localVarFp.pagesfieldstypecmsProgramPageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
+        pagesfieldstypecmsProgrampageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgrampageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ProgramPageList> {
+            return localVarFp.pagesfieldstypecmsProgrampageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8375,29 +8375,29 @@ export interface PagesApiPagesRetrieveRequest {
 }
 
 /**
- * Request parameters for pagesfieldstypecmsCoursePageRetrieve operation in PagesApi.
+ * Request parameters for pagesfieldstypecmsCoursepageRetrieve operation in PagesApi.
  * @export
- * @interface PagesApiPagesfieldstypecmsCoursePageRetrieveRequest
+ * @interface PagesApiPagesfieldstypecmsCoursepageRetrieveRequest
  */
-export interface PagesApiPagesfieldstypecmsCoursePageRetrieveRequest {
+export interface PagesApiPagesfieldstypecmsCoursepageRetrieveRequest {
     /**
      * filter by course readable_id
      * @type {string}
-     * @memberof PagesApiPagesfieldstypecmsCoursePageRetrieve
+     * @memberof PagesApiPagesfieldstypecmsCoursepageRetrieve
      */
     readonly readable_id?: string
 }
 
 /**
- * Request parameters for pagesfieldstypecmsProgramPageRetrieve operation in PagesApi.
+ * Request parameters for pagesfieldstypecmsProgrampageRetrieve operation in PagesApi.
  * @export
- * @interface PagesApiPagesfieldstypecmsProgramPageRetrieveRequest
+ * @interface PagesApiPagesfieldstypecmsProgrampageRetrieveRequest
  */
-export interface PagesApiPagesfieldstypecmsProgramPageRetrieveRequest {
+export interface PagesApiPagesfieldstypecmsProgrampageRetrieveRequest {
     /**
      * filter by program readable_id
      * @type {string}
-     * @memberof PagesApiPagesfieldstypecmsProgramPageRetrieve
+     * @memberof PagesApiPagesfieldstypecmsProgrampageRetrieve
      */
     readonly readable_id?: string
 }
@@ -8440,32 +8440,32 @@ export class PagesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PagesApi
      */
-    public pagesfieldstypecmsCertificatePageRetrieve(options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsCertificatePageRetrieve(options).then((request) => request(this.axios, this.basePath));
+    public pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsCertificatepageRetrieve(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Returns pages of type cms.CoursePage
      * @summary List all Course Pages
-     * @param {PagesApiPagesfieldstypecmsCoursePageRetrieveRequest} requestParameters Request parameters.
+     * @param {PagesApiPagesfieldstypecmsCoursepageRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PagesApi
      */
-    public pagesfieldstypecmsCoursePageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursePageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsCoursePageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+    public pagesfieldstypecmsCoursepageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursepageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsCoursepageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Returns pages of type cms.ProgramPage
      * @summary List all Program Pages
-     * @param {PagesApiPagesfieldstypecmsProgramPageRetrieveRequest} requestParameters Request parameters.
+     * @param {PagesApiPagesfieldstypecmsProgrampageRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PagesApi
      */
-    public pagesfieldstypecmsProgramPageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgramPageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsProgramPageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+    public pagesfieldstypecmsProgrampageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgrampageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
+        return PagesApiFp(this.configuration).pagesfieldstypecmsProgrampageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
