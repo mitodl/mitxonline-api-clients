@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 #
 # This script generates the API implementations based off the current production API schemas.
-# Usage: ./generate.sh [branch_name]
-# If no branch name is provided, defaults to 'release'
+# Usage: ./local-generate.sh
+# Optionally, provide the branch name and generator version via environment variables:
+#   BRANCH_NAME (default: 'release')
+#   GENERATOR_VERSION (default: 'v7.2.0')
 #
 set -eo pipefail
 shopt -u nullglob
 
-# Get branch name from first argument, default to 'release'
 BRANCH_NAME="${BRANCH_NAME:-release}"
 
 if [ -z "$(which docker)" ]; then
