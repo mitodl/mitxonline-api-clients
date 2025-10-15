@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 #
 # This script generates the API implementations based off the current production API schemas.
+# Usage: ./local-generate.sh
+# Optionally, provide the branch name and generator version via environment variables:
+#   BRANCH_NAME (default: 'release')
+#   GENERATOR_VERSION (default: 'v7.2.0')
 #
 set -eo pipefail
 shopt -u nullglob
+
+BRANCH_NAME="${BRANCH_NAME:-release}"
 
 if [ -z "$(which docker)" ]; then
 	echo "Error: Docker must be available in order to run this script"
@@ -13,13 +19,13 @@ fi
 OPEN_CLONE_DIR=$(mktemp -d)
 OPEN_REPO="https://github.com/mitodl/mitxonline.git"
 
-GENERATOR_VERSION="$(cat OPENAPI-GENERATOR-VERSION)"
+GENERATOR_VERSION="${GENERATOR_VERSION:-v7.2.0}"
 GENERATOR_IMAGE=openapitools/openapi-generator-cli:${GENERATOR_VERSION}
 
 pushd $OPEN_CLONE_DIR
 
 git clone --filter=blob:none $OPEN_REPO $OPEN_CLONE_DIR
-git checkout main
+git checkout $BRANCH_NAME
 
 popd
 
@@ -37,3 +43,8 @@ docker run --rm \
 	sh -c "chown \"\$(stat -c '%u:%g' /local)\" -R /local/src/"
 
 rm -rf $OPEN_CLONE_DIR
+
+echo "✅ Done! 
+ - API client generated from branch: $BRANCH_NAME
+ - used OpenAPI Generator version: $GENERATOR_VERSION
+"
