@@ -1260,16 +1260,16 @@ export interface DepartmentWithCoursesAndPrograms {
     'slug': string;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<number>}
      * @memberof DepartmentWithCoursesAndPrograms
      */
-    'course_ids': Array<any>;
+    'course_ids': Array<number>;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<number>}
      * @memberof DepartmentWithCoursesAndPrograms
      */
-    'program_ids': Array<any>;
+    'program_ids': Array<number>;
 }
 /**
  * 
