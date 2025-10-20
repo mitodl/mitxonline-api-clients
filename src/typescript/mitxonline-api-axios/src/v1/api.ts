@@ -302,7 +302,13 @@ export interface ContractPage {
      */
     'integration_type': IntegrationTypeEnum;
     /**
-     * The organization this contract is with.
+     * 
+     * @type {string}
+     * @memberof ContractPage
+     */
+    'membership_type': string;
+    /**
+     * The organization that owns this contract.
      * @type {number}
      * @memberof ContractPage
      */
@@ -1582,7 +1588,7 @@ export type HighestEducationEnum = typeof HighestEducationEnum[keyof typeof High
 
 
 /**
- * * `sso` - SSO * `non-sso` - Non-SSO
+ * * `sso` - SSO * `non-sso` - Non-SSO * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
  * @export
  * @enum {string}
  */
@@ -1595,7 +1601,19 @@ export const IntegrationTypeEnum = {
     /**
     * Non-SSO
     */
-    NonSso: 'non-sso'
+    NonSso: 'non-sso',
+    /**
+    * Managed
+    */
+    Managed: 'managed',
+    /**
+    * Enrollment Code
+    */
+    Code: 'code',
+    /**
+    * Auto Enrollment
+    */
+    Auto: 'auto'
 } as const;
 
 export type IntegrationTypeEnum = typeof IntegrationTypeEnum[keyof typeof IntegrationTypeEnum];
@@ -3077,53 +3095,10 @@ export interface User {
     'is_active'?: boolean;
     /**
      * 
-     * @type {Array<UserOrganization>}
+     * @type {Array<OrganizationPage>}
      * @memberof User
      */
-    'b2b_organizations': Array<UserOrganization>;
-}
-/**
- * Serializer for user organization data.  Slightly different from the OrganizationPageSerializer; we only need the user\'s orgs and contracts.
- * @export
- * @interface UserOrganization
- */
-export interface UserOrganization {
-    /**
-     * 
-     * @type {number}
-     * @memberof UserOrganization
-     */
-    'id': number;
-    /**
-     * The name of the organization
-     * @type {string}
-     * @memberof UserOrganization
-     */
-    'name': string;
-    /**
-     * Any useful extra information about the organization
-     * @type {string}
-     * @memberof UserOrganization
-     */
-    'description': string;
-    /**
-     * The organization\'s logo. Will be displayed in the app in various places.
-     * @type {string}
-     * @memberof UserOrganization
-     */
-    'logo': string;
-    /**
-     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
-     * @type {string}
-     * @memberof UserOrganization
-     */
-    'slug': string;
-    /**
-     * 
-     * @type {Array<ContractPage>}
-     * @memberof UserOrganization
-     */
-    'contracts': Array<ContractPage>;
+    'b2b_organizations': Array<OrganizationPage>;
 }
 /**
  * Serializer for profile
@@ -4667,16 +4642,22 @@ export interface V2ProgramRequirementData {
     'node_type': V2ProgramRequirementDataNodeTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof V2ProgramRequirementData
      */
-    'course'?: string | null;
+    'course'?: number | null;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof V2ProgramRequirementData
      */
-    'program'?: string;
+    'program'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2ProgramRequirementData
+     */
+    'required_program'?: number | null;
     /**
      * 
      * @type {string}
@@ -4705,20 +4686,24 @@ export interface V2ProgramRequirementData {
 
 
 /**
- * * `operator` - operator * `course` - course
+ * * `course` - course * `program` - program * `operator` - operator
  * @export
  * @enum {string}
  */
 
 export const V2ProgramRequirementDataNodeTypeEnum = {
     /**
-    * operator
-    */
-    Operator: 'operator',
-    /**
     * course
     */
-    Course: 'course'
+    Course: 'course',
+    /**
+    * program
+    */
+    Program: 'program',
+    /**
+    * operator
+    */
+    Operator: 'operator'
 } as const;
 
 export type V2ProgramRequirementDataNodeTypeEnum = typeof V2ProgramRequirementDataNodeTypeEnum[keyof typeof V2ProgramRequirementDataNodeTypeEnum];
