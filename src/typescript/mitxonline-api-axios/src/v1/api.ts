@@ -4586,10 +4586,10 @@ export interface V2ProgramCollection {
     'description': string;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<V2ProgramCollectionProgramsInner>}
      * @memberof V2ProgramCollection
      */
-    'programs': Array<number>;
+    'programs': Array<V2ProgramCollectionProgramsInner>;
     /**
      * 
      * @type {string}
@@ -4602,6 +4602,31 @@ export interface V2ProgramCollection {
      * @memberof V2ProgramCollection
      */
     'updated_on': string;
+}
+/**
+ * 
+ * @export
+ * @interface V2ProgramCollectionProgramsInner
+ */
+export interface V2ProgramCollectionProgramsInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof V2ProgramCollectionProgramsInner
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramCollectionProgramsInner
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2ProgramCollectionProgramsInner
+     */
+    'order'?: number;
 }
 /**
  * Serializer for a ProgramRequirement
