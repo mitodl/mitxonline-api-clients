@@ -1710,18 +1710,6 @@ export interface LegalAddress {
      * @type {string}
      * @memberof LegalAddress
      */
-    'first_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
-    'last_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'country': string;
     /**
      * 
@@ -1736,18 +1724,6 @@ export interface LegalAddress {
  * @interface LegalAddressRequest
  */
 export interface LegalAddressRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
-    'first_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
-    'last_name'?: string;
     /**
      * 
      * @type {string}
