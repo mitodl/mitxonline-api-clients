@@ -9103,7 +9103,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * List Programs - v2
-         * @param {number} [id] 
+         * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [live] 
          * @param {number} [org_id] 
          * @param {number} [page] A page number within the paginated result set.
@@ -9113,7 +9113,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programsListV2: async (id?: number, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        programsListV2: async (id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/programs/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9126,8 +9126,8 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
+            if (id) {
+                localVarQueryParameter['id'] = id.join(COLLECTION_FORMATS.csv);
             }
 
             if (live !== undefined) {
@@ -9259,7 +9259,7 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
         },
         /**
          * List Programs - v2
-         * @param {number} [id] 
+         * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [live] 
          * @param {number} [org_id] 
          * @param {number} [page] A page number within the paginated result set.
@@ -9269,7 +9269,7 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programsListV2(id?: number, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
+        async programsListV2(id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(id, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramsApi.programsListV2']?.[index]?.url;
@@ -9397,11 +9397,11 @@ export interface ProgramsApiProgramsListV1Request {
  */
 export interface ProgramsApiProgramsListV2Request {
     /**
-     * 
-     * @type {number}
+     * Multiple values may be separated by commas.
+     * @type {Array<number>}
      * @memberof ProgramsApiProgramsListV2
      */
-    readonly id?: number
+    readonly id?: Array<number>
 
     /**
      * 
