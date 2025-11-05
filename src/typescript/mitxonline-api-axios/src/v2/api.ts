@@ -296,6 +296,18 @@ export interface ContractPage {
      */
     'description': string;
     /**
+     * A welcome message for learners.
+     * @type {string}
+     * @memberof ContractPage
+     */
+    'welcome_message': string;
+    /**
+     * Additional welcome message content for learners.
+     * @type {string}
+     * @memberof ContractPage
+     */
+    'welcome_message_extra': string;
+    /**
      * 
      * @type {IntegrationTypeEnum}
      * @memberof ContractPage
