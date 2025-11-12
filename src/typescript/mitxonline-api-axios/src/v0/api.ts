@@ -349,6 +349,12 @@ export interface ContractPage {
      * @memberof ContractPage
      */
     'slug': string;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ContractPage
+     */
+    'programs': Array<number>;
 }
 
 
@@ -5209,7 +5215,7 @@ export class ApiApi extends BaseAPI {
 export const B2bApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
          * @param {string} enrollment_code 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5409,7 +5415,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = B2bApiAxiosParamCreator(configuration)
     return {
         /**
-         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
          * @param {string} enrollment_code 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5489,7 +5495,7 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
     const localVarFp = B2bApiFp(configuration)
     return {
         /**
-         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
          * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5607,7 +5613,7 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
  */
 export class B2bApi extends BaseAPI {
     /**
-     * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
+     * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - list of ContractPageSerializer - the contracts for the user
      * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
