@@ -3324,10 +3324,10 @@ export interface UserProgramEnrollmentDetail {
     'enrollments': Array<CourseRunEnrollment>;
     /**
      * 
-     * @type {ProgramCertificate}
+     * @type {V1ProgramCertificate}
      * @memberof UserProgramEnrollmentDetail
      */
-    'certificate': ProgramCertificate | null;
+    'certificate': V1ProgramCertificate | null;
 }
 /**
  * CourseRun model serializer
@@ -3789,6 +3789,25 @@ export interface V1Program {
      * @memberof V1Program
      */
     'live'?: boolean;
+}
+/**
+ * ProgramCertificate model serializer
+ * @export
+ * @interface V1ProgramCertificate
+ */
+export interface V1ProgramCertificate {
+    /**
+     * 
+     * @type {string}
+     * @memberof V1ProgramCertificate
+     */
+    'uuid': string;
+    /**
+     * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
+     * @type {string}
+     * @memberof V1ProgramCertificate
+     */
+    'link': string;
 }
 /**
  * Serializer for a ProgramRequirement
@@ -4754,17 +4773,36 @@ export interface V2ProgramRequirements {
  */
 export interface V2ProgramRequirementsCourses {
     /**
-     * List of required course IDs
-     * @type {Array<number>}
+     * List of required courses with id and readable_id
+     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
      * @memberof V2ProgramRequirementsCourses
      */
-    'required'?: Array<number>;
+    'required'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
     /**
-     * List of elective course IDs
-     * @type {Array<number>}
+     * List of elective courses with id and readable_id
+     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
      * @memberof V2ProgramRequirementsCourses
      */
-    'electives'?: Array<number>;
+    'electives'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
+}
+/**
+ * 
+ * @export
+ * @interface V2ProgramRequirementsCoursesRequiredInner
+ */
+export interface V2ProgramRequirementsCoursesRequiredInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof V2ProgramRequirementsCoursesRequiredInner
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramRequirementsCoursesRequiredInner
+     */
+    'readable_id'?: string;
 }
 /**
  * 
@@ -4773,17 +4811,17 @@ export interface V2ProgramRequirementsCourses {
  */
 export interface V2ProgramRequirementsPrograms {
     /**
-     * List of required program IDs
-     * @type {Array<number>}
+     * List of required programs with id and readable_id
+     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
      * @memberof V2ProgramRequirementsPrograms
      */
-    'required'?: Array<number>;
+    'required'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
     /**
-     * List of elective program IDs
-     * @type {Array<number>}
+     * List of elective programs with id and readable_id
+     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
      * @memberof V2ProgramRequirementsPrograms
      */
-    'electives'?: Array<number>;
+    'electives'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
 }
 /**
  * 
@@ -4797,6 +4835,31 @@ export interface V2ProgramTopicsInner {
      * @memberof V2ProgramTopicsInner
      */
     'name'?: string;
+}
+/**
+ * Serializer for user program enrollments with associated course enrollments.  This aggregates a program, its course enrollments for the user, and any program certificate that has been earned.
+ * @export
+ * @interface V2UserProgramEnrollmentDetail
+ */
+export interface V2UserProgramEnrollmentDetail {
+    /**
+     * 
+     * @type {V2Program}
+     * @memberof V2UserProgramEnrollmentDetail
+     */
+    'program': V2Program;
+    /**
+     * 
+     * @type {Array<CourseRunEnrollmentRequestV2>}
+     * @memberof V2UserProgramEnrollmentDetail
+     */
+    'enrollments': Array<CourseRunEnrollmentRequestV2>;
+    /**
+     * 
+     * @type {ProgramCertificate}
+     * @memberof V2UserProgramEnrollmentDetail
+     */
+    'certificate': ProgramCertificate | null;
 }
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
@@ -8905,6 +8968,101 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
+         * @param {number} id Program enrollment ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v2ProgramEnrollmentsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('v2ProgramEnrollmentsDestroy', 'id', id)
+            const localVarPath = `/api/v2/program_enrollments/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns a unified set of program and course enrollments for the current user using v2 serializers.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v2ProgramEnrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/program_enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve a specific program enrollment using v2 serializers.
+         * @param {number} id Program enrollment ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v2ProgramEnrollmentsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('v2ProgramEnrollmentsRetrieve', 'id', id)
+            const localVarPath = `/api/v2/program_enrollments/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -8950,6 +9108,41 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
+         * @param {number} id Program enrollment ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v2ProgramEnrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V2UserProgramEnrollmentDetail>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsDestroy(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns a unified set of program and course enrollments for the current user using v2 serializers.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V2UserProgramEnrollmentDetail>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Retrieve a specific program enrollment using v2 serializers.
+         * @param {number} id Program enrollment ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v2ProgramEnrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2UserProgramEnrollmentDetail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -8986,6 +9179,32 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
         programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserProgramEnrollmentDetail> {
             return localVarFp.programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
+         * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v2ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<V2UserProgramEnrollmentDetail>> {
+            return localVarFp.v2ProgramEnrollmentsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns a unified set of program and course enrollments for the current user using v2 serializers.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<V2UserProgramEnrollmentDetail>> {
+            return localVarFp.v2ProgramEnrollmentsList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a specific program enrollment using v2 serializers.
+         * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2UserProgramEnrollmentDetail> {
+            return localVarFp.v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -9013,6 +9232,34 @@ export interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest {
      * Program enrollment ID
      * @type {number}
      * @memberof ProgramEnrollmentsApiProgramEnrollmentsRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for v2ProgramEnrollmentsDestroy operation in ProgramEnrollmentsApi.
+ * @export
+ * @interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest
+ */
+export interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest {
+    /**
+     * Program enrollment ID
+     * @type {number}
+     * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsDestroy
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for v2ProgramEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
+ * @export
+ * @interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest
+ */
+export interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest {
+    /**
+     * Program enrollment ID
+     * @type {number}
+     * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieve
      */
     readonly id: number
 }
@@ -9054,6 +9301,38 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      */
     public programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
+     * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v2ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns a unified set of program and course enrollments for the current user using v2 serializers.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a specific program enrollment using v2 serializers.
+     * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
