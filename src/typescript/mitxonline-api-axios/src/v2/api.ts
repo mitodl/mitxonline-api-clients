@@ -896,7 +896,7 @@ export interface CourseRunGrade {
      */
     'set_by_admin'?: boolean;
     /**
-     * Returns the grade field value as a number out of 100 (or None if the value is None)
+     * Returns the grade field value as a number out of 100 (or Decimal(0) if the value is None)
      * @type {number}
      * @memberof CourseRunGrade
      */
