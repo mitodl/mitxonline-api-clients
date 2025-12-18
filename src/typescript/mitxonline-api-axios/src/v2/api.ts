@@ -44,6 +44,199 @@ export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof Availability
 
 
 /**
+ * Basket model serializer
+ * @export
+ * @interface Basket
+ */
+export interface Basket {
+    /**
+     * 
+     * @type {number}
+     * @memberof Basket
+     */
+    'id': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Basket
+     */
+    'user': number;
+    /**
+     * 
+     * @type {Array<BasketItem>}
+     * @memberof Basket
+     */
+    'basket_items': Array<BasketItem>;
+}
+/**
+ * BasketDiscount model serializer
+ * @export
+ * @interface BasketDiscountDetail
+ */
+export interface BasketDiscountDetail {
+    /**
+     * 
+     * @type {Discount}
+     * @memberof BasketDiscountDetail
+     */
+    'redeemed_discount': Discount;
+    /**
+     * 
+     * @type {Basket}
+     * @memberof BasketDiscountDetail
+     */
+    'redeemed_basket': Basket;
+}
+/**
+ * BasketItem model serializer
+ * @export
+ * @interface BasketItem
+ */
+export interface BasketItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketItem
+     */
+    'basket': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketItem
+     */
+    'product': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketItem
+     */
+    'id': number;
+}
+/**
+ * BasketItem model serializer
+ * @export
+ * @interface BasketItemRequest
+ */
+export interface BasketItemRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketItemRequest
+     */
+    'basket': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketItemRequest
+     */
+    'product': number;
+}
+/**
+ * Serializer for Basket model with product details
+ * @export
+ * @interface BasketWithProduct
+ */
+export interface BasketWithProduct {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketWithProduct
+     */
+    'id': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketWithProduct
+     */
+    'user': number;
+    /**
+     * 
+     * @type {Array<BasketWithProductBasketItemsInner>}
+     * @memberof BasketWithProduct
+     */
+    'basket_items': Array<BasketWithProductBasketItemsInner>;
+    /**
+     * Get total price of all items in basket before discounts
+     * @type {number}
+     * @memberof BasketWithProduct
+     */
+    'total_price': number;
+    /**
+     * Get total price after any discounts are applied
+     * @type {number}
+     * @memberof BasketWithProduct
+     */
+    'discounted_price': number;
+    /**
+     * 
+     * @type {Array<BasketDiscountDetail>}
+     * @memberof BasketWithProduct
+     */
+    'discounts': Array<BasketDiscountDetail>;
+}
+/**
+ * 
+ * @export
+ * @interface BasketWithProductBasketItemsInner
+ */
+export interface BasketWithProductBasketItemsInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketWithProductBasketItemsInner
+     */
+    'basket'?: number;
+    /**
+     * 
+     * @type {BasketWithProductBasketItemsInnerProduct}
+     * @memberof BasketWithProductBasketItemsInner
+     */
+    'product'?: BasketWithProductBasketItemsInnerProduct;
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketWithProductBasketItemsInner
+     */
+    'id'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface BasketWithProductBasketItemsInnerProduct
+ */
+export interface BasketWithProductBasketItemsInnerProduct {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketWithProductBasketItemsInnerProduct
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketWithProductBasketItemsInnerProduct
+     */
+    'price'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketWithProductBasketItemsInnerProduct
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BasketWithProductBasketItemsInnerProduct
+     */
+    'is_active'?: boolean;
+    /**
+     * 
+     * @type {object}
+     * @memberof BasketWithProductBasketItemsInnerProduct
+     */
+    'purchasable_object'?: object;
+}
+/**
  * 
  * @export
  * @enum {string}
@@ -1208,6 +1401,56 @@ export interface CreateB2BEnrollment {
 
 
 /**
+ * Defines the schema for a product ID and quantity in the CreateBasketWithProductsSerializer.
+ * @export
+ * @interface CreateBasketWithProductIDRequest
+ */
+export interface CreateBasketWithProductIDRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateBasketWithProductIDRequest
+     */
+    'product_id': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateBasketWithProductIDRequest
+     */
+    'quantity': number;
+}
+/**
+ * Serializer for creating a basket with products. (For OpenAPI spec.)
+ * @export
+ * @interface CreateBasketWithProductsRequest
+ */
+export interface CreateBasketWithProductsRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateBasketWithProductsRequest
+     */
+    'system_slug': string;
+    /**
+     * 
+     * @type {Array<CreateBasketWithProductIDRequest>}
+     * @memberof CreateBasketWithProductsRequest
+     */
+    'product_ids': Array<CreateBasketWithProductIDRequest>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreateBasketWithProductsRequest
+     */
+    'checkout': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateBasketWithProductsRequest
+     */
+    'discount_code': string;
+}
+/**
  * Department model serializer
  * @export
  * @interface Department
@@ -2317,6 +2560,25 @@ export interface PartnerSchoolRequest {
      * @memberof PartnerSchoolRequest
      */
     'email': string;
+}
+/**
+ * BasketItem model serializer
+ * @export
+ * @interface PatchedBasketItemRequest
+ */
+export interface PatchedBasketItemRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof PatchedBasketItemRequest
+     */
+    'basket'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PatchedBasketItemRequest
+     */
+    'product'?: number;
 }
 /**
  * Serializer for confirming a user email change
@@ -5737,6 +5999,1105 @@ export class B2bApi extends BaseAPI {
      */
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * BasketitemsApi - axios parameter creator
+ * @export
+ */
+export const BasketitemsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {BasketItemRequest} BasketItemRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsCreate: async (BasketItemRequest: BasketItemRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'BasketItemRequest' is not null or undefined
+            assertParamExists('basketitemsCreate', 'BasketItemRequest', BasketItemRequest)
+            const localVarPath = `/api/v0/basketitems/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(BasketItemRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketitemsDestroy', 'id', id)
+            const localVarPath = `/api/v0/basketitems/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/basketitems/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {PatchedBasketItemRequest} [PatchedBasketItemRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsPartialUpdate: async (id: number, PatchedBasketItemRequest?: PatchedBasketItemRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketitemsPartialUpdate', 'id', id)
+            const localVarPath = `/api/v0/basketitems/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedBasketItemRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketitemsRetrieve', 'id', id)
+            const localVarPath = `/api/v0/basketitems/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {BasketItemRequest} BasketItemRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsUpdate: async (id: number, BasketItemRequest: BasketItemRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketitemsUpdate', 'id', id)
+            // verify required parameter 'BasketItemRequest' is not null or undefined
+            assertParamExists('basketitemsUpdate', 'BasketItemRequest', BasketItemRequest)
+            const localVarPath = `/api/v0/basketitems/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(BasketItemRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * BasketitemsApi - functional programming interface
+ * @export
+ */
+export const BasketitemsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = BasketitemsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {BasketItemRequest} BasketItemRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketitemsCreate(BasketItemRequest: BasketItemRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsCreate(BasketItemRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketitemsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsDestroy(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketitemsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BasketItem>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {PatchedBasketItemRequest} [PatchedBasketItemRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketitemsPartialUpdate(id: number, PatchedBasketItemRequest?: PatchedBasketItemRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsPartialUpdate(id, PatchedBasketItemRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketitemsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {number} id A unique integer value identifying this basket item.
+         * @param {BasketItemRequest} BasketItemRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketitemsUpdate(id: number, BasketItemRequest: BasketItemRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsUpdate(id, BasketItemRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * BasketitemsApi - factory interface
+ * @export
+ */
+export const BasketitemsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = BasketitemsApiFp(configuration)
+    return {
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {BasketitemsApiBasketitemsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsCreate(requestParameters: BasketitemsApiBasketitemsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketitemsCreate(requestParameters.BasketItemRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {BasketitemsApiBasketitemsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsDestroy(requestParameters: BasketitemsApiBasketitemsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.basketitemsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<BasketItem>> {
+            return localVarFp.basketitemsList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {BasketitemsApiBasketitemsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsPartialUpdate(requestParameters: BasketitemsApiBasketitemsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketitemsPartialUpdate(requestParameters.id, requestParameters.PatchedBasketItemRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketitemsApiBasketitemsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsRetrieve(requestParameters: BasketitemsApiBasketitemsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketitemsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * ViewSet for handling BasketItem operations.
+         * @param {BasketitemsApiBasketitemsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketitemsUpdate(requestParameters: BasketitemsApiBasketitemsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketitemsUpdate(requestParameters.id, requestParameters.BasketItemRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for basketitemsCreate operation in BasketitemsApi.
+ * @export
+ * @interface BasketitemsApiBasketitemsCreateRequest
+ */
+export interface BasketitemsApiBasketitemsCreateRequest {
+    /**
+     * 
+     * @type {BasketItemRequest}
+     * @memberof BasketitemsApiBasketitemsCreate
+     */
+    readonly BasketItemRequest: BasketItemRequest
+}
+
+/**
+ * Request parameters for basketitemsDestroy operation in BasketitemsApi.
+ * @export
+ * @interface BasketitemsApiBasketitemsDestroyRequest
+ */
+export interface BasketitemsApiBasketitemsDestroyRequest {
+    /**
+     * A unique integer value identifying this basket item.
+     * @type {number}
+     * @memberof BasketitemsApiBasketitemsDestroy
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for basketitemsPartialUpdate operation in BasketitemsApi.
+ * @export
+ * @interface BasketitemsApiBasketitemsPartialUpdateRequest
+ */
+export interface BasketitemsApiBasketitemsPartialUpdateRequest {
+    /**
+     * A unique integer value identifying this basket item.
+     * @type {number}
+     * @memberof BasketitemsApiBasketitemsPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {PatchedBasketItemRequest}
+     * @memberof BasketitemsApiBasketitemsPartialUpdate
+     */
+    readonly PatchedBasketItemRequest?: PatchedBasketItemRequest
+}
+
+/**
+ * Request parameters for basketitemsRetrieve operation in BasketitemsApi.
+ * @export
+ * @interface BasketitemsApiBasketitemsRetrieveRequest
+ */
+export interface BasketitemsApiBasketitemsRetrieveRequest {
+    /**
+     * A unique integer value identifying this basket item.
+     * @type {number}
+     * @memberof BasketitemsApiBasketitemsRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for basketitemsUpdate operation in BasketitemsApi.
+ * @export
+ * @interface BasketitemsApiBasketitemsUpdateRequest
+ */
+export interface BasketitemsApiBasketitemsUpdateRequest {
+    /**
+     * A unique integer value identifying this basket item.
+     * @type {number}
+     * @memberof BasketitemsApiBasketitemsUpdate
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {BasketItemRequest}
+     * @memberof BasketitemsApiBasketitemsUpdate
+     */
+    readonly BasketItemRequest: BasketItemRequest
+}
+
+/**
+ * BasketitemsApi - object-oriented interface
+ * @export
+ * @class BasketitemsApi
+ * @extends {BaseAPI}
+ */
+export class BasketitemsApi extends BaseAPI {
+    /**
+     * ViewSet for handling BasketItem operations.
+     * @param {BasketitemsApiBasketitemsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketitemsApi
+     */
+    public basketitemsCreate(requestParameters: BasketitemsApiBasketitemsCreateRequest, options?: RawAxiosRequestConfig) {
+        return BasketitemsApiFp(this.configuration).basketitemsCreate(requestParameters.BasketItemRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * ViewSet for handling BasketItem operations.
+     * @param {BasketitemsApiBasketitemsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketitemsApi
+     */
+    public basketitemsDestroy(requestParameters: BasketitemsApiBasketitemsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return BasketitemsApiFp(this.configuration).basketitemsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketitemsApi
+     */
+    public basketitemsList(options?: RawAxiosRequestConfig) {
+        return BasketitemsApiFp(this.configuration).basketitemsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * ViewSet for handling BasketItem operations.
+     * @param {BasketitemsApiBasketitemsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketitemsApi
+     */
+    public basketitemsPartialUpdate(requestParameters: BasketitemsApiBasketitemsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return BasketitemsApiFp(this.configuration).basketitemsPartialUpdate(requestParameters.id, requestParameters.PatchedBasketItemRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketitemsApiBasketitemsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketitemsApi
+     */
+    public basketitemsRetrieve(requestParameters: BasketitemsApiBasketitemsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return BasketitemsApiFp(this.configuration).basketitemsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * ViewSet for handling BasketItem operations.
+     * @param {BasketitemsApiBasketitemsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketitemsApi
+     */
+    public basketitemsUpdate(requestParameters: BasketitemsApiBasketitemsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return BasketitemsApiFp(this.configuration).basketitemsUpdate(requestParameters.id, requestParameters.BasketItemRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * BasketsApi - axios parameter creator
+ * @export
+ */
+export const BasketsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Creates or updates a basket for the current user, adding the discount if valid.
+         * @param {string} discount_code 
+         * @param {string} system_slug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsAddDiscountCreate: async (discount_code: string, system_slug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'discount_code' is not null or undefined
+            assertParamExists('basketsAddDiscountCreate', 'discount_code', discount_code)
+            // verify required parameter 'system_slug' is not null or undefined
+            assertParamExists('basketsAddDiscountCreate', 'system_slug', system_slug)
+            const localVarPath = `/api/v0/baskets/add_discount/`
+                .replace(`{${"system_slug"}}`, encodeURIComponent(String(system_slug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (discount_code !== undefined) {
+                localVarQueryParameter['discount_code'] = discount_code;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Clears the basket for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsClearDestroy: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/baskets/clear/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product.
+         * @param {number} product_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsCreateFromProductCreate: async (product_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'product_id' is not null or undefined
+            assertParamExists('basketsCreateFromProductCreate', 'product_id', product_id)
+            const localVarPath = `/api/v0/baskets/create_from_product/{product_id}/`
+                .replace(`{${"product_id"}}`, encodeURIComponent(String(product_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product.
+         * @param {CreateBasketWithProductsRequest} CreateBasketWithProductsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsCreateWithProductsCreate: async (CreateBasketWithProductsRequest: CreateBasketWithProductsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'CreateBasketWithProductsRequest' is not null or undefined
+            assertParamExists('basketsCreateWithProductsCreate', 'CreateBasketWithProductsRequest', CreateBasketWithProductsRequest)
+            const localVarPath = `/api/v0/baskets/create_with_products/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CreateBasketWithProductsRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrives the current user\'s baskets.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/baskets/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve a basket for the current user.
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsRetrieve', 'id', id)
+            const localVarPath = `/api/v0/baskets/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product and discount.
+         * @param {string} discount_code 
+         * @param {number} product_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createBasketFromProductWithDiscount: async (discount_code: string, product_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'discount_code' is not null or undefined
+            assertParamExists('createBasketFromProductWithDiscount', 'discount_code', discount_code)
+            // verify required parameter 'product_id' is not null or undefined
+            assertParamExists('createBasketFromProductWithDiscount', 'product_id', product_id)
+            const localVarPath = `/api/v0/baskets/create_from_product/{product_id}/{discount_code}/`
+                .replace(`{${"discount_code"}}`, encodeURIComponent(String(discount_code)))
+                .replace(`{${"product_id"}}`, encodeURIComponent(String(product_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * BasketsApi - functional programming interface
+ * @export
+ */
+export const BasketsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = BasketsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Creates or updates a basket for the current user, adding the discount if valid.
+         * @param {string} discount_code 
+         * @param {string} system_slug 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsAddDiscountCreate(discount_code: string, system_slug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsAddDiscountCreate(discount_code, system_slug, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsAddDiscountCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Clears the basket for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsClearDestroy(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsClearDestroy(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsClearDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product.
+         * @param {number} product_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsCreateFromProductCreate(product_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCreateFromProductCreate(product_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsCreateFromProductCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product.
+         * @param {CreateBasketWithProductsRequest} CreateBasketWithProductsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsCreateWithProductsCreate(CreateBasketWithProductsRequest: CreateBasketWithProductsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCreateWithProductsCreate(CreateBasketWithProductsRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsCreateWithProductsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Retrives the current user\'s baskets.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BasketWithProduct>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Retrieve a basket for the current user.
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product and discount.
+         * @param {string} discount_code 
+         * @param {number} product_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createBasketFromProductWithDiscount(discount_code: string, product_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createBasketFromProductWithDiscount(discount_code, product_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.createBasketFromProductWithDiscount']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * BasketsApi - factory interface
+ * @export
+ */
+export const BasketsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = BasketsApiFp(configuration)
+    return {
+        /**
+         * Creates or updates a basket for the current user, adding the discount if valid.
+         * @param {BasketsApiBasketsAddDiscountCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
+            return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, requestParameters.system_slug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Clears the basket for the current user.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsClearDestroy(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.basketsClearDestroy(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product.
+         * @param {BasketsApiBasketsCreateFromProductCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsCreateFromProductCreate(requestParameters: BasketsApiBasketsCreateFromProductCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
+            return localVarFp.basketsCreateFromProductCreate(requestParameters.product_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product.
+         * @param {BasketsApiBasketsCreateWithProductsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsCreateWithProductsCreate(requestParameters: BasketsApiBasketsCreateWithProductsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
+            return localVarFp.basketsCreateWithProductsCreate(requestParameters.CreateBasketWithProductsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrives the current user\'s baskets.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<BasketWithProduct>> {
+            return localVarFp.basketsList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a basket for the current user.
+         * @param {BasketsApiBasketsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsRetrieve(requestParameters: BasketsApiBasketsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
+            return localVarFp.basketsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Creates or updates a basket for the current user, adding the selected product and discount.
+         * @param {BasketsApiCreateBasketFromProductWithDiscountRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createBasketFromProductWithDiscount(requestParameters: BasketsApiCreateBasketFromProductWithDiscountRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
+            return localVarFp.createBasketFromProductWithDiscount(requestParameters.discount_code, requestParameters.product_id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for basketsAddDiscountCreate operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsAddDiscountCreateRequest
+ */
+export interface BasketsApiBasketsAddDiscountCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketsApiBasketsAddDiscountCreate
+     */
+    readonly discount_code: string
+
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketsApiBasketsAddDiscountCreate
+     */
+    readonly system_slug: string
+}
+
+/**
+ * Request parameters for basketsCreateFromProductCreate operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsCreateFromProductCreateRequest
+ */
+export interface BasketsApiBasketsCreateFromProductCreateRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketsApiBasketsCreateFromProductCreate
+     */
+    readonly product_id: number
+}
+
+/**
+ * Request parameters for basketsCreateWithProductsCreate operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsCreateWithProductsCreateRequest
+ */
+export interface BasketsApiBasketsCreateWithProductsCreateRequest {
+    /**
+     * 
+     * @type {CreateBasketWithProductsRequest}
+     * @memberof BasketsApiBasketsCreateWithProductsCreate
+     */
+    readonly CreateBasketWithProductsRequest: CreateBasketWithProductsRequest
+}
+
+/**
+ * Request parameters for basketsRetrieve operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsRetrieveRequest
+ */
+export interface BasketsApiBasketsRetrieveRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketsApiBasketsRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for createBasketFromProductWithDiscount operation in BasketsApi.
+ * @export
+ * @interface BasketsApiCreateBasketFromProductWithDiscountRequest
+ */
+export interface BasketsApiCreateBasketFromProductWithDiscountRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketsApiCreateBasketFromProductWithDiscount
+     */
+    readonly discount_code: string
+
+    /**
+     * 
+     * @type {number}
+     * @memberof BasketsApiCreateBasketFromProductWithDiscount
+     */
+    readonly product_id: number
+}
+
+/**
+ * BasketsApi - object-oriented interface
+ * @export
+ * @class BasketsApi
+ * @extends {BaseAPI}
+ */
+export class BasketsApi extends BaseAPI {
+    /**
+     * Creates or updates a basket for the current user, adding the discount if valid.
+     * @param {BasketsApiBasketsAddDiscountCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsAddDiscountCreate(requestParameters.discount_code, requestParameters.system_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Clears the basket for the current user.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsClearDestroy(options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsClearDestroy(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Creates or updates a basket for the current user, adding the selected product.
+     * @param {BasketsApiBasketsCreateFromProductCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsCreateFromProductCreate(requestParameters: BasketsApiBasketsCreateFromProductCreateRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsCreateFromProductCreate(requestParameters.product_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Creates or updates a basket for the current user, adding the selected product.
+     * @param {BasketsApiBasketsCreateWithProductsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsCreateWithProductsCreate(requestParameters: BasketsApiBasketsCreateWithProductsCreateRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsCreateWithProductsCreate(requestParameters.CreateBasketWithProductsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrives the current user\'s baskets.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsList(options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a basket for the current user.
+     * @param {BasketsApiBasketsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsRetrieve(requestParameters: BasketsApiBasketsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Creates or updates a basket for the current user, adding the selected product and discount.
+     * @param {BasketsApiCreateBasketFromProductWithDiscountRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public createBasketFromProductWithDiscount(requestParameters: BasketsApiCreateBasketFromProductWithDiscountRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).createBasketFromProductWithDiscount(requestParameters.discount_code, requestParameters.product_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
