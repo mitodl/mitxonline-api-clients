@@ -4386,6 +4386,12 @@ export interface V2CourseRunCertificate {
     'certificate_page': CertificatePageModel;
     /**
      * 
+     * @type {any}
+     * @memberof V2CourseRunCertificate
+     */
+    'verifiable_credential_json': any;
+    /**
+     * 
      * @type {V2CourseRunWithCourse}
      * @memberof V2CourseRunCertificate
      */
@@ -4822,6 +4828,12 @@ export interface V2ProgramCertificate {
      * @memberof V2ProgramCertificate
      */
     'certificate_page': CertificatePageModel;
+    /**
+     * 
+     * @type {any}
+     * @memberof V2ProgramCertificate
+     */
+    'verifiable_credential_json': any;
     /**
      * 
      * @type {V2Program}
@@ -11894,6 +11906,242 @@ export class UsersApi extends BaseAPI {
      */
     public usersRetrieve(requestParameters: UsersApiUsersRetrieveRequest, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * VerifiableCourseCredentialApi - axios parameter creator
+ * @export
+ */
+export const VerifiableCourseCredentialApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Returns the json for the verifiable credential with the given ID
+         * @param {string} credential_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifiableCourseCredentialDownloadList: async (credential_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'credential_id' is not null or undefined
+            assertParamExists('verifiableCourseCredentialDownloadList', 'credential_id', credential_id)
+            const localVarPath = `/api/v2/verifiable_course_credential/{credential_id}/download/`
+                .replace(`{${"credential_id"}}`, encodeURIComponent(String(credential_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * VerifiableCourseCredentialApi - functional programming interface
+ * @export
+ */
+export const VerifiableCourseCredentialApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = VerifiableCourseCredentialApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Returns the json for the verifiable credential with the given ID
+         * @param {string} credential_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifiableCourseCredentialDownloadList(credential_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiableCourseCredentialDownloadList(credential_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['VerifiableCourseCredentialApi.verifiableCourseCredentialDownloadList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * VerifiableCourseCredentialApi - factory interface
+ * @export
+ */
+export const VerifiableCourseCredentialApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = VerifiableCourseCredentialApiFp(configuration)
+    return {
+        /**
+         * Returns the json for the verifiable credential with the given ID
+         * @param {VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifiableCourseCredentialDownloadList(requestParameters: VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.verifiableCourseCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for verifiableCourseCredentialDownloadList operation in VerifiableCourseCredentialApi.
+ * @export
+ * @interface VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest
+ */
+export interface VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadList
+     */
+    readonly credential_id: string
+}
+
+/**
+ * VerifiableCourseCredentialApi - object-oriented interface
+ * @export
+ * @class VerifiableCourseCredentialApi
+ * @extends {BaseAPI}
+ */
+export class VerifiableCourseCredentialApi extends BaseAPI {
+    /**
+     * Returns the json for the verifiable credential with the given ID
+     * @param {VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VerifiableCourseCredentialApi
+     */
+    public verifiableCourseCredentialDownloadList(requestParameters: VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
+        return VerifiableCourseCredentialApiFp(this.configuration).verifiableCourseCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * VerifiableProgramCredentialApi - axios parameter creator
+ * @export
+ */
+export const VerifiableProgramCredentialApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Returns the json for the verifiable credential with the given ID
+         * @param {string} credential_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifiableProgramCredentialDownloadList: async (credential_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'credential_id' is not null or undefined
+            assertParamExists('verifiableProgramCredentialDownloadList', 'credential_id', credential_id)
+            const localVarPath = `/api/v2/verifiable_program_credential/{credential_id}/download/`
+                .replace(`{${"credential_id"}}`, encodeURIComponent(String(credential_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * VerifiableProgramCredentialApi - functional programming interface
+ * @export
+ */
+export const VerifiableProgramCredentialApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = VerifiableProgramCredentialApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Returns the json for the verifiable credential with the given ID
+         * @param {string} credential_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifiableProgramCredentialDownloadList(credential_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiableProgramCredentialDownloadList(credential_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['VerifiableProgramCredentialApi.verifiableProgramCredentialDownloadList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * VerifiableProgramCredentialApi - factory interface
+ * @export
+ */
+export const VerifiableProgramCredentialApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = VerifiableProgramCredentialApiFp(configuration)
+    return {
+        /**
+         * Returns the json for the verifiable credential with the given ID
+         * @param {VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifiableProgramCredentialDownloadList(requestParameters: VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.verifiableProgramCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for verifiableProgramCredentialDownloadList operation in VerifiableProgramCredentialApi.
+ * @export
+ * @interface VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest
+ */
+export interface VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadList
+     */
+    readonly credential_id: string
+}
+
+/**
+ * VerifiableProgramCredentialApi - object-oriented interface
+ * @export
+ * @class VerifiableProgramCredentialApi
+ * @extends {BaseAPI}
+ */
+export class VerifiableProgramCredentialApi extends BaseAPI {
+    /**
+     * Returns the json for the verifiable credential with the given ID
+     * @param {VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VerifiableProgramCredentialApi
+     */
+    public verifiableProgramCredentialDownloadList(requestParameters: VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
+        return VerifiableProgramCredentialApiFp(this.configuration).verifiableProgramCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
