@@ -7950,6 +7950,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * List all courses - API v2
+         * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
@@ -7962,7 +7963,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesList: async (courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV2CoursesList: async (contract_id?: number, courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/courses/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7974,6 +7975,10 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (contract_id !== undefined) {
+                localVarQueryParameter['contract_id'] = contract_id;
+            }
 
             if (courserun_is_enrollable !== undefined) {
                 localVarQueryParameter['courserun_is_enrollable'] = courserun_is_enrollable;
@@ -8097,6 +8102,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
         },
         /**
          * List all courses - API v2
+         * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
@@ -8109,8 +8115,8 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesList(courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(courserun_is_enrollable, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
+        async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -8162,7 +8168,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List> {
-            return localVarFp.apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieve a specific course - API v2
@@ -8252,6 +8258,13 @@ export interface CoursesApiApiV1CoursesRetrieveRequest {
  * @interface CoursesApiApiV2CoursesListRequest
  */
 export interface CoursesApiApiV2CoursesListRequest {
+    /**
+     * Only show courses belonging to this B2B contract
+     * @type {number}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly contract_id?: number
+
     /**
      * Course Run Is Enrollable
      * @type {boolean}
@@ -8367,7 +8380,7 @@ export class CoursesApi extends BaseAPI {
      * @memberof CoursesApi
      */
     public apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -10773,6 +10786,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * List Programs - v2
+         * @param {number} [contract_id] 
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [live] 
          * @param {number} [org_id] 
@@ -10783,7 +10797,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programsListV2: async (id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        programsListV2: async (contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/programs/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10795,6 +10809,10 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (contract_id !== undefined) {
+                localVarQueryParameter['contract_id'] = contract_id;
+            }
 
             if (id) {
                 localVarQueryParameter['id'] = id.join(COLLECTION_FORMATS.csv);
@@ -10929,6 +10947,7 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
         },
         /**
          * List Programs - v2
+         * @param {number} [contract_id] 
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [live] 
          * @param {number} [org_id] 
@@ -10939,8 +10958,8 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programsListV2(id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(id, live, org_id, page, page__live, page_size, readable_id, options);
+        async programsListV2(contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(contract_id, id, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramsApi.programsListV2']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10995,7 +11014,7 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
          * @throws {RequiredError}
          */
         programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramList> {
-            return localVarFp.programsListV2(requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.programsListV2(requestParameters.contract_id, requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * API view set for Programs - v1
@@ -11066,6 +11085,13 @@ export interface ProgramsApiProgramsListV1Request {
  * @interface ProgramsApiProgramsListV2Request
  */
 export interface ProgramsApiProgramsListV2Request {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgramsApiProgramsListV2
+     */
+    readonly contract_id?: number
+
     /**
      * Multiple values may be separated by commas.
      * @type {Array<number>}
@@ -11170,7 +11196,7 @@ export class ProgramsApi extends BaseAPI {
      * @memberof ProgramsApi
      */
     public programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig) {
-        return ProgramsApiFp(this.configuration).programsListV2(requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return ProgramsApiFp(this.configuration).programsListV2(requestParameters.contract_id, requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
