@@ -44,6 +44,37 @@ export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof Availability
 
 
 /**
+ * Basic course model serializer
+ * @export
+ * @interface BaseCourse
+ */
+export interface BaseCourse {
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourse
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseCourse
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseCourse
+     */
+    'readable_id': string;
+    /**
+     * Returns the type of object this is serializing.
+     * @type {string}
+     * @memberof BaseCourse
+     */
+    'type': string;
+}
+/**
  * Basket model serializer
  * @export
  * @interface Basket
@@ -76,10 +107,10 @@ export interface Basket {
 export interface BasketDiscountDetail {
     /**
      * 
-     * @type {Discount}
+     * @type {V0Discount}
      * @memberof BasketDiscountDetail
      */
-    'redeemed_discount': Discount;
+    'redeemed_discount': V0Discount;
     /**
      * 
      * @type {Basket}
@@ -111,25 +142,6 @@ export interface BasketItem {
      * @memberof BasketItem
      */
     'id': number;
-}
-/**
- * BasketItem model serializer
- * @export
- * @interface BasketItemRequest
- */
-export interface BasketItemRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketItemRequest
-     */
-    'basket': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketItemRequest
-     */
-    'product': number;
 }
 /**
  * Serializer for Basket model with product details
@@ -1614,6 +1626,112 @@ export interface Discount {
 
 
 /**
+ * 
+ * @export
+ * @interface DiscountProduct
+ */
+export interface DiscountProduct {
+    /**
+     * 
+     * @type {number}
+     * @memberof DiscountProduct
+     */
+    'id': number;
+    /**
+     * 
+     * @type {V0Discount}
+     * @memberof DiscountProduct
+     */
+    'discount': V0Discount;
+    /**
+     * 
+     * @type {Product}
+     * @memberof DiscountProduct
+     */
+    'product': Product;
+}
+/**
+ * 
+ * @export
+ * @interface DiscountProductRequest
+ */
+export interface DiscountProductRequest {
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof DiscountProductRequest
+     */
+    'discount': V0DiscountRequest;
+    /**
+     * 
+     * @type {ProductRequest}
+     * @memberof DiscountProductRequest
+     */
+    'product': ProductRequest;
+}
+/**
+ * Serializes a discount redemption.
+ * @export
+ * @interface DiscountRedemption
+ */
+export interface DiscountRedemption {
+    /**
+     * 
+     * @type {number}
+     * @memberof DiscountRedemption
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscountRedemption
+     */
+    'redemption_date': string;
+    /**
+     * 
+     * @type {User}
+     * @memberof DiscountRedemption
+     */
+    'redeemed_by': User;
+    /**
+     * 
+     * @type {V0Discount}
+     * @memberof DiscountRedemption
+     */
+    'redeemed_discount': V0Discount;
+    /**
+     * 
+     * @type {Order}
+     * @memberof DiscountRedemption
+     */
+    'redeemed_order': Order;
+}
+/**
+ * Serializes a discount redemption.
+ * @export
+ * @interface DiscountRedemptionRequest
+ */
+export interface DiscountRedemptionRequest {
+    /**
+     * 
+     * @type {UserRequest}
+     * @memberof DiscountRedemptionRequest
+     */
+    'redeemed_by': UserRequest;
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof DiscountRedemptionRequest
+     */
+    'redeemed_discount': V0DiscountRequest;
+    /**
+     * 
+     * @type {OrderRequest}
+     * @memberof DiscountRedemptionRequest
+     */
+    'redeemed_order': OrderRequest;
+}
+/**
  * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price
  * @export
  * @enum {string}
@@ -1657,6 +1775,31 @@ export const EnrollmentModeEnum = {
 export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof EnrollmentModeEnum];
 
 
+/**
+ * Serializer class that includes email address as part of the legal address
+ * @export
+ * @interface ExtendedLegalAddress
+ */
+export interface ExtendedLegalAddress {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'country': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'state'?: string | null;
+    /**
+     * Get email from the linked user object
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'email': string;
+}
 /**
  * Serializer for faculty details used in course pages.
  * @export
@@ -1730,6 +1873,68 @@ export interface FeatureImage {
      * @memberof FeatureImage
      */
     'width': number;
+}
+/**
+ * 
+ * @export
+ * @interface FlexiblePriceTier
+ */
+export interface FlexiblePriceTier {
+    /**
+     * 
+     * @type {number}
+     * @memberof FlexiblePriceTier
+     */
+    'id': number;
+    /**
+     * 
+     * @type {BaseCourse}
+     * @memberof FlexiblePriceTier
+     */
+    'courseware_object': BaseCourse;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlexiblePriceTier
+     */
+    'discount': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FlexiblePriceTier
+     */
+    'current'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlexiblePriceTier
+     */
+    'income_threshold_usd': number;
+}
+/**
+ * 
+ * @export
+ * @interface FlexiblePriceTierRequest
+ */
+export interface FlexiblePriceTierRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof FlexiblePriceTierRequest
+     */
+    'discount': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FlexiblePriceTierRequest
+     */
+    'current'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlexiblePriceTierRequest
+     */
+    'income_threshold_usd': number;
 }
 /**
  * * `m` - Male * `f` - Female * `t` - Transgender * `nb` - Non-binary/non-conforming * `o` - Other/Prefer Not to Say
@@ -2001,6 +2206,117 @@ export interface LegalAddressRequest {
 /**
  * 
  * @export
+ * @interface Nested
+ */
+export interface Nested {
+    /**
+     * 
+     * @type {number}
+     * @memberof Nested
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Nested
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Nested
+     */
+    'updated_on': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Nested
+     */
+    'amount': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Nested
+     */
+    'automatic'?: boolean;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof Nested
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {RedemptionTypeEnum}
+     * @memberof Nested
+     */
+    'redemption_type': RedemptionTypeEnum;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof Nested
+     */
+    'payment_type'?: PaymentTypeEnum | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof Nested
+     */
+    'max_redemptions'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Nested
+     */
+    'discount_code': string;
+    /**
+     * If set, this discount code will not be redeemable before this date.
+     * @type {string}
+     * @memberof Nested
+     */
+    'activation_date'?: string | null;
+    /**
+     * If set, this discount code will not be redeemable after this date.
+     * @type {string}
+     * @memberof Nested
+     */
+    'expiration_date'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Nested
+     */
+    'is_bulk'?: boolean;
+}
+
+
+/**
+ * * `operator` - operator * `course` - course * `program` - program
+ * @export
+ * @enum {string}
+ */
+
+export const NodeTypeEnum = {
+    /**
+    * operator
+    */
+    Operator: 'operator',
+    /**
+    * course
+    */
+    Course: 'course',
+    /**
+    * program
+    */
+    Program: 'program'
+} as const;
+
+export type NodeTypeEnum = typeof NodeTypeEnum[keyof typeof NodeTypeEnum];
+
+
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -2011,6 +2327,201 @@ export const NullEnum = {
 export type NullEnum = typeof NullEnum[keyof typeof NullEnum];
 
 
+/**
+ * 
+ * @export
+ * @interface Order
+ */
+export interface Order {
+    /**
+     * 
+     * @type {number}
+     * @memberof Order
+     */
+    'id': number;
+    /**
+     * 
+     * @type {StateEnum}
+     * @memberof Order
+     */
+    'state': StateEnum;
+    /**
+     * 
+     * @type {Array<ExtendedLegalAddress>}
+     * @memberof Order
+     */
+    'purchaser': Array<ExtendedLegalAddress>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'total_price_paid': string;
+    /**
+     * 
+     * @type {Array<TransactionLine>}
+     * @memberof Order
+     */
+    'lines': Array<TransactionLine>;
+    /**
+     * 
+     * @type {Array<RedeemedDiscount>}
+     * @memberof Order
+     */
+    'discounts': Array<RedeemedDiscount>;
+    /**
+     * 
+     * @type {Array<OrderRefundsInner>}
+     * @memberof Order
+     */
+    'refunds': Array<OrderRefundsInner>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'reference_number'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {OrderTransactions}
+     * @memberof Order
+     */
+    'transactions': OrderTransactions;
+    /**
+     * 
+     * @type {OrderStreetAddress}
+     * @memberof Order
+     */
+    'street_address': OrderStreetAddress;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface OrderRefundsInner
+ */
+export interface OrderRefundsInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderRefundsInner
+     */
+    'amount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderRefundsInner
+     */
+    'date'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderRequest
+ */
+export interface OrderRequest {
+    /**
+     * 
+     * @type {StateEnum}
+     * @memberof OrderRequest
+     */
+    'state': StateEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderRequest
+     */
+    'total_price_paid': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderRequest
+     */
+    'reference_number'?: string | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface OrderStreetAddress
+ */
+export interface OrderStreetAddress {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OrderStreetAddress
+     */
+    'line'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStreetAddress
+     */
+    'postal_code'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStreetAddress
+     */
+    'state'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStreetAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStreetAddress
+     */
+    'country'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderTransactions
+ */
+export interface OrderTransactions {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderTransactions
+     */
+    'card_number'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderTransactions
+     */
+    'card_type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderTransactions
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderTransactions
+     */
+    'bill_to_email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderTransactions
+     */
+    'payment_method'?: string;
+}
 /**
  * Serializer for the OrganizationPage model.
  * @export
@@ -2353,6 +2864,130 @@ export interface PaginatedCourseWithCourseRunsSerializerV2List {
 /**
  * 
  * @export
+ * @interface PaginatedDiscountProductList
+ */
+export interface PaginatedDiscountProductList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedDiscountProductList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedDiscountProductList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedDiscountProductList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<DiscountProduct>}
+     * @memberof PaginatedDiscountProductList
+     */
+    'results': Array<DiscountProduct>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedDiscountRedemptionList
+ */
+export interface PaginatedDiscountRedemptionList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedDiscountRedemptionList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedDiscountRedemptionList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedDiscountRedemptionList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<DiscountRedemption>}
+     * @memberof PaginatedDiscountRedemptionList
+     */
+    'results': Array<DiscountRedemption>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedFlexiblePriceTierList
+ */
+export interface PaginatedFlexiblePriceTierList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedFlexiblePriceTierList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedFlexiblePriceTierList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedFlexiblePriceTierList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<FlexiblePriceTier>}
+     * @memberof PaginatedFlexiblePriceTierList
+     */
+    'results': Array<FlexiblePriceTier>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedProductList
+ */
+export interface PaginatedProductList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedProductList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedProductList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedProductList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<Product>}
+     * @memberof PaginatedProductList
+     */
+    'results': Array<Product>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedStaffDashboardUserList
  */
 export interface PaginatedStaffDashboardUserList {
@@ -2380,6 +3015,68 @@ export interface PaginatedStaffDashboardUserList {
      * @memberof PaginatedStaffDashboardUserList
      */
     'results': Array<StaffDashboardUser>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedUserDiscountMetaList
+ */
+export interface PaginatedUserDiscountMetaList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedUserDiscountMetaList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedUserDiscountMetaList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedUserDiscountMetaList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<UserDiscountMeta>}
+     * @memberof PaginatedUserDiscountMetaList
+     */
+    'results': Array<UserDiscountMeta>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedV0DiscountList
+ */
+export interface PaginatedV0DiscountList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedV0DiscountList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedV0DiscountList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedV0DiscountList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<V0Discount>}
+     * @memberof PaginatedV0DiscountList
+     */
+    'results': Array<V0Discount>;
 }
 /**
  * 
@@ -2562,25 +3259,6 @@ export interface PartnerSchoolRequest {
     'email': string;
 }
 /**
- * BasketItem model serializer
- * @export
- * @interface PatchedBasketItemRequest
- */
-export interface PatchedBasketItemRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof PatchedBasketItemRequest
-     */
-    'basket'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PatchedBasketItemRequest
-     */
-    'product'?: number;
-}
-/**
  * Serializer for confirming a user email change
  * @export
  * @interface PatchedChangeEmailRequestUpdateRequest
@@ -2596,6 +3274,100 @@ export interface PatchedChangeEmailRequestUpdateRequest {
 /**
  * 
  * @export
+ * @interface PatchedDiscountProductRequest
+ */
+export interface PatchedDiscountProductRequest {
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof PatchedDiscountProductRequest
+     */
+    'discount'?: V0DiscountRequest;
+    /**
+     * 
+     * @type {ProductRequest}
+     * @memberof PatchedDiscountProductRequest
+     */
+    'product'?: ProductRequest;
+}
+/**
+ * Serializes a discount redemption.
+ * @export
+ * @interface PatchedDiscountRedemptionRequest
+ */
+export interface PatchedDiscountRedemptionRequest {
+    /**
+     * 
+     * @type {UserRequest}
+     * @memberof PatchedDiscountRedemptionRequest
+     */
+    'redeemed_by'?: UserRequest;
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof PatchedDiscountRedemptionRequest
+     */
+    'redeemed_discount'?: V0DiscountRequest;
+    /**
+     * 
+     * @type {OrderRequest}
+     * @memberof PatchedDiscountRedemptionRequest
+     */
+    'redeemed_order'?: OrderRequest;
+}
+/**
+ * 
+ * @export
+ * @interface PatchedFlexiblePriceTierRequest
+ */
+export interface PatchedFlexiblePriceTierRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof PatchedFlexiblePriceTierRequest
+     */
+    'discount'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PatchedFlexiblePriceTierRequest
+     */
+    'current'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PatchedFlexiblePriceTierRequest
+     */
+    'income_threshold_usd'?: number;
+}
+/**
+ * Serializes a product, including the purchasable object.
+ * @export
+ * @interface PatchedProductRequest
+ */
+export interface PatchedProductRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedProductRequest
+     */
+    'price'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedProductRequest
+     */
+    'description'?: string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof PatchedProductRequest
+     */
+    'is_active'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface PatchedUpdateCourseRunEnrollmentRequest
  */
 export interface PatchedUpdateCourseRunEnrollmentRequest {
@@ -2605,6 +3377,25 @@ export interface PatchedUpdateCourseRunEnrollmentRequest {
      * @memberof PatchedUpdateCourseRunEnrollmentRequest
      */
     'receive_emails'?: boolean;
+}
+/**
+ * Serializes UserDiscount but only allows depth = 1
+ * @export
+ * @interface PatchedUserDiscountMetaRequest
+ */
+export interface PatchedUserDiscountMetaRequest {
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof PatchedUserDiscountMetaRequest
+     */
+    'discount'?: V0DiscountRequest;
+    /**
+     * 
+     * @type {UserRequest}
+     * @memberof PatchedUserDiscountMetaRequest
+     */
+    'user'?: UserRequest;
 }
 /**
  * Serializer for users
@@ -2655,6 +3446,69 @@ export interface PatchedUserRequest {
      */
     'is_active'?: boolean;
 }
+/**
+ * 
+ * @export
+ * @interface PatchedV0DiscountRequest
+ */
+export interface PatchedV0DiscountRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'amount'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'automatic'?: boolean;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'discount_type'?: DiscountTypeEnum;
+    /**
+     * 
+     * @type {RedemptionTypeEnum}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'redemption_type'?: RedemptionTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'max_redemptions'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'discount_code'?: string;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'payment_type'?: PaymentTypeEnum | null;
+    /**
+     * If set, this discount code will not be redeemable before this date.
+     * @type {string}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'activation_date'?: string | null;
+    /**
+     * If set, this discount code will not be redeemable after this date.
+     * @type {string}
+     * @memberof PatchedV0DiscountRequest
+     */
+    'expiration_date'?: string | null;
+}
+
+
 /**
  * * `marketing` - marketing * `sales` - sales * `financial-assistance` - financial-assistance * `customer-support` - customer-support * `staff` - staff * `legacy` - legacy
  * @export
@@ -2717,6 +3571,43 @@ export interface PriceItem {
     'id': string;
 }
 /**
+ * Serializes a product, including the purchasable object.
+ * @export
+ * @interface Product
+ */
+export interface Product {
+    /**
+     * 
+     * @type {number}
+     * @memberof Product
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Product
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Product
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof Product
+     */
+    'is_active'?: boolean;
+    /**
+     * 
+     * @type {ProductPurchasableObject}
+     * @memberof Product
+     */
+    'purchasable_object': ProductPurchasableObject;
+}
+/**
  * Simple serializer for Product without related purchasable objects
  * @export
  * @interface ProductFlexibilePrice
@@ -2775,6 +3666,160 @@ export interface ProductFlexibilePriceRequest {
      * Controls visibility of the product in the app.
      * @type {boolean}
      * @memberof ProductFlexibilePriceRequest
+     */
+    'is_active'?: boolean;
+}
+/**
+ * @type ProductPurchasableObject
+ * @export
+ */
+export type ProductPurchasableObject = ProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf1;
+
+/**
+ * 
+ * @export
+ * @interface ProductPurchasableObjectOneOf
+ */
+export interface ProductPurchasableObjectOneOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductPurchasableObjectOneOf
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf
+     */
+    'run_tag'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf
+     */
+    'start_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf
+     */
+    'end_date'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ProductPurchasableObjectOneOf1
+ */
+export interface ProductPurchasableObjectOneOf1 {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'run_tag'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'start_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'end_date'?: string;
+    /**
+     * 
+     * @type {ProductPurchasableObjectOneOf1Course}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'course'?: ProductPurchasableObjectOneOf1Course;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'readable_id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'enrollment_start'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'enrollment_end'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1
+     */
+    'course_number'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ProductPurchasableObjectOneOf1Course
+ */
+export interface ProductPurchasableObjectOneOf1Course {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductPurchasableObjectOneOf1Course
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf1Course
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof ProductPurchasableObjectOneOf1Course
+     */
+    'page'?: object;
+}
+/**
+ * Serializes a product, including the purchasable object.
+ * @export
+ * @interface ProductRequest
+ */
+export interface ProductRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequest
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequest
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof ProductRequest
      */
     'is_active'?: boolean;
 }
@@ -3079,6 +4124,19 @@ export interface PublicUser {
     'updated_on': string;
 }
 /**
+ * DiscountRedemption model serializer
+ * @export
+ * @interface RedeemedDiscount
+ */
+export interface RedeemedDiscount {
+    /**
+     * 
+     * @type {Nested}
+     * @memberof RedeemedDiscount
+     */
+    'redeemed_discount': Nested;
+}
+/**
  * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
  * @export
  * @enum {string}
@@ -3235,6 +4293,50 @@ export interface StaffDashboardUser {
     'is_superuser'?: boolean;
 }
 /**
+ * * `pending` - Pending * `fulfilled` - Fulfilled * `canceled` - Canceled * `declined` - Declined * `errored` - Errored * `refunded` - Refunded * `review` - Review * `partially_refunded` - Partially Refunded
+ * @export
+ * @enum {string}
+ */
+
+export const StateEnum = {
+    /**
+    * Pending
+    */
+    Pending: 'pending',
+    /**
+    * Fulfilled
+    */
+    Fulfilled: 'fulfilled',
+    /**
+    * Canceled
+    */
+    Canceled: 'canceled',
+    /**
+    * Declined
+    */
+    Declined: 'declined',
+    /**
+    * Errored
+    */
+    Errored: 'errored',
+    /**
+    * Refunded
+    */
+    Refunded: 'refunded',
+    /**
+    * Review
+    */
+    Review: 'review',
+    /**
+    * Partially Refunded
+    */
+    PartiallyRefunded: 'partially_refunded'
+} as const;
+
+export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
+
+
+/**
  * Serializer for topics used in course pages.
  * @export
  * @interface Topic
@@ -3252,6 +4354,67 @@ export interface Topic {
      * @memberof Topic
      */
     'parent'?: string;
+}
+/**
+ * Serializes a line item from a transaction.
+ * @export
+ * @interface TransactionLine
+ */
+export interface TransactionLine {
+    /**
+     * 
+     * @type {number}
+     * @memberof TransactionLine
+     */
+    'quantity': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'CEUs': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'content_title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'start_date': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'end_date': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'total_paid': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'discount': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
+    'price': string;
 }
 /**
  * Serializer for users
@@ -3355,6 +4518,50 @@ export interface User {
      * @memberof User
      */
     'b2b_organizations': Array<OrganizationPage>;
+}
+/**
+ * Serializes UserDiscount but only allows depth = 1
+ * @export
+ * @interface UserDiscountMeta
+ */
+export interface UserDiscountMeta {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserDiscountMeta
+     */
+    'id': number;
+    /**
+     * 
+     * @type {V0Discount}
+     * @memberof UserDiscountMeta
+     */
+    'discount': V0Discount;
+    /**
+     * 
+     * @type {User}
+     * @memberof UserDiscountMeta
+     */
+    'user': User;
+}
+/**
+ * Serializes UserDiscount but only allows depth = 1
+ * @export
+ * @interface UserDiscountMetaRequest
+ */
+export interface UserDiscountMetaRequest {
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof UserDiscountMetaRequest
+     */
+    'discount': V0DiscountRequest;
+    /**
+     * 
+     * @type {UserRequest}
+     * @memberof UserDiscountMetaRequest
+     */
+    'user': UserRequest;
 }
 /**
  * Serializer for profile
@@ -3591,6 +4798,193 @@ export interface UserProgramEnrollmentDetail {
      */
     'certificate': V1ProgramCertificate | null;
 }
+/**
+ * Serializer for users
+ * @export
+ * @interface UserRequest
+ */
+export interface UserRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserRequest
+     */
+    'username'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserRequest
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserRequest
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserRequest
+     */
+    'password'?: string;
+    /**
+     * 
+     * @type {LegalAddressRequest}
+     * @memberof UserRequest
+     */
+    'legal_address': LegalAddressRequest | null;
+    /**
+     * 
+     * @type {UserProfileRequest}
+     * @memberof UserRequest
+     */
+    'user_profile'?: UserProfileRequest | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserRequest
+     */
+    'is_active'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface V0Discount
+ */
+export interface V0Discount {
+    /**
+     * 
+     * @type {number}
+     * @memberof V0Discount
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V0Discount
+     */
+    'amount': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V0Discount
+     */
+    'automatic'?: boolean;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof V0Discount
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {RedemptionTypeEnum}
+     * @memberof V0Discount
+     */
+    'redemption_type': RedemptionTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof V0Discount
+     */
+    'max_redemptions'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V0Discount
+     */
+    'discount_code': string;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof V0Discount
+     */
+    'payment_type'?: PaymentTypeEnum | null;
+    /**
+     * Returns True if the discount has been redeemed
+     * @type {boolean}
+     * @memberof V0Discount
+     */
+    'is_redeemed': boolean;
+    /**
+     * If set, this discount code will not be redeemable before this date.
+     * @type {string}
+     * @memberof V0Discount
+     */
+    'activation_date'?: string | null;
+    /**
+     * If set, this discount code will not be redeemable after this date.
+     * @type {string}
+     * @memberof V0Discount
+     */
+    'expiration_date'?: string | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface V0DiscountRequest
+ */
+export interface V0DiscountRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof V0DiscountRequest
+     */
+    'amount': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V0DiscountRequest
+     */
+    'automatic'?: boolean;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof V0DiscountRequest
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {RedemptionTypeEnum}
+     * @memberof V0DiscountRequest
+     */
+    'redemption_type': RedemptionTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof V0DiscountRequest
+     */
+    'max_redemptions'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V0DiscountRequest
+     */
+    'discount_code': string;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof V0DiscountRequest
+     */
+    'payment_type'?: PaymentTypeEnum | null;
+    /**
+     * If set, this discount code will not be redeemable before this date.
+     * @type {string}
+     * @memberof V0DiscountRequest
+     */
+    'activation_date'?: string | null;
+    /**
+     * If set, this discount code will not be redeemable after this date.
+     * @type {string}
+     * @memberof V0DiscountRequest
+     */
+    'expiration_date'?: string | null;
+}
+
+
 /**
  * CourseRun model serializer
  * @export
@@ -4104,10 +5498,10 @@ export interface V1ProgramRequirement {
 export interface V1ProgramRequirementData {
     /**
      * 
-     * @type {V1ProgramRequirementDataNodeTypeEnum}
+     * @type {NodeTypeEnum}
      * @memberof V1ProgramRequirementData
      */
-    'node_type': V1ProgramRequirementDataNodeTypeEnum;
+    'node_type': NodeTypeEnum;
     /**
      * 
      * @type {string}
@@ -4151,30 +5545,6 @@ export interface V1ProgramRequirementData {
      */
     'elective_flag'?: boolean | null;
 }
-
-
-/**
- * * `operator` - operator * `course` - course * `program` - program
- * @export
- * @enum {string}
- */
-
-export const V1ProgramRequirementDataNodeTypeEnum = {
-    /**
-    * operator
-    */
-    Operator: 'operator',
-    /**
-    * course
-    */
-    Course: 'course',
-    /**
-    * program
-    */
-    Program: 'program'
-} as const;
-
-export type V1ProgramRequirementDataNodeTypeEnum = typeof V1ProgramRequirementDataNodeTypeEnum[keyof typeof V1ProgramRequirementDataNodeTypeEnum];
 
 
 /**
@@ -4948,10 +6318,10 @@ export interface V2ProgramRequirement {
 export interface V2ProgramRequirementData {
     /**
      * 
-     * @type {V2ProgramRequirementDataNodeTypeEnum}
+     * @type {NodeTypeEnum}
      * @memberof V2ProgramRequirementData
      */
-    'node_type': V2ProgramRequirementDataNodeTypeEnum;
+    'node_type': NodeTypeEnum;
     /**
      * 
      * @type {number}
@@ -4995,30 +6365,6 @@ export interface V2ProgramRequirementData {
      */
     'elective_flag'?: boolean | null;
 }
-
-
-/**
- * * `course` - course * `program` - program * `operator` - operator
- * @export
- * @enum {string}
- */
-
-export const V2ProgramRequirementDataNodeTypeEnum = {
-    /**
-    * course
-    */
-    Course: 'course',
-    /**
-    * program
-    */
-    Program: 'program',
-    /**
-    * operator
-    */
-    Operator: 'operator'
-} as const;
-
-export type V2ProgramRequirementDataNodeTypeEnum = typeof V2ProgramRequirementDataNodeTypeEnum[keyof typeof V2ProgramRequirementDataNodeTypeEnum];
 
 
 /**
@@ -6017,526 +7363,6 @@ export class B2bApi extends BaseAPI {
 
 
 /**
- * BasketitemsApi - axios parameter creator
- * @export
- */
-export const BasketitemsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {BasketItemRequest} BasketItemRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsCreate: async (BasketItemRequest: BasketItemRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'BasketItemRequest' is not null or undefined
-            assertParamExists('basketitemsCreate', 'BasketItemRequest', BasketItemRequest)
-            const localVarPath = `/api/v0/basketitems/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(BasketItemRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('basketitemsDestroy', 'id', id)
-            const localVarPath = `/api/v0/basketitems/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the basket items for the current user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v0/basketitems/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {PatchedBasketItemRequest} [PatchedBasketItemRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsPartialUpdate: async (id: number, PatchedBasketItemRequest?: PatchedBasketItemRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('basketitemsPartialUpdate', 'id', id)
-            const localVarPath = `/api/v0/basketitems/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(PatchedBasketItemRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the basket items for the current user.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('basketitemsRetrieve', 'id', id)
-            const localVarPath = `/api/v0/basketitems/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {BasketItemRequest} BasketItemRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsUpdate: async (id: number, BasketItemRequest: BasketItemRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('basketitemsUpdate', 'id', id)
-            // verify required parameter 'BasketItemRequest' is not null or undefined
-            assertParamExists('basketitemsUpdate', 'BasketItemRequest', BasketItemRequest)
-            const localVarPath = `/api/v0/basketitems/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(BasketItemRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * BasketitemsApi - functional programming interface
- * @export
- */
-export const BasketitemsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = BasketitemsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {BasketItemRequest} BasketItemRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async basketitemsCreate(BasketItemRequest: BasketItemRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsCreate(BasketItemRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async basketitemsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * Returns the basket items for the current user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async basketitemsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BasketItem>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {PatchedBasketItemRequest} [PatchedBasketItemRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async basketitemsPartialUpdate(id: number, PatchedBasketItemRequest?: PatchedBasketItemRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsPartialUpdate(id, PatchedBasketItemRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * Returns the basket items for the current user.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async basketitemsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {number} id A unique integer value identifying this basket item.
-         * @param {BasketItemRequest} BasketItemRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async basketitemsUpdate(id: number, BasketItemRequest: BasketItemRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketitemsUpdate(id, BasketItemRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketitemsApi.basketitemsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-    }
-};
-
-/**
- * BasketitemsApi - factory interface
- * @export
- */
-export const BasketitemsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = BasketitemsApiFp(configuration)
-    return {
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {BasketitemsApiBasketitemsCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsCreate(requestParameters: BasketitemsApiBasketitemsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
-            return localVarFp.basketitemsCreate(requestParameters.BasketItemRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {BasketitemsApiBasketitemsDestroyRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsDestroy(requestParameters: BasketitemsApiBasketitemsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.basketitemsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the basket items for the current user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<BasketItem>> {
-            return localVarFp.basketitemsList(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {BasketitemsApiBasketitemsPartialUpdateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsPartialUpdate(requestParameters: BasketitemsApiBasketitemsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
-            return localVarFp.basketitemsPartialUpdate(requestParameters.id, requestParameters.PatchedBasketItemRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the basket items for the current user.
-         * @param {BasketitemsApiBasketitemsRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsRetrieve(requestParameters: BasketitemsApiBasketitemsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
-            return localVarFp.basketitemsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * ViewSet for handling BasketItem operations.
-         * @param {BasketitemsApiBasketitemsUpdateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        basketitemsUpdate(requestParameters: BasketitemsApiBasketitemsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
-            return localVarFp.basketitemsUpdate(requestParameters.id, requestParameters.BasketItemRequest, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for basketitemsCreate operation in BasketitemsApi.
- * @export
- * @interface BasketitemsApiBasketitemsCreateRequest
- */
-export interface BasketitemsApiBasketitemsCreateRequest {
-    /**
-     * 
-     * @type {BasketItemRequest}
-     * @memberof BasketitemsApiBasketitemsCreate
-     */
-    readonly BasketItemRequest: BasketItemRequest
-}
-
-/**
- * Request parameters for basketitemsDestroy operation in BasketitemsApi.
- * @export
- * @interface BasketitemsApiBasketitemsDestroyRequest
- */
-export interface BasketitemsApiBasketitemsDestroyRequest {
-    /**
-     * A unique integer value identifying this basket item.
-     * @type {number}
-     * @memberof BasketitemsApiBasketitemsDestroy
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for basketitemsPartialUpdate operation in BasketitemsApi.
- * @export
- * @interface BasketitemsApiBasketitemsPartialUpdateRequest
- */
-export interface BasketitemsApiBasketitemsPartialUpdateRequest {
-    /**
-     * A unique integer value identifying this basket item.
-     * @type {number}
-     * @memberof BasketitemsApiBasketitemsPartialUpdate
-     */
-    readonly id: number
-
-    /**
-     * 
-     * @type {PatchedBasketItemRequest}
-     * @memberof BasketitemsApiBasketitemsPartialUpdate
-     */
-    readonly PatchedBasketItemRequest?: PatchedBasketItemRequest
-}
-
-/**
- * Request parameters for basketitemsRetrieve operation in BasketitemsApi.
- * @export
- * @interface BasketitemsApiBasketitemsRetrieveRequest
- */
-export interface BasketitemsApiBasketitemsRetrieveRequest {
-    /**
-     * A unique integer value identifying this basket item.
-     * @type {number}
-     * @memberof BasketitemsApiBasketitemsRetrieve
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for basketitemsUpdate operation in BasketitemsApi.
- * @export
- * @interface BasketitemsApiBasketitemsUpdateRequest
- */
-export interface BasketitemsApiBasketitemsUpdateRequest {
-    /**
-     * A unique integer value identifying this basket item.
-     * @type {number}
-     * @memberof BasketitemsApiBasketitemsUpdate
-     */
-    readonly id: number
-
-    /**
-     * 
-     * @type {BasketItemRequest}
-     * @memberof BasketitemsApiBasketitemsUpdate
-     */
-    readonly BasketItemRequest: BasketItemRequest
-}
-
-/**
- * BasketitemsApi - object-oriented interface
- * @export
- * @class BasketitemsApi
- * @extends {BaseAPI}
- */
-export class BasketitemsApi extends BaseAPI {
-    /**
-     * ViewSet for handling BasketItem operations.
-     * @param {BasketitemsApiBasketitemsCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BasketitemsApi
-     */
-    public basketitemsCreate(requestParameters: BasketitemsApiBasketitemsCreateRequest, options?: RawAxiosRequestConfig) {
-        return BasketitemsApiFp(this.configuration).basketitemsCreate(requestParameters.BasketItemRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * ViewSet for handling BasketItem operations.
-     * @param {BasketitemsApiBasketitemsDestroyRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BasketitemsApi
-     */
-    public basketitemsDestroy(requestParameters: BasketitemsApiBasketitemsDestroyRequest, options?: RawAxiosRequestConfig) {
-        return BasketitemsApiFp(this.configuration).basketitemsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the basket items for the current user.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BasketitemsApi
-     */
-    public basketitemsList(options?: RawAxiosRequestConfig) {
-        return BasketitemsApiFp(this.configuration).basketitemsList(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * ViewSet for handling BasketItem operations.
-     * @param {BasketitemsApiBasketitemsPartialUpdateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BasketitemsApi
-     */
-    public basketitemsPartialUpdate(requestParameters: BasketitemsApiBasketitemsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
-        return BasketitemsApiFp(this.configuration).basketitemsPartialUpdate(requestParameters.id, requestParameters.PatchedBasketItemRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the basket items for the current user.
-     * @param {BasketitemsApiBasketitemsRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BasketitemsApi
-     */
-    public basketitemsRetrieve(requestParameters: BasketitemsApiBasketitemsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return BasketitemsApiFp(this.configuration).basketitemsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * ViewSet for handling BasketItem operations.
-     * @param {BasketitemsApiBasketitemsUpdateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BasketitemsApi
-     */
-    public basketitemsUpdate(requestParameters: BasketitemsApiBasketitemsUpdateRequest, options?: RawAxiosRequestConfig) {
-        return BasketitemsApiFp(this.configuration).basketitemsUpdate(requestParameters.id, requestParameters.BasketItemRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
  * BasketsApi - axios parameter creator
  * @export
  */
@@ -6545,17 +7371,13 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Creates or updates a basket for the current user, adding the discount if valid.
          * @param {string} discount_code 
-         * @param {string} system_slug 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        basketsAddDiscountCreate: async (discount_code: string, system_slug: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        basketsAddDiscountCreate: async (discount_code: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'discount_code' is not null or undefined
             assertParamExists('basketsAddDiscountCreate', 'discount_code', discount_code)
-            // verify required parameter 'system_slug' is not null or undefined
-            assertParamExists('basketsAddDiscountCreate', 'system_slug', system_slug)
-            const localVarPath = `/api/v0/baskets/add_discount/`
-                .replace(`{${"system_slug"}}`, encodeURIComponent(String(system_slug)));
+            const localVarPath = `/api/v0/baskets/add_discount/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -6680,6 +7502,228 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsCreate: async (id: number, parent_lookup_basket: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsItemsCreate', 'id', id)
+            // verify required parameter 'parent_lookup_basket' is not null or undefined
+            assertParamExists('basketsItemsCreate', 'parent_lookup_basket', parent_lookup_basket)
+            const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsDestroy: async (id: number, parent_lookup_basket: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsItemsDestroy', 'id', id)
+            // verify required parameter 'parent_lookup_basket' is not null or undefined
+            assertParamExists('basketsItemsDestroy', 'parent_lookup_basket', parent_lookup_basket)
+            const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsList: async (id: number, parent_lookup_basket: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsItemsList', 'id', id)
+            // verify required parameter 'parent_lookup_basket' is not null or undefined
+            assertParamExists('basketsItemsList', 'parent_lookup_basket', parent_lookup_basket)
+            const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsPartialUpdate: async (id: number, parent_lookup_basket: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsItemsPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_basket' is not null or undefined
+            assertParamExists('basketsItemsPartialUpdate', 'parent_lookup_basket', parent_lookup_basket)
+            const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsRetrieve: async (id: number, parent_lookup_basket: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsItemsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_basket' is not null or undefined
+            assertParamExists('basketsItemsRetrieve', 'parent_lookup_basket', parent_lookup_basket)
+            const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsUpdate: async (id: number, parent_lookup_basket: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('basketsItemsUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_basket' is not null or undefined
+            assertParamExists('basketsItemsUpdate', 'parent_lookup_basket', parent_lookup_basket)
+            const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrives the current user\'s baskets.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6791,12 +7835,11 @@ export const BasketsApiFp = function(configuration?: Configuration) {
         /**
          * Creates or updates a basket for the current user, adding the discount if valid.
          * @param {string} discount_code 
-         * @param {string} system_slug 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async basketsAddDiscountCreate(discount_code: string, system_slug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsAddDiscountCreate(discount_code, system_slug, options);
+        async basketsAddDiscountCreate(discount_code: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsAddDiscountCreate(discount_code, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['BasketsApi.basketsAddDiscountCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -6834,6 +7877,84 @@ export const BasketsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCreateWithProductsCreate(CreateBasketWithProductsRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['BasketsApi.basketsCreateWithProductsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsItemsCreate(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsCreate(id, parent_lookup_basket, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsItemsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsItemsDestroy(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsDestroy(id, parent_lookup_basket, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsItemsDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsItemsList(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BasketItem>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsList(id, parent_lookup_basket, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsItemsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsItemsPartialUpdate(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsPartialUpdate(id, parent_lookup_basket, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsItemsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsItemsRetrieve(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsRetrieve(id, parent_lookup_basket, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsItemsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {number} id ID of the basket item
+         * @param {number} parent_lookup_basket ID of the parent basket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsItemsUpdate(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsUpdate(id, parent_lookup_basket, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsItemsUpdate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -6889,7 +8010,7 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
-            return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, requestParameters.system_slug, options).then((request) => request(axios, basePath));
+            return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(axios, basePath));
         },
         /**
          * Clears the basket for the current user.
@@ -6916,6 +8037,60 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
          */
         basketsCreateWithProductsCreate(requestParameters: BasketsApiBasketsCreateWithProductsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
             return localVarFp.basketsCreateWithProductsCreate(requestParameters.CreateBasketWithProductsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketsApiBasketsItemsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsCreate(requestParameters: BasketsApiBasketsItemsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketsItemsCreate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketsApiBasketsItemsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsDestroy(requestParameters: BasketsApiBasketsItemsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.basketsItemsDestroy(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketsApiBasketsItemsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsList(requestParameters: BasketsApiBasketsItemsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<BasketItem>> {
+            return localVarFp.basketsItemsList(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketsApiBasketsItemsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsPartialUpdate(requestParameters: BasketsApiBasketsItemsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketsItemsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketsApiBasketsItemsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsRetrieve(requestParameters: BasketsApiBasketsItemsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketsItemsRetrieve(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the basket items for the current user.
+         * @param {BasketsApiBasketsItemsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsItemsUpdate(requestParameters: BasketsApiBasketsItemsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketItem> {
+            return localVarFp.basketsItemsUpdate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrives the current user\'s baskets.
@@ -6958,13 +8133,6 @@ export interface BasketsApiBasketsAddDiscountCreateRequest {
      * @memberof BasketsApiBasketsAddDiscountCreate
      */
     readonly discount_code: string
-
-    /**
-     * 
-     * @type {string}
-     * @memberof BasketsApiBasketsAddDiscountCreate
-     */
-    readonly system_slug: string
 }
 
 /**
@@ -6993,6 +8161,132 @@ export interface BasketsApiBasketsCreateWithProductsCreateRequest {
      * @memberof BasketsApiBasketsCreateWithProductsCreate
      */
     readonly CreateBasketWithProductsRequest: CreateBasketWithProductsRequest
+}
+
+/**
+ * Request parameters for basketsItemsCreate operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsItemsCreateRequest
+ */
+export interface BasketsApiBasketsItemsCreateRequest {
+    /**
+     * ID of the basket item
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent basket
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsCreate
+     */
+    readonly parent_lookup_basket: number
+}
+
+/**
+ * Request parameters for basketsItemsDestroy operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsItemsDestroyRequest
+ */
+export interface BasketsApiBasketsItemsDestroyRequest {
+    /**
+     * ID of the basket item
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsDestroy
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent basket
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsDestroy
+     */
+    readonly parent_lookup_basket: number
+}
+
+/**
+ * Request parameters for basketsItemsList operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsItemsListRequest
+ */
+export interface BasketsApiBasketsItemsListRequest {
+    /**
+     * ID of the basket item
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent basket
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsList
+     */
+    readonly parent_lookup_basket: number
+}
+
+/**
+ * Request parameters for basketsItemsPartialUpdate operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsItemsPartialUpdateRequest
+ */
+export interface BasketsApiBasketsItemsPartialUpdateRequest {
+    /**
+     * ID of the basket item
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent basket
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsPartialUpdate
+     */
+    readonly parent_lookup_basket: number
+}
+
+/**
+ * Request parameters for basketsItemsRetrieve operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsItemsRetrieveRequest
+ */
+export interface BasketsApiBasketsItemsRetrieveRequest {
+    /**
+     * ID of the basket item
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent basket
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsRetrieve
+     */
+    readonly parent_lookup_basket: number
+}
+
+/**
+ * Request parameters for basketsItemsUpdate operation in BasketsApi.
+ * @export
+ * @interface BasketsApiBasketsItemsUpdateRequest
+ */
+export interface BasketsApiBasketsItemsUpdateRequest {
+    /**
+     * ID of the basket item
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent basket
+     * @type {number}
+     * @memberof BasketsApiBasketsItemsUpdate
+     */
+    readonly parent_lookup_basket: number
 }
 
 /**
@@ -7045,7 +8339,7 @@ export class BasketsApi extends BaseAPI {
      * @memberof BasketsApi
      */
     public basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig) {
-        return BasketsApiFp(this.configuration).basketsAddDiscountCreate(requestParameters.discount_code, requestParameters.system_slug, options).then((request) => request(this.axios, this.basePath));
+        return BasketsApiFp(this.configuration).basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7078,6 +8372,72 @@ export class BasketsApi extends BaseAPI {
      */
     public basketsCreateWithProductsCreate(requestParameters: BasketsApiBasketsCreateWithProductsCreateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsCreateWithProductsCreate(requestParameters.CreateBasketWithProductsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketsApiBasketsItemsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsItemsCreate(requestParameters: BasketsApiBasketsItemsCreateRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsItemsCreate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketsApiBasketsItemsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsItemsDestroy(requestParameters: BasketsApiBasketsItemsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsItemsDestroy(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketsApiBasketsItemsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsItemsList(requestParameters: BasketsApiBasketsItemsListRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsItemsList(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketsApiBasketsItemsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsItemsPartialUpdate(requestParameters: BasketsApiBasketsItemsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsItemsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketsApiBasketsItemsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsItemsRetrieve(requestParameters: BasketsApiBasketsItemsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsItemsRetrieve(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the basket items for the current user.
+     * @param {BasketsApiBasketsItemsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsItemsUpdate(requestParameters: BasketsApiBasketsItemsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsItemsUpdate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8711,6 +10071,3171 @@ export class DepartmentsApi extends BaseAPI {
 
 
 /**
+ * DiscountsApi - axios parameter creator
+ * @export
+ */
+export const DiscountsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Create an association between a user and a discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {UserDiscountMetaRequest} UserDiscountMetaRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesCreate: async (id: number, parent_lookup_discount: number, UserDiscountMetaRequest: UserDiscountMetaRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsAssigneesCreate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsAssigneesCreate', 'parent_lookup_discount', parent_lookup_discount)
+            // verify required parameter 'UserDiscountMetaRequest' is not null or undefined
+            assertParamExists('discountsAssigneesCreate', 'UserDiscountMetaRequest', UserDiscountMetaRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(UserDiscountMetaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Delete a user discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesDestroy: async (id: number, parent_lookup_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsAssigneesDestroy', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsAssigneesDestroy', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesList: async (id: number, parent_lookup_discount: number, limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsAssigneesList', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsAssigneesList', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Partial update for a user discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {PatchedUserDiscountMetaRequest} [PatchedUserDiscountMetaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesPartialUpdate: async (id: number, parent_lookup_discount: number, PatchedUserDiscountMetaRequest?: PatchedUserDiscountMetaRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsAssigneesPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsAssigneesPartialUpdate', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUserDiscountMetaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesRetrieve: async (id: number, parent_lookup_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsAssigneesRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsAssigneesRetrieve', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {UserDiscountMetaRequest} UserDiscountMetaRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesUpdate: async (id: number, parent_lookup_discount: number, UserDiscountMetaRequest: UserDiscountMetaRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsAssigneesUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsAssigneesUpdate', 'parent_lookup_discount', parent_lookup_discount)
+            // verify required parameter 'UserDiscountMetaRequest' is not null or undefined
+            assertParamExists('discountsAssigneesUpdate', 'UserDiscountMetaRequest', UserDiscountMetaRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(UserDiscountMetaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsCreate: async (V0DiscountRequest: V0DiscountRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'V0DiscountRequest' is not null or undefined
+            assertParamExists('discountsCreate', 'V0DiscountRequest', V0DiscountRequest)
+            const localVarPath = `/api/v0/discounts/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(V0DiscountRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
+         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsCreateBatchCreate: async (V0DiscountRequest: V0DiscountRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'V0DiscountRequest' is not null or undefined
+            assertParamExists('discountsCreateBatchCreate', 'V0DiscountRequest', V0DiscountRequest)
+            const localVarPath = `/api/v0/discounts/create_batch/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(V0DiscountRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsDestroy', 'id', id)
+            const localVarPath = `/api/v0/discounts/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsListIsRedeemedEnum} [is_redeemed] * &#x60;yes&#x60; - yes * &#x60;no&#x60; - no
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
+         * @param {string} [q] q
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsList: async (is_redeemed?: DiscountsListIsRedeemedEnum, limit?: number, offset?: number, payment_type?: DiscountsListPaymentTypeEnum, q?: string, redemption_type?: DiscountsListRedemptionTypeEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/discounts/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (is_redeemed !== undefined) {
+                localVarQueryParameter['is_redeemed'] = is_redeemed;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+            if (payment_type !== undefined) {
+                localVarQueryParameter['payment_type'] = payment_type;
+            }
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (redemption_type !== undefined) {
+                localVarQueryParameter['redemption_type'] = redemption_type;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {PatchedV0DiscountRequest} [PatchedV0DiscountRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsPartialUpdate: async (id: number, PatchedV0DiscountRequest?: PatchedV0DiscountRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsPartialUpdate', 'id', id)
+            const localVarPath = `/api/v0/discounts/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedV0DiscountRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {DiscountProductRequest} DiscountProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsCreate: async (id: number, parent_lookup_discount: number, DiscountProductRequest: DiscountProductRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsProductsCreate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsProductsCreate', 'parent_lookup_discount', parent_lookup_discount)
+            // verify required parameter 'DiscountProductRequest' is not null or undefined
+            assertParamExists('discountsProductsCreate', 'DiscountProductRequest', DiscountProductRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(DiscountProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Delete a linked product from a discount.
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsDestroy: async (id: number, parent_lookup_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsProductsDestroy', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsProductsDestroy', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsList: async (id: number, parent_lookup_discount: number, limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsProductsList', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsProductsList', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Partial update for a discount product.
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {PatchedDiscountProductRequest} [PatchedDiscountProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsPartialUpdate: async (id: number, parent_lookup_discount: number, PatchedDiscountProductRequest?: PatchedDiscountProductRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsProductsPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsProductsPartialUpdate', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedDiscountProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsRetrieve: async (id: number, parent_lookup_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsProductsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsProductsRetrieve', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {DiscountProductRequest} DiscountProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsUpdate: async (id: number, parent_lookup_discount: number, DiscountProductRequest: DiscountProductRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsProductsUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsProductsUpdate', 'parent_lookup_discount', parent_lookup_discount)
+            // verify required parameter 'DiscountProductRequest' is not null or undefined
+            assertParamExists('discountsProductsUpdate', 'DiscountProductRequest', DiscountProductRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(DiscountProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {DiscountRedemptionRequest} DiscountRedemptionRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsCreate: async (id: number, parent_lookup_redeemed_discount: number, DiscountRedemptionRequest: DiscountRedemptionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRedemptionsCreate', 'id', id)
+            // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
+            assertParamExists('discountsRedemptionsCreate', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
+            // verify required parameter 'DiscountRedemptionRequest' is not null or undefined
+            assertParamExists('discountsRedemptionsCreate', 'DiscountRedemptionRequest', DiscountRedemptionRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(DiscountRedemptionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsDestroy: async (id: number, parent_lookup_redeemed_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRedemptionsDestroy', 'id', id)
+            // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
+            assertParamExists('discountsRedemptionsDestroy', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsList: async (id: number, parent_lookup_redeemed_discount: number, limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRedemptionsList', 'id', id)
+            // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
+            assertParamExists('discountsRedemptionsList', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {PatchedDiscountRedemptionRequest} [PatchedDiscountRedemptionRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsPartialUpdate: async (id: number, parent_lookup_redeemed_discount: number, PatchedDiscountRedemptionRequest?: PatchedDiscountRedemptionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRedemptionsPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
+            assertParamExists('discountsRedemptionsPartialUpdate', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedDiscountRedemptionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsRetrieve: async (id: number, parent_lookup_redeemed_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRedemptionsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
+            assertParamExists('discountsRedemptionsRetrieve', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {DiscountRedemptionRequest} DiscountRedemptionRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsUpdate: async (id: number, parent_lookup_redeemed_discount: number, DiscountRedemptionRequest: DiscountRedemptionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRedemptionsUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
+            assertParamExists('discountsRedemptionsUpdate', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
+            // verify required parameter 'DiscountRedemptionRequest' is not null or undefined
+            assertParamExists('discountsRedemptionsUpdate', 'DiscountRedemptionRequest', DiscountRedemptionRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(DiscountRedemptionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsRetrieve', 'id', id)
+            const localVarPath = `/api/v0/discounts/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {FlexiblePriceTierRequest} FlexiblePriceTierRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersCreate: async (id: number, parent_lookup_discount: number, FlexiblePriceTierRequest: FlexiblePriceTierRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsTiersCreate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsTiersCreate', 'parent_lookup_discount', parent_lookup_discount)
+            // verify required parameter 'FlexiblePriceTierRequest' is not null or undefined
+            assertParamExists('discountsTiersCreate', 'FlexiblePriceTierRequest', FlexiblePriceTierRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(FlexiblePriceTierRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersDestroy: async (id: number, parent_lookup_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsTiersDestroy', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsTiersDestroy', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersList: async (id: number, parent_lookup_discount: number, limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsTiersList', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsTiersList', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {PatchedFlexiblePriceTierRequest} [PatchedFlexiblePriceTierRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersPartialUpdate: async (id: number, parent_lookup_discount: number, PatchedFlexiblePriceTierRequest?: PatchedFlexiblePriceTierRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsTiersPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsTiersPartialUpdate', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedFlexiblePriceTierRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersRetrieve: async (id: number, parent_lookup_discount: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsTiersRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsTiersRetrieve', 'parent_lookup_discount', parent_lookup_discount)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {FlexiblePriceTierRequest} FlexiblePriceTierRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersUpdate: async (id: number, parent_lookup_discount: number, FlexiblePriceTierRequest: FlexiblePriceTierRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsTiersUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_discount' is not null or undefined
+            assertParamExists('discountsTiersUpdate', 'parent_lookup_discount', parent_lookup_discount)
+            // verify required parameter 'FlexiblePriceTierRequest' is not null or undefined
+            assertParamExists('discountsTiersUpdate', 'FlexiblePriceTierRequest', FlexiblePriceTierRequest)
+            const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(FlexiblePriceTierRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsUpdate: async (id: number, V0DiscountRequest: V0DiscountRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discountsUpdate', 'id', id)
+            // verify required parameter 'V0DiscountRequest' is not null or undefined
+            assertParamExists('discountsUpdate', 'V0DiscountRequest', V0DiscountRequest)
+            const localVarPath = `/api/v0/discounts/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(V0DiscountRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DiscountsApi - functional programming interface
+ * @export
+ */
+export const DiscountsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DiscountsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Create an association between a user and a discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {UserDiscountMetaRequest} UserDiscountMetaRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsAssigneesCreate(id: number, parent_lookup_discount: number, UserDiscountMetaRequest: UserDiscountMetaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesCreate(id, parent_lookup_discount, UserDiscountMetaRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Delete a user discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsAssigneesDestroy(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesDestroy(id, parent_lookup_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsAssigneesList(id: number, parent_lookup_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedUserDiscountMetaList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesList(id, parent_lookup_discount, limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Partial update for a user discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {PatchedUserDiscountMetaRequest} [PatchedUserDiscountMetaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsAssigneesPartialUpdate(id: number, parent_lookup_discount: number, PatchedUserDiscountMetaRequest?: PatchedUserDiscountMetaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesPartialUpdate(id, parent_lookup_discount, PatchedUserDiscountMetaRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsAssigneesRetrieve(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesRetrieve(id, parent_lookup_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {UserDiscountMetaRequest} UserDiscountMetaRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsAssigneesUpdate(id: number, parent_lookup_discount: number, UserDiscountMetaRequest: UserDiscountMetaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesUpdate(id, parent_lookup_discount, UserDiscountMetaRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsCreate(V0DiscountRequest: V0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsCreate(V0DiscountRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
+         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsCreateBatchCreate(V0DiscountRequest: V0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsCreateBatchCreate(V0DiscountRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsCreateBatchCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsDestroy(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsListIsRedeemedEnum} [is_redeemed] * &#x60;yes&#x60; - yes * &#x60;no&#x60; - no
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
+         * @param {string} [q] q
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsList(is_redeemed?: DiscountsListIsRedeemedEnum, limit?: number, offset?: number, payment_type?: DiscountsListPaymentTypeEnum, q?: string, redemption_type?: DiscountsListRedemptionTypeEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV0DiscountList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsList(is_redeemed, limit, offset, payment_type, q, redemption_type, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {PatchedV0DiscountRequest} [PatchedV0DiscountRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsPartialUpdate(id: number, PatchedV0DiscountRequest?: PatchedV0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsPartialUpdate(id, PatchedV0DiscountRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {DiscountProductRequest} DiscountProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsProductsCreate(id: number, parent_lookup_discount: number, DiscountProductRequest: DiscountProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsCreate(id, parent_lookup_discount, DiscountProductRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Delete a linked product from a discount.
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsProductsDestroy(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsDestroy(id, parent_lookup_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsProductsList(id: number, parent_lookup_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedDiscountProductList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsList(id, parent_lookup_discount, limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Partial update for a discount product.
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {PatchedDiscountProductRequest} [PatchedDiscountProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsProductsPartialUpdate(id: number, parent_lookup_discount: number, PatchedDiscountProductRequest?: PatchedDiscountProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsPartialUpdate(id, parent_lookup_discount, PatchedDiscountProductRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsProductsRetrieve(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsRetrieve(id, parent_lookup_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id ID of the discount product
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {DiscountProductRequest} DiscountProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsProductsUpdate(id: number, parent_lookup_discount: number, DiscountProductRequest: DiscountProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsUpdate(id, parent_lookup_discount, DiscountProductRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {DiscountRedemptionRequest} DiscountRedemptionRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRedemptionsCreate(id: number, parent_lookup_redeemed_discount: number, DiscountRedemptionRequest: DiscountRedemptionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsCreate(id, parent_lookup_redeemed_discount, DiscountRedemptionRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRedemptionsDestroy(id: number, parent_lookup_redeemed_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsDestroy(id, parent_lookup_redeemed_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRedemptionsList(id: number, parent_lookup_redeemed_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedDiscountRedemptionList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsList(id, parent_lookup_redeemed_discount, limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {PatchedDiscountRedemptionRequest} [PatchedDiscountRedemptionRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRedemptionsPartialUpdate(id: number, parent_lookup_redeemed_discount: number, PatchedDiscountRedemptionRequest?: PatchedDiscountRedemptionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsPartialUpdate(id, parent_lookup_redeemed_discount, PatchedDiscountRedemptionRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRedemptionsRetrieve(id: number, parent_lookup_redeemed_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsRetrieve(id, parent_lookup_redeemed_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_redeemed_discount ID of the parent discount
+         * @param {DiscountRedemptionRequest} DiscountRedemptionRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRedemptionsUpdate(id: number, parent_lookup_redeemed_discount: number, DiscountRedemptionRequest: DiscountRedemptionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsUpdate(id, parent_lookup_redeemed_discount, DiscountRedemptionRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {FlexiblePriceTierRequest} FlexiblePriceTierRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsTiersCreate(id: number, parent_lookup_discount: number, FlexiblePriceTierRequest: FlexiblePriceTierRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersCreate(id, parent_lookup_discount, FlexiblePriceTierRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsTiersDestroy(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersDestroy(id, parent_lookup_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsTiersList(id: number, parent_lookup_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedFlexiblePriceTierList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersList(id, parent_lookup_discount, limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {PatchedFlexiblePriceTierRequest} [PatchedFlexiblePriceTierRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsTiersPartialUpdate(id: number, parent_lookup_discount: number, PatchedFlexiblePriceTierRequest?: PatchedFlexiblePriceTierRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersPartialUpdate(id, parent_lookup_discount, PatchedFlexiblePriceTierRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsTiersRetrieve(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersRetrieve(id, parent_lookup_discount, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {number} id ID of the user discount
+         * @param {number} parent_lookup_discount ID of the parent discount
+         * @param {FlexiblePriceTierRequest} FlexiblePriceTierRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsTiersUpdate(id: number, parent_lookup_discount: number, FlexiblePriceTierRequest: FlexiblePriceTierRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersUpdate(id, parent_lookup_discount, FlexiblePriceTierRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * API view set for Discounts
+         * @param {number} id A unique integer value identifying this discount.
+         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discountsUpdate(id: number, V0DiscountRequest: V0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsUpdate(id, V0DiscountRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DiscountsApi.discountsUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * DiscountsApi - factory interface
+ * @export
+ */
+export const DiscountsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DiscountsApiFp(configuration)
+    return {
+        /**
+         * Create an association between a user and a discount.
+         * @param {DiscountsApiDiscountsAssigneesCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesCreate(requestParameters: DiscountsApiDiscountsAssigneesCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserDiscountMeta> {
+            return localVarFp.discountsAssigneesCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.UserDiscountMetaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Delete a user discount.
+         * @param {DiscountsApiDiscountsAssigneesDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesDestroy(requestParameters: DiscountsApiDiscountsAssigneesDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.discountsAssigneesDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsAssigneesListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesList(requestParameters: DiscountsApiDiscountsAssigneesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedUserDiscountMetaList> {
+            return localVarFp.discountsAssigneesList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Partial update for a user discount.
+         * @param {DiscountsApiDiscountsAssigneesPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesPartialUpdate(requestParameters: DiscountsApiDiscountsAssigneesPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserDiscountMeta> {
+            return localVarFp.discountsAssigneesPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedUserDiscountMetaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsAssigneesRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesRetrieve(requestParameters: DiscountsApiDiscountsAssigneesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserDiscountMeta> {
+            return localVarFp.discountsAssigneesRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for User Discounts. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsAssigneesUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsAssigneesUpdate(requestParameters: DiscountsApiDiscountsAssigneesUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserDiscountMeta> {
+            return localVarFp.discountsAssigneesUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.UserDiscountMetaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsCreate(requestParameters: DiscountsApiDiscountsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V0Discount> {
+            return localVarFp.discountsCreate(requestParameters.V0DiscountRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
+         * @param {DiscountsApiDiscountsCreateBatchCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsCreateBatchCreate(requestParameters: DiscountsApiDiscountsCreateBatchCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V0Discount> {
+            return localVarFp.discountsCreateBatchCreate(requestParameters.V0DiscountRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsDestroy(requestParameters: DiscountsApiDiscountsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.discountsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsList(requestParameters: DiscountsApiDiscountsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV0DiscountList> {
+            return localVarFp.discountsList(requestParameters.is_redeemed, requestParameters.limit, requestParameters.offset, requestParameters.payment_type, requestParameters.q, requestParameters.redemption_type, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsPartialUpdate(requestParameters: DiscountsApiDiscountsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V0Discount> {
+            return localVarFp.discountsPartialUpdate(requestParameters.id, requestParameters.PatchedV0DiscountRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsProductsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsCreate(requestParameters: DiscountsApiDiscountsProductsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountProduct> {
+            return localVarFp.discountsProductsCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.DiscountProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Delete a linked product from a discount.
+         * @param {DiscountsApiDiscountsProductsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsDestroy(requestParameters: DiscountsApiDiscountsProductsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.discountsProductsDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsProductsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsList(requestParameters: DiscountsApiDiscountsProductsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedDiscountProductList> {
+            return localVarFp.discountsProductsList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Partial update for a discount product.
+         * @param {DiscountsApiDiscountsProductsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsPartialUpdate(requestParameters: DiscountsApiDiscountsProductsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountProduct> {
+            return localVarFp.discountsProductsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedDiscountProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsProductsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsRetrieve(requestParameters: DiscountsApiDiscountsProductsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountProduct> {
+            return localVarFp.discountsProductsRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsProductsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsProductsUpdate(requestParameters: DiscountsApiDiscountsProductsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountProduct> {
+            return localVarFp.discountsProductsUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.DiscountProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {DiscountsApiDiscountsRedemptionsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsCreate(requestParameters: DiscountsApiDiscountsRedemptionsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountRedemption> {
+            return localVarFp.discountsRedemptionsCreate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.DiscountRedemptionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {DiscountsApiDiscountsRedemptionsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsDestroy(requestParameters: DiscountsApiDiscountsRedemptionsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.discountsRedemptionsDestroy(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {DiscountsApiDiscountsRedemptionsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsList(requestParameters: DiscountsApiDiscountsRedemptionsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedDiscountRedemptionList> {
+            return localVarFp.discountsRedemptionsList(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {DiscountsApiDiscountsRedemptionsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsPartialUpdate(requestParameters: DiscountsApiDiscountsRedemptionsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountRedemption> {
+            return localVarFp.discountsRedemptionsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.PatchedDiscountRedemptionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {DiscountsApiDiscountsRedemptionsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsRetrieve(requestParameters: DiscountsApiDiscountsRedemptionsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountRedemption> {
+            return localVarFp.discountsRedemptionsRetrieve(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discount Redemptions
+         * @param {DiscountsApiDiscountsRedemptionsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRedemptionsUpdate(requestParameters: DiscountsApiDiscountsRedemptionsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<DiscountRedemption> {
+            return localVarFp.discountsRedemptionsUpdate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.DiscountRedemptionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsRetrieve(requestParameters: DiscountsApiDiscountsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V0Discount> {
+            return localVarFp.discountsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsTiersCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersCreate(requestParameters: DiscountsApiDiscountsTiersCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceTier> {
+            return localVarFp.discountsTiersCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.FlexiblePriceTierRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsTiersDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersDestroy(requestParameters: DiscountsApiDiscountsTiersDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.discountsTiersDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsTiersListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersList(requestParameters: DiscountsApiDiscountsTiersListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedFlexiblePriceTierList> {
+            return localVarFp.discountsTiersList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsTiersPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersPartialUpdate(requestParameters: DiscountsApiDiscountsTiersPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceTier> {
+            return localVarFp.discountsTiersPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedFlexiblePriceTierRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsTiersRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersRetrieve(requestParameters: DiscountsApiDiscountsTiersRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceTier> {
+            return localVarFp.discountsTiersRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+         * @param {DiscountsApiDiscountsTiersUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsTiersUpdate(requestParameters: DiscountsApiDiscountsTiersUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceTier> {
+            return localVarFp.discountsTiersUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.FlexiblePriceTierRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API view set for Discounts
+         * @param {DiscountsApiDiscountsUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discountsUpdate(requestParameters: DiscountsApiDiscountsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V0Discount> {
+            return localVarFp.discountsUpdate(requestParameters.id, requestParameters.V0DiscountRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for discountsAssigneesCreate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsAssigneesCreateRequest
+ */
+export interface DiscountsApiDiscountsAssigneesCreateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesCreate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {UserDiscountMetaRequest}
+     * @memberof DiscountsApiDiscountsAssigneesCreate
+     */
+    readonly UserDiscountMetaRequest: UserDiscountMetaRequest
+}
+
+/**
+ * Request parameters for discountsAssigneesDestroy operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsAssigneesDestroyRequest
+ */
+export interface DiscountsApiDiscountsAssigneesDestroyRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesDestroy
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesDestroy
+     */
+    readonly parent_lookup_discount: number
+}
+
+/**
+ * Request parameters for discountsAssigneesList operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsAssigneesListRequest
+ */
+export interface DiscountsApiDiscountsAssigneesListRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesList
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for discountsAssigneesPartialUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsAssigneesPartialUpdateRequest
+ */
+export interface DiscountsApiDiscountsAssigneesPartialUpdateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesPartialUpdate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {PatchedUserDiscountMetaRequest}
+     * @memberof DiscountsApiDiscountsAssigneesPartialUpdate
+     */
+    readonly PatchedUserDiscountMetaRequest?: PatchedUserDiscountMetaRequest
+}
+
+/**
+ * Request parameters for discountsAssigneesRetrieve operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsAssigneesRetrieveRequest
+ */
+export interface DiscountsApiDiscountsAssigneesRetrieveRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesRetrieve
+     */
+    readonly parent_lookup_discount: number
+}
+
+/**
+ * Request parameters for discountsAssigneesUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsAssigneesUpdateRequest
+ */
+export interface DiscountsApiDiscountsAssigneesUpdateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsAssigneesUpdate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {UserDiscountMetaRequest}
+     * @memberof DiscountsApiDiscountsAssigneesUpdate
+     */
+    readonly UserDiscountMetaRequest: UserDiscountMetaRequest
+}
+
+/**
+ * Request parameters for discountsCreate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsCreateRequest
+ */
+export interface DiscountsApiDiscountsCreateRequest {
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof DiscountsApiDiscountsCreate
+     */
+    readonly V0DiscountRequest: V0DiscountRequest
+}
+
+/**
+ * Request parameters for discountsCreateBatchCreate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsCreateBatchCreateRequest
+ */
+export interface DiscountsApiDiscountsCreateBatchCreateRequest {
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof DiscountsApiDiscountsCreateBatchCreate
+     */
+    readonly V0DiscountRequest: V0DiscountRequest
+}
+
+/**
+ * Request parameters for discountsDestroy operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsDestroyRequest
+ */
+export interface DiscountsApiDiscountsDestroyRequest {
+    /**
+     * A unique integer value identifying this discount.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsDestroy
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for discountsList operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsListRequest
+ */
+export interface DiscountsApiDiscountsListRequest {
+    /**
+     * * &#x60;yes&#x60; - yes * &#x60;no&#x60; - no
+     * @type {'no' | 'yes'}
+     * @memberof DiscountsApiDiscountsList
+     */
+    readonly is_redeemed?: DiscountsListIsRedeemedEnum
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsList
+     */
+    readonly offset?: number
+
+    /**
+     * * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
+     * @type {'customer-support' | 'financial-assistance' | 'legacy' | 'marketing' | 'sales' | 'staff'}
+     * @memberof DiscountsApiDiscountsList
+     */
+    readonly payment_type?: DiscountsListPaymentTypeEnum
+
+    /**
+     * q
+     * @type {string}
+     * @memberof DiscountsApiDiscountsList
+     */
+    readonly q?: string
+
+    /**
+     * * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+     * @type {'one-time' | 'one-time-per-user' | 'unlimited'}
+     * @memberof DiscountsApiDiscountsList
+     */
+    readonly redemption_type?: DiscountsListRedemptionTypeEnum
+}
+
+/**
+ * Request parameters for discountsPartialUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsPartialUpdateRequest
+ */
+export interface DiscountsApiDiscountsPartialUpdateRequest {
+    /**
+     * A unique integer value identifying this discount.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {PatchedV0DiscountRequest}
+     * @memberof DiscountsApiDiscountsPartialUpdate
+     */
+    readonly PatchedV0DiscountRequest?: PatchedV0DiscountRequest
+}
+
+/**
+ * Request parameters for discountsProductsCreate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsProductsCreateRequest
+ */
+export interface DiscountsApiDiscountsProductsCreateRequest {
+    /**
+     * ID of the discount product
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsCreate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {DiscountProductRequest}
+     * @memberof DiscountsApiDiscountsProductsCreate
+     */
+    readonly DiscountProductRequest: DiscountProductRequest
+}
+
+/**
+ * Request parameters for discountsProductsDestroy operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsProductsDestroyRequest
+ */
+export interface DiscountsApiDiscountsProductsDestroyRequest {
+    /**
+     * ID of the discount product
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsDestroy
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsDestroy
+     */
+    readonly parent_lookup_discount: number
+}
+
+/**
+ * Request parameters for discountsProductsList operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsProductsListRequest
+ */
+export interface DiscountsApiDiscountsProductsListRequest {
+    /**
+     * ID of the discount product
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsList
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for discountsProductsPartialUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsProductsPartialUpdateRequest
+ */
+export interface DiscountsApiDiscountsProductsPartialUpdateRequest {
+    /**
+     * ID of the discount product
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsPartialUpdate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {PatchedDiscountProductRequest}
+     * @memberof DiscountsApiDiscountsProductsPartialUpdate
+     */
+    readonly PatchedDiscountProductRequest?: PatchedDiscountProductRequest
+}
+
+/**
+ * Request parameters for discountsProductsRetrieve operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsProductsRetrieveRequest
+ */
+export interface DiscountsApiDiscountsProductsRetrieveRequest {
+    /**
+     * ID of the discount product
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsRetrieve
+     */
+    readonly parent_lookup_discount: number
+}
+
+/**
+ * Request parameters for discountsProductsUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsProductsUpdateRequest
+ */
+export interface DiscountsApiDiscountsProductsUpdateRequest {
+    /**
+     * ID of the discount product
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsProductsUpdate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {DiscountProductRequest}
+     * @memberof DiscountsApiDiscountsProductsUpdate
+     */
+    readonly DiscountProductRequest: DiscountProductRequest
+}
+
+/**
+ * Request parameters for discountsRedemptionsCreate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRedemptionsCreateRequest
+ */
+export interface DiscountsApiDiscountsRedemptionsCreateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsCreate
+     */
+    readonly parent_lookup_redeemed_discount: number
+
+    /**
+     * 
+     * @type {DiscountRedemptionRequest}
+     * @memberof DiscountsApiDiscountsRedemptionsCreate
+     */
+    readonly DiscountRedemptionRequest: DiscountRedemptionRequest
+}
+
+/**
+ * Request parameters for discountsRedemptionsDestroy operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRedemptionsDestroyRequest
+ */
+export interface DiscountsApiDiscountsRedemptionsDestroyRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsDestroy
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsDestroy
+     */
+    readonly parent_lookup_redeemed_discount: number
+}
+
+/**
+ * Request parameters for discountsRedemptionsList operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRedemptionsListRequest
+ */
+export interface DiscountsApiDiscountsRedemptionsListRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsList
+     */
+    readonly parent_lookup_redeemed_discount: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for discountsRedemptionsPartialUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRedemptionsPartialUpdateRequest
+ */
+export interface DiscountsApiDiscountsRedemptionsPartialUpdateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsPartialUpdate
+     */
+    readonly parent_lookup_redeemed_discount: number
+
+    /**
+     * 
+     * @type {PatchedDiscountRedemptionRequest}
+     * @memberof DiscountsApiDiscountsRedemptionsPartialUpdate
+     */
+    readonly PatchedDiscountRedemptionRequest?: PatchedDiscountRedemptionRequest
+}
+
+/**
+ * Request parameters for discountsRedemptionsRetrieve operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRedemptionsRetrieveRequest
+ */
+export interface DiscountsApiDiscountsRedemptionsRetrieveRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsRetrieve
+     */
+    readonly parent_lookup_redeemed_discount: number
+}
+
+/**
+ * Request parameters for discountsRedemptionsUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRedemptionsUpdateRequest
+ */
+export interface DiscountsApiDiscountsRedemptionsUpdateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRedemptionsUpdate
+     */
+    readonly parent_lookup_redeemed_discount: number
+
+    /**
+     * 
+     * @type {DiscountRedemptionRequest}
+     * @memberof DiscountsApiDiscountsRedemptionsUpdate
+     */
+    readonly DiscountRedemptionRequest: DiscountRedemptionRequest
+}
+
+/**
+ * Request parameters for discountsRetrieve operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsRetrieveRequest
+ */
+export interface DiscountsApiDiscountsRetrieveRequest {
+    /**
+     * A unique integer value identifying this discount.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for discountsTiersCreate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsTiersCreateRequest
+ */
+export interface DiscountsApiDiscountsTiersCreateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersCreate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {FlexiblePriceTierRequest}
+     * @memberof DiscountsApiDiscountsTiersCreate
+     */
+    readonly FlexiblePriceTierRequest: FlexiblePriceTierRequest
+}
+
+/**
+ * Request parameters for discountsTiersDestroy operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsTiersDestroyRequest
+ */
+export interface DiscountsApiDiscountsTiersDestroyRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersDestroy
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersDestroy
+     */
+    readonly parent_lookup_discount: number
+}
+
+/**
+ * Request parameters for discountsTiersList operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsTiersListRequest
+ */
+export interface DiscountsApiDiscountsTiersListRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersList
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for discountsTiersPartialUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsTiersPartialUpdateRequest
+ */
+export interface DiscountsApiDiscountsTiersPartialUpdateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersPartialUpdate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {PatchedFlexiblePriceTierRequest}
+     * @memberof DiscountsApiDiscountsTiersPartialUpdate
+     */
+    readonly PatchedFlexiblePriceTierRequest?: PatchedFlexiblePriceTierRequest
+}
+
+/**
+ * Request parameters for discountsTiersRetrieve operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsTiersRetrieveRequest
+ */
+export interface DiscountsApiDiscountsTiersRetrieveRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersRetrieve
+     */
+    readonly parent_lookup_discount: number
+}
+
+/**
+ * Request parameters for discountsTiersUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsTiersUpdateRequest
+ */
+export interface DiscountsApiDiscountsTiersUpdateRequest {
+    /**
+     * ID of the user discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent discount
+     * @type {number}
+     * @memberof DiscountsApiDiscountsTiersUpdate
+     */
+    readonly parent_lookup_discount: number
+
+    /**
+     * 
+     * @type {FlexiblePriceTierRequest}
+     * @memberof DiscountsApiDiscountsTiersUpdate
+     */
+    readonly FlexiblePriceTierRequest: FlexiblePriceTierRequest
+}
+
+/**
+ * Request parameters for discountsUpdate operation in DiscountsApi.
+ * @export
+ * @interface DiscountsApiDiscountsUpdateRequest
+ */
+export interface DiscountsApiDiscountsUpdateRequest {
+    /**
+     * A unique integer value identifying this discount.
+     * @type {number}
+     * @memberof DiscountsApiDiscountsUpdate
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {V0DiscountRequest}
+     * @memberof DiscountsApiDiscountsUpdate
+     */
+    readonly V0DiscountRequest: V0DiscountRequest
+}
+
+/**
+ * DiscountsApi - object-oriented interface
+ * @export
+ * @class DiscountsApi
+ * @extends {BaseAPI}
+ */
+export class DiscountsApi extends BaseAPI {
+    /**
+     * Create an association between a user and a discount.
+     * @param {DiscountsApiDiscountsAssigneesCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsAssigneesCreate(requestParameters: DiscountsApiDiscountsAssigneesCreateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsAssigneesCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.UserDiscountMetaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Delete a user discount.
+     * @param {DiscountsApiDiscountsAssigneesDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsAssigneesDestroy(requestParameters: DiscountsApiDiscountsAssigneesDestroyRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsAssigneesDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for User Discounts. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsAssigneesListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsAssigneesList(requestParameters: DiscountsApiDiscountsAssigneesListRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsAssigneesList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Partial update for a user discount.
+     * @param {DiscountsApiDiscountsAssigneesPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsAssigneesPartialUpdate(requestParameters: DiscountsApiDiscountsAssigneesPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsAssigneesPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedUserDiscountMetaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for User Discounts. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsAssigneesRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsAssigneesRetrieve(requestParameters: DiscountsApiDiscountsAssigneesRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsAssigneesRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for User Discounts. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsAssigneesUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsAssigneesUpdate(requestParameters: DiscountsApiDiscountsAssigneesUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsAssigneesUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.UserDiscountMetaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsCreate(requestParameters: DiscountsApiDiscountsCreateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsCreate(requestParameters.V0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
+     * @param {DiscountsApiDiscountsCreateBatchCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsCreateBatchCreate(requestParameters: DiscountsApiDiscountsCreateBatchCreateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsCreateBatchCreate(requestParameters.V0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsDestroy(requestParameters: DiscountsApiDiscountsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsList(requestParameters: DiscountsApiDiscountsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsList(requestParameters.is_redeemed, requestParameters.limit, requestParameters.offset, requestParameters.payment_type, requestParameters.q, requestParameters.redemption_type, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsPartialUpdate(requestParameters: DiscountsApiDiscountsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsPartialUpdate(requestParameters.id, requestParameters.PatchedV0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsProductsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsProductsCreate(requestParameters: DiscountsApiDiscountsProductsCreateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsProductsCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.DiscountProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Delete a linked product from a discount.
+     * @param {DiscountsApiDiscountsProductsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsProductsDestroy(requestParameters: DiscountsApiDiscountsProductsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsProductsDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsProductsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsProductsList(requestParameters: DiscountsApiDiscountsProductsListRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsProductsList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Partial update for a discount product.
+     * @param {DiscountsApiDiscountsProductsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsProductsPartialUpdate(requestParameters: DiscountsApiDiscountsProductsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsProductsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedDiscountProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsProductsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsProductsRetrieve(requestParameters: DiscountsApiDiscountsProductsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsProductsRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsProductsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsProductsUpdate(requestParameters: DiscountsApiDiscountsProductsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsProductsUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.DiscountProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discount Redemptions
+     * @param {DiscountsApiDiscountsRedemptionsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRedemptionsCreate(requestParameters: DiscountsApiDiscountsRedemptionsCreateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRedemptionsCreate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.DiscountRedemptionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discount Redemptions
+     * @param {DiscountsApiDiscountsRedemptionsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRedemptionsDestroy(requestParameters: DiscountsApiDiscountsRedemptionsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRedemptionsDestroy(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discount Redemptions
+     * @param {DiscountsApiDiscountsRedemptionsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRedemptionsList(requestParameters: DiscountsApiDiscountsRedemptionsListRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRedemptionsList(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discount Redemptions
+     * @param {DiscountsApiDiscountsRedemptionsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRedemptionsPartialUpdate(requestParameters: DiscountsApiDiscountsRedemptionsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRedemptionsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.PatchedDiscountRedemptionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discount Redemptions
+     * @param {DiscountsApiDiscountsRedemptionsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRedemptionsRetrieve(requestParameters: DiscountsApiDiscountsRedemptionsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRedemptionsRetrieve(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discount Redemptions
+     * @param {DiscountsApiDiscountsRedemptionsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRedemptionsUpdate(requestParameters: DiscountsApiDiscountsRedemptionsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRedemptionsUpdate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.DiscountRedemptionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsRetrieve(requestParameters: DiscountsApiDiscountsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsTiersCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsTiersCreate(requestParameters: DiscountsApiDiscountsTiersCreateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsTiersCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.FlexiblePriceTierRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsTiersDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsTiersDestroy(requestParameters: DiscountsApiDiscountsTiersDestroyRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsTiersDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsTiersListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsTiersList(requestParameters: DiscountsApiDiscountsTiersListRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsTiersList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsTiersPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsTiersPartialUpdate(requestParameters: DiscountsApiDiscountsTiersPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsTiersPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedFlexiblePriceTierRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsTiersRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsTiersRetrieve(requestParameters: DiscountsApiDiscountsTiersRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsTiersRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
+     * @param {DiscountsApiDiscountsTiersUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsTiersUpdate(requestParameters: DiscountsApiDiscountsTiersUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsTiersUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.FlexiblePriceTierRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API view set for Discounts
+     * @param {DiscountsApiDiscountsUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DiscountsApi
+     */
+    public discountsUpdate(requestParameters: DiscountsApiDiscountsUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DiscountsApiFp(this.configuration).discountsUpdate(requestParameters.id, requestParameters.V0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+/**
+ * @export
+ */
+export const DiscountsListIsRedeemedEnum = {
+    No: 'no',
+    Yes: 'yes'
+} as const;
+export type DiscountsListIsRedeemedEnum = typeof DiscountsListIsRedeemedEnum[keyof typeof DiscountsListIsRedeemedEnum];
+/**
+ * @export
+ */
+export const DiscountsListPaymentTypeEnum = {
+    CustomerSupport: 'customer-support',
+    FinancialAssistance: 'financial-assistance',
+    Legacy: 'legacy',
+    Marketing: 'marketing',
+    Sales: 'sales',
+    Staff: 'staff'
+} as const;
+export type DiscountsListPaymentTypeEnum = typeof DiscountsListPaymentTypeEnum[keyof typeof DiscountsListPaymentTypeEnum];
+/**
+ * @export
+ */
+export const DiscountsListRedemptionTypeEnum = {
+    OneTime: 'one-time',
+    OneTimePerUser: 'one-time-per-user',
+    Unlimited: 'unlimited'
+} as const;
+export type DiscountsListRedemptionTypeEnum = typeof DiscountsListRedemptionTypeEnum[keyof typeof DiscountsListRedemptionTypeEnum];
+
+
+/**
  * EnrollmentsApi - axios parameter creator
  * @export
  */
@@ -9919,6 +14444,733 @@ export class PagesApi extends BaseAPI {
      */
     public pagesfieldstypecmsProgrampageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgrampageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
         return PagesApiFp(this.configuration).pagesfieldstypecmsProgrampageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ProductsApi - axios parameter creator
+ * @export
+ */
+export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductRequest} ProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllCreate: async (ProductRequest: ProductRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ProductRequest' is not null or undefined
+            assertParamExists('productsAllCreate', 'ProductRequest', ProductRequest)
+            const localVarPath = `/api/v0/products/all/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsAllDestroy', 'id', id)
+            const localVarPath = `/api/v0/products/all/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllList: async (limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/products/all/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {PatchedProductRequest} [PatchedProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllPartialUpdate: async (id: number, PatchedProductRequest?: PatchedProductRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsAllPartialUpdate', 'id', id)
+            const localVarPath = `/api/v0/products/all/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsAllRetrieve', 'id', id)
+            const localVarPath = `/api/v0/products/all/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {ProductRequest} ProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllUpdate: async (id: number, ProductRequest: ProductRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsAllUpdate', 'id', id)
+            // verify required parameter 'ProductRequest' is not null or undefined
+            assertParamExists('productsAllUpdate', 'ProductRequest', ProductRequest)
+            const localVarPath = `/api/v0/products/all/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List and view products within the system.
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsList: async (limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/products/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List and view products within the system.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsRetrieve', 'id', id)
+            const localVarPath = `/api/v0/products/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProductsApi - functional programming interface
+ * @export
+ */
+export const ProductsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProductsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductRequest} ProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsAllCreate(ProductRequest: ProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllCreate(ProductRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsAllCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsAllDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllDestroy(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsAllDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsAllList(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllList(limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsAllList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {PatchedProductRequest} [PatchedProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsAllPartialUpdate(id: number, PatchedProductRequest?: PatchedProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllPartialUpdate(id, PatchedProductRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsAllPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsAllRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsAllRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {ProductRequest} ProductRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsAllUpdate(id: number, ProductRequest: ProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllUpdate(id, ProductRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsAllUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List and view products within the system.
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsList(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsList(limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List and view products within the system.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ProductsApi - factory interface
+ * @export
+ */
+export const ProductsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProductsApiFp(configuration)
+    return {
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductsApiProductsAllCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllCreate(requestParameters: ProductsApiProductsAllCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
+            return localVarFp.productsAllCreate(requestParameters.ProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductsApiProductsAllDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllDestroy(requestParameters: ProductsApiProductsAllDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.productsAllDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductsApiProductsAllListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllList(requestParameters: ProductsApiProductsAllListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProductList> {
+            return localVarFp.productsAllList(requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductsApiProductsAllPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllPartialUpdate(requestParameters: ProductsApiProductsAllPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
+            return localVarFp.productsAllPartialUpdate(requestParameters.id, requestParameters.PatchedProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductsApiProductsAllRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllRetrieve(requestParameters: ProductsApiProductsAllRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
+            return localVarFp.productsAllRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+         * @param {ProductsApiProductsAllUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsAllUpdate(requestParameters: ProductsApiProductsAllUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
+            return localVarFp.productsAllUpdate(requestParameters.id, requestParameters.ProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List and view products within the system.
+         * @param {ProductsApiProductsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsList(requestParameters: ProductsApiProductsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProductList> {
+            return localVarFp.productsList(requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List and view products within the system.
+         * @param {ProductsApiProductsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsRetrieve(requestParameters: ProductsApiProductsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
+            return localVarFp.productsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for productsAllCreate operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsAllCreateRequest
+ */
+export interface ProductsApiProductsAllCreateRequest {
+    /**
+     * 
+     * @type {ProductRequest}
+     * @memberof ProductsApiProductsAllCreate
+     */
+    readonly ProductRequest: ProductRequest
+}
+
+/**
+ * Request parameters for productsAllDestroy operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsAllDestroyRequest
+ */
+export interface ProductsApiProductsAllDestroyRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsAllDestroy
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for productsAllList operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsAllListRequest
+ */
+export interface ProductsApiProductsAllListRequest {
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof ProductsApiProductsAllList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof ProductsApiProductsAllList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for productsAllPartialUpdate operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsAllPartialUpdateRequest
+ */
+export interface ProductsApiProductsAllPartialUpdateRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsAllPartialUpdate
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {PatchedProductRequest}
+     * @memberof ProductsApiProductsAllPartialUpdate
+     */
+    readonly PatchedProductRequest?: PatchedProductRequest
+}
+
+/**
+ * Request parameters for productsAllRetrieve operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsAllRetrieveRequest
+ */
+export interface ProductsApiProductsAllRetrieveRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsAllRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for productsAllUpdate operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsAllUpdateRequest
+ */
+export interface ProductsApiProductsAllUpdateRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsAllUpdate
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {ProductRequest}
+     * @memberof ProductsApiProductsAllUpdate
+     */
+    readonly ProductRequest: ProductRequest
+}
+
+/**
+ * Request parameters for productsList operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsListRequest
+ */
+export interface ProductsApiProductsListRequest {
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof ProductsApiProductsList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof ProductsApiProductsList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for productsRetrieve operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsRetrieveRequest
+ */
+export interface ProductsApiProductsRetrieveRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * ProductsApi - object-oriented interface
+ * @export
+ * @class ProductsApi
+ * @extends {BaseAPI}
+ */
+export class ProductsApi extends BaseAPI {
+    /**
+     * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+     * @param {ProductsApiProductsAllCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsAllCreate(requestParameters: ProductsApiProductsAllCreateRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsAllCreate(requestParameters.ProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+     * @param {ProductsApiProductsAllDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsAllDestroy(requestParameters: ProductsApiProductsAllDestroyRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsAllDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+     * @param {ProductsApiProductsAllListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsAllList(requestParameters: ProductsApiProductsAllListRequest = {}, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsAllList(requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+     * @param {ProductsApiProductsAllPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsAllPartialUpdate(requestParameters: ProductsApiProductsAllPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsAllPartialUpdate(requestParameters.id, requestParameters.PatchedProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+     * @param {ProductsApiProductsAllRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsAllRetrieve(requestParameters: ProductsApiProductsAllRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsAllRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
+     * @param {ProductsApiProductsAllUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsAllUpdate(requestParameters: ProductsApiProductsAllUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsAllUpdate(requestParameters.id, requestParameters.ProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List and view products within the system.
+     * @param {ProductsApiProductsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsList(requestParameters: ProductsApiProductsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsList(requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List and view products within the system.
+     * @param {ProductsApiProductsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsRetrieve(requestParameters: ProductsApiProductsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
