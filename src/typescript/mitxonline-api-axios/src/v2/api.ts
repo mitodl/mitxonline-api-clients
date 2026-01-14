@@ -3670,6 +3670,43 @@ export interface ProductFlexibilePriceRequest {
     'is_active'?: boolean;
 }
 /**
+ * Simple serializer for Product without related purchasable objects
+ * @export
+ * @interface ProductFlexiblePrice
+ */
+export interface ProductFlexiblePrice {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductFlexiblePrice
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductFlexiblePrice
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductFlexiblePrice
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof ProductFlexiblePrice
+     */
+    'is_active'?: boolean;
+    /**
+     * 
+     * @type {V0Discount}
+     * @memberof ProductFlexiblePrice
+     */
+    'product_flexible_price': V0Discount | null;
+}
+/**
  * @type ProductPurchasableObject
  * @export
  */
@@ -14743,6 +14780,39 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Retrieve a product with user-specific flexible price information
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsUserFlexiblePriceRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsUserFlexiblePriceRetrieve', 'id', id)
+            const localVarPath = `/api/v0/products/{id}/user_flexible_price/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -14853,6 +14923,18 @@ export const ProductsApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['ProductsApi.productsRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Retrieve a product with user-specific flexible price information
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsUserFlexiblePriceRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductFlexiblePrice>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsUserFlexiblePriceRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsUserFlexiblePriceRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -14934,6 +15016,15 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          */
         productsRetrieve(requestParameters: ProductsApiProductsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Product> {
             return localVarFp.productsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a product with user-specific flexible price information
+         * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProductFlexiblePrice> {
+            return localVarFp.productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -15079,6 +15170,20 @@ export interface ProductsApiProductsRetrieveRequest {
 }
 
 /**
+ * Request parameters for productsUserFlexiblePriceRetrieve operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsUserFlexiblePriceRetrieveRequest
+ */
+export interface ProductsApiProductsUserFlexiblePriceRetrieveRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsUserFlexiblePriceRetrieve
+     */
+    readonly id: number
+}
+
+/**
  * ProductsApi - object-oriented interface
  * @export
  * @class ProductsApi
@@ -15171,6 +15276,17 @@ export class ProductsApi extends BaseAPI {
      */
     public productsRetrieve(requestParameters: ProductsApiProductsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a product with user-specific flexible price information
+     * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
