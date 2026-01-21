@@ -437,6 +437,51 @@ export interface ChangeEmailRequestUpdateRequest {
     'confirmed': boolean;
 }
 /**
+ * Serializes the payload for the checkout data.
+ * @export
+ * @interface CheckoutPayload
+ */
+export interface CheckoutPayload {
+    /**
+     * Set if the order was automatically completed and no checkout process is required.
+     * @type {boolean}
+     * @memberof CheckoutPayload
+     */
+    'no_checkout': boolean;
+    /**
+     * The URL to POST the form to.
+     * @type {string}
+     * @memberof CheckoutPayload
+     */
+    'url': string;
+    /**
+     * The method to use for the checkout form (always POST).
+     * @type {string}
+     * @memberof CheckoutPayload
+     */
+    'method': string;
+    /**
+     * The data for the form.
+     * @type {any}
+     * @memberof CheckoutPayload
+     */
+    'payload': any;
+    /**
+     * If the order was automatically completed, the ID of the new order.
+     * @type {number}
+     * @memberof CheckoutPayload
+     */
+    'order_id': number;
+    /**
+     * 
+     * @type {ErrorEnum}
+     * @memberof CheckoutPayload
+     */
+    'error': ErrorEnum;
+}
+
+
+/**
  * * `None` - ---- * `1` - Small/Start-up (1+ employees) * `9` - Small/Home office (1-9 employees) * `99` - Small (10-99 employees) * `999` - Small to medium-sized (100-999 employees) * `9999` - Medium-sized (1000-9999 employees) * `10000` - Large Enterprise (10,000+ employees) * `0` - Other (N/A or Don\'t know)
  * @export
  * @enum {string}
@@ -801,7 +846,7 @@ export interface CoursePageItem {
      */
     'about': string | null;
     /**
-     * What you will learn from this course.
+     * *Required for Verifiable Credential generation. What you will learn from this course.
      * @type {string}
      * @memberof CoursePageItem
      */
@@ -1776,6 +1821,46 @@ export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof Enrollme
 
 
 /**
+ * * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
+ * @export
+ * @enum {string}
+ */
+
+export const ErrorEnum = {
+    /**
+    * enroll-blocked
+    */
+    EnrollBlocked: 'enroll-blocked',
+    /**
+    * enroll-duplicated
+    */
+    EnrollDuplicated: 'enroll-duplicated',
+    /**
+    * course-non-upgradable
+    */
+    CourseNonUpgradable: 'course-non-upgradable',
+    /**
+    * discount-invalid
+    */
+    DiscountInvalid: 'discount-invalid',
+    /**
+    * b2b-error-missing-enrollment-code
+    */
+    B2bErrorMissingEnrollmentCode: 'b2b-error-missing-enrollment-code',
+    /**
+    * b2b-invalid-basket
+    */
+    B2bInvalidBasket: 'b2b-invalid-basket',
+    /**
+    * basket-empty
+    */
+    BasketEmpty: 'basket-empty'
+} as const;
+
+export type ErrorEnum = typeof ErrorEnum[keyof typeof ErrorEnum];
+
+
+/**
  * Serializer class that includes email address as part of the legal address
  * @export
  * @interface ExtendedLegalAddress
@@ -2287,6 +2372,12 @@ export interface Nested {
      * @memberof Nested
      */
     'is_bulk'?: boolean;
+    /**
+     * Discount is only for creating verified course run enrollments for a program.
+     * @type {boolean}
+     * @memberof Nested
+     */
+    'is_program_discount'?: boolean | null;
 }
 
 
@@ -3447,7 +3538,7 @@ export interface PatchedUserRequest {
     'is_active'?: boolean;
 }
 /**
- * 
+ * Serializes a discount.
  * @export
  * @interface PatchedV0DiscountRequest
  */
@@ -4062,7 +4153,7 @@ export interface ProgramPageItem {
      */
     'about': string | null;
     /**
-     * What you will learn from this course.
+     * *Required for Verifiable Credential generation. What you will learn from this course.
      * @type {string}
      * @memberof ProgramPageItem
      */
@@ -4555,6 +4646,12 @@ export interface User {
      * @memberof User
      */
     'b2b_organizations': Array<OrganizationPage>;
+    /**
+     * The SSO ID (usually a Keycloak UUID) for the user.
+     * @type {string}
+     * @memberof User
+     */
+    'global_id': string | null;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
@@ -4885,7 +4982,7 @@ export interface UserRequest {
     'is_active'?: boolean;
 }
 /**
- * 
+ * Serializes a discount.
  * @export
  * @interface V0Discount
  */
@@ -4960,7 +5057,7 @@ export interface V0Discount {
 
 
 /**
- * 
+ * Serializes a discount.
  * @export
  * @interface V0DiscountRequest
  */
@@ -7442,6 +7539,35 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsCheckoutRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/baskets/checkout/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Clears the basket for the current user.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7882,6 +8008,17 @@ export const BasketsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async basketsCheckoutRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutPayload>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCheckoutRetrieve(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['BasketsApi.basketsCheckoutRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Clears the basket for the current user.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8048,6 +8185,14 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
          */
         basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BasketWithProduct> {
             return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        basketsCheckoutRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CheckoutPayload> {
+            return localVarFp.basketsCheckoutRetrieve(options).then((request) => request(axios, basePath));
         },
         /**
          * Clears the basket for the current user.
@@ -8377,6 +8522,16 @@ export class BasketsApi extends BaseAPI {
      */
     public basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns the payload necessary to redirect the user to CyberSource for payment.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BasketsApi
+     */
+    public basketsCheckoutRetrieve(options?: RawAxiosRequestConfig) {
+        return BasketsApiFp(this.configuration).basketsCheckoutRetrieve(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -17536,6 +17691,136 @@ export class VerifiableProgramCredentialApi extends BaseAPI {
      */
     public verifiableProgramCredentialDownloadList(requestParameters: VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
         return VerifiableProgramCredentialApiFp(this.configuration).verifiableProgramCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * VerifiedProgramEnrollmentsApi - axios parameter creator
+ * @export
+ */
+export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+         * @param {string} courserun_id Readable ID for the course run to enroll in.
+         * @param {string} program_id Readable ID for the program.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifiedProgramEnrollmentsCreate: async (courserun_id: string, program_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'courserun_id' is not null or undefined
+            assertParamExists('verifiedProgramEnrollmentsCreate', 'courserun_id', courserun_id)
+            // verify required parameter 'program_id' is not null or undefined
+            assertParamExists('verifiedProgramEnrollmentsCreate', 'program_id', program_id)
+            const localVarPath = `/api/v2/verified_program_enrollments/{program_id}/{courserun_id}/`
+                .replace(`{${"courserun_id"}}`, encodeURIComponent(String(courserun_id)))
+                .replace(`{${"program_id"}}`, encodeURIComponent(String(program_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * VerifiedProgramEnrollmentsApi - functional programming interface
+ * @export
+ */
+export const VerifiedProgramEnrollmentsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = VerifiedProgramEnrollmentsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+         * @param {string} courserun_id Readable ID for the course run to enroll in.
+         * @param {string} program_id Readable ID for the program.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifiedProgramEnrollmentsCreate(courserun_id: string, program_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedProgramEnrollmentsCreate(courserun_id, program_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['VerifiedProgramEnrollmentsApi.verifiedProgramEnrollmentsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * VerifiedProgramEnrollmentsApi - factory interface
+ * @export
+ */
+export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = VerifiedProgramEnrollmentsApiFp(configuration)
+    return {
+        /**
+         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+         * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentRequestV2> {
+            return localVarFp.verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.program_id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for verifiedProgramEnrollmentsCreate operation in VerifiedProgramEnrollmentsApi.
+ * @export
+ * @interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest
+ */
+export interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest {
+    /**
+     * Readable ID for the course run to enroll in.
+     * @type {string}
+     * @memberof VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreate
+     */
+    readonly courserun_id: string
+
+    /**
+     * Readable ID for the program.
+     * @type {string}
+     * @memberof VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreate
+     */
+    readonly program_id: string
+}
+
+/**
+ * VerifiedProgramEnrollmentsApi - object-oriented interface
+ * @export
+ * @class VerifiedProgramEnrollmentsApi
+ * @extends {BaseAPI}
+ */
+export class VerifiedProgramEnrollmentsApi extends BaseAPI {
+    /**
+     * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+     * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VerifiedProgramEnrollmentsApi
+     */
+    public verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
+        return VerifiedProgramEnrollmentsApiFp(this.configuration).verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
