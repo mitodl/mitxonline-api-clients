@@ -78,11 +78,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^20.11.19":
-  version: 20.19.25
-  resolution: "@types/node@npm:20.19.25"
+  version: 20.19.30
+  resolution: "@types/node@npm:20.19.30"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/992f18cb03264e8dc2fd3cb64f428ee4997cb6d928dad68bf4b752eacac73062697ce7ce6a0e71a6d15af510814397a20597a72332dfec638e02fb3a382ad014
+  checksum: 10c0/23dbea652727d947ea35fc1c4e8acb7e1c535e85f6c139c3a4697864a5af164655ce305ab0877ea4cca537deee0405bf56aeac714f236ae1a3dd0fa6b87cc860
   languageName: node
   linkType: hard
 
@@ -133,13 +133,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.6.5":
-  version: 1.13.2
-  resolution: "axios@npm:1.13.2"
+  version: 1.13.3
+  resolution: "axios@npm:1.13.3"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.4"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/e8a42e37e5568ae9c7a28c348db0e8cf3e43d06fcbef73f0048669edfe4f71219664da7b6cc991b0c0f01c28a48f037c515263cb79be1f1ae8ff034cd813867b
+  checksum: 10c0/86f0770624d9f14a3f8f8738c8b8f7f7fbb7b0d4ad38757db1de2d71007a0311bc597661c5ff4b4a9ee6350c6956a7282e3a281fcdf7b5b32054e35a8801e2ce
   languageName: node
   linkType: hard
 
@@ -177,9 +177,9 @@ __metadata:
   linkType: hard
 
 "diff@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "diff@npm:4.0.2"
-  checksum: 10c0/81b91f9d39c4eaca068eb0c1eb0e4afbdc5bb2941d197f513dd596b820b956fef43485876226d65d497bebc15666aa2aa82c679e84f65d5f2bfbf14ee46e32c1
+  version: 4.0.4
+  resolution: "diff@npm:4.0.4"
+  checksum: 10c0/855fb70b093d1d9643ddc12ea76dca90dc9d9cdd7f82c08ee8b9325c0dc5748faf3c82e2047ced5dcaa8b26e58f7903900be2628d0380a222c02d79d8de385df
   languageName: node
   linkType: hard
 
