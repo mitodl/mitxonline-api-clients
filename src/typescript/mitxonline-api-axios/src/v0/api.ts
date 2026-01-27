@@ -75,6 +75,37 @@ export interface BaseCourse {
     'type': string;
 }
 /**
+ * Basic program model serializer
+ * @export
+ * @interface BaseProgram
+ */
+export interface BaseProgram {
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProgram
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProgram
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseProgram
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProgram
+     */
+    'type': string;
+}
+/**
  * Basket model serializer
  * @export
  * @interface Basket
@@ -1329,10 +1360,10 @@ export interface CourseWithCourseRunsSerializerV2 {
     'page': CoursePage;
     /**
      * 
-     * @type {Array<{ [key: string]: any; }>}
+     * @type {Array<BaseProgram>}
      * @memberof CourseWithCourseRunsSerializerV2
      */
-    'programs': Array<{ [key: string]: any; }> | null;
+    'programs': Array<BaseProgram> | null;
     /**
      * List topics of a course
      * @type {Array<{ [key: string]: any; }>}
@@ -2289,6 +2320,49 @@ export interface LegalAddressRequest {
     'state'?: string | null;
 }
 /**
+ * Serializes order lines.
+ * @export
+ * @interface Line
+ */
+export interface Line {
+    /**
+     * 
+     * @type {number}
+     * @memberof Line
+     */
+    'quantity': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Line
+     */
+    'item_description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Line
+     */
+    'unit_price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Line
+     */
+    'total_price': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Line
+     */
+    'id': number;
+    /**
+     * 
+     * @type {Product}
+     * @memberof Line
+     */
+    'product': Product;
+}
+/**
  * 
  * @export
  * @interface Nested
@@ -2490,6 +2564,69 @@ export interface Order {
      * @memberof Order
      */
     'street_address': OrderStreetAddress;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface OrderHistory
+ */
+export interface OrderHistory {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderHistory
+     */
+    'id': number;
+    /**
+     * 
+     * @type {StateEnum}
+     * @memberof OrderHistory
+     */
+    'state': StateEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderHistory
+     */
+    'reference_number'?: string | null;
+    /**
+     * 
+     * @type {PublicUser}
+     * @memberof OrderHistory
+     */
+    'purchaser': PublicUser;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderHistory
+     */
+    'total_price_paid': string;
+    /**
+     * 
+     * @type {Array<Line>}
+     * @memberof OrderHistory
+     */
+    'lines': Array<Line>;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderHistory
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {Array<any>}
+     * @memberof OrderHistory
+     */
+    'titles': Array<any>;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderHistory
+     */
+    'updated_on': string;
 }
 
 
@@ -3044,6 +3181,37 @@ export interface PaginatedFlexiblePriceTierList {
      * @memberof PaginatedFlexiblePriceTierList
      */
     'results': Array<FlexiblePriceTier>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedOrderHistoryList
+ */
+export interface PaginatedOrderHistoryList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedOrderHistoryList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedOrderHistoryList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedOrderHistoryList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<OrderHistory>}
+     * @memberof PaginatedOrderHistoryList
+     */
+    'results': Array<OrderHistory>;
 }
 /**
  * 
@@ -5750,10 +5918,10 @@ export interface V2Course {
     'page': CoursePage;
     /**
      * 
-     * @type {Array<{ [key: string]: any; }>}
+     * @type {Array<BaseProgram>}
      * @memberof V2Course
      */
-    'programs': Array<{ [key: string]: any; }> | null;
+    'programs': Array<BaseProgram> | null;
     /**
      * List topics of a course
      * @type {Array<{ [key: string]: any; }>}
@@ -14174,6 +14342,296 @@ export class EnrollmentsApi extends BaseAPI {
      */
     public userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * OrdersApi - axios parameter creator
+ * @export
+ */
+export const OrdersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Retrives the current user\'s order history.
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersHistoryList: async (limit?: number, offset?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/orders/history/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve a historical order for the current user.
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersHistoryRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('ordersHistoryRetrieve', 'id', id)
+            const localVarPath = `/api/v0/orders/history/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Viewset to retrieve an order so it can be viewed as a receipt.
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersReceiptRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('ordersReceiptRetrieve', 'id', id)
+            const localVarPath = `/api/v0/orders/receipt/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * OrdersApi - functional programming interface
+ * @export
+ */
+export const OrdersApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OrdersApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Retrives the current user\'s order history.
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersHistoryList(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrderHistoryList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersHistoryList(limit, offset, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersHistoryList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Retrieve a historical order for the current user.
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersHistoryRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderHistory>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersHistoryRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersHistoryRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Viewset to retrieve an order so it can be viewed as a receipt.
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersReceiptRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Order>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersReceiptRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersReceiptRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * OrdersApi - factory interface
+ * @export
+ */
+export const OrdersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OrdersApiFp(configuration)
+    return {
+        /**
+         * Retrives the current user\'s order history.
+         * @param {OrdersApiOrdersHistoryListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersHistoryList(requestParameters: OrdersApiOrdersHistoryListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedOrderHistoryList> {
+            return localVarFp.ordersHistoryList(requestParameters.limit, requestParameters.offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a historical order for the current user.
+         * @param {OrdersApiOrdersHistoryRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersHistoryRetrieve(requestParameters: OrdersApiOrdersHistoryRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrderHistory> {
+            return localVarFp.ordersHistoryRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Viewset to retrieve an order so it can be viewed as a receipt.
+         * @param {OrdersApiOrdersReceiptRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Order> {
+            return localVarFp.ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for ordersHistoryList operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersHistoryListRequest
+ */
+export interface OrdersApiOrdersHistoryListRequest {
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof OrdersApiOrdersHistoryList
+     */
+    readonly limit?: number
+
+    /**
+     * The initial index from which to return the results.
+     * @type {number}
+     * @memberof OrdersApiOrdersHistoryList
+     */
+    readonly offset?: number
+}
+
+/**
+ * Request parameters for ordersHistoryRetrieve operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersHistoryRetrieveRequest
+ */
+export interface OrdersApiOrdersHistoryRetrieveRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrdersApiOrdersHistoryRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for ordersReceiptRetrieve operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersReceiptRetrieveRequest
+ */
+export interface OrdersApiOrdersReceiptRetrieveRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrdersApiOrdersReceiptRetrieve
+     */
+    readonly id: number
+}
+
+/**
+ * OrdersApi - object-oriented interface
+ * @export
+ * @class OrdersApi
+ * @extends {BaseAPI}
+ */
+export class OrdersApi extends BaseAPI {
+    /**
+     * Retrives the current user\'s order history.
+     * @param {OrdersApiOrdersHistoryListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersHistoryList(requestParameters: OrdersApiOrdersHistoryListRequest = {}, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersHistoryList(requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a historical order for the current user.
+     * @param {OrdersApiOrdersHistoryRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersHistoryRetrieve(requestParameters: OrdersApiOrdersHistoryRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersHistoryRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Viewset to retrieve an order so it can be viewed as a receipt.
+     * @param {OrdersApiOrdersReceiptRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
