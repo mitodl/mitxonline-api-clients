@@ -4457,7 +4457,7 @@ export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof Redempti
 
 
 /**
- * * `b2b-disallowed` - b2b-disallowed * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-enroll-success` - b2b-enroll-success
+ * * `b2b-disallowed` - b2b-disallowed * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
  * @export
  * @enum {string}
  */
@@ -4487,6 +4487,10 @@ export const ResultEnum = {
     * b2b-error-requires-checkout
     */
     ErrorRequiresCheckout: 'b2b-error-requires-checkout',
+    /**
+    * b2b-error-not-enrollable
+    */
+    ErrorNotEnrollable: 'b2b-error-not-enrollable',
     /**
     * b2b-enroll-success
     */
@@ -6782,6 +6786,81 @@ export interface V2UserProgramEnrollmentDetail {
      * @memberof V2UserProgramEnrollmentDetail
      */
     'certificate': ProgramCertificate | null;
+}
+/**
+ * ProgramCertificate model serializer
+ * @export
+ * @interface V3ProgramCertificate
+ */
+export interface V3ProgramCertificate {
+    /**
+     * 
+     * @type {string}
+     * @memberof V3ProgramCertificate
+     */
+    'uuid': string;
+    /**
+     * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
+     * @type {string}
+     * @memberof V3ProgramCertificate
+     */
+    'link': string;
+}
+/**
+ * Program Model Serializer v2
+ * @export
+ * @interface V3SimpleProgram
+ */
+export interface V3SimpleProgram {
+    /**
+     * 
+     * @type {string}
+     * @memberof V3SimpleProgram
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof V3SimpleProgram
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof V3SimpleProgram
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof V3SimpleProgram
+     */
+    'program_type'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V3SimpleProgram
+     */
+    'live'?: boolean;
+}
+/**
+ * Serializer for user program enrollments.
+ * @export
+ * @interface V3UserProgramEnrollment
+ */
+export interface V3UserProgramEnrollment {
+    /**
+     * 
+     * @type {V3SimpleProgram}
+     * @memberof V3UserProgramEnrollment
+     */
+    'program': V3SimpleProgram;
+    /**
+     * 
+     * @type {V3ProgramCertificate}
+     * @memberof V3UserProgramEnrollment
+     */
+    'certificate': V3ProgramCertificate | null;
 }
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
@@ -16430,6 +16509,68 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * ViewSet for user program enrollments with v3 serializers.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v3/program_enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * ViewSet for user program enrollments with v3 serializers.
+         * @param {number} program_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsRetrieve: async (program_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'program_id' is not null or undefined
+            assertParamExists('v3ProgramEnrollmentsRetrieve', 'program_id', program_id)
+            const localVarPath = `/api/v3/program_enrollments/{program_id}/`
+                .replace(`{${"program_id"}}`, encodeURIComponent(String(program_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -16510,6 +16651,29 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * ViewSet for user program enrollments with v3 serializers.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V3UserProgramEnrollment>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * ViewSet for user program enrollments with v3 serializers.
+         * @param {number} program_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v3ProgramEnrollmentsRetrieve(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V3UserProgramEnrollment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsRetrieve(program_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -16572,6 +16736,23 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
         v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2UserProgramEnrollmentDetail> {
             return localVarFp.v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
+        /**
+         * ViewSet for user program enrollments with v3 serializers.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<V3UserProgramEnrollment>> {
+            return localVarFp.v3ProgramEnrollmentsList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * ViewSet for user program enrollments with v3 serializers.
+         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V3UserProgramEnrollment> {
+            return localVarFp.v3ProgramEnrollmentsRetrieve(requestParameters.program_id, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -16629,6 +16810,20 @@ export interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest {
      * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieve
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for v3ProgramEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
+ * @export
+ * @interface ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest
+ */
+export interface ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieve
+     */
+    readonly program_id: number
 }
 
 /**
@@ -16700,6 +16895,27 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      */
     public v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * ViewSet for user program enrollments with v3 serializers.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * ViewSet for user program enrollments with v3 serializers.
+     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v3ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsRetrieve(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
