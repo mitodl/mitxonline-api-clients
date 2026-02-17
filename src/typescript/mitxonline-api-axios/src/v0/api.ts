@@ -1163,19 +1163,19 @@ export interface CourseRunGrade {
      * @type {string}
      * @memberof CourseRunGrade
      */
-    'letter_grade'?: string | null;
+    'letter_grade': string | null;
     /**
      * 
      * @type {boolean}
      * @memberof CourseRunGrade
      */
-    'passed'?: boolean;
+    'passed': boolean;
     /**
      * 
      * @type {boolean}
      * @memberof CourseRunGrade
      */
-    'set_by_admin'?: boolean;
+    'set_by_admin': boolean;
     /**
      * Returns the grade field value as a number out of 100 (or Decimal(0) if the value is None)
      * @type {number}
@@ -9828,11 +9828,11 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * Retrieve a specific course - API v2
-         * @param {number} id A unique integer value identifying this course.
+         * @param {string} id A unique integer value (pk) or readable_id string identifying this course.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV2CoursesRetrieve: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiV2CoursesRetrieve', 'id', id)
             const localVarPath = `/api/v2/courses/{id}/`
@@ -9922,11 +9922,11 @@ export const CoursesApiFp = function(configuration?: Configuration) {
         },
         /**
          * Retrieve a specific course - API v2
-         * @param {number} id A unique integer value identifying this course.
+         * @param {string} id A unique integer value (pk) or readable_id string identifying this course.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRunsSerializerV2>> {
+        async apiV2CoursesRetrieve(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRunsSerializerV2>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesRetrieve(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[index]?.url;
@@ -10135,11 +10135,11 @@ export interface CoursesApiApiV2CoursesListRequest {
  */
 export interface CoursesApiApiV2CoursesRetrieveRequest {
     /**
-     * A unique integer value identifying this course.
-     * @type {number}
+     * A unique integer value (pk) or readable_id string identifying this course.
+     * @type {string}
      * @memberof CoursesApiApiV2CoursesRetrieve
      */
-    readonly id: number
+    readonly id: string
 }
 
 /**
@@ -17085,11 +17085,11 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * API view set for Programs - v2
-         * @param {number} id A unique integer value identifying this program.
+         * @param {string} id A unique integer value (pk) or readable_id string identifying this program.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programsRetrieveV2: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        programsRetrieveV2: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('programsRetrieveV2', 'id', id)
             const localVarPath = `/api/v2/programs/{id}/`
@@ -17175,11 +17175,11 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
         },
         /**
          * API view set for Programs - v2
-         * @param {number} id A unique integer value identifying this program.
+         * @param {string} id A unique integer value (pk) or readable_id string identifying this program.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programsRetrieveV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2Program>> {
+        async programsRetrieveV2(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2Program>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV2(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[index]?.url;
@@ -17360,11 +17360,11 @@ export interface ProgramsApiProgramsRetrieveV1Request {
  */
 export interface ProgramsApiProgramsRetrieveV2Request {
     /**
-     * A unique integer value identifying this program.
-     * @type {number}
+     * A unique integer value (pk) or readable_id string identifying this program.
+     * @type {string}
      * @memberof ProgramsApiProgramsRetrieveV2
      */
-    readonly id: number
+    readonly id: string
 }
 
 /**
