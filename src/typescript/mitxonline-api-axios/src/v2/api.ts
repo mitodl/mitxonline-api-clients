@@ -851,13 +851,13 @@ export interface CoursePageItem {
      * @type {number}
      * @memberof CoursePageItem
      */
-    'min_price': number | null;
+    'min_price': number;
     /**
      * Specify the maximum product price. This is used by MIT Learn.
      * @type {number}
      * @memberof CoursePageItem
      */
-    'max_price': number | null;
+    'max_price': number;
     /**
      * A short description indicating prerequisites of this course/program.
      * @type {string}
@@ -4295,13 +4295,13 @@ export interface ProgramPageItem {
      * @type {number}
      * @memberof ProgramPageItem
      */
-    'min_price': number | null;
+    'min_price': number;
     /**
      * Specify the maximum product price. This is used by MIT Learn.
      * @type {number}
      * @memberof ProgramPageItem
      */
-    'max_price': number | null;
+    'max_price': number;
     /**
      * A short description indicating prerequisites of this course/program.
      * @type {string}
