@@ -6861,6 +6861,12 @@ export interface V3UserProgramEnrollment {
      * @memberof V3UserProgramEnrollment
      */
     'certificate': V3ProgramCertificate | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V3UserProgramEnrollment
+     */
+    'enrollment_mode'?: string | null;
 }
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
