@@ -75,6 +75,37 @@ export interface BaseCourse {
     'type': string;
 }
 /**
+ * Simple serializer for Product without related purchasable objects
+ * @export
+ * @interface BaseProduct
+ */
+export interface BaseProduct {
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseProduct
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProduct
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProduct
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof BaseProduct
+     */
+    'is_active'?: boolean;
+}
+/**
  * Basic program model serializer
  * @export
  * @interface BaseProgram
@@ -1299,6 +1330,12 @@ export interface CourseRunV2 {
     'course_number': string;
     /**
      * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof CourseRunV2
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
+    /**
+     * 
      * @type {Array<ProductFlexibilePrice>}
      * @memberof CourseRunV2
      */
@@ -1832,6 +1869,31 @@ export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountType
 
 
 /**
+ * Enrollment mode serializer.
+ * @export
+ * @interface EnrollmentMode
+ */
+export interface EnrollmentMode {
+    /**
+     * 
+     * @type {string}
+     * @memberof EnrollmentMode
+     */
+    'mode_slug'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EnrollmentMode
+     */
+    'mode_display_name'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EnrollmentMode
+     */
+    'requires_payment'?: boolean;
+}
+/**
  * * `audit` - audit * `verified` - verified
  * @export
  * @enum {string}
@@ -1851,6 +1913,31 @@ export const EnrollmentModeEnum = {
 export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof EnrollmentModeEnum];
 
 
+/**
+ * Enrollment mode serializer.
+ * @export
+ * @interface EnrollmentModeRequest
+ */
+export interface EnrollmentModeRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof EnrollmentModeRequest
+     */
+    'mode_slug'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EnrollmentModeRequest
+     */
+    'mode_display_name'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EnrollmentModeRequest
+     */
+    'requires_payment'?: boolean;
+}
 /**
  * * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
  * @export
@@ -3433,33 +3520,33 @@ export interface PaginatedV2ProgramCollectionList {
 /**
  * 
  * @export
- * @interface PaginatedV2ProgramList
+ * @interface PaginatedV2ProgramDetailList
  */
-export interface PaginatedV2ProgramList {
+export interface PaginatedV2ProgramDetailList {
     /**
      * 
      * @type {number}
-     * @memberof PaginatedV2ProgramList
+     * @memberof PaginatedV2ProgramDetailList
      */
     'count': number;
     /**
      * 
      * @type {string}
-     * @memberof PaginatedV2ProgramList
+     * @memberof PaginatedV2ProgramDetailList
      */
     'next'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof PaginatedV2ProgramList
+     * @memberof PaginatedV2ProgramDetailList
      */
     'previous'?: string | null;
     /**
      * 
-     * @type {Array<V2Program>}
-     * @memberof PaginatedV2ProgramList
+     * @type {Array<V2ProgramDetail>}
+     * @memberof PaginatedV2ProgramDetailList
      */
-    'results': Array<V2Program>;
+    'results': Array<V2ProgramDetail>;
 }
 /**
  * 
@@ -3969,7 +4056,7 @@ export interface ProductFlexiblePrice {
  * @type ProductPurchasableObject
  * @export
  */
-export type ProductPurchasableObject = ProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf1;
+export type ProductPurchasableObject = ProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf1 | ProductPurchasableObjectOneOf2;
 
 /**
  * 
@@ -4091,6 +4178,37 @@ export interface ProductPurchasableObjectOneOf1Course {
      * 
      * @type {object}
      * @memberof ProductPurchasableObjectOneOf1Course
+     */
+    'page'?: object;
+}
+/**
+ * 
+ * @export
+ * @interface ProductPurchasableObjectOneOf2
+ */
+export interface ProductPurchasableObjectOneOf2 {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductPurchasableObjectOneOf2
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf2
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductPurchasableObjectOneOf2
+     */
+    'readable_id'?: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof ProductPurchasableObjectOneOf2
      */
     'page'?: object;
 }
@@ -5407,6 +5525,12 @@ export interface V1BaseCourseRun {
     'course_number': string;
     /**
      * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V1BaseCourseRun
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
+    /**
+     * 
      * @type {Array<ProductFlexibilePrice>}
      * @memberof V1BaseCourseRun
      */
@@ -5532,6 +5656,12 @@ export interface V1CourseRunWithCourse {
      * @memberof V1CourseRunWithCourse
      */
     'course_number': string;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V1CourseRunWithCourse
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
     /**
      * List of products associated with this course run
      * @type {Array<ProductFlexibilePrice>}
@@ -5751,6 +5881,12 @@ export interface V1Program {
      * @memberof V1Program
      */
     'live'?: boolean;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V1Program
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
 }
 /**
  * ProgramCertificate model serializer
@@ -6195,6 +6331,12 @@ export interface V2CourseRunWithCourse {
     'course_number': string;
     /**
      * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V2CourseRunWithCourse
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
+    /**
+     * 
      * @type {Array<ProductFlexibilePrice>}
      * @memberof V2CourseRunWithCourse
      */
@@ -6471,6 +6613,12 @@ export interface V2Program {
      * @memberof V2Program
      */
     'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V2Program
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
 }
 
 
@@ -6591,6 +6739,189 @@ export interface V2ProgramCollectionProgramsInner {
      */
     'order'?: number;
 }
+/**
+ * Extended Program serializer that includes products. Used by the programs API.
+ * @export
+ * @interface V2ProgramDetail
+ */
+export interface V2ProgramDetail {
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2ProgramDetail
+     */
+    'id': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof V2ProgramDetail
+     */
+    'courses': Array<number>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof V2ProgramDetail
+     */
+    'collections': Array<number>;
+    /**
+     * 
+     * @type {V2ProgramRequirements}
+     * @memberof V2ProgramDetail
+     */
+    'requirements': V2ProgramRequirements;
+    /**
+     * 
+     * @type {Array<V2ProgramRequirement>}
+     * @memberof V2ProgramDetail
+     */
+    'req_tree': Array<V2ProgramRequirement>;
+    /**
+     * 
+     * @type {ProgramPage}
+     * @memberof V2ProgramDetail
+     */
+    'page': ProgramPage;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'program_type'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'certificate_type': string;
+    /**
+     * 
+     * @type {Array<Department>}
+     * @memberof V2ProgramDetail
+     */
+    'departments': Array<Department>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2ProgramDetail
+     */
+    'live'?: boolean;
+    /**
+     * 
+     * @type {Array<V2ProgramTopicsInner>}
+     * @memberof V2ProgramDetail
+     */
+    'topics': Array<V2ProgramTopicsInner>;
+    /**
+     * 
+     * @type {AvailabilityEnum}
+     * @memberof V2ProgramDetail
+     */
+    'availability'?: AvailabilityEnum;
+    /**
+     * Get the start date of the program by finding the first available run.
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'start_date': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'end_date'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * Check if the prerequisites field is populated in the program page CMS.
+     * @type {boolean}
+     * @memberof V2ProgramDetail
+     */
+    'required_prerequisites': boolean;
+    /**
+     * Get the length/duration field from the program page CMS.
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'duration': string | null;
+    /**
+     * Get the min weeks of the program from the CMS page.
+     * @type {number}
+     * @memberof V2ProgramDetail
+     */
+    'min_weeks': number | null;
+    /**
+     * Get the max weeks of the program from the CMS page.
+     * @type {number}
+     * @memberof V2ProgramDetail
+     */
+    'max_weeks': number | null;
+    /**
+     * Get the min price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2ProgramDetail
+     */
+    'min_price': number | null;
+    /**
+     * Get the max price of the product from the CMS page.
+     * @type {number}
+     * @memberof V2ProgramDetail
+     */
+    'max_price': number | null;
+    /**
+     * Get the effort/time_commitment field from the program page CMS.
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'time_commitment': string | null;
+    /**
+     * Get the min weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'min_weekly_hours': string | null;
+    /**
+     * Get the max weekly hours of the course from the course page CMS.
+     * @type {string}
+     * @memberof V2ProgramDetail
+     */
+    'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V2ProgramDetail
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
+    /**
+     * 
+     * @type {Array<BaseProduct>}
+     * @memberof V2ProgramDetail
+     */
+    'products': Array<BaseProduct>;
+}
+
+
 /**
  * Serializer for a ProgramRequirement
  * @export
@@ -6805,6 +7136,19 @@ export interface V3ProgramCertificate {
      * @memberof V3ProgramCertificate
      */
     'link': string;
+}
+/**
+ * Serializer for creating a program enrollment. Accepts a program_id and validates it corresponds to a live program.
+ * @export
+ * @interface V3ProgramEnrollmentRequestRequest
+ */
+export interface V3ProgramEnrollmentRequestRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof V3ProgramEnrollmentRequestRequest
+     */
+    'program_id': number;
 }
 /**
  * Program Model Serializer v2
@@ -16516,6 +16860,41 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             };
         },
         /**
+         * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
+         * @param {V3ProgramEnrollmentRequestRequest} V3ProgramEnrollmentRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsCreate: async (V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'V3ProgramEnrollmentRequestRequest' is not null or undefined
+            assertParamExists('v3ProgramEnrollmentsCreate', 'V3ProgramEnrollmentRequestRequest', V3ProgramEnrollmentRequestRequest)
+            const localVarPath = `/api/v3/program_enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(V3ProgramEnrollmentRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16658,6 +17037,18 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
+         * @param {V3ProgramEnrollmentRequestRequest} V3ProgramEnrollmentRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16743,6 +17134,15 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
             return localVarFp.v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
+         * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
+         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsCreate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16816,6 +17216,20 @@ export interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest {
      * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieve
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for v3ProgramEnrollmentsCreate operation in ProgramEnrollmentsApi.
+ * @export
+ * @interface ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest
+ */
+export interface ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest {
+    /**
+     * 
+     * @type {V3ProgramEnrollmentRequestRequest}
+     * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsCreate
+     */
+    readonly V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest
 }
 
 /**
@@ -16901,6 +17315,17 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      */
     public v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
+     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v3ProgramEnrollmentsCreate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -17161,7 +17586,7 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programsListV2(contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramList>> {
+        async programsListV2(contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramDetailList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(contract_id, id, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramsApi.programsListV2']?.[index]?.url;
@@ -17185,7 +17610,7 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programsRetrieveV2(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2Program>> {
+        async programsRetrieveV2(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV2(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[index]?.url;
@@ -17216,7 +17641,7 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramList> {
+        programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramDetailList> {
             return localVarFp.programsListV2(requestParameters.contract_id, requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -17234,7 +17659,7 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programsRetrieveV2(requestParameters: ProgramsApiProgramsRetrieveV2Request, options?: RawAxiosRequestConfig): AxiosPromise<V2Program> {
+        programsRetrieveV2(requestParameters: ProgramsApiProgramsRetrieveV2Request, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramDetail> {
             return localVarFp.programsRetrieveV2(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
