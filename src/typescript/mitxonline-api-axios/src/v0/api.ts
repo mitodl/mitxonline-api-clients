@@ -135,12 +135,6 @@ export interface BaseProgram {
      * @memberof BaseProgram
      */
     'type': string;
-    /**
-     * 
-     * @type {Array<EnrollmentMode>}
-     * @memberof BaseProgram
-     */
-    'enrollment_modes': Array<EnrollmentMode>;
 }
 /**
  * Basket model serializer
@@ -5887,6 +5881,12 @@ export interface V1Program {
      * @memberof V1Program
      */
     'live'?: boolean;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V1Program
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
 }
 /**
  * ProgramCertificate model serializer
@@ -6613,6 +6613,12 @@ export interface V2Program {
      * @memberof V2Program
      */
     'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V2Program
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
 }
 
 
@@ -6901,6 +6907,12 @@ export interface V2ProgramDetail {
      * @memberof V2ProgramDetail
      */
     'max_weekly_hours': string | null;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof V2ProgramDetail
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -16754,7 +16766,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {number} id Program enrollment ID
+         * @param {number} id Program ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16816,7 +16828,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Retrieve a specific program enrollment using v2 serializers.
-         * @param {number} id Program enrollment ID
+         * @param {number} id Program ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16876,6 +16888,39 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(V3ProgramEnrollmentRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
+         * @param {number} program_id Program ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsDestroy: async (program_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'program_id' is not null or undefined
+            assertParamExists('v3ProgramEnrollmentsDestroy', 'program_id', program_id)
+            const localVarPath = `/api/v3/program_enrollments/{program_id}/`
+                .replace(`{${"program_id"}}`, encodeURIComponent(String(program_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16991,7 +17036,7 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {number} id Program enrollment ID
+         * @param {number} id Program ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17014,7 +17059,7 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Retrieve a specific program enrollment using v2 serializers.
-         * @param {number} id Program enrollment ID
+         * @param {number} id Program ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17034,6 +17079,18 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
+         * @param {number} program_id Program ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v3ProgramEnrollmentsDestroy(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsDestroy(program_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsDestroy']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -17131,6 +17188,15 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
             return localVarFp.v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
+         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.v3ProgramEnrollmentsDestroy(requestParameters.program_id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17185,7 +17251,7 @@ export interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest {
  */
 export interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest {
     /**
-     * Program enrollment ID
+     * Program ID
      * @type {number}
      * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsDestroy
      */
@@ -17199,7 +17265,7 @@ export interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest {
  */
 export interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest {
     /**
-     * Program enrollment ID
+     * Program ID
      * @type {number}
      * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieve
      */
@@ -17218,6 +17284,20 @@ export interface ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest {
      * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsCreate
      */
     readonly V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest
+}
+
+/**
+ * Request parameters for v3ProgramEnrollmentsDestroy operation in ProgramEnrollmentsApi.
+ * @export
+ * @interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest
+ */
+export interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest {
+    /**
+     * Program ID
+     * @type {number}
+     * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsDestroy
+     */
+    readonly program_id: number
 }
 
 /**
@@ -17314,6 +17394,17 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      */
     public v3ProgramEnrollmentsCreate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
+     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgramEnrollmentsApi
+     */
+    public v3ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsDestroy(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
