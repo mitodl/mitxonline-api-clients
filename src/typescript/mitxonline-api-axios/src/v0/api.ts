@@ -106,6 +106,31 @@ export interface BaseProduct {
     'is_active'?: boolean;
 }
 /**
+ * Simple serializer for Product without related purchasable objects
+ * @export
+ * @interface BaseProductRequest
+ */
+export interface BaseProductRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProductRequest
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProductRequest
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof BaseProductRequest
+     */
+    'is_active'?: boolean;
+}
+/**
  * Basic program model serializer
  * @export
  * @interface BaseProgram
@@ -1336,10 +1361,10 @@ export interface CourseRunV2 {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
-     * @type {Array<ProductFlexibilePrice>}
+     * @type {Array<BaseProduct>}
      * @memberof CourseRunV2
      */
-    'products': Array<ProductFlexibilePrice>;
+    'products': Array<BaseProduct>;
     /**
      * 
      * @type {boolean}
@@ -6337,10 +6362,10 @@ export interface V2CourseRunWithCourse {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
-     * @type {Array<ProductFlexibilePrice>}
+     * @type {Array<BaseProduct>}
      * @memberof V2CourseRunWithCourse
      */
-    'products': Array<ProductFlexibilePrice>;
+    'products': Array<BaseProduct>;
     /**
      * 
      * @type {boolean}
