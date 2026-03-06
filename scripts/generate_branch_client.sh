@@ -37,13 +37,11 @@ BRANCH_NAME="$BRANCH_NAME" "$REPO_ROOT/scripts/local-generate.sh"
 TS_CLIENT_DIR="$REPO_ROOT/src/typescript/mitxonline-api-axios"
 echo ""
 echo "Running yarn install and yarn pack in $TS_CLIENT_DIR..."
-cd "$TS_CLIENT_DIR"
-yarn install
-yarn pack
+(cd "$TS_CLIENT_DIR" && yarn install && yarn pack)
 
-# Commit the generated package.tgz
-git -C "$REPO_ROOT" add src/typescript/mitxonline-api-axios/package.tgz
-git -C "$REPO_ROOT" commit -m "Generated package.tgz for branch $BRANCH_NAME"
+# Commit the generated client files
+git -C "$REPO_ROOT" add src/typescript/mitxonline-api-axios/
+git -C "$REPO_ROOT" commit -m "build(client): Generate client for branch $BRANCH_NAME"
 
 # Step 5: Push branch (with confirmation)
 echo ""

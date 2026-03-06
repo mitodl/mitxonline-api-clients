@@ -19,7 +19,7 @@ This will:
 1. Check out (or create) a matching branch in this repo
 2. Generate clients from the specified MITx Online branch via `local-generate.sh`
 3. Run `yarn install` and `yarn pack` to produce `package.tgz`
-4. Commit the `package.tgz` and optionally push the branch
+4. Commit the generated client files (including `package.tgz`) and optionally push the branch
 
 Once pushed, the package is installable directly from GitHub:
 
