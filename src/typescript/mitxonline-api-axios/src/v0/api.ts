@@ -135,7 +135,20 @@ export interface BaseProgram {
      * @memberof BaseProgram
      */
     'type': string;
+    /**
+     * 
+     * @type {BaseProgramDisplayMode}
+     * @memberof BaseProgram
+     */
+    'display_mode'?: BaseProgramDisplayMode | null;
 }
+/**
+ * @type BaseProgramDisplayMode
+ * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
+ * @export
+ */
+export type BaseProgramDisplayMode = BlankEnum | DisplayModeEnum;
+
 /**
  * Basket model serializer
  * @export
@@ -1866,6 +1879,22 @@ export const DiscountTypeEnum = {
 } as const;
 
 export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountTypeEnum];
+
+
+/**
+ * * `course` - course
+ * @export
+ * @enum {string}
+ */
+
+export const DisplayModeEnum = {
+    /**
+    * course
+    */
+    Course: 'course'
+} as const;
+
+export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnum];
 
 
 /**
@@ -6525,6 +6554,12 @@ export interface V2Program {
     'live'?: boolean;
     /**
      * 
+     * @type {BaseProgramDisplayMode}
+     * @memberof V2Program
+     */
+    'display_mode'?: BaseProgramDisplayMode | null;
+    /**
+     * 
      * @type {Array<V2ProgramTopicsInner>}
      * @memberof V2Program
      */
@@ -6817,6 +6852,12 @@ export interface V2ProgramDetail {
      * @memberof V2ProgramDetail
      */
     'live'?: boolean;
+    /**
+     * 
+     * @type {BaseProgramDisplayMode}
+     * @memberof V2ProgramDetail
+     */
+    'display_mode'?: BaseProgramDisplayMode | null;
     /**
      * 
      * @type {Array<V2ProgramTopicsInner>}
@@ -7186,6 +7227,12 @@ export interface V3SimpleProgram {
      * @memberof V3SimpleProgram
      */
     'live'?: boolean;
+    /**
+     * 
+     * @type {BaseProgramDisplayMode}
+     * @memberof V3SimpleProgram
+     */
+    'display_mode'?: BaseProgramDisplayMode | null;
 }
 /**
  * Serializer for user program enrollments.
