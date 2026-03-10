@@ -1033,12 +1033,6 @@ export interface CourseRunCertificate {
 export interface CourseRunEnrollment {
     /**
      * 
-     * @type {V1CourseRunWithCourse}
-     * @memberof CourseRunEnrollment
-     */
-    'run': V1CourseRunWithCourse;
-    /**
-     * 
      * @type {number}
      * @memberof CourseRunEnrollment
      */
@@ -1063,16 +1057,22 @@ export interface CourseRunEnrollment {
     'enrollment_mode': EnrollmentModeEnum;
     /**
      * 
+     * @type {Array<CourseRunGrade>}
+     * @memberof CourseRunEnrollment
+     */
+    'grades': Array<CourseRunGrade>;
+    /**
+     * 
      * @type {boolean}
      * @memberof CourseRunEnrollment
      */
     'approved_flexible_price_exists': boolean;
     /**
      * 
-     * @type {Array<CourseRunGrade>}
+     * @type {V1CourseRunWithCourse}
      * @memberof CourseRunEnrollment
      */
-    'grades': Array<CourseRunGrade>;
+    'run': V1CourseRunWithCourse;
 }
 
 
@@ -1103,12 +1103,6 @@ export interface CourseRunEnrollmentRequest {
 export interface CourseRunEnrollmentRequestV2 {
     /**
      * 
-     * @type {V2CourseRunWithCourse}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
-    'run': V2CourseRunWithCourse;
-    /**
-     * 
      * @type {number}
      * @memberof CourseRunEnrollmentRequestV2
      */
@@ -1133,16 +1127,22 @@ export interface CourseRunEnrollmentRequestV2 {
     'enrollment_mode': EnrollmentModeEnum;
     /**
      * 
+     * @type {Array<CourseRunGrade>}
+     * @memberof CourseRunEnrollmentRequestV2
+     */
+    'grades': Array<CourseRunGrade>;
+    /**
+     * 
      * @type {boolean}
      * @memberof CourseRunEnrollmentRequestV2
      */
     'approved_flexible_price_exists': boolean;
     /**
      * 
-     * @type {Array<CourseRunGrade>}
+     * @type {V2CourseRunWithCourse}
      * @memberof CourseRunEnrollmentRequestV2
      */
-    'grades': Array<CourseRunGrade>;
+    'run': V2CourseRunWithCourse;
     /**
      * 
      * @type {number}
@@ -1176,6 +1176,76 @@ export interface CourseRunEnrollmentRequestV2Request {
      * @memberof CourseRunEnrollmentRequestV2Request
      */
     'run_id': number;
+}
+/**
+ * CourseRunEnrollment model serializer
+ * @export
+ * @interface CourseRunEnrollmentV3
+ */
+export interface CourseRunEnrollmentV3 {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'edx_emails_subscription'?: boolean;
+    /**
+     * 
+     * @type {V3CourseRunCertificate}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'certificate': V3CourseRunCertificate | null;
+    /**
+     * 
+     * @type {EnrollmentModeEnum}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'enrollment_mode': EnrollmentModeEnum;
+    /**
+     * 
+     * @type {Array<CourseRunGrade>}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'grades': Array<CourseRunGrade>;
+    /**
+     * 
+     * @type {CourseRunWithCourseV3}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'run': CourseRunWithCourseV3;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'b2b_organization_id': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunEnrollmentV3
+     */
+    'b2b_contract_id': number | null;
+}
+
+
+/**
+ * CourseRunEnrollment model serializer
+ * @export
+ * @interface CourseRunEnrollmentV3Request
+ */
+export interface CourseRunEnrollmentV3Request {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunEnrollmentV3Request
+     */
+    'edx_emails_subscription'?: boolean;
 }
 /**
  * CourseRunGrade serializer
@@ -1352,6 +1422,262 @@ export interface CourseRunV2 {
      * @memberof CourseRunV2
      */
     'b2b_contract'?: number | null;
+}
+/**
+ * CourseRun serializer
+ * @export
+ * @interface CourseRunWithCourseV3
+ */
+export interface CourseRunWithCourseV3 {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'expiration_date'?: string | null;
+    /**
+     * Get the courseware URL
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'courseware_url': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'courseware_id': string;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * The date beyond which the learner can not enroll in paid course mode.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'upgrade_deadline'?: string | null;
+    /**
+     * Check if the course run is upgradable
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3
+     */
+    'is_upgradable': boolean;
+    /**
+     * Check if the course run is enrollable
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3
+     */
+    'is_enrollable': boolean;
+    /**
+     * Check if the course run is archived
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3
+     */
+    'is_archived': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3
+     */
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'run_tag': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunWithCourseV3
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3
+     */
+    'live'?: boolean;
+    /**
+     * Get the course number
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'course_number': string;
+    /**
+     * 
+     * @type {Array<EnrollmentMode>}
+     * @memberof CourseRunWithCourseV3
+     */
+    'enrollment_modes': Array<EnrollmentMode>;
+    /**
+     * 
+     * @type {CourseV3}
+     * @memberof CourseRunWithCourseV3
+     */
+    'course': CourseV3;
+}
+/**
+ * CourseRun serializer
+ * @export
+ * @interface CourseRunWithCourseV3Request
+ */
+export interface CourseRunWithCourseV3Request {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'expiration_date'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'courseware_id': string;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * The date beyond which the learner can not enroll in paid course mode.
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'upgrade_deadline'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'run_tag': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'live'?: boolean;
+}
+/**
+ * Course serializer
+ * @export
+ * @interface CourseV3
+ */
+export interface CourseV3 {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseV3
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseV3
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseV3
+     */
+    'readable_id': string;
+    /**
+     * Returns the type of object this is serializing.
+     * @type {string}
+     * @memberof CourseV3
+     */
+    'type': string;
+}
+/**
+ * Course serializer
+ * @export
+ * @interface CourseV3Request
+ */
+export interface CourseV3Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseV3Request
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseV3Request
+     */
+    'readable_id': string;
 }
 /**
  * Course model serializer - also serializes child course runs
@@ -7117,6 +7443,25 @@ export interface V2UserProgramEnrollmentDetail {
      * @memberof V2UserProgramEnrollmentDetail
      */
     'certificate': ProgramCertificate | null;
+}
+/**
+ * CourseRunCertificate model serializer
+ * @export
+ * @interface V3CourseRunCertificate
+ */
+export interface V3CourseRunCertificate {
+    /**
+     * 
+     * @type {string}
+     * @memberof V3CourseRunCertificate
+     */
+    'uuid': string;
+    /**
+     * Get the link at which this certificate will be served Format: /certificate/<uuid>/ Example: /certificate/93ebd74e-5f88-4b47-bb09-30a6d575328f/
+     * @type {string}
+     * @memberof V3CourseRunCertificate
+     */
+    'link': string;
 }
 /**
  * ProgramCertificate model serializer
@@ -14194,6 +14539,39 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
+         * API view set for user enrollments - v3
+         * @param {number} id A unique integer value identifying this course run enrollment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        enrollmentsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('enrollmentsRetrieve', 'id', id)
+            const localVarPath = `/api/v3/enrollments/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * API view set for user enrollments
          * @param {number} id A unique integer value identifying this course run enrollment.
          * @param {CourseRunEnrollmentRequest} CourseRunEnrollmentRequest 
@@ -14268,6 +14646,39 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
+         * Create a new user enrollment - API v3
+         * @param {CourseRunEnrollmentV3Request} [CourseRunEnrollmentV3Request] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsCreateV3: async (CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v3/enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CourseRunEnrollmentV3Request, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Unenroll from a course - API v2
          * @param {number} id A unique integer value identifying this course run enrollment.
          * @param {*} [options] Override http request option.
@@ -14301,6 +14712,39 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
+         * Unenroll from a course - API v3
+         * @param {number} id A unique integer value identifying this course run enrollment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsDestroyV3: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('userEnrollmentsDestroyV3', 'id', id)
+            const localVarPath = `/api/v3/enrollments/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
          * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
          * @param {number} [org_id] Filter by B2B organization ID
@@ -14309,6 +14753,45 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
          */
         userEnrollmentsListV2: async (exclude_b2b?: boolean, org_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/enrollments/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (exclude_b2b !== undefined) {
+                localVarQueryParameter['exclude_b2b'] = exclude_b2b;
+            }
+
+            if (org_id !== undefined) {
+                localVarQueryParameter['org_id'] = org_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * @param {number} [org_id] Filter by B2B organization ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsListV3: async (exclude_b2b?: boolean, org_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v3/enrollments/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -14409,6 +14892,18 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * API view set for user enrollments - v3
+         * @param {number} id A unique integer value identifying this course run enrollment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async enrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentV3>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * API view set for user enrollments
          * @param {number} id A unique integer value identifying this course run enrollment.
          * @param {CourseRunEnrollmentRequest} CourseRunEnrollmentRequest 
@@ -14434,6 +14929,18 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Create a new user enrollment - API v3
+         * @param {CourseRunEnrollmentV3Request} [CourseRunEnrollmentV3Request] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userEnrollmentsCreateV3(CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentV3>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsCreateV3(CourseRunEnrollmentV3Request, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV3']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Unenroll from a course - API v2
          * @param {number} id A unique integer value identifying this course run enrollment.
          * @param {*} [options] Override http request option.
@@ -14443,6 +14950,18 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV2(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV2']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Unenroll from a course - API v3
+         * @param {number} id A unique integer value identifying this course run enrollment.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userEnrollmentsDestroyV3(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV3(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV3']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -14456,6 +14975,19 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV2(exclude_b2b, org_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV2']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * @param {number} [org_id] Filter by B2B organization ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userEnrollmentsListV3(exclude_b2b?: boolean, org_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollmentV3>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV3(exclude_b2b, org_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV3']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -14512,6 +15044,15 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedUpdateCourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * API view set for user enrollments - v3
+         * @param {EnrollmentsApiEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        enrollmentsRetrieve(requestParameters: EnrollmentsApiEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentV3> {
+            return localVarFp.enrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * API view set for user enrollments
          * @param {EnrollmentsApiEnrollmentsUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -14530,6 +15071,15 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.userEnrollmentsCreateV2(requestParameters.CourseRunEnrollmentRequestV2Request, options).then((request) => request(axios, basePath));
         },
         /**
+         * Create a new user enrollment - API v3
+         * @param {EnrollmentsApiUserEnrollmentsCreateV3Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsCreateV3(requestParameters: EnrollmentsApiUserEnrollmentsCreateV3Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentV3> {
+            return localVarFp.userEnrollmentsCreateV3(requestParameters.CourseRunEnrollmentV3Request, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Unenroll from a course - API v2
          * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -14539,6 +15089,15 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.userEnrollmentsDestroyV2(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
+         * Unenroll from a course - API v3
+         * @param {EnrollmentsApiUserEnrollmentsDestroyV3Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsDestroyV3(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV3Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.userEnrollmentsDestroyV3(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
          * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -14546,6 +15105,15 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
          */
         userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseRunEnrollmentRequestV2>> {
             return localVarFp.userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userEnrollmentsListV3(requestParameters: EnrollmentsApiUserEnrollmentsListV3Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseRunEnrollmentV3>> {
+            return localVarFp.userEnrollmentsListV3(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -14600,6 +15168,20 @@ export interface EnrollmentsApiEnrollmentsPartialUpdateRequest {
 }
 
 /**
+ * Request parameters for enrollmentsRetrieve operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiEnrollmentsRetrieveRequest
+ */
+export interface EnrollmentsApiEnrollmentsRetrieveRequest {
+    /**
+     * A unique integer value identifying this course run enrollment.
+     * @type {number}
+     * @memberof EnrollmentsApiEnrollmentsRetrieve
+     */
+    readonly id: number
+}
+
+/**
  * Request parameters for enrollmentsUpdate operation in EnrollmentsApi.
  * @export
  * @interface EnrollmentsApiEnrollmentsUpdateRequest
@@ -14635,6 +15217,20 @@ export interface EnrollmentsApiUserEnrollmentsCreateV2Request {
 }
 
 /**
+ * Request parameters for userEnrollmentsCreateV3 operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiUserEnrollmentsCreateV3Request
+ */
+export interface EnrollmentsApiUserEnrollmentsCreateV3Request {
+    /**
+     * 
+     * @type {CourseRunEnrollmentV3Request}
+     * @memberof EnrollmentsApiUserEnrollmentsCreateV3
+     */
+    readonly CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request
+}
+
+/**
  * Request parameters for userEnrollmentsDestroyV2 operation in EnrollmentsApi.
  * @export
  * @interface EnrollmentsApiUserEnrollmentsDestroyV2Request
@@ -14644,6 +15240,20 @@ export interface EnrollmentsApiUserEnrollmentsDestroyV2Request {
      * A unique integer value identifying this course run enrollment.
      * @type {number}
      * @memberof EnrollmentsApiUserEnrollmentsDestroyV2
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for userEnrollmentsDestroyV3 operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiUserEnrollmentsDestroyV3Request
+ */
+export interface EnrollmentsApiUserEnrollmentsDestroyV3Request {
+    /**
+     * A unique integer value identifying this course run enrollment.
+     * @type {number}
+     * @memberof EnrollmentsApiUserEnrollmentsDestroyV3
      */
     readonly id: number
 }
@@ -14665,6 +15275,27 @@ export interface EnrollmentsApiUserEnrollmentsListV2Request {
      * Filter by B2B organization ID
      * @type {number}
      * @memberof EnrollmentsApiUserEnrollmentsListV2
+     */
+    readonly org_id?: number
+}
+
+/**
+ * Request parameters for userEnrollmentsListV3 operation in EnrollmentsApi.
+ * @export
+ * @interface EnrollmentsApiUserEnrollmentsListV3Request
+ */
+export interface EnrollmentsApiUserEnrollmentsListV3Request {
+    /**
+     * Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+     * @type {boolean}
+     * @memberof EnrollmentsApiUserEnrollmentsListV3
+     */
+    readonly exclude_b2b?: boolean
+
+    /**
+     * Filter by B2B organization ID
+     * @type {number}
+     * @memberof EnrollmentsApiUserEnrollmentsListV3
      */
     readonly org_id?: number
 }
@@ -14730,6 +15361,17 @@ export class EnrollmentsApi extends BaseAPI {
     }
 
     /**
+     * API view set for user enrollments - v3
+     * @param {EnrollmentsApiEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public enrollmentsRetrieve(requestParameters: EnrollmentsApiEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).enrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * API view set for user enrollments
      * @param {EnrollmentsApiEnrollmentsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -14752,6 +15394,17 @@ export class EnrollmentsApi extends BaseAPI {
     }
 
     /**
+     * Create a new user enrollment - API v3
+     * @param {EnrollmentsApiUserEnrollmentsCreateV3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public userEnrollmentsCreateV3(requestParameters: EnrollmentsApiUserEnrollmentsCreateV3Request = {}, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).userEnrollmentsCreateV3(requestParameters.CourseRunEnrollmentV3Request, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Unenroll from a course - API v2
      * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -14763,6 +15416,17 @@ export class EnrollmentsApi extends BaseAPI {
     }
 
     /**
+     * Unenroll from a course - API v3
+     * @param {EnrollmentsApiUserEnrollmentsDestroyV3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public userEnrollmentsDestroyV3(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV3Request, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).userEnrollmentsDestroyV3(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
      * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -14771,6 +15435,17 @@ export class EnrollmentsApi extends BaseAPI {
      */
     public userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+     * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof EnrollmentsApi
+     */
+    public userEnrollmentsListV3(requestParameters: EnrollmentsApiUserEnrollmentsListV3Request = {}, options?: RawAxiosRequestConfig) {
+        return EnrollmentsApiFp(this.configuration).userEnrollmentsListV3(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
