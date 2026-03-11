@@ -764,11 +764,11 @@ export interface Course {
  */
 export interface CoursePage {
     /**
-     * Serializes the source of the feature_image
+     * 
      * @type {string}
      * @memberof CoursePage
      */
-    'feature_image_src': string;
+    'feature_image_src': string | null;
     /**
      * 
      * @type {string}
@@ -2399,7 +2399,7 @@ export interface Faculty {
      * @type {string}
      * @memberof Faculty
      */
-    'feature_image_src': string;
+    'feature_image_src': string | null;
 }
 /**
  * Serializer for feature images used in course pages.
@@ -4643,11 +4643,11 @@ export interface ProgramCertificate {
  */
 export interface ProgramPage {
     /**
-     * Serializes the source of the feature_image
+     * 
      * @type {string}
      * @memberof ProgramPage
      */
-    'feature_image_src': string;
+    'feature_image_src': string | null;
     /**
      * 
      * @type {string}
