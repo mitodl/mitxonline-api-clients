@@ -106,6 +106,31 @@ export interface BaseProduct {
     'is_active'?: boolean;
 }
 /**
+ * Simple serializer for Product without related purchasable objects
+ * @export
+ * @interface BaseProductRequest
+ */
+export interface BaseProductRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProductRequest
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseProductRequest
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof BaseProductRequest
+     */
+    'is_active'?: boolean;
+}
+/**
  * Basic program model serializer
  * @export
  * @interface BaseProgram
@@ -751,11 +776,11 @@ export interface Course {
  */
 export interface CoursePage {
     /**
-     * Serializes the source of the feature_image
+     * 
      * @type {string}
      * @memberof CoursePage
      */
-    'feature_image_src': string;
+    'feature_image_src': string | null;
     /**
      * 
      * @type {string}
@@ -1336,10 +1361,10 @@ export interface CourseRunV2 {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<BaseProduct>}
      * @memberof CourseRunV2
      */
-    'products': Array<any>;
+    'products': Array<BaseProduct>;
     /**
      * 
      * @type {boolean}
@@ -2044,7 +2069,7 @@ export interface Faculty {
      * @type {string}
      * @memberof Faculty
      */
-    'feature_image_src': string;
+    'feature_image_src': string | null;
 }
 /**
  * Serializer for feature images used in course pages.
@@ -4288,11 +4313,11 @@ export interface ProgramCertificate {
  */
 export interface ProgramPage {
     /**
-     * Serializes the source of the feature_image
+     * 
      * @type {string}
      * @memberof ProgramPage
      */
-    'feature_image_src': string;
+    'feature_image_src': string | null;
     /**
      * 
      * @type {string}
@@ -6337,10 +6362,10 @@ export interface V2CourseRunWithCourse {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<BaseProduct>}
      * @memberof V2CourseRunWithCourse
      */
-    'products': Array<any>;
+    'products': Array<BaseProduct>;
     /**
      * 
      * @type {boolean}
