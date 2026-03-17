@@ -1558,6 +1558,24 @@ export interface CourseRunWithCourseV3 {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
+     * @type {number}
+     * @memberof CourseRunWithCourseV3
+     */
+    'upgrade_product_id': number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'upgrade_product_price': string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CourseRunWithCourseV3
+     */
+    'upgrade_product_is_active': boolean | null;
+    /**
+     * 
      * @type {CourseV3}
      * @memberof CourseRunWithCourseV3
      */
