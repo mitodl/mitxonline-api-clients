@@ -1419,10 +1419,10 @@ export interface CourseRunV2 {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<BaseProduct>}
      * @memberof CourseRunV2
      */
-    'products': Array<any>;
+    'products': Array<BaseProduct>;
     /**
      * 
      * @type {boolean}
@@ -6710,10 +6710,10 @@ export interface V2CourseRunWithCourse {
     'enrollment_modes': Array<EnrollmentMode>;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<BaseProduct>}
      * @memberof V2CourseRunWithCourse
      */
-    'products': Array<any>;
+    'products': Array<BaseProduct>;
     /**
      * 
      * @type {boolean}
