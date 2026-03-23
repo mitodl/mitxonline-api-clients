@@ -1690,6 +1690,12 @@ export interface CourseV3 {
      * @memberof CourseV3
      */
     'type': string;
+    /**
+     * Return true if the course should be included in the Learn catalog.  This is controlled in the CoursePage for the course, and will default to False if there isn\'t one.
+     * @type {boolean}
+     * @memberof CourseV3
+     */
+    'include_in_learn_catalog': boolean;
 }
 /**
  * Course serializer
@@ -6856,6 +6862,12 @@ export interface V2Program {
     'collections': Array<number>;
     /**
      * 
+     * @type {Array<BaseProgram>}
+     * @memberof V2Program
+     */
+    'programs': Array<BaseProgram> | null;
+    /**
+     * 
      * @type {V2ProgramRequirements}
      * @memberof V2Program
      */
@@ -7154,6 +7166,12 @@ export interface V2ProgramDetail {
      * @memberof V2ProgramDetail
      */
     'collections': Array<number>;
+    /**
+     * 
+     * @type {Array<BaseProgram>}
+     * @memberof V2ProgramDetail
+     */
+    'programs': Array<BaseProgram> | null;
     /**
      * 
      * @type {V2ProgramRequirements}
