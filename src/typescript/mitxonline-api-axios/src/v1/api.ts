@@ -1771,11 +1771,17 @@ export interface CourseWithCourseRunsSerializerV2 {
      */
     'topics': Array<{ [key: string]: any; }>;
     /**
-     * 
+     * Return the certificate type.
      * @type {string}
      * @memberof CourseWithCourseRunsSerializerV2
      */
     'certificate_type': string;
+    /**
+     * Return if there is a certificate available for the course.
+     * @type {boolean}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'certificate_available': boolean;
     /**
      * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
      * @type {boolean}
@@ -6448,11 +6454,17 @@ export interface V2Course {
      */
     'topics': Array<{ [key: string]: any; }>;
     /**
-     * 
+     * Return the certificate type.
      * @type {string}
      * @memberof V2Course
      */
     'certificate_type': string;
+    /**
+     * Return if there is a certificate available for the course.
+     * @type {boolean}
+     * @memberof V2Course
+     */
+    'certificate_available': boolean;
     /**
      * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
      * @type {boolean}
