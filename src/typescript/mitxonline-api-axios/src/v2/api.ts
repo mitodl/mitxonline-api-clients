@@ -19658,19 +19658,16 @@ export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configur
     return {
         /**
          * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
-         * @param {string} courserun_id Readable ID for the course run to enroll in.
-         * @param {string} program_id Readable ID for the program.
+         * @param {string} courserun_id 
+         * @param {Array<string>} [request_body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        verifiedProgramEnrollmentsCreate: async (courserun_id: string, program_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        verifiedProgramEnrollmentsCreate: async (courserun_id: string, request_body?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'courserun_id' is not null or undefined
             assertParamExists('verifiedProgramEnrollmentsCreate', 'courserun_id', courserun_id)
-            // verify required parameter 'program_id' is not null or undefined
-            assertParamExists('verifiedProgramEnrollmentsCreate', 'program_id', program_id)
-            const localVarPath = `/api/v2/verified_program_enrollments/{program_id}/{courserun_id}/`
-                .replace(`{${"courserun_id"}}`, encodeURIComponent(String(courserun_id)))
-                .replace(`{${"program_id"}}`, encodeURIComponent(String(program_id)));
+            const localVarPath = `/api/v2/verified_program_enrollments/{courserun_id}/`
+                .replace(`{${"courserun_id"}}`, encodeURIComponent(String(courserun_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -19684,9 +19681,12 @@ export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configur
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(request_body, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -19705,13 +19705,13 @@ export const VerifiedProgramEnrollmentsApiFp = function(configuration?: Configur
     return {
         /**
          * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
-         * @param {string} courserun_id Readable ID for the course run to enroll in.
-         * @param {string} program_id Readable ID for the program.
+         * @param {string} courserun_id 
+         * @param {Array<string>} [request_body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async verifiedProgramEnrollmentsCreate(courserun_id: string, program_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedProgramEnrollmentsCreate(courserun_id, program_id, options);
+        async verifiedProgramEnrollmentsCreate(courserun_id: string, request_body?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedProgramEnrollmentsCreate(courserun_id, request_body, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['VerifiedProgramEnrollmentsApi.verifiedProgramEnrollmentsCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -19733,7 +19733,7 @@ export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Co
          * @throws {RequiredError}
          */
         verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentRequestV2> {
-            return localVarFp.verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.program_id, options).then((request) => request(axios, basePath));
+            return localVarFp.verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.request_body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -19745,18 +19745,18 @@ export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Co
  */
 export interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest {
     /**
-     * Readable ID for the course run to enroll in.
+     * 
      * @type {string}
      * @memberof VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreate
      */
     readonly courserun_id: string
 
     /**
-     * Readable ID for the program.
-     * @type {string}
+     * 
+     * @type {Array<string>}
      * @memberof VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreate
      */
-    readonly program_id: string
+    readonly request_body?: Array<string>
 }
 
 /**
@@ -19774,7 +19774,7 @@ export class VerifiedProgramEnrollmentsApi extends BaseAPI {
      * @memberof VerifiedProgramEnrollmentsApi
      */
     public verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
-        return VerifiedProgramEnrollmentsApiFp(this.configuration).verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
+        return VerifiedProgramEnrollmentsApiFp(this.configuration).verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.request_body, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
