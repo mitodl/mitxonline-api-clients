@@ -2924,6 +2924,12 @@ export interface Nested {
      * @memberof Nested
      */
     'is_program_discount'?: boolean | null;
+    /**
+     * The location of this code in the B2B contract\'s code sheet.
+     * @type {string}
+     * @memberof Nested
+     */
+    'b2b_sheet_location'?: string | null;
 }
 
 
@@ -6910,6 +6916,12 @@ export interface V2Program {
     'certificate_type': string;
     /**
      * 
+     * @type {boolean}
+     * @memberof V2Program
+     */
+    'certificate_available': boolean;
+    /**
+     * 
      * @type {Array<Department>}
      * @memberof V2Program
      */
@@ -7214,6 +7226,12 @@ export interface V2ProgramDetail {
      * @memberof V2ProgramDetail
      */
     'certificate_type': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof V2ProgramDetail
+     */
+    'certificate_available': boolean;
     /**
      * 
      * @type {Array<Department>}
