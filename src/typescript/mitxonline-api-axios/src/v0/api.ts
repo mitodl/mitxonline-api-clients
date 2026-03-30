@@ -4709,6 +4709,12 @@ export interface ProgramPage {
      */
     'live': boolean;
     /**
+     * If true, Learn should include this in its catalog.
+     * @type {boolean}
+     * @memberof ProgramPage
+     */
+    'include_in_learn_catalog'?: boolean | null;
+    /**
      * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
      * @type {string}
      * @memberof ProgramPage
@@ -19675,7 +19681,7 @@ export class VerifiableProgramCredentialApi extends BaseAPI {
 export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
          * @param {string} courserun_id 
          * @param {Array<string>} [request_body] 
          * @param {*} [options] Override http request option.
@@ -19722,7 +19728,7 @@ export const VerifiedProgramEnrollmentsApiFp = function(configuration?: Configur
     const localVarAxiosParamCreator = VerifiedProgramEnrollmentsApiAxiosParamCreator(configuration)
     return {
         /**
-         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
          * @param {string} courserun_id 
          * @param {Array<string>} [request_body] 
          * @param {*} [options] Override http request option.
@@ -19745,7 +19751,7 @@ export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Co
     const localVarFp = VerifiedProgramEnrollmentsApiFp(configuration)
     return {
         /**
-         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
          * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19785,7 +19791,7 @@ export interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRe
  */
 export class VerifiedProgramEnrollmentsApi extends BaseAPI {
     /**
-     * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge. However, if the learner is enrolling in a course that\'s an elective, and they have already enrolled in enough electives to satisfy the program\'s requirements, they should then get an audit enrollment. (This won\'t preclude them from getting a certificate for the course itself but they\'ll have to buy the upgrade separately.)
+     * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
      * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
