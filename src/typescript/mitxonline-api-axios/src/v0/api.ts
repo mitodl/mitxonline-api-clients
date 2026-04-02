@@ -1412,11 +1412,11 @@ export interface CourseRunV2 {
      */
     'course_number': string;
     /**
-     * 
-     * @type {Array<EnrollmentMode>}
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof CourseRunV2
      */
-    'enrollment_modes': Array<EnrollmentMode>;
+    'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -1551,11 +1551,11 @@ export interface CourseRunWithCourseV3 {
      */
     'course_number': string;
     /**
-     * 
-     * @type {Array<EnrollmentMode>}
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof CourseRunWithCourseV3
      */
-    'enrollment_modes': Array<EnrollmentMode>;
+    'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
      * 
      * @type {number}
@@ -2298,31 +2298,6 @@ export const EnrollmentModeEnum = {
 export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof EnrollmentModeEnum];
 
 
-/**
- * Enrollment mode serializer.
- * @export
- * @interface EnrollmentModeRequest
- */
-export interface EnrollmentModeRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof EnrollmentModeRequest
-     */
-    'mode_slug'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EnrollmentModeRequest
-     */
-    'mode_display_name'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof EnrollmentModeRequest
-     */
-    'requires_payment'?: boolean;
-}
 /**
  * * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
  * @export
@@ -5921,11 +5896,11 @@ export interface V1BaseCourseRun {
      */
     'course_number': string;
     /**
-     * 
-     * @type {Array<EnrollmentMode>}
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof V1BaseCourseRun
      */
-    'enrollment_modes': Array<EnrollmentMode>;
+    'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
      * 
      * @type {Array<ProductFlexibilePrice>}
@@ -6054,11 +6029,11 @@ export interface V1CourseRunWithCourse {
      */
     'course_number': string;
     /**
-     * 
-     * @type {Array<EnrollmentMode>}
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof V1CourseRunWithCourse
      */
-    'enrollment_modes': Array<EnrollmentMode>;
+    'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
      * List of products associated with this course run
      * @type {Array<ProductFlexibilePrice>}
@@ -6733,11 +6708,11 @@ export interface V2CourseRunWithCourse {
      */
     'course_number': string;
     /**
-     * 
-     * @type {Array<EnrollmentMode>}
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof V2CourseRunWithCourse
      */
-    'enrollment_modes': Array<EnrollmentMode>;
+    'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
      * 
      * @type {Array<BaseProduct>}
