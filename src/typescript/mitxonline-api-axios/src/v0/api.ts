@@ -44,6 +44,67 @@ export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof Availability
 
 
 /**
+ * Simplified serializer for the ContractPage model.
+ * @export
+ * @interface BaseContractPage
+ */
+export interface BaseContractPage {
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseContractPage
+     */
+    'id': number;
+    /**
+     * The name of the contract.
+     * @type {string}
+     * @memberof BaseContractPage
+     */
+    'name': string;
+    /**
+     * Any useful extra information about the contract.
+     * @type {string}
+     * @memberof BaseContractPage
+     */
+    'description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseContractPage
+     */
+    'membership_type': string;
+    /**
+     * The organization that owns this contract.
+     * @type {number}
+     * @memberof BaseContractPage
+     */
+    'organization': number;
+    /**
+     * The start date of the contract.
+     * @type {string}
+     * @memberof BaseContractPage
+     */
+    'contract_start': string | null;
+    /**
+     * The end date of the contract.
+     * @type {string}
+     * @memberof BaseContractPage
+     */
+    'contract_end': string | null;
+    /**
+     * Whether this contract is active or not. Date rules still apply.
+     * @type {boolean}
+     * @memberof BaseContractPage
+     */
+    'active': boolean;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     * @type {string}
+     * @memberof BaseContractPage
+     */
+    'slug': string;
+}
+/**
  * Basic course model serializer
  * @export
  * @interface BaseCourse
@@ -621,24 +682,6 @@ export interface ContractPage {
      */
     'description': string;
     /**
-     * A welcome message for learners.
-     * @type {string}
-     * @memberof ContractPage
-     */
-    'welcome_message': string;
-    /**
-     * Additional welcome message content for learners.
-     * @type {string}
-     * @memberof ContractPage
-     */
-    'welcome_message_extra': string;
-    /**
-     * 
-     * @type {IntegrationTypeEnum}
-     * @memberof ContractPage
-     */
-    'integration_type': IntegrationTypeEnum;
-    /**
      * 
      * @type {string}
      * @memberof ContractPage
@@ -674,6 +717,24 @@ export interface ContractPage {
      * @memberof ContractPage
      */
     'slug': string;
+    /**
+     * A welcome message for learners.
+     * @type {string}
+     * @memberof ContractPage
+     */
+    'welcome_message': string;
+    /**
+     * Additional welcome message content for learners.
+     * @type {string}
+     * @memberof ContractPage
+     */
+    'welcome_message_extra': string;
+    /**
+     * 
+     * @type {IntegrationTypeEnum}
+     * @memberof ContractPage
+     */
+    'integration_type': IntegrationTypeEnum;
     /**
      * 
      * @type {Array<number>}
@@ -2809,6 +2870,111 @@ export interface Line {
      */
     'product': Product;
 }
+/**
+ * Serializer for detailed contract view with statistics.
+ * @export
+ * @interface ManagerContractDetail
+ */
+export interface ManagerContractDetail {
+    /**
+     * 
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'id': number;
+    /**
+     * The name of the contract.
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'name': string;
+    /**
+     * Any useful extra information about the contract.
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'membership_type': string;
+    /**
+     * The organization that owns this contract.
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'organization': number;
+    /**
+     * The start date of the contract.
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'contract_start': string | null;
+    /**
+     * The end date of the contract.
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'contract_end': string | null;
+    /**
+     * Whether this contract is active or not. Date rules still apply.
+     * @type {boolean}
+     * @memberof ManagerContractDetail
+     */
+    'active': boolean;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'slug': string;
+    /**
+     * A welcome message for learners.
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'welcome_message': string;
+    /**
+     * Additional welcome message content for learners.
+     * @type {string}
+     * @memberof ManagerContractDetail
+     */
+    'welcome_message_extra': string;
+    /**
+     * 
+     * @type {IntegrationTypeEnum}
+     * @memberof ManagerContractDetail
+     */
+    'integration_type': IntegrationTypeEnum;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ManagerContractDetail
+     */
+    'programs': Array<number>;
+    /**
+     * Calculate attachment percentage if seat-limited.
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'attachment_percentage': number | null;
+    /**
+     * Get total number of enrollments across all contract course runs.
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'total_enrollments': number;
+    /**
+     * Get total number of discount codes for this contract.
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'total_codes': number;
+}
+
+
 /**
  * 
  * @export
@@ -8196,6 +8362,257 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesRetrieve: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesRetrieve', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List enrollments for a specific course run within a contract.
+         * @param {string} course_run_id Courseware ID to pull enrollments for.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve: async (course_run_id: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'course_run_id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve', 'course_run_id', course_run_id)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/course_runs/{course_run_id}/enrollments/`
+                .replace(`{${"course_run_id"}}`, encodeURIComponent(String(course_run_id)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCourseRunsRetrieve: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsRetrieve', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/course_runs/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List an organization\'s contracts.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsList: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsList', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsList', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List an organization\'s contracts.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsRetrieve: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsRetrieve', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve managed organizations
+         * @param {number} id ID of the organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsDetail: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsDetail', 'id', id)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List managed organizations
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/b2b/manager/organizations/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Viewset for the OrganizationPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8315,6 +8732,95 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesRetrieve(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRetrieve(id, parent_lookup_organization, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List enrollments for a specific course run within a contract.
+         * @param {string} course_run_id Courseware ID to pull enrollments for.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(course_run_id: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(course_run_id, id, parent_lookup_organization, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCourseRunsRetrieve(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsRetrieve(id, parent_lookup_organization, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List an organization\'s contracts.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsList(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseContractPage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsList(id, parent_lookup_organization, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List an organization\'s contracts.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsRetrieve(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsRetrieve(id, parent_lookup_organization, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Retrieve managed organizations
+         * @param {number} id ID of the organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsDetail(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsDetail(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsDetail']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List managed organizations
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationPage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Viewset for the OrganizationPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8383,6 +8889,68 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bEnrollCreate(requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
+         * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List enrollments for a specific course run within a contract.
+         * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
+            return localVarFp.b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
+         * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
+            return localVarFp.b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List an organization\'s contracts.
+         * @param {B2bApiB2bManagerOrganizationsContractsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<BaseContractPage>> {
+            return localVarFp.b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List an organization\'s contracts.
+         * @param {B2bApiB2bManagerOrganizationsContractsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
+            return localVarFp.b2bManagerOrganizationsContractsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve managed organizations
+         * @param {B2bApiB2bManagerOrganizationsDetailRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsDetail(requestParameters: B2bApiB2bManagerOrganizationsDetailRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationPage> {
+            return localVarFp.b2bManagerOrganizationsDetail(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List managed organizations
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<OrganizationPage>> {
+            return localVarFp.b2bManagerOrganizationsList(options).then((request) => request(axios, basePath));
+        },
+        /**
          * Viewset for the OrganizationPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8442,6 +9010,132 @@ export interface B2bApiB2bEnrollCreateRequest {
      * @memberof B2bApiB2bEnrollCreate
      */
     readonly readable_id: string
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesRetrieve operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRetrieve
+     */
+    readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest {
+    /**
+     * Courseware ID to pull enrollments for.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve
+     */
+    readonly course_run_id: string
+
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve
+     */
+    readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCourseRunsRetrieve operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieve
+     */
+    readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsListRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsListRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsList
+     */
+    readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsRetrieve operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsRetrieveRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsRetrieveRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsRetrieve
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsRetrieve
+     */
+    readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsDetail operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsDetailRequest
+ */
+export interface B2bApiB2bManagerOrganizationsDetailRequest {
+    /**
+     * ID of the organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsDetail
+     */
+    readonly id: number
 }
 
 /**
@@ -8506,6 +9200,82 @@ export class B2bApi extends BaseAPI {
      */
     public b2bEnrollCreate(requestParameters: B2bApiB2bEnrollCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bEnrollCreate(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List enrollments for a specific course run within a contract.
+     * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
+     * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List an organization\'s contracts.
+     * @param {B2bApiB2bManagerOrganizationsContractsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List an organization\'s contracts.
+     * @param {B2bApiB2bManagerOrganizationsContractsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve managed organizations
+     * @param {B2bApiB2bManagerOrganizationsDetailRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsDetail(requestParameters: B2bApiB2bManagerOrganizationsDetailRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsDetail(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List managed organizations
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsList(options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
