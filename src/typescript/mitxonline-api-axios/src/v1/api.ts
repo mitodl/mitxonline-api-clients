@@ -5340,6 +5340,12 @@ export interface TransactionLine {
      * @type {string}
      * @memberof TransactionLine
      */
+    'content_type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionLine
+     */
     'readable_id': string;
     /**
      * 
