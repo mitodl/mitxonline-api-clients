@@ -4116,6 +4116,12 @@ export interface PartnerSchool {
      * @memberof PartnerSchool
      */
     'email': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PartnerSchool
+     */
+    'is_active'?: boolean;
 }
 /**
  * 
@@ -4135,6 +4141,12 @@ export interface PartnerSchoolRequest {
      * @memberof PartnerSchoolRequest
      */
     'email': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PartnerSchoolRequest
+     */
+    'is_active'?: boolean;
 }
 /**
  * Serializer for confirming a user email change
