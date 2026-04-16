@@ -13,18 +13,19 @@ if [ -z "$BRANCH_NAME" ]; then
 fi
 
 REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
+CLIENT_BRANCH="${BRANCH_NAME}-client"
 
 # Step 1: Checkout branch in this repo (create if needed)
 CURRENT_BRANCH="$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD)"
-if [ "$CURRENT_BRANCH" = "$BRANCH_NAME" ]; then
-  echo "Already on branch '$BRANCH_NAME'."
+if [ "$CURRENT_BRANCH" = "$CLIENT_BRANCH" ]; then
+  echo "Already on branch '$CLIENT_BRANCH'."
 else
-  if git -C "$REPO_ROOT" show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
-    echo "Switching to existing branch '$BRANCH_NAME'..."
-    git -C "$REPO_ROOT" checkout "$BRANCH_NAME"
+  if git -C "$REPO_ROOT" show-ref --verify --quiet "refs/heads/$CLIENT_BRANCH"; then
+    echo "Switching to existing branch '$CLIENT_BRANCH'..."
+    git -C "$REPO_ROOT" checkout "$CLIENT_BRANCH"
   else
-    echo "Creating and switching to new branch '$BRANCH_NAME'..."
-    git -C "$REPO_ROOT" checkout -b "$BRANCH_NAME"
+    echo "Creating and switching to new branch '$CLIENT_BRANCH'..."
+    git -C "$REPO_ROOT" checkout -b "$CLIENT_BRANCH"
   fi
 fi
 
@@ -39,22 +40,27 @@ echo ""
 echo "Running yarn install and yarn pack in $TS_CLIENT_DIR..."
 (cd "$TS_CLIENT_DIR" && yarn install && yarn pack)
 
-# Commit the generated client files
+# Commit the generated client files (if any changed)
 git -C "$REPO_ROOT" add src/typescript/mitxonline-api-axios/
-git -C "$REPO_ROOT" commit -m "build(client): Generate client for branch $BRANCH_NAME"
+if git -C "$REPO_ROOT" diff --cached --quiet; then
+  echo "No changes to commit."
+else
+  git -C "$REPO_ROOT" commit -m "build(client): Generate client for branch $BRANCH_NAME"
+fi
 
 # Step 5: Push branch (with confirmation)
 echo ""
-read -r -p "Push branch '$BRANCH_NAME' to origin? [y/N] " confirm
+read -r -p "Push branch '$CLIENT_BRANCH' to origin? [y/N] " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
-  git -C "$REPO_ROOT" push -u origin "$BRANCH_NAME"
-  echo "Branch '$BRANCH_NAME' pushed to origin."
+  git -C "$REPO_ROOT" push -u origin "$CLIENT_BRANCH"
+  echo "Branch '$CLIENT_BRANCH' pushed to origin."
 else
   echo "Skipped push."
 fi
 
+COMMIT_SHA="$(git -C "$REPO_ROOT" rev-parse HEAD)"
 echo ""
 echo "Branch client now installable from github via"
 echo ""
-echo "  yarn up @mitodl/mitxonline-api-axios@https://github.com/mitodl/mitxonline-api-clients/raw/refs/heads/${BRANCH_NAME}/src/typescript/mitxonline-api-axios/package.tgz"
+echo "  yarn up @mitodl/mitxonline-api-axios@https://github.com/mitodl/mitxonline-api-clients/raw/${COMMIT_SHA}/src/typescript/mitxonline-api-axios/package.tgz"
 echo ""
