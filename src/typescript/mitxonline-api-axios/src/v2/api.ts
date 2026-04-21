@@ -819,6 +819,70 @@ export interface Course {
     'programs': Program | null;
 }
 /**
+ * 
+ * @export
+ * @interface CourseOutlineBadRequestResponse
+ */
+export interface CourseOutlineBadRequestResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineBadRequestResponse
+     */
+    'detail': string;
+}
+/**
+ * 
+ * @export
+ * @interface CourseOutlineResponse
+ */
+export interface CourseOutlineResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineResponse
+     */
+    'course_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineResponse
+     */
+    'generated_at': string;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof CourseOutlineResponse
+     */
+    'modules': Array<{ [key: string]: any; }>;
+}
+/**
+ * 
+ * @export
+ * @interface CourseOutlineServerErrorResponse
+ */
+export interface CourseOutlineServerErrorResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineServerErrorResponse
+     */
+    'detail': string;
+}
+/**
+ * 
+ * @export
+ * @interface CourseOutlineUpstreamErrorResponse
+ */
+export interface CourseOutlineUpstreamErrorResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineUpstreamErrorResponse
+     */
+    'detail': string;
+}
+/**
  * Course page model serializer
  * @export
  * @interface CoursePage
@@ -11436,6 +11500,39 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Fetch course outline data for the given course key from Open edX.
+         * @param {string} course_id Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseOutlineRetrieveV3: async (course_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'course_id' is not null or undefined
+            assertParamExists('courseOutlineRetrieveV3', 'course_id', course_id)
+            const localVarPath = `/api/v3/courses/{course_id}/ol_openedx_outline/`
+                .replace(`{${"course_id"}}`, encodeURIComponent(String(course_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -11509,6 +11606,18 @@ export const CoursesApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Fetch course outline data for the given course key from Open edX.
+         * @param {string} course_id Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async courseOutlineRetrieveV3(course_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseOutlineResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseOutlineRetrieveV3(course_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CoursesApi.courseOutlineRetrieveV3']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -11554,6 +11663,15 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          */
         apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseWithCourseRunsSerializerV2> {
             return localVarFp.apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Fetch course outline data for the given course key from Open edX.
+         * @param {CoursesApiCourseOutlineRetrieveV3Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig): AxiosPromise<CourseOutlineResponse> {
+            return localVarFp.courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -11720,6 +11838,20 @@ export interface CoursesApiApiV2CoursesRetrieveRequest {
 }
 
 /**
+ * Request parameters for courseOutlineRetrieveV3 operation in CoursesApi.
+ * @export
+ * @interface CoursesApiCourseOutlineRetrieveV3Request
+ */
+export interface CoursesApiCourseOutlineRetrieveV3Request {
+    /**
+     * Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
+     * @type {string}
+     * @memberof CoursesApiCourseOutlineRetrieveV3
+     */
+    readonly course_id: string
+}
+
+/**
  * CoursesApi - object-oriented interface
  * @export
  * @class CoursesApi
@@ -11768,6 +11900,17 @@ export class CoursesApi extends BaseAPI {
      */
     public apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Fetch course outline data for the given course key from Open edX.
+     * @param {CoursesApiCourseOutlineRetrieveV3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CoursesApi
+     */
+    public courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig) {
+        return CoursesApiFp(this.configuration).courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
