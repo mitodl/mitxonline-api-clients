@@ -11509,7 +11509,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
         courseOutlineRetrieveV3: async (course_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'course_id' is not null or undefined
             assertParamExists('courseOutlineRetrieveV3', 'course_id', course_id)
-            const localVarPath = `/api/v3/courses/{course_id}/outline/`
+            const localVarPath = `/api/v3/courses/{course_id}/ol_openedx_outline/`
                 .replace(`{${"course_id"}}`, encodeURIComponent(String(course_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
