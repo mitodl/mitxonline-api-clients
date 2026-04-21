@@ -1041,6 +1041,12 @@ export interface CoursePageItem {
      * @memberof CoursePageItem
      */
     'ingest_content_files_for_ai': boolean | null;
+    /**
+     * 
+     * @type {Array<HowYoullLearn>}
+     * @memberof CoursePageItem
+     */
+    'how_youll_learn': Array<HowYoullLearn>;
 }
 /**
  * Serializer for a list of course pages, including metadata and items.
@@ -2677,6 +2683,37 @@ export const HighestEducationEnum = {
 export type HighestEducationEnum = typeof HighestEducationEnum[keyof typeof HighestEducationEnum];
 
 
+/**
+ * Serializer for the How You\'ll Learn generated property
+ * @export
+ * @interface HowYoullLearn
+ */
+export interface HowYoullLearn {
+    /**
+     * 
+     * @type {string}
+     * @memberof HowYoullLearn
+     */
+    'key': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HowYoullLearn
+     */
+    'icon': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HowYoullLearn
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HowYoullLearn
+     */
+    'text': string;
+}
 /**
  * * `sso` - SSO * `non-sso` - Non-SSO * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
  * @export
@@ -5030,6 +5067,12 @@ export interface ProgramPageItem {
      * @memberof ProgramPageItem
      */
     'program_details': V2Program;
+    /**
+     * 
+     * @type {Array<HowYoullLearn>}
+     * @memberof ProgramPageItem
+     */
+    'how_youll_learn': Array<HowYoullLearn>;
 }
 /**
  * Serializer for a list of program pages, including metadata and items.
@@ -7833,7 +7876,7 @@ export interface V3UserProgramEnrollment {
      * @type {string}
      * @memberof V3UserProgramEnrollment
      */
-    'enrollment_mode'?: string | null;
+    'enrollment_mode'?: string;
 }
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
