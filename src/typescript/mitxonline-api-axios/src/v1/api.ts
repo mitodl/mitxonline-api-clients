@@ -832,7 +832,81 @@ export interface CourseOutlineBadRequestResponse {
     'detail': string;
 }
 /**
- * 
+ * A single module within a course outline.
+ * @export
+ * @interface CourseOutlineModule
+ */
+export interface CourseOutlineModule {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineModule
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseOutlineModule
+     */
+    'title': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModule
+     */
+    'effort_time': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModule
+     */
+    'effort_activities': number;
+    /**
+     * 
+     * @type {CourseOutlineModuleCounts}
+     * @memberof CourseOutlineModule
+     */
+    'counts': CourseOutlineModuleCounts;
+}
+/**
+ * Activity counts within a course outline module.
+ * @export
+ * @interface CourseOutlineModuleCounts
+ */
+export interface CourseOutlineModuleCounts {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModuleCounts
+     */
+    'videos': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModuleCounts
+     */
+    'readings': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModuleCounts
+     */
+    'problems': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModuleCounts
+     */
+    'assignments': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseOutlineModuleCounts
+     */
+    'app_items': number;
+}
+/**
+ * Course outline data fetched from Open edX.
  * @export
  * @interface CourseOutlineResponse
  */
@@ -851,10 +925,10 @@ export interface CourseOutlineResponse {
     'generated_at': string;
     /**
      * 
-     * @type {Array<{ [key: string]: any; }>}
+     * @type {Array<CourseOutlineModule>}
      * @memberof CourseOutlineResponse
      */
-    'modules': Array<{ [key: string]: any; }>;
+    'modules': Array<CourseOutlineModule>;
 }
 /**
  * 
