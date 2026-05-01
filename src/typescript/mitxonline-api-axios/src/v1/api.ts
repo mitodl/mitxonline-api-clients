@@ -1521,6 +1521,12 @@ export interface CourseRunLanguageOption {
      */
     'courseware_id': string;
     /**
+     * 
+     * @type {string}
+     * @memberof CourseRunLanguageOption
+     */
+    'courseware_url': string;
+    /**
      * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
      * @type {string}
      * @memberof CourseRunLanguageOption
