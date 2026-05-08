@@ -2041,7 +2041,7 @@ export interface CourseWithCourseRunsSerializerV2 {
      * @type {CoursePage}
      * @memberof CourseWithCourseRunsSerializerV2
      */
-    'page': CoursePage;
+    'page': CoursePage | null;
     /**
      * 
      * @type {Array<BaseProgram>}
@@ -6913,7 +6913,7 @@ export interface V2Course {
      * @type {CoursePage}
      * @memberof V2Course
      */
-    'page': CoursePage;
+    'page': CoursePage | null;
     /**
      * 
      * @type {Array<BaseProgram>}
@@ -7392,7 +7392,7 @@ export interface V2Program {
      * @type {ProgramPage}
      * @memberof V2Program
      */
-    'page': ProgramPage;
+    'page': ProgramPage | null;
     /**
      * 
      * @type {string}
@@ -7704,7 +7704,7 @@ export interface V2ProgramDetail {
      * @type {ProgramPage}
      * @memberof V2ProgramDetail
      */
-    'page': ProgramPage;
+    'page': ProgramPage | null;
     /**
      * 
      * @type {string}
