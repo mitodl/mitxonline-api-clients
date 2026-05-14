@@ -5145,6 +5145,12 @@ export interface ProgramPage {
      * @memberof ProgramPage
      */
     'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPage
+     */
+    'list_price': string;
 }
 /**
  * Serializer for individual program page items, including all relevant fields.
