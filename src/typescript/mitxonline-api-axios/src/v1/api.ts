@@ -2041,7 +2041,7 @@ export interface CourseWithCourseRunsSerializerV2 {
      * @type {CoursePage}
      * @memberof CourseWithCourseRunsSerializerV2
      */
-    'page': CoursePage;
+    'page': CoursePage | null;
     /**
      * 
      * @type {Array<BaseProgram>}
@@ -6919,7 +6919,7 @@ export interface V2Course {
      * @type {CoursePage}
      * @memberof V2Course
      */
-    'page': CoursePage;
+    'page': CoursePage | null;
     /**
      * 
      * @type {Array<BaseProgram>}
@@ -7060,6 +7060,12 @@ export interface V2CourseRunCertificate {
      * @memberof V2CourseRunCertificate
      */
     'is_revoked': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2CourseRunCertificate
+     */
+    'issue_date': string;
     /**
      * 
      * @type {CertificatePageModel}
@@ -7398,7 +7404,7 @@ export interface V2Program {
      * @type {ProgramPage}
      * @memberof V2Program
      */
-    'page': ProgramPage;
+    'page': ProgramPage | null;
     /**
      * 
      * @type {string}
@@ -7560,6 +7566,12 @@ export interface V2ProgramCertificate {
     'is_revoked': boolean;
     /**
      * 
+     * @type {string}
+     * @memberof V2ProgramCertificate
+     */
+    'issue_date': string;
+    /**
+     * 
      * @type {CertificatePageModel}
      * @memberof V2ProgramCertificate
      */
@@ -7710,7 +7722,7 @@ export interface V2ProgramDetail {
      * @type {ProgramPage}
      * @memberof V2ProgramDetail
      */
-    'page': ProgramPage;
+    'page': ProgramPage | null;
     /**
      * 
      * @type {string}
