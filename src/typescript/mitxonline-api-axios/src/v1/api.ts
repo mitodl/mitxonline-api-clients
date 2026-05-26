@@ -136,6 +136,178 @@ export interface BaseCourse {
     'type': string;
 }
 /**
+ * Minimal CourseRun model serializer
+ * @export
+ * @interface BaseCourseRun
+ */
+export interface BaseCourseRun {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'expiration_date'?: string | null;
+    /**
+     * Get the courseware URL
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'courseware_url': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'courseware_id': string;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * The date beyond which the learner can not enroll in paid course mode.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'upgrade_deadline'?: string | null;
+    /**
+     * Check if the course run is upgradable
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_upgradable': boolean;
+    /**
+     * Check if the course run is enrollable
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_enrollable': boolean;
+    /**
+     * Check if the course run is archived
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_archived': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'run_tag': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseRun
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'live'?: boolean;
+    /**
+     * Get the course number
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'course_number': string;
+    /**
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof BaseCourseRun
+     */
+    'enrollment_modes': Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {BaseCourseRunLanguage}
+     * @memberof BaseCourseRun
+     */
+    'language'?: BaseCourseRunLanguage;
+    /**
+     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof BaseCourseRun
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof BaseCourseRun
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+}
+/**
+ * @type BaseCourseRunLanguage
+ * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HK` - zh_HK
+ * @export
+ */
+export type BaseCourseRunLanguage = BlankEnum | LanguageEnum;
+
+/**
+ * @type BaseCourseRunVariantIndustry
+ * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * @export
+ */
+export type BaseCourseRunVariantIndustry = BlankEnum | VariantIndustryEnum;
+
+/**
+ * @type BaseCourseRunVariantLength
+ * Variant: Describes the length of the run (short/long).  * `` - Normal * `S` - Short * `F` - Full
+ * @export
+ */
+export type BaseCourseRunVariantLength = BlankEnum | VariantLengthEnum;
+
+/**
  * Simple serializer for Product without related purchasable objects
  * @export
  * @interface BaseProduct
@@ -1527,11 +1699,11 @@ export interface CourseRunLanguageOption {
      */
     'courseware_url': string;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunLanguageOption
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * The title of the course. This value is synced automatically with edX studio.
      * @type {string}
@@ -1666,17 +1838,35 @@ export interface CourseRunV2 {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunV2
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof CourseRunV2
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof CourseRunV2
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof CourseRunV2
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -1817,17 +2007,35 @@ export interface CourseRunWithCourseV3 {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunWithCourseV3
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof CourseRunWithCourseV3
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof CourseRunWithCourseV3
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof CourseRunWithCourseV3
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
      * @type {number}
@@ -1932,17 +2140,29 @@ export interface CourseRunWithCourseV3Request {
      */
     'live'?: boolean;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunWithCourseV3Request
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof CourseRunWithCourseV3Request
      */
     'is_primary_language'?: boolean;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
 }
 /**
  * Course serializer
@@ -1999,6 +2219,38 @@ export interface CourseV3Request {
      * @memberof CourseV3Request
      */
     'readable_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface CourseVariantRunBadRequest
+ */
+export interface CourseVariantRunBadRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseVariantRunBadRequest
+     */
+    'detail': string;
+}
+/**
+ * Serializer for the course variant run API.
+ * @export
+ * @interface CourseVariantRunsResponse
+ */
+export interface CourseVariantRunsResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseVariantRunsResponse
+     */
+    'id': number;
+    /**
+     * 
+     * @type {Array<BaseCourseRun>}
+     * @memberof CourseVariantRunsResponse
+     */
+    'courseruns': Array<BaseCourseRun>;
 }
 /**
  * Course model serializer - also serializes child course runs
@@ -2138,6 +2390,12 @@ export interface CourseWithCourseRunsSerializerV2 {
      * @memberof CourseWithCourseRunsSerializerV2
      */
     'ingest_content_files_for_ai': boolean;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'possible_variant_sets': Array<SupportedVariant>;
     /**
      * 
      * @type {Array<CourseRunV2>}
@@ -2967,6 +3225,182 @@ export const IntegrationTypeEnum = {
 } as const;
 
 export type IntegrationTypeEnum = typeof IntegrationTypeEnum[keyof typeof IntegrationTypeEnum];
+
+
+/**
+ * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HK` - zh_HK
+ * @export
+ * @enum {string}
+ */
+
+export const LanguageEnum = {
+    /**
+    * af_ZA
+    */
+    AfZa: 'af_ZA',
+    /**
+    * ar
+    */
+    Ar: 'ar',
+    /**
+    * az
+    */
+    Az: 'az',
+    /**
+    * bo
+    */
+    Bo: 'bo',
+    /**
+    * da
+    */
+    Da: 'da',
+    /**
+    * de
+    */
+    De: 'de',
+    /**
+    * de_DE
+    */
+    DeDe: 'de_DE',
+    /**
+    * el
+    */
+    El: 'el',
+    /**
+    * es_419
+    */
+    Es419: 'es_419',
+    /**
+    * es_ES
+    */
+    EsEs: 'es_ES',
+    /**
+    * en
+    */
+    En: 'en',
+    /**
+    * fa
+    */
+    Fa: 'fa',
+    /**
+    * fr
+    */
+    Fr: 'fr',
+    /**
+    * fr_CA
+    */
+    FrCa: 'fr_CA',
+    /**
+    * he
+    */
+    He: 'he',
+    /**
+    * hi
+    */
+    Hi: 'hi',
+    /**
+    * hu
+    */
+    Hu: 'hu',
+    /**
+    * id
+    */
+    Id: 'id',
+    /**
+    * it_IT
+    */
+    ItIt: 'it_IT',
+    /**
+    * ja
+    */
+    Ja: 'ja',
+    /**
+    * ka
+    */
+    Ka: 'ka',
+    /**
+    * kk
+    */
+    Kk: 'kk',
+    /**
+    * ko
+    */
+    Ko: 'ko',
+    /**
+    * lv
+    */
+    Lv: 'lv',
+    /**
+    * nl
+    */
+    Nl: 'nl',
+    /**
+    * pl
+    */
+    Pl: 'pl',
+    /**
+    * pt_BR
+    */
+    PtBr: 'pt_BR',
+    /**
+    * pt_PT
+    */
+    PtPt: 'pt_PT',
+    /**
+    * ro
+    */
+    Ro: 'ro',
+    /**
+    * ru
+    */
+    Ru: 'ru',
+    /**
+    * sq
+    */
+    Sq: 'sq',
+    /**
+    * sv
+    */
+    Sv: 'sv',
+    /**
+    * sw
+    */
+    Sw: 'sw',
+    /**
+    * te
+    */
+    Te: 'te',
+    /**
+    * th
+    */
+    Th: 'th',
+    /**
+    * tr_TR
+    */
+    TrTr: 'tr_TR',
+    /**
+    * uk
+    */
+    Uk: 'uk',
+    /**
+    * uz
+    */
+    Uz: 'uz',
+    /**
+    * vi
+    */
+    Vi: 'vi',
+    /**
+    * zh_CN
+    */
+    ZhCn: 'zh_CN',
+    /**
+    * zh_HK
+    */
+    ZhHk: 'zh_HK'
+} as const;
+
+export type LanguageEnum = typeof LanguageEnum[keyof typeof LanguageEnum];
 
 
 /**
@@ -5577,6 +6011,65 @@ export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
 
 
 /**
+ * Serializer for the SupportedVariant model.
+ * @export
+ * @interface SupportedVariant
+ */
+export interface SupportedVariant {
+    /**
+     * 
+     * @type {LanguageEnum}
+     * @memberof SupportedVariant
+     */
+    'language': LanguageEnum;
+    /**
+     * 
+     * @type {SupportedVariantVariantLength}
+     * @memberof SupportedVariant
+     */
+    'variant_length': SupportedVariantVariantLength;
+    /**
+     * 
+     * @type {SupportedVariantVariantIndustry}
+     * @memberof SupportedVariant
+     */
+    'variant_industry': SupportedVariantVariantIndustry;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SupportedVariant
+     */
+    'active': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SupportedVariant
+     */
+    'b2b_only': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SupportedVariant
+     */
+    'default_variant': boolean;
+}
+
+
+/**
+ * @type SupportedVariantVariantIndustry
+ * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * @export
+ */
+export type SupportedVariantVariantIndustry = BlankEnum | VariantIndustryEnum;
+
+/**
+ * @type SupportedVariantVariantLength
+ * Variant: Describes the length of the run (short/long).  * `` - Normal * `S` - Short * `F` - Full
+ * @export
+ */
+export type SupportedVariantVariantLength = BlankEnum | VariantLengthEnum;
+
+/**
  * Serializer for topics used in course pages.
  * @export
  * @interface Topic
@@ -6358,17 +6851,35 @@ export interface V1BaseCourseRun {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V1BaseCourseRun
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V1BaseCourseRun
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof V1BaseCourseRun
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V1BaseCourseRun
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V1BaseCourseRun
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
      * @type {Array<ProductFlexibilePrice>}
@@ -6503,17 +7014,35 @@ export interface V1CourseRunWithCourse {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V1CourseRunWithCourse
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V1CourseRunWithCourse
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof V1CourseRunWithCourse
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V1CourseRunWithCourse
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V1CourseRunWithCourse
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * List of products associated with this course run
      * @type {Array<ProductFlexibilePrice>}
@@ -6612,17 +7141,29 @@ export interface V1CourseRunWithCourseRequest {
      */
     'live'?: boolean;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V1CourseRunWithCourseRequest
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V1CourseRunWithCourseRequest
      */
     'is_primary_language'?: boolean;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V1CourseRunWithCourseRequest
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V1CourseRunWithCourseRequest
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
 }
 /**
  * Course model serializer - also serializes child course runs
@@ -7016,6 +7557,12 @@ export interface V2Course {
      * @memberof V2Course
      */
     'ingest_content_files_for_ai': boolean;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof V2Course
+     */
+    'possible_variant_sets': Array<SupportedVariant>;
 }
 /**
  * Course model serializer
@@ -7212,17 +7759,35 @@ export interface V2CourseRunWithCourse {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V2CourseRunWithCourse
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V2CourseRunWithCourse
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V2CourseRunWithCourse
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V2CourseRunWithCourse
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -7327,17 +7892,29 @@ export interface V2CourseRunWithCourseRequest {
      */
     'live'?: boolean;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V2CourseRunWithCourseRequest
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V2CourseRunWithCourseRequest
      */
     'is_primary_language'?: boolean;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V2CourseRunWithCourseRequest
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V2CourseRunWithCourseRequest
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
      * @type {number}
@@ -8179,6 +8756,50 @@ export interface V3UserProgramEnrollment {
      */
     'enrollment_mode'?: string;
 }
+/**
+ * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * @export
+ * @enum {string}
+ */
+
+export const VariantIndustryEnum = {
+    /**
+    * Energy
+    */
+    E: 'E',
+    /**
+    * Finance
+    */
+    F: 'F',
+    /**
+    * Healthcare
+    */
+    Hc: 'HC'
+} as const;
+
+export type VariantIndustryEnum = typeof VariantIndustryEnum[keyof typeof VariantIndustryEnum];
+
+
+/**
+ * * `` - Normal * `S` - Short * `F` - Full
+ * @export
+ * @enum {string}
+ */
+
+export const VariantLengthEnum = {
+    /**
+    * Short
+    */
+    S: 'S',
+    /**
+    * Full
+    */
+    F: 'F'
+} as const;
+
+export type VariantLengthEnum = typeof VariantLengthEnum[keyof typeof VariantLengthEnum];
+
+
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
  * @export
@@ -11672,7 +12293,9 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * List all courses - API v2
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {string} [courseruns__language] 
+         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HK&#x60; - zh_HK
+         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+         * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Normal * &#x60;S&#x60; - Short * &#x60;F&#x60; - Full
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
@@ -11684,7 +12307,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesList: async (contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: string, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV2CoursesList: async (contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/courses/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11707,6 +12330,14 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
 
             if (courseruns__language !== undefined) {
                 localVarQueryParameter['courseruns__language'] = courseruns__language;
+            }
+
+            if (courseruns__variant_industry !== undefined) {
+                localVarQueryParameter['courseruns__variant_industry'] = courseruns__variant_industry;
+            }
+
+            if (courseruns__variant_length !== undefined) {
+                localVarQueryParameter['courseruns__variant_length'] = courseruns__variant_length;
             }
 
             if (id) {
@@ -11818,6 +12449,64 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Fetch variant runs for a course(s) matching the specified filters.
+         * @param {number} contract Contract to filter by
+         * @param {Array<number>} course_id Course ID(s) to use
+         * @param {string} [industry] Industry focus to retrieve
+         * @param {string} [language] Language to retrieve
+         * @param {string} [length] Language to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseVariantRunsV3: async (contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contract' is not null or undefined
+            assertParamExists('courseVariantRunsV3', 'contract', contract)
+            // verify required parameter 'course_id' is not null or undefined
+            assertParamExists('courseVariantRunsV3', 'course_id', course_id)
+            const localVarPath = `/api/v3/courses/variant_runs/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (contract !== undefined) {
+                localVarQueryParameter['contract'] = contract;
+            }
+
+            if (course_id) {
+                localVarQueryParameter['course_id'] = course_id;
+            }
+
+            if (industry !== undefined) {
+                localVarQueryParameter['industry'] = industry;
+            }
+
+            if (language !== undefined) {
+                localVarQueryParameter['language'] = language;
+            }
+
+            if (length !== undefined) {
+                localVarQueryParameter['length'] = length;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -11862,7 +12551,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * List all courses - API v2
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {string} [courseruns__language] 
+         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HK&#x60; - zh_HK
+         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+         * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Normal * &#x60;S&#x60; - Short * &#x60;F&#x60; - Full
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
@@ -11874,8 +12565,8 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: string, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, courseruns__language, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
+        async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, courseruns__language, courseruns__variant_industry, courseruns__variant_length, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -11902,6 +12593,22 @@ export const CoursesApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseOutlineRetrieveV3(course_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.courseOutlineRetrieveV3']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Fetch variant runs for a course(s) matching the specified filters.
+         * @param {number} contract Contract to filter by
+         * @param {Array<number>} course_id Course ID(s) to use
+         * @param {string} [industry] Industry focus to retrieve
+         * @param {string} [language] Language to retrieve
+         * @param {string} [length] Language to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async courseVariantRunsV3(contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseVariantRunsResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseVariantRunsV3(contract, course_id, industry, language, length, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CoursesApi.courseVariantRunsV3']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -11939,7 +12646,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List> {
-            return localVarFp.apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieve a specific course - API v2
@@ -11958,6 +12665,15 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          */
         courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig): AxiosPromise<CourseOutlineResponse> {
             return localVarFp.courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Fetch variant runs for a course(s) matching the specified filters.
+         * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseVariantRunsResponse>> {
+            return localVarFp.courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -12053,11 +12769,25 @@ export interface CoursesApiApiV2CoursesListRequest {
     readonly courserun_is_enrollable?: boolean
 
     /**
-     * 
-     * @type {string}
+     * ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HK&#x60; - zh_HK
+     * @type {'af_ZA' | 'ar' | 'az' | 'bo' | 'da' | 'de' | 'de_DE' | 'el' | 'en' | 'es_419' | 'es_ES' | 'fa' | 'fr' | 'fr_CA' | 'he' | 'hi' | 'hu' | 'id' | 'it_IT' | 'ja' | 'ka' | 'kk' | 'ko' | 'lv' | 'nl' | 'pl' | 'pt_BR' | 'pt_PT' | 'ro' | 'ru' | 'sq' | 'sv' | 'sw' | 'te' | 'th' | 'tr_TR' | 'uk' | 'uz' | 'vi' | 'zh_CN' | 'zh_HK'}
      * @memberof CoursesApiApiV2CoursesList
      */
-    readonly courseruns__language?: string
+    readonly courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum
+
+    /**
+     * Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+     * @type {'' | 'E' | 'F' | 'HC'}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum
+
+    /**
+     * Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Normal * &#x60;S&#x60; - Short * &#x60;F&#x60; - Full
+     * @type {'' | 'F' | 'S'}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum
 
     /**
      * Multiple values may be separated by commas.
@@ -12145,6 +12875,48 @@ export interface CoursesApiCourseOutlineRetrieveV3Request {
 }
 
 /**
+ * Request parameters for courseVariantRunsV3 operation in CoursesApi.
+ * @export
+ * @interface CoursesApiCourseVariantRunsV3Request
+ */
+export interface CoursesApiCourseVariantRunsV3Request {
+    /**
+     * Contract to filter by
+     * @type {number}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly contract: number
+
+    /**
+     * Course ID(s) to use
+     * @type {Array<number>}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly course_id: Array<number>
+
+    /**
+     * Industry focus to retrieve
+     * @type {string}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly industry?: string
+
+    /**
+     * Language to retrieve
+     * @type {string}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly language?: string
+
+    /**
+     * Language to retrieve
+     * @type {string}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly length?: string
+}
+
+/**
  * CoursesApi - object-oriented interface
  * @export
  * @class CoursesApi
@@ -12181,7 +12953,7 @@ export class CoursesApi extends BaseAPI {
      * @memberof CoursesApi
      */
     public apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -12205,8 +12977,85 @@ export class CoursesApi extends BaseAPI {
     public courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
     }
+
+    /**
+     * Fetch variant runs for a course(s) matching the specified filters.
+     * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CoursesApi
+     */
+    public courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig) {
+        return CoursesApiFp(this.configuration).courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(this.axios, this.basePath));
+    }
 }
 
+/**
+ * @export
+ */
+export const ApiV2CoursesListCourserunsLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    En: 'en',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHk: 'zh_HK'
+} as const;
+export type ApiV2CoursesListCourserunsLanguageEnum = typeof ApiV2CoursesListCourserunsLanguageEnum[keyof typeof ApiV2CoursesListCourserunsLanguageEnum];
+/**
+ * @export
+ */
+export const ApiV2CoursesListCourserunsVariantIndustryEnum = {
+    Empty: '',
+    E: 'E',
+    F: 'F',
+    Hc: 'HC'
+} as const;
+export type ApiV2CoursesListCourserunsVariantIndustryEnum = typeof ApiV2CoursesListCourserunsVariantIndustryEnum[keyof typeof ApiV2CoursesListCourserunsVariantIndustryEnum];
+/**
+ * @export
+ */
+export const ApiV2CoursesListCourserunsVariantLengthEnum = {
+    Empty: '',
+    F: 'F',
+    S: 'S'
+} as const;
+export type ApiV2CoursesListCourserunsVariantLengthEnum = typeof ApiV2CoursesListCourserunsVariantLengthEnum[keyof typeof ApiV2CoursesListCourserunsVariantLengthEnum];
 
 
 /**
