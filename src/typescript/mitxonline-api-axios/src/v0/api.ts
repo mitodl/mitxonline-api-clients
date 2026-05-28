@@ -285,6 +285,12 @@ export interface BaseCourseRun {
      * @memberof BaseCourseRun
      */
     'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseRun
+     */
+    'course_id': number;
 }
 /**
  * @type BaseCourseRunLanguage
@@ -913,9 +919,28 @@ export interface ContractPage {
      * @memberof ContractPage
      */
     'programs': Array<number>;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof ContractPage
+     */
+    'variant_options': Array<SupportedVariant>;
 }
 
 
+/**
+ * 
+ * @export
+ * @interface ContractPageVariantRunBadRequest
+ */
+export interface ContractPageVariantRunBadRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractPageVariantRunBadRequest
+     */
+    'detail': string;
+}
 /**
  * Serializer for pycountry countries, with states for US/CA
  * @export
@@ -1869,6 +1894,12 @@ export interface CourseRunV2 {
     'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
+     * @type {number}
+     * @memberof CourseRunV2
+     */
+    'course_id': number;
+    /**
+     * 
      * @type {Array<BaseProduct>}
      * @memberof CourseRunV2
      */
@@ -2036,6 +2067,12 @@ export interface CourseRunWithCourseV3 {
      * @memberof CourseRunWithCourseV3
      */
     'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunWithCourseV3
+     */
+    'course_id': number;
     /**
      * 
      * @type {number}
@@ -3648,6 +3685,12 @@ export interface ManagerContractDetail {
      * @memberof ManagerContractDetail
      */
     'programs': Array<number>;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof ManagerContractDetail
+     */
+    'variant_options': Array<SupportedVariant>;
     /**
      * Calculate attachment percentage if seat-limited.
      * @type {number}
@@ -6981,6 +7024,12 @@ export interface V1BaseCourseRun {
     'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
+     * @type {number}
+     * @memberof V1BaseCourseRun
+     */
+    'course_id': number;
+    /**
+     * 
      * @type {Array<ProductFlexibilePrice>}
      * @memberof V1BaseCourseRun
      */
@@ -7142,6 +7191,12 @@ export interface V1CourseRunWithCourse {
      * @memberof V1CourseRunWithCourse
      */
     'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof V1CourseRunWithCourse
+     */
+    'course_id': number;
     /**
      * List of products associated with this course run
      * @type {Array<ProductFlexibilePrice>}
@@ -7887,6 +7942,12 @@ export interface V2CourseRunWithCourse {
      * @memberof V2CourseRunWithCourse
      */
     'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2CourseRunWithCourse
+     */
+    'course_id': number;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -9349,6 +9410,44 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Return the variant runs for a contract.
+         * @param {string} contract_slug 
+         * @param {Array<number>} [course_id] Course ID(s) to use
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bContractsAllVariantRunsList: async (contract_slug: string, course_id?: Array<number>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contract_slug' is not null or undefined
+            assertParamExists('b2bContractsAllVariantRunsList', 'contract_slug', contract_slug)
+            const localVarPath = `/api/v0/b2b/contracts/{contract_slug}/all_variant_runs/`
+                .replace(`{${"contract_slug"}}`, encodeURIComponent(String(contract_slug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (course_id) {
+                localVarQueryParameter['course_id'] = course_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9779,6 +9878,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Return the variant runs for a contract.
+         * @param {string} contract_slug 
+         * @param {Array<number>} [course_id] Course ID(s) to use
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bContractsAllVariantRunsList(contract_slug: string, course_id?: Array<number>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseCourseRun>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bContractsAllVariantRunsList(contract_slug, course_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bContractsAllVariantRunsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9945,6 +10057,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(axios, basePath));
         },
         /**
+         * Return the variant runs for a contract.
+         * @param {B2bApiB2bContractsAllVariantRunsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bContractsAllVariantRunsList(requestParameters: B2bApiB2bContractsAllVariantRunsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<BaseCourseRun>> {
+            return localVarFp.b2bContractsAllVariantRunsList(requestParameters.contract_slug, requestParameters.course_id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10064,6 +10185,27 @@ export interface B2bApiB2bAttachCreateRequest {
      * @memberof B2bApiB2bAttachCreate
      */
     readonly enrollment_code: string
+}
+
+/**
+ * Request parameters for b2bContractsAllVariantRunsList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bContractsAllVariantRunsListRequest
+ */
+export interface B2bApiB2bContractsAllVariantRunsListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bContractsAllVariantRunsList
+     */
+    readonly contract_slug: string
+
+    /**
+     * Course ID(s) to use
+     * @type {Array<number>}
+     * @memberof B2bApiB2bContractsAllVariantRunsList
+     */
+    readonly course_id?: Array<number>
 }
 
 /**
@@ -10250,6 +10392,17 @@ export class B2bApi extends BaseAPI {
      */
     public b2bAttachCreate(requestParameters: B2bApiB2bAttachCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return the variant runs for a contract.
+     * @param {B2bApiB2bContractsAllVariantRunsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bContractsAllVariantRunsList(requestParameters: B2bApiB2bContractsAllVariantRunsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bContractsAllVariantRunsList(requestParameters.contract_slug, requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
