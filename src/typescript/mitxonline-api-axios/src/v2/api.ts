@@ -383,17 +383,12 @@ export interface BaseProgram {
     'type': string;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {DisplayModeEnum}
      * @memberof BaseProgram
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode': DisplayModeEnum | null;
 }
-/**
- * @type BaseProgramDisplayMode
- * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
- * @export
- */
-export type BaseProgramDisplayMode = BlankEnum | DisplayModeEnum;
+
 
 /**
  * Basket model serializer
@@ -2294,7 +2289,7 @@ export interface CourseWithCourseRunsSerializerV2 {
      * @type {Array<BaseProgram>}
      * @memberof CourseWithCourseRunsSerializerV2
      */
-    'programs': Array<BaseProgram> | null;
+    'programs': Array<BaseProgram>;
     /**
      * List topics of a course
      * @type {Array<{ [key: string]: any; }>}
@@ -7603,7 +7598,7 @@ export interface V2Course {
      * @type {Array<BaseProgram>}
      * @memberof V2Course
      */
-    'programs': Array<BaseProgram> | null;
+    'programs': Array<BaseProgram>;
     /**
      * List topics of a course
      * @type {Array<{ [key: string]: any; }>}
@@ -8157,10 +8152,10 @@ export interface V2Program {
     'live'?: boolean;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {V2ProgramDisplayMode}
      * @memberof V2Program
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode'?: V2ProgramDisplayMode | null;
     /**
      * 
      * @type {Array<V2ProgramTopicsInner>}
@@ -8475,10 +8470,10 @@ export interface V2ProgramDetail {
     'live'?: boolean;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {V2ProgramDisplayMode}
      * @memberof V2ProgramDetail
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode'?: V2ProgramDisplayMode | null;
     /**
      * 
      * @type {Array<V2ProgramTopicsInner>}
@@ -8583,6 +8578,13 @@ export interface V2ProgramDetail {
     'products': Array<BaseProduct>;
 }
 
+
+/**
+ * @type V2ProgramDisplayMode
+ * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
+ * @export
+ */
+export type V2ProgramDisplayMode = BlankEnum | DisplayModeEnum;
 
 /**
  * Serializer for a ProgramRequirement
@@ -8869,10 +8871,10 @@ export interface V3SimpleProgram {
     'live'?: boolean;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {V2ProgramDisplayMode}
      * @memberof V3SimpleProgram
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode'?: V2ProgramDisplayMode | null;
 }
 /**
  * Serializer for user program enrollments.
@@ -12563,16 +12565,16 @@ export class CountriesApi extends BaseAPI {
 export const CourseCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Get a course certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        courseCertificatesRetrieve: async (cert_uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'cert_uuid' is not null or undefined
-            assertParamExists('courseCertificatesRetrieve', 'cert_uuid', cert_uuid)
-            const localVarPath = `/api/v2/course_certificates/{cert_uuid}/`
-                .replace(`{${"cert_uuid"}}`, encodeURIComponent(String(cert_uuid)));
+        courseCertificatesRetrieve: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uuid' is not null or undefined
+            assertParamExists('courseCertificatesRetrieve', 'uuid', uuid)
+            const localVarPath = `/api/v2/course_certificates/{uuid}/`
+                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12606,13 +12608,13 @@ export const CourseCertificatesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CourseCertificatesApiAxiosParamCreator(configuration)
     return {
         /**
-         * Get a course certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async courseCertificatesRetrieve(cert_uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseRunCertificate>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseCertificatesRetrieve(cert_uuid, options);
+        async courseCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseRunCertificate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseCertificatesRetrieve(uuid, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CourseCertificatesApi.courseCertificatesRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -12628,13 +12630,13 @@ export const CourseCertificatesApiFactory = function (configuration?: Configurat
     const localVarFp = CourseCertificatesApiFp(configuration)
     return {
         /**
-         * Get a course certificate by UUID.
+         * Viewset to read a single course certificate
          * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2CourseRunCertificate> {
-            return localVarFp.courseCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(axios, basePath));
+            return localVarFp.courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -12650,7 +12652,7 @@ export interface CourseCertificatesApiCourseCertificatesRetrieveRequest {
      * @type {string}
      * @memberof CourseCertificatesApiCourseCertificatesRetrieve
      */
-    readonly cert_uuid: string
+    readonly uuid: string
 }
 
 /**
@@ -12661,14 +12663,14 @@ export interface CourseCertificatesApiCourseCertificatesRetrieveRequest {
  */
 export class CourseCertificatesApi extends BaseAPI {
     /**
-     * Get a course certificate by UUID.
+     * Viewset to read a single course certificate
      * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseCertificatesApi
      */
     public courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return CourseCertificatesApiFp(this.configuration).courseCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(this.axios, this.basePath));
+        return CourseCertificatesApiFp(this.configuration).courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -19881,16 +19883,16 @@ export class ProductsApi extends BaseAPI {
 export const ProgramCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Get a program certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programCertificatesRetrieve: async (cert_uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'cert_uuid' is not null or undefined
-            assertParamExists('programCertificatesRetrieve', 'cert_uuid', cert_uuid)
-            const localVarPath = `/api/v2/program_certificates/{cert_uuid}/`
-                .replace(`{${"cert_uuid"}}`, encodeURIComponent(String(cert_uuid)));
+        programCertificatesRetrieve: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uuid' is not null or undefined
+            assertParamExists('programCertificatesRetrieve', 'uuid', uuid)
+            const localVarPath = `/api/v2/program_certificates/{uuid}/`
+                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -19924,13 +19926,13 @@ export const ProgramCertificatesApiFp = function(configuration?: Configuration) 
     const localVarAxiosParamCreator = ProgramCertificatesApiAxiosParamCreator(configuration)
     return {
         /**
-         * Get a program certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programCertificatesRetrieve(cert_uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCertificate>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programCertificatesRetrieve(cert_uuid, options);
+        async programCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCertificate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programCertificatesRetrieve(uuid, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramCertificatesApi.programCertificatesRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -19946,13 +19948,13 @@ export const ProgramCertificatesApiFactory = function (configuration?: Configura
     const localVarFp = ProgramCertificatesApiFp(configuration)
     return {
         /**
-         * Get a program certificate by UUID.
+         * Viewset to read a single course certificate
          * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramCertificate> {
-            return localVarFp.programCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(axios, basePath));
+            return localVarFp.programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -19968,7 +19970,7 @@ export interface ProgramCertificatesApiProgramCertificatesRetrieveRequest {
      * @type {string}
      * @memberof ProgramCertificatesApiProgramCertificatesRetrieve
      */
-    readonly cert_uuid: string
+    readonly uuid: string
 }
 
 /**
@@ -19979,14 +19981,14 @@ export interface ProgramCertificatesApiProgramCertificatesRetrieveRequest {
  */
 export class ProgramCertificatesApi extends BaseAPI {
     /**
-     * Get a program certificate by UUID.
+     * Viewset to read a single course certificate
      * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgramCertificatesApi
      */
     public programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramCertificatesApiFp(this.configuration).programCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(this.axios, this.basePath));
+        return ProgramCertificatesApiFp(this.configuration).programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
