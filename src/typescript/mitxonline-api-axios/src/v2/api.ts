@@ -24,6 +24,25 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
+ * Serializer for the assign_code request body.
+ * @export
+ * @interface AssignRevokeCodeRequestRequest
+ */
+export interface AssignRevokeCodeRequestRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof AssignRevokeCodeRequestRequest
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssignRevokeCodeRequestRequest
+     */
+    'name'?: string;
+}
+/**
  * * `anytime` - anytime * `dated` - dated
  * @export
  * @enum {string}
@@ -577,6 +596,50 @@ export const BlankEnum = {
 export type BlankEnum = typeof BlankEnum[keyof typeof BlankEnum];
 
 
+/**
+ * 
+ * @export
+ * @interface BulkAssignError
+ */
+export interface BulkAssignError {
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkAssignError
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkAssignError
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkAssignError
+     */
+    'detail': string;
+}
+/**
+ * Serializer for the bulk_assign response body.
+ * @export
+ * @interface BulkAssignResult
+ */
+export interface BulkAssignResult {
+    /**
+     * Successfully assigned codes.
+     * @type {Array<ManagerEnrollmentCode>}
+     * @memberof BulkAssignResult
+     */
+    'assigned': Array<ManagerEnrollmentCode>;
+    /**
+     * Records that could not be assigned, with a \'detail\' explanation.
+     * @type {Array<BulkAssignError>}
+     * @memberof BulkAssignResult
+     */
+    'errors': Array<BulkAssignError>;
+}
 /**
  * Serializer for certificate pages, including overrides and signatory items.
  * @export
@@ -2565,6 +2628,19 @@ export interface DepartmentWithCoursesAndPrograms {
     'program_ids': Array<number>;
 }
 /**
+ * Serializer for generic detail error responses (404, etc.).
+ * @export
+ * @interface DetailError
+ */
+export interface DetailError {
+    /**
+     * 
+     * @type {string}
+     * @memberof DetailError
+     */
+    'detail': string;
+}
+/**
  * 
  * @export
  * @interface Discount
@@ -3653,19 +3729,6 @@ export interface ManagerContractDetail {
 }
 
 
-/**
- * Serializer for detailed contract view with statistics.
- * @export
- * @interface ManagerContractDetailRequest
- */
-export interface ManagerContractDetailRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerContractDetailRequest
-     */
-    'membership_type': string;
-}
 /**
  * Serializer for course runs in a contract.
  * @export
@@ -9532,19 +9595,19 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {string} code The discount code to assign.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesAssignCreate: async (code: string, id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCodesAssignCreate: async (code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'code' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'code', code)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'parent_lookup_organization', parent_lookup_organization)
-            // verify required parameter 'ManagerContractDetailRequest' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'ManagerContractDetailRequest', ManagerContractDetailRequest)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/assign/`
                 .replace(`{${"code"}}`, encodeURIComponent(String(code)))
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
@@ -9567,7 +9630,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(ManagerContractDetailRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -9575,20 +9638,20 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Bulk-assign enrollment codes from a CSV or plain-text file. Each row should contain an email address and an optional name. An invite email is sent to each successfully assigned address.
+         * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
+         * @param {Array<AssignRevokeCodeRequestRequest>} AssignRevokeCodeRequestRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesBulkAssignCreate: async (id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCodesBulkAssignCreate: async (id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'parent_lookup_organization', parent_lookup_organization)
-            // verify required parameter 'ManagerContractDetailRequest' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'ManagerContractDetailRequest', ManagerContractDetailRequest)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/bulk_assign/`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
@@ -9610,7 +9673,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(ManagerContractDetailRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -9659,19 +9722,16 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {string} code The discount code to send a reminder for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesRemindCreate: async (code: string, id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCodesRemindCreate: async (code: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'code' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'code', code)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'parent_lookup_organization', parent_lookup_organization)
-            // verify required parameter 'ManagerContractDetailRequest' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'ManagerContractDetailRequest', ManagerContractDetailRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/remind/`
                 .replace(`{${"code"}}`, encodeURIComponent(String(code)))
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
@@ -9689,12 +9749,9 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(ManagerContractDetailRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -9706,19 +9763,16 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {string} code The discount code to revoke.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesRevokeCreate: async (code: string, id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCodesRevokeDestroy: async (code: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'code' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeCreate', 'code', code)
+            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'code', code)
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeCreate', 'id', id)
+            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeCreate', 'parent_lookup_organization', parent_lookup_organization)
-            // verify required parameter 'ManagerContractDetailRequest' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeCreate', 'ManagerContractDetailRequest', ManagerContractDetailRequest)
+            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/revoke/`
                 .replace(`{${"code"}}`, encodeURIComponent(String(code)))
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
@@ -9730,18 +9784,15 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(ManagerContractDetailRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -10100,26 +10151,26 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * @param {string} code The discount code to assign.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCodesAssignCreate(code: string, id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesAssignCreate(code, id, parent_lookup_organization, ManagerContractDetailRequest, options);
+        async b2bManagerOrganizationsContractsCodesAssignCreate(code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesAssignCreate(code, id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesAssignCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Bulk-assign enrollment codes from a CSV or plain-text file. Each row should contain an email address and an optional name. An invite email is sent to each successfully assigned address.
+         * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
+         * @param {Array<AssignRevokeCodeRequestRequest>} AssignRevokeCodeRequestRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCodesBulkAssignCreate(id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesBulkAssignCreate(id, parent_lookup_organization, ManagerContractDetailRequest, options);
+        async b2bManagerOrganizationsContractsCodesBulkAssignCreate(id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BulkAssignResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesBulkAssignCreate(id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesBulkAssignCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10142,12 +10193,11 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * @param {string} code The discount code to send a reminder for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCodesRemindCreate(code: string, id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRemindCreate(code, id, parent_lookup_organization, ManagerContractDetailRequest, options);
+        async b2bManagerOrganizationsContractsCodesRemindCreate(code: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRemindCreate(code, id, parent_lookup_organization, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRemindCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10157,14 +10207,13 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * @param {string} code The discount code to revoke.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
-         * @param {ManagerContractDetailRequest} ManagerContractDetailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCodesRevokeCreate(code: string, id: number, parent_lookup_organization: number, ManagerContractDetailRequest: ManagerContractDetailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRevokeCreate(code, id, parent_lookup_organization, ManagerContractDetailRequest, options);
+        async b2bManagerOrganizationsContractsCodesRevokeDestroy(code: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRevokeDestroy(code, id, parent_lookup_organization, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRevokeCreate']?.[index]?.url;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRevokeDestroy']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -10326,17 +10375,17 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * Bulk-assign enrollment codes from a CSV or plain-text file. Each row should contain an email address and an optional name. An invite email is sent to each successfully assigned address.
+         * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
          * @param {B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BulkAssignResult> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
@@ -10353,17 +10402,17 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
         },
         /**
          * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
-         * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeCreateRequest} requestParameters Request parameters.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesRevokeCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.b2bManagerOrganizationsContractsCodesRevokeCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
         },
         /**
          * List enrollments for a specific course run within a contract.
@@ -10537,10 +10586,10 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest 
 
     /**
      * 
-     * @type {ManagerContractDetailRequest}
+     * @type {AssignRevokeCodeRequestRequest}
      * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
      */
-    readonly ManagerContractDetailRequest: ManagerContractDetailRequest
+    readonly AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest
 }
 
 /**
@@ -10565,10 +10614,10 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequ
 
     /**
      * 
-     * @type {ManagerContractDetailRequest}
+     * @type {Array<AssignRevokeCodeRequestRequest>}
      * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
      */
-    readonly ManagerContractDetailRequest: ManagerContractDetailRequest
+    readonly AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>
 }
 
 /**
@@ -10618,48 +10667,34 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest 
      * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
      */
     readonly parent_lookup_organization: number
-
-    /**
-     * 
-     * @type {ManagerContractDetailRequest}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
-     */
-    readonly ManagerContractDetailRequest: ManagerContractDetailRequest
 }
 
 /**
- * Request parameters for b2bManagerOrganizationsContractsCodesRevokeCreate operation in B2bApi.
+ * Request parameters for b2bManagerOrganizationsContractsCodesRevokeDestroy operation in B2bApi.
  * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesRevokeCreateRequest
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest
  */
-export interface B2bApiB2bManagerOrganizationsContractsCodesRevokeCreateRequest {
+export interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest {
     /**
      * The discount code to revoke.
      * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeCreate
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
      */
     readonly code: string
 
     /**
      * ID of the contract
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeCreate
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent organization
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeCreate
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
      */
     readonly parent_lookup_organization: number
-
-    /**
-     * 
-     * @type {ManagerContractDetailRequest}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeCreate
-     */
-    readonly ManagerContractDetailRequest: ManagerContractDetailRequest
 }
 
 /**
@@ -10850,18 +10885,18 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Bulk-assign enrollment codes from a CSV or plain-text file. Each row should contain an email address and an optional name. An invite email is sent to each successfully assigned address.
+     * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
      * @param {B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -10883,18 +10918,18 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
-     * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeCreateRequest} requestParameters Request parameters.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
-    public b2bManagerOrganizationsContractsCodesRevokeCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeCreateRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRevokeCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.ManagerContractDetailRequest, options).then((request) => request(this.axios, this.basePath));
+    public b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
