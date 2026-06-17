@@ -320,7 +320,7 @@ export interface BaseCourseRun {
 }
 /**
  * @type BaseCourseRunLanguage
- * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HK` - zh_HK
+ * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
  * @export
  */
 export type BaseCourseRunLanguage = BlankEnum | LanguageEnum;
@@ -3288,7 +3288,7 @@ export type IntegrationTypeEnum = typeof IntegrationTypeEnum[keyof typeof Integr
 
 
 /**
- * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HK` - zh_HK
+ * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
  * @export
  * @enum {string}
  */
@@ -3454,6 +3454,10 @@ export const LanguageEnum = {
     * zh_CN
     */
     ZhCn: 'zh_CN',
+    /**
+    * zh_HANS
+    */
+    ZhHans: 'zh_HANS',
     /**
     * zh_HK
     */
@@ -9718,6 +9722,53 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Reassign the assignment for a specific enrollment code
+         * @param {string} code The discount code to reassign.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesReassignUpdate: async (code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'code', code)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'parent_lookup_organization', parent_lookup_organization)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/reassign/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
          * @param {string} code The discount code to send a reminder for.
          * @param {number} id ID of the contract
@@ -10189,6 +10240,21 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Reassign the assignment for a specific enrollment code
+         * @param {string} code The discount code to reassign.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesReassignUpdate(code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesReassignUpdate(code, id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesReassignUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
          * @param {string} code The discount code to send a reminder for.
          * @param {number} id ID of the contract
@@ -10395,6 +10461,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ManagerEnrollmentCode>> {
             return localVarFp.b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Reassign the assignment for a specific enrollment code
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
@@ -10639,6 +10714,41 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesListRequest {
      * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesReassignUpdate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest {
+    /**
+     * The discount code to reassign.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly code: string
+
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * 
+     * @type {AssignRevokeCodeRequestRequest}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest
 }
 
 /**
@@ -10908,6 +11018,17 @@ export class B2bApi extends BaseAPI {
      */
     public b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Reassign the assignment for a specific enrollment code
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -13029,7 +13150,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * List all courses - API v2
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HK&#x60; - zh_HK
+         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
          * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
          * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
          * @param {Array<number>} [id] Multiple values may be separated by commas.
@@ -13287,7 +13408,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * List all courses - API v2
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HK&#x60; - zh_HK
+         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
          * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
          * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
          * @param {Array<number>} [id] Multiple values may be separated by commas.
@@ -13505,8 +13626,8 @@ export interface CoursesApiApiV2CoursesListRequest {
     readonly courserun_is_enrollable?: boolean
 
     /**
-     * ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HK&#x60; - zh_HK
-     * @type {'af_ZA' | 'ar' | 'az' | 'bo' | 'da' | 'de' | 'de_DE' | 'el' | 'en' | 'es_419' | 'es_ES' | 'fa' | 'fr' | 'fr_CA' | 'he' | 'hi' | 'hu' | 'id' | 'it_IT' | 'ja' | 'ka' | 'kk' | 'ko' | 'lv' | 'nl' | 'pl' | 'pt_BR' | 'pt_PT' | 'ro' | 'ru' | 'sq' | 'sv' | 'sw' | 'te' | 'th' | 'tr_TR' | 'uk' | 'uz' | 'vi' | 'zh_CN' | 'zh_HK'}
+     * ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
+     * @type {'af_ZA' | 'ar' | 'az' | 'bo' | 'da' | 'de' | 'de_DE' | 'el' | 'en' | 'es_419' | 'es_ES' | 'fa' | 'fr' | 'fr_CA' | 'he' | 'hi' | 'hu' | 'id' | 'it_IT' | 'ja' | 'ka' | 'kk' | 'ko' | 'lv' | 'nl' | 'pl' | 'pt_BR' | 'pt_PT' | 'ro' | 'ru' | 'sq' | 'sv' | 'sw' | 'te' | 'th' | 'tr_TR' | 'uk' | 'uz' | 'vi' | 'zh_CN' | 'zh_HANS' | 'zh_HK'}
      * @memberof CoursesApiApiV2CoursesList
      */
     readonly courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum
@@ -13770,6 +13891,7 @@ export const ApiV2CoursesListCourserunsLanguageEnum = {
     Uz: 'uz',
     Vi: 'vi',
     ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
     ZhHk: 'zh_HK'
 } as const;
 export type ApiV2CoursesListCourserunsLanguageEnum = typeof ApiV2CoursesListCourserunsLanguageEnum[keyof typeof ApiV2CoursesListCourserunsLanguageEnum];
