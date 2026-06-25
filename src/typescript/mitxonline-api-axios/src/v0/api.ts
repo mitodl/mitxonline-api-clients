@@ -4597,6 +4597,37 @@ export type PagesRetrieve200Response = CertificatePage | CoursePageItem | Page |
 /**
  * 
  * @export
+ * @interface PaginatedBaseContractPageList
+ */
+export interface PaginatedBaseContractPageList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<BaseContractPage>}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'results': Array<BaseContractPage>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedCourseWithCourseRunsSerializerV2List
  */
 export interface PaginatedCourseWithCourseRunsSerializerV2List {
@@ -4721,6 +4752,99 @@ export interface PaginatedFlexiblePriceTierList {
 /**
  * 
  * @export
+ * @interface PaginatedManagerCourseRunList
+ */
+export interface PaginatedManagerCourseRunList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<ManagerCourseRun>}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'results': Array<ManagerCourseRun>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedManagerEnrollmentCodeList
+ */
+export interface PaginatedManagerEnrollmentCodeList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<ManagerEnrollmentCode>}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'results': Array<ManagerEnrollmentCode>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedManagerEnrollmentList
+ */
+export interface PaginatedManagerEnrollmentList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<ManagerEnrollment>}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'results': Array<ManagerEnrollment>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedOrderHistoryList
  */
 export interface PaginatedOrderHistoryList {
@@ -4748,6 +4872,37 @@ export interface PaginatedOrderHistoryList {
      * @memberof PaginatedOrderHistoryList
      */
     'results': Array<OrderHistory>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedOrganizationPageList
+ */
+export interface PaginatedOrganizationPageList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<OrganizationPage>}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'results': Array<OrganizationPage>;
 }
 /**
  * 
@@ -9692,10 +9847,13 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [search_term] Filter codes by assigned email, user email, user name, or assigned name.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesList: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCodesList: async (id: number, parent_lookup_organization: number, page?: number, page_size?: number, search_term?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesList', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
@@ -9713,6 +9871,18 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
+            if (search_term !== undefined) {
+                localVarQueryParameter['search_term'] = search_term;
+            }
 
 
     
@@ -9859,10 +10029,12 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {string} course_run_id Courseware ID to pull enrollments for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsEnrollmentsList: async (course_run_id: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCourseRunsEnrollmentsList: async (course_run_id: string, id: number, parent_lookup_organization: number, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'course_run_id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsList', 'course_run_id', course_run_id)
             // verify required parameter 'id' is not null or undefined
@@ -9884,6 +10056,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9899,10 +10079,12 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * List course runs available for a specific contract.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsList: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCourseRunsList: async (id: number, parent_lookup_organization: number, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCourseRunsList', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
@@ -9921,6 +10103,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9936,10 +10126,12 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * List an organization\'s contracts.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsList: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsList: async (id: number, parent_lookup_organization: number, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsList', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
@@ -9957,6 +10149,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
 
 
     
@@ -10041,10 +10241,12 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
         },
         /**
          * List managed organizations
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsList: async (page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v0/b2b/manager/organizations/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10056,6 +10258,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
 
 
     
@@ -10234,11 +10444,14 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [search_term] Filter codes by assigned email, user email, user name, or assigned name.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCodesList(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ManagerEnrollmentCode>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesList(id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsCodesList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, search_term?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentCodeList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesList(id, parent_lookup_organization, page, page_size, search_term, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10291,11 +10504,13 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * @param {string} course_run_id Courseware ID to pull enrollments for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ManagerEnrollment>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id, id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id: string, id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id, id, parent_lookup_organization, page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10304,11 +10519,13 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * List course runs available for a specific contract.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCourseRunsList(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ManagerCourseRun>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsList(id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsCourseRunsList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerCourseRunList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsList(id, parent_lookup_organization, page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10317,11 +10534,13 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * List an organization\'s contracts.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsList(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseContractPage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsList(id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedBaseContractPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsList(id, parent_lookup_organization, page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10353,11 +10572,13 @@ export const B2bApiFp = function(configuration?: Configuration) {
         },
         /**
          * List managed organizations
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationPage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(options);
+        async b2bManagerOrganizationsList(page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrganizationPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10463,8 +10684,8 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ManagerEnrollmentCode>> {
-            return localVarFp.b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerEnrollmentCodeList> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, requestParameters.search_term, options).then((request) => request(axios, basePath));
         },
         /**
          * Reassign the assignment for a specific enrollment code
@@ -10499,8 +10720,8 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ManagerEnrollment>> {
-            return localVarFp.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerEnrollmentList> {
+            return localVarFp.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
          * List course runs available for a specific contract.
@@ -10508,8 +10729,8 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ManagerCourseRun>> {
-            return localVarFp.b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCourseRunsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerCourseRunList> {
+            return localVarFp.b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
          * List an organization\'s contracts.
@@ -10517,8 +10738,8 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<BaseContractPage>> {
-            return localVarFp.b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedBaseContractPageList> {
+            return localVarFp.b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
          * List an organization\'s contracts.
@@ -10540,11 +10761,12 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
         },
         /**
          * List managed organizations
+         * @param {B2bApiB2bManagerOrganizationsListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<OrganizationPage>> {
-            return localVarFp.b2bManagerOrganizationsList(options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedOrganizationPageList> {
+            return localVarFp.b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
          * Viewset for the OrganizationPage model.
@@ -10718,6 +10940,27 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesListRequest {
      * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly page_size?: number
+
+    /**
+     * Filter codes by assigned email, user email, user name, or assigned name.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly search_term?: string
 }
 
 /**
@@ -10837,6 +11080,20 @@ export interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
+     */
+    readonly page_size?: number
 }
 
 /**
@@ -10858,6 +11115,20 @@ export interface B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest {
      * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
+     */
+    readonly page_size?: number
 }
 
 /**
@@ -10879,6 +11150,20 @@ export interface B2bApiB2bManagerOrganizationsContractsListRequest {
      * @memberof B2bApiB2bManagerOrganizationsContractsList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsList
+     */
+    readonly page_size?: number
 }
 
 /**
@@ -10914,6 +11199,27 @@ export interface B2bApiB2bManagerOrganizationsDetailRequest {
      * @memberof B2bApiB2bManagerOrganizationsDetail
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsListRequest
+ */
+export interface B2bApiB2bManagerOrganizationsListRequest {
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsList
+     */
+    readonly page_size?: number
 }
 
 /**
@@ -11021,7 +11327,7 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, requestParameters.search_term, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -11065,7 +11371,7 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -11076,7 +11382,7 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCourseRunsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -11087,7 +11393,7 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -11114,12 +11420,13 @@ export class B2bApi extends BaseAPI {
 
     /**
      * List managed organizations
+     * @param {B2bApiB2bManagerOrganizationsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
-    public b2bManagerOrganizationsList(options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(options).then((request) => request(this.axios, this.basePath));
+    public b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
