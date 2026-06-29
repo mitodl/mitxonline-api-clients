@@ -3850,11 +3850,11 @@ export interface ManagerEnrollmentCode {
      */
     'code': string;
     /**
-     * Return the redemption status of this code.  - \"unassigned\": no DiscountContractAttachmentRedemption record exists - \"assigned\": a record exists but the code has not been claimed yet - \"redeemed\": the code has been claimed
-     * @type {string}
+     * 
+     * @type {RedemptionStatusEnum}
      * @memberof ManagerEnrollmentCode
      */
-    'redemption_status': string;
+    'redemption_status': RedemptionStatusEnum;
     /**
      * Return the email address this code is assigned to.
      * @type {string}
@@ -3892,6 +3892,8 @@ export interface ManagerEnrollmentCode {
      */
     'last_sent': string | null;
 }
+
+
 /**
  * 
  * @export
@@ -5994,6 +5996,30 @@ export interface RedeemedDiscount {
     'redeemed_discount': Nested;
 }
 /**
+ * * `unassigned` - unassigned * `assigned` - assigned * `redeemed` - redeemed
+ * @export
+ * @enum {string}
+ */
+
+export const RedemptionStatusEnum = {
+    /**
+    * unassigned
+    */
+    Unassigned: 'unassigned',
+    /**
+    * assigned
+    */
+    Assigned: 'assigned',
+    /**
+    * redeemed
+    */
+    Redeemed: 'redeemed'
+} as const;
+
+export type RedemptionStatusEnum = typeof RedemptionStatusEnum[keyof typeof RedemptionStatusEnum];
+
+
+/**
  * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
  * @export
  * @enum {string}
@@ -6065,6 +6091,19 @@ export const ResultEnum = {
 export type ResultEnum = typeof ResultEnum[keyof typeof ResultEnum];
 
 
+/**
+ * Serializer for the send_test_email request body.
+ * @export
+ * @interface SendTestEmailRequest
+ */
+export interface SendTestEmailRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof SendTestEmailRequest
+     */
+    'email': string;
+}
 /**
  * Serializer for signatory items used in certificate pages.
  * @export
@@ -9855,6 +9894,49 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Send test assignment email to specified email address. This does not include an enrollment code.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {SendTestEmailRequest} SendTestEmailRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesSendTestEmailCreate: async (id: number, parent_lookup_organization: number, SendTestEmailRequest: SendTestEmailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'parent_lookup_organization', parent_lookup_organization)
+            // verify required parameter 'SendTestEmailRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'SendTestEmailRequest', SendTestEmailRequest)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/send_test_email/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(SendTestEmailRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * List enrollments for a specific course run within a contract.
          * @param {string} course_run_id Courseware ID to pull enrollments for.
          * @param {number} id ID of the contract
@@ -10287,6 +10369,20 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Send test assignment email to specified email address. This does not include an enrollment code.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {SendTestEmailRequest} SendTestEmailRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesSendTestEmailCreate(id: number, parent_lookup_organization: number, SendTestEmailRequest: SendTestEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesSendTestEmailCreate(id, parent_lookup_organization, SendTestEmailRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesSendTestEmailCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * List enrollments for a specific course run within a contract.
          * @param {string} course_run_id Courseware ID to pull enrollments for.
          * @param {number} id ID of the contract
@@ -10492,6 +10588,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
             return localVarFp.b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Send test assignment email to specified email address. This does not include an enrollment code.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.SendTestEmailRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * List enrollments for a specific course run within a contract.
@@ -10812,6 +10917,34 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest
 }
 
 /**
+ * Request parameters for b2bManagerOrganizationsContractsCodesSendTestEmailCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * 
+     * @type {SendTestEmailRequest}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
+     */
+    readonly SendTestEmailRequest: SendTestEmailRequest
+}
+
+/**
  * Request parameters for b2bManagerOrganizationsContractsCourseRunsEnrollmentsList operation in B2bApi.
  * @export
  * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest
@@ -11055,6 +11188,17 @@ export class B2bApi extends BaseAPI {
      */
     public b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Send test assignment email to specified email address. This does not include an enrollment code.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.SendTestEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
