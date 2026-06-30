@@ -968,12 +968,6 @@ export interface ContractPage {
     'welcome_message_extra': string;
     /**
      * 
-     * @type {IntegrationTypeEnum}
-     * @memberof ContractPage
-     */
-    'integration_type': IntegrationTypeEnum;
-    /**
-     * 
      * @type {Array<number>}
      * @memberof ContractPage
      */
@@ -985,8 +979,6 @@ export interface ContractPage {
      */
     'variant_options': Array<SupportedVariant>;
 }
-
-
 /**
  * 
  * @export
@@ -3256,38 +3248,6 @@ export interface HowYoullLearn {
     'text': string;
 }
 /**
- * * `sso` - SSO * `non-sso` - Non-SSO * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
- * @export
- * @enum {string}
- */
-
-export const IntegrationTypeEnum = {
-    /**
-    * SSO
-    */
-    Sso: 'sso',
-    /**
-    * Non-SSO
-    */
-    NonSso: 'non-sso',
-    /**
-    * Managed
-    */
-    Managed: 'managed',
-    /**
-    * Enrollment Code
-    */
-    Code: 'code',
-    /**
-    * Auto Enrollment
-    */
-    Auto: 'auto'
-} as const;
-
-export type IntegrationTypeEnum = typeof IntegrationTypeEnum[keyof typeof IntegrationTypeEnum];
-
-
-/**
  * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
  * @export
  * @enum {string}
@@ -3696,12 +3656,6 @@ export interface ManagerContractDetail {
     'welcome_message_extra': string;
     /**
      * 
-     * @type {IntegrationTypeEnum}
-     * @memberof ManagerContractDetail
-     */
-    'integration_type': IntegrationTypeEnum;
-    /**
-     * 
      * @type {Array<number>}
      * @memberof ManagerContractDetail
      */
@@ -3731,8 +3685,6 @@ export interface ManagerContractDetail {
      */
     'total_codes': number;
 }
-
-
 /**
  * Serializer for course runs in a contract.
  * @export
