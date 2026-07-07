@@ -3683,7 +3683,7 @@ export interface ManagerContractDetail {
      * @type {number}
      * @memberof ManagerContractDetail
      */
-    'total_codes': number;
+    'total_codes': number | null;
     /**
      * 
      * @type {number}
@@ -3695,7 +3695,7 @@ export interface ManagerContractDetail {
      * @type {number}
      * @memberof ManagerContractDetail
      */
-    'unassigned_codes': number;
+    'unassigned_codes': number | null;
     /**
      * 
      * @type {number}
