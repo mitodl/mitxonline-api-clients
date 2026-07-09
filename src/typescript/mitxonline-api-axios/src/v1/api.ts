@@ -8470,13 +8470,13 @@ export interface V2Program {
      */
     'time_commitment': string | null;
     /**
-     * Get the min weekly hours of the course from the course page CMS.
+     * Get the min weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2Program
      */
     'min_weekly_hours': string | null;
     /**
-     * Get the max weekly hours of the course from the course page CMS.
+     * Get the max weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2Program
      */
@@ -8788,13 +8788,13 @@ export interface V2ProgramDetail {
      */
     'time_commitment': string | null;
     /**
-     * Get the min weekly hours of the course from the course page CMS.
+     * Get the min weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2ProgramDetail
      */
     'min_weekly_hours': string | null;
     /**
-     * Get the max weekly hours of the course from the course page CMS.
+     * Get the max weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2ProgramDetail
      */
