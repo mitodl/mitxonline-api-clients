@@ -1428,6 +1428,12 @@ export interface CoursePageItem {
      */
     'ingest_content_files_for_ai': boolean | null;
     /**
+     * If true, show the \'Stay Updated\' sign-up form on this course page.
+     * @type {boolean}
+     * @memberof CoursePageItem
+     */
+    'show_stay_updated': boolean | null;
+    /**
      * 
      * @type {Array<HowYoullLearn>}
      * @memberof CoursePageItem
@@ -6044,6 +6050,12 @@ export interface ProgramPageItem {
      * @memberof ProgramPageItem
      */
     'program_details': V2Program;
+    /**
+     * If true, show the \'Stay Updated\' sign-up form on this program page.
+     * @type {boolean}
+     * @memberof ProgramPageItem
+     */
+    'show_stay_updated': boolean | null;
     /**
      * 
      * @type {Array<HowYoullLearn>}
