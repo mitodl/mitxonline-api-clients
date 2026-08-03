@@ -4301,6 +4301,12 @@ export interface OrganizationPage {
      */
     'slug': string;
     /**
+     * The UUID for the organization in the SSO provider.
+     * @type {string}
+     * @memberof OrganizationPage
+     */
+    'sso_organization_id': string | null;
+    /**
      * 
      * @type {Array<ContractPage>}
      * @memberof OrganizationPage
@@ -10312,10 +10318,11 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * List managed organizations
          * @param {number} [page] A page number within the paginated result set.
          * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [sso_organization_id] Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsList: async (page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsList: async (page?: number, page_size?: number, sso_organization_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v0/b2b/manager/organizations/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10334,6 +10341,10 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (page_size !== undefined) {
                 localVarQueryParameter['page_size'] = page_size;
+            }
+
+            if (sso_organization_id !== undefined) {
+                localVarQueryParameter['sso_organization_id'] = sso_organization_id;
             }
 
 
@@ -10658,11 +10669,12 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * List managed organizations
          * @param {number} [page] A page number within the paginated result set.
          * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [sso_organization_id] Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsList(page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrganizationPageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(page, page_size, options);
+        async b2bManagerOrganizationsList(page?: number, page_size?: number, sso_organization_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrganizationPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(page, page_size, sso_organization_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -10859,7 +10871,7 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @throws {RequiredError}
          */
         b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedOrganizationPageList> {
-            return localVarFp.b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
+            return localVarFp.b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, requestParameters.sso_organization_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Viewset for the OrganizationPage model.
@@ -11348,6 +11360,13 @@ export interface B2bApiB2bManagerOrganizationsListRequest {
      * @memberof B2bApiB2bManagerOrganizationsList
      */
     readonly page_size?: number
+
+    /**
+     * Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsList
+     */
+    readonly sso_organization_id?: string
 }
 
 /**
@@ -11565,7 +11584,7 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, requestParameters.sso_organization_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
