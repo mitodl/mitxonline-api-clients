@@ -426,7 +426,7 @@ export interface Basket {
      * @type {number}
      * @memberof Basket
      */
-    'user': number;
+    'user'?: number | null;
     /**
      * 
      * @type {Array<BasketItem>}
@@ -495,7 +495,13 @@ export interface BasketWithProduct {
      * @type {number}
      * @memberof BasketWithProduct
      */
-    'user': number;
+    'user'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketWithProduct
+     */
+    'anonymous_id'?: string | null;
     /**
      * 
      * @type {Array<BasketWithProductBasketItemsInner>}
@@ -4265,6 +4271,19 @@ export interface OrderTransactions {
     'payment_method'?: string;
 }
 /**
+ * Response shape for the org-manager check.
+ * @export
+ * @interface OrganizationManagerCheck
+ */
+export interface OrganizationManagerCheck {
+    /**
+     * True if the user manages the organization.
+     * @type {boolean}
+     * @memberof OrganizationManagerCheck
+     */
+    'is_manager': boolean;
+}
+/**
  * Serializer for the OrganizationPage model.
  * @export
  * @interface OrganizationPage
@@ -6246,6 +6265,19 @@ export interface SendTestEmailRequest {
      * @memberof SendTestEmailRequest
      */
     'email': string;
+}
+/**
+ * Response shape for the 400 error responses below.  Same shape as b2b.serializers.v0.manager.DetailErrorSerializer, but duplicated rather than imported (and distinctly named, since drf-spectacular keys its component registry on class identity, not structural equality -- reusing the same name for a different class produces a \"components with identical names\" warning and an unpredictable schema) so this module stays self-contained and its deletion remains a plain file removal (see the module docstring in b2b/views/v0/service.py).
+ * @export
+ * @interface ServiceDetailError
+ */
+export interface ServiceDetailError {
+    /**
+     * 
+     * @type {string}
+     * @memberof ServiceDetailError
+     */
+    'detail': string;
 }
 /**
  * Serializer for signatory items used in certificate pages.
@@ -10420,6 +10452,49 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+         * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bServiceOrganizationManagerCheck: async (sso_organization_id: string, user_global_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sso_organization_id' is not null or undefined
+            assertParamExists('b2bServiceOrganizationManagerCheck', 'sso_organization_id', sso_organization_id)
+            // verify required parameter 'user_global_id' is not null or undefined
+            assertParamExists('b2bServiceOrganizationManagerCheck', 'user_global_id', user_global_id)
+            const localVarPath = `/api/v0/b2b/service/organization-manager-check/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (sso_organization_id !== undefined) {
+                localVarQueryParameter['sso_organization_id'] = sso_organization_id;
+            }
+
+            if (user_global_id !== undefined) {
+                localVarQueryParameter['user_global_id'] = user_global_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -10702,6 +10777,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['B2bApi.b2bOrganizationsRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+         * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bServiceOrganizationManagerCheck(sso_organization_id: string, user_global_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationManagerCheck>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bServiceOrganizationManagerCheck(sso_organization_id, user_global_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bServiceOrganizationManagerCheck']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -10889,6 +10977,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationPage> {
             return localVarFp.b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationManagerCheck> {
+            return localVarFp.b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -11384,6 +11481,27 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
 }
 
 /**
+ * Request parameters for b2bServiceOrganizationManagerCheck operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bServiceOrganizationManagerCheckRequest
+ */
+export interface B2bApiB2bServiceOrganizationManagerCheckRequest {
+    /**
+     * The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+     * @type {string}
+     * @memberof B2bApiB2bServiceOrganizationManagerCheck
+     */
+    readonly sso_organization_id: string
+
+    /**
+     * The user\&#39;s Keycloak subject (User.global_id).
+     * @type {string}
+     * @memberof B2bApiB2bServiceOrganizationManagerCheck
+     */
+    readonly user_global_id: string
+}
+
+/**
  * B2bApi - object-oriented interface
  * @export
  * @class B2bApi
@@ -11606,6 +11724,17 @@ export class B2bApi extends BaseAPI {
      */
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+     * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
