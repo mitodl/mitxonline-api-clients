@@ -2,27 +2,31 @@ name: CI - Axios TypeScript Package
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/typescript/mitxonline-api-axios/**'
+      - "src/typescript/mitxonline-api-axios/**"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/typescript/mitxonline-api-axios/**'
+      - "src/typescript/mitxonline-api-axios/**"
 
 jobs:
   test-axios-package:
     name: Test Axios TypeScript Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Enable Corepack
         run: corepack enable
