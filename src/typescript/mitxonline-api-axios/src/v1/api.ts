@@ -2866,6 +2866,42 @@ export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnu
 
 
 /**
+ * * `delivered` - delivered * `accepted` - accepted * `opened` - opened * `clicked` - clicked * `failed` - failed * `pending` - pending
+ * @export
+ * @enum {string}
+ */
+
+export const EmailStatusEnum = {
+    /**
+    * delivered
+    */
+    Delivered: 'delivered',
+    /**
+    * accepted
+    */
+    Accepted: 'accepted',
+    /**
+    * opened
+    */
+    Opened: 'opened',
+    /**
+    * clicked
+    */
+    Clicked: 'clicked',
+    /**
+    * failed
+    */
+    Failed: 'failed',
+    /**
+    * pending
+    */
+    Pending: 'pending'
+} as const;
+
+export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnum];
+
+
+/**
  * Enrollment mode serializer.
  * @export
  * @interface EnrollmentMode
@@ -2967,7 +3003,43 @@ export interface ExtendedLegalAddress {
      * @type {string}
      * @memberof ExtendedLegalAddress
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'postal_code'?: string;
     /**
      * Get email from the linked user object
      * @type {string}
@@ -3536,7 +3608,43 @@ export interface LegalAddress {
      * @type {string}
      * @memberof LegalAddress
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'postal_code'?: string;
 }
 /**
  * Serializer for legal address
@@ -3555,7 +3663,43 @@ export interface LegalAddressRequest {
      * @type {string}
      * @memberof LegalAddressRequest
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'postal_code'?: string;
 }
 /**
  * Serializes order lines.
@@ -3873,6 +4017,18 @@ export interface ManagerEnrollmentCode {
      * @memberof ManagerEnrollmentCode
      */
     'last_sent': string | null;
+    /**
+     * 
+     * @type {EmailStatusEnum}
+     * @memberof ManagerEnrollmentCode
+     */
+    'email_status': EmailStatusEnum | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'email_status_event_timestamp': string | null;
 }
 
 
@@ -4193,6 +4349,39 @@ export interface OrderRequest {
      * @memberof OrderRequest
      */
     'reference_number'?: string | null;
+}
+
+
+/**
+ * Very simple serializer for order information.
+ * @export
+ * @interface OrderStatus
+ */
+export interface OrderStatus {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderStatus
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStatus
+     */
+    'reference_number': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStatus
+     */
+    'total_price_paid': string;
+    /**
+     * 
+     * @type {StateEnum}
+     * @memberof OrderStatus
+     */
+    'state': StateEnum;
 }
 
 
@@ -19192,6 +19381,39 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {string} order_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersStatusRetrieve: async (order_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'order_id' is not null or undefined
+            assertParamExists('ordersStatusRetrieve', 'order_id', order_id)
+            const localVarPath = `/api/v0/orders/status/{order_id}/`
+                .replace(`{${"order_id"}}`, encodeURIComponent(String(order_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -19239,6 +19461,18 @@ export const OrdersApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['OrdersApi.ordersReceiptRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {string} order_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersStatusRetrieve(order_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersStatusRetrieve(order_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersStatusRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -19275,6 +19509,15 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          */
         ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Order> {
             return localVarFp.ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrderStatus> {
+            return localVarFp.ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -19329,6 +19572,20 @@ export interface OrdersApiOrdersReceiptRetrieveRequest {
 }
 
 /**
+ * Request parameters for ordersStatusRetrieve operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersStatusRetrieveRequest
+ */
+export interface OrdersApiOrdersStatusRetrieveRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrdersApiOrdersStatusRetrieve
+     */
+    readonly order_id: string
+}
+
+/**
  * OrdersApi - object-oriented interface
  * @export
  * @class OrdersApi
@@ -19366,6 +19623,17 @@ export class OrdersApi extends BaseAPI {
      */
     public ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Pollable interface to determine status of a particular order.
+     * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
