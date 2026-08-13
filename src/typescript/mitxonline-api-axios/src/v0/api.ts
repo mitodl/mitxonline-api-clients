@@ -426,7 +426,7 @@ export interface Basket {
      * @type {number}
      * @memberof Basket
      */
-    'user': number;
+    'user'?: number | null;
     /**
      * 
      * @type {Array<BasketItem>}
@@ -495,7 +495,13 @@ export interface BasketWithProduct {
      * @type {number}
      * @memberof BasketWithProduct
      */
-    'user': number;
+    'user'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketWithProduct
+     */
+    'anonymous_id'?: string | null;
     /**
      * 
      * @type {Array<BasketWithProductBasketItemsInner>}
@@ -2860,6 +2866,42 @@ export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnu
 
 
 /**
+ * * `delivered` - delivered * `accepted` - accepted * `opened` - opened * `clicked` - clicked * `failed` - failed * `pending` - pending
+ * @export
+ * @enum {string}
+ */
+
+export const EmailStatusEnum = {
+    /**
+    * delivered
+    */
+    Delivered: 'delivered',
+    /**
+    * accepted
+    */
+    Accepted: 'accepted',
+    /**
+    * opened
+    */
+    Opened: 'opened',
+    /**
+    * clicked
+    */
+    Clicked: 'clicked',
+    /**
+    * failed
+    */
+    Failed: 'failed',
+    /**
+    * pending
+    */
+    Pending: 'pending'
+} as const;
+
+export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnum];
+
+
+/**
  * Enrollment mode serializer.
  * @export
  * @interface EnrollmentMode
@@ -2961,7 +3003,43 @@ export interface ExtendedLegalAddress {
      * @type {string}
      * @memberof ExtendedLegalAddress
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'postal_code'?: string;
     /**
      * Get email from the linked user object
      * @type {string}
@@ -3530,7 +3608,43 @@ export interface LegalAddress {
      * @type {string}
      * @memberof LegalAddress
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'postal_code'?: string;
 }
 /**
  * Serializer for legal address
@@ -3549,7 +3663,43 @@ export interface LegalAddressRequest {
      * @type {string}
      * @memberof LegalAddressRequest
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'postal_code'?: string;
 }
 /**
  * Serializes order lines.
@@ -3867,6 +4017,18 @@ export interface ManagerEnrollmentCode {
      * @memberof ManagerEnrollmentCode
      */
     'last_sent': string | null;
+    /**
+     * 
+     * @type {EmailStatusEnum}
+     * @memberof ManagerEnrollmentCode
+     */
+    'email_status': EmailStatusEnum | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'email_status_event_timestamp': string | null;
 }
 
 
@@ -4026,10 +4188,10 @@ export interface Order {
     'state': StateEnum;
     /**
      * 
-     * @type {Array<ExtendedLegalAddress>}
+     * @type {ExtendedLegalAddress}
      * @memberof Order
      */
-    'purchaser': Array<ExtendedLegalAddress>;
+    'purchaser': ExtendedLegalAddress;
     /**
      * 
      * @type {string}
@@ -4078,6 +4240,12 @@ export interface Order {
      * @memberof Order
      */
     'street_address': OrderStreetAddress;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Order
+     */
+    'refund_eligible': boolean;
 }
 
 
@@ -4141,6 +4309,12 @@ export interface OrderHistory {
      * @memberof OrderHistory
      */
     'updated_on': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrderHistory
+     */
+    'refund_eligible': boolean;
 }
 
 
@@ -4187,6 +4361,39 @@ export interface OrderRequest {
      * @memberof OrderRequest
      */
     'reference_number'?: string | null;
+}
+
+
+/**
+ * Very simple serializer for order information.
+ * @export
+ * @interface OrderStatus
+ */
+export interface OrderStatus {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderStatus
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStatus
+     */
+    'reference_number': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStatus
+     */
+    'total_price_paid': string;
+    /**
+     * 
+     * @type {StateEnum}
+     * @memberof OrderStatus
+     */
+    'state': StateEnum;
 }
 
 
@@ -4263,6 +4470,19 @@ export interface OrderTransactions {
      * @memberof OrderTransactions
      */
     'payment_method'?: string;
+}
+/**
+ * Response shape for the org-manager check.
+ * @export
+ * @interface OrganizationManagerCheck
+ */
+export interface OrganizationManagerCheck {
+    /**
+     * True if the user manages the organization.
+     * @type {boolean}
+     * @memberof OrganizationManagerCheck
+     */
+    'is_manager': boolean;
 }
 /**
  * Serializer for the OrganizationPage model.
@@ -6187,6 +6407,106 @@ export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof Redempti
 
 
 /**
+ * * `enrolled_in_another_course` - I enrolled in another course * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - Technical difficulties * `financial_reasons` - Financial reasons * `other` - Other
+ * @export
+ * @enum {string}
+ */
+
+export const RefundReasonEnum = {
+    /**
+    * I enrolled in another course
+    */
+    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    /**
+    * Course is not what I expected
+    */
+    CourseNotAsExpected: 'course_not_as_expected',
+    /**
+    * Technical difficulties
+    */
+    TechnicalDifficulties: 'technical_difficulties',
+    /**
+    * Financial reasons
+    */
+    FinancialReasons: 'financial_reasons',
+    /**
+    * Other
+    */
+    Other: 'other'
+} as const;
+
+export type RefundReasonEnum = typeof RefundReasonEnum[keyof typeof RefundReasonEnum];
+
+
+/**
+ * Serializer for creating learner-submitted refund requests.
+ * @export
+ * @interface RefundRequest
+ */
+export interface RefundRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof RefundRequest
+     */
+    'order': number;
+    /**
+     * 
+     * @type {RefundRequestRefundReason}
+     * @memberof RefundRequest
+     */
+    'refund_reason'?: RefundRequestRefundReason;
+    /**
+     * 
+     * @type {string}
+     * @memberof RefundRequest
+     */
+    'refund_reason_text'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RefundRequest
+     */
+    'consent_given'?: boolean;
+}
+/**
+ * @type RefundRequestRefundReason
+ * @export
+ */
+export type RefundRequestRefundReason = BlankEnum | RefundReasonEnum;
+
+/**
+ * Serializer for creating learner-submitted refund requests.
+ * @export
+ * @interface RefundRequestRequest
+ */
+export interface RefundRequestRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof RefundRequestRequest
+     */
+    'order': number;
+    /**
+     * 
+     * @type {RefundRequestRefundReason}
+     * @memberof RefundRequestRequest
+     */
+    'refund_reason'?: RefundRequestRefundReason;
+    /**
+     * 
+     * @type {string}
+     * @memberof RefundRequestRequest
+     */
+    'refund_reason_text'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RefundRequestRequest
+     */
+    'consent_given'?: boolean;
+}
+/**
  * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
  * @export
  * @enum {string}
@@ -6246,6 +6566,19 @@ export interface SendTestEmailRequest {
      * @memberof SendTestEmailRequest
      */
     'email': string;
+}
+/**
+ * Response shape for the 400 error responses below.  Same shape as b2b.serializers.v0.manager.DetailErrorSerializer, but duplicated rather than imported (and distinctly named, since drf-spectacular keys its component registry on class identity, not structural equality -- reusing the same name for a different class produces a \"components with identical names\" warning and an unpredictable schema) so this module stays self-contained and its deletion remains a plain file removal (see the module docstring in b2b/views/v0/service.py).
+ * @export
+ * @interface ServiceDetailError
+ */
+export interface ServiceDetailError {
+    /**
+     * 
+     * @type {string}
+     * @memberof ServiceDetailError
+     */
+    'detail': string;
 }
 /**
  * Serializer for signatory items used in certificate pages.
@@ -6636,6 +6969,12 @@ export interface User {
      * @memberof User
      */
     'global_id': string | null;
+    /**
+     * Get the profile fields missing for an export compliance check
+     * @type {Array<string>}
+     * @memberof User
+     */
+    'compliance_missing_fields': Array<string>;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
@@ -9877,7 +10216,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {number} [page] A page number within the paginated result set.
          * @param {number} [page_size] Number of results to return per page.
          * @param {string} [search_term] Filter codes by assigned email, user email, user name, or assigned name.
-         * @param {B2bManagerOrganizationsContractsCodesListStatusEnum} [status] Filter codes by status. Supported values are assigned and redeemed.
+         * @param {B2bManagerOrganizationsContractsCodesListStatusEnum} [status] Filter codes by status. Supported values are assigned, redeemed, and failed.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10420,6 +10759,49 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+         * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bServiceOrganizationManagerCheck: async (sso_organization_id: string, user_global_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sso_organization_id' is not null or undefined
+            assertParamExists('b2bServiceOrganizationManagerCheck', 'sso_organization_id', sso_organization_id)
+            // verify required parameter 'user_global_id' is not null or undefined
+            assertParamExists('b2bServiceOrganizationManagerCheck', 'user_global_id', user_global_id)
+            const localVarPath = `/api/v0/b2b/service/organization-manager-check/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (sso_organization_id !== undefined) {
+                localVarQueryParameter['sso_organization_id'] = sso_organization_id;
+            }
+
+            if (user_global_id !== undefined) {
+                localVarQueryParameter['user_global_id'] = user_global_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -10527,7 +10909,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * @param {number} [page] A page number within the paginated result set.
          * @param {number} [page_size] Number of results to return per page.
          * @param {string} [search_term] Filter codes by assigned email, user email, user name, or assigned name.
-         * @param {B2bManagerOrganizationsContractsCodesListStatusEnum} [status] Filter codes by status. Supported values are assigned and redeemed.
+         * @param {B2bManagerOrganizationsContractsCodesListStatusEnum} [status] Filter codes by status. Supported values are assigned, redeemed, and failed.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10700,6 +11082,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bOrganizationsRetrieve(organization_slug, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bOrganizationsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+         * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bServiceOrganizationManagerCheck(sso_organization_id: string, user_global_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationManagerCheck>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bServiceOrganizationManagerCheck(sso_organization_id, user_global_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bServiceOrganizationManagerCheck']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -10890,6 +11285,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
         b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationPage> {
             return localVarFp.b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationManagerCheck> {
+            return localVarFp.b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -11068,8 +11472,8 @@ export interface B2bApiB2bManagerOrganizationsContractsCodesListRequest {
     readonly search_term?: string
 
     /**
-     * Filter codes by status. Supported values are assigned and redeemed.
-     * @type {'assigned' | 'redeemed'}
+     * Filter codes by status. Supported values are assigned, redeemed, and failed.
+     * @type {'assigned' | 'failed' | 'redeemed'}
      * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly status?: B2bManagerOrganizationsContractsCodesListStatusEnum
@@ -11384,6 +11788,27 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
 }
 
 /**
+ * Request parameters for b2bServiceOrganizationManagerCheck operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bServiceOrganizationManagerCheckRequest
+ */
+export interface B2bApiB2bServiceOrganizationManagerCheckRequest {
+    /**
+     * The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+     * @type {string}
+     * @memberof B2bApiB2bServiceOrganizationManagerCheck
+     */
+    readonly sso_organization_id: string
+
+    /**
+     * The user\&#39;s Keycloak subject (User.global_id).
+     * @type {string}
+     * @memberof B2bApiB2bServiceOrganizationManagerCheck
+     */
+    readonly user_global_id: string
+}
+
+/**
  * B2bApi - object-oriented interface
  * @export
  * @class B2bApi
@@ -11607,6 +12032,17 @@ export class B2bApi extends BaseAPI {
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
     }
+
+    /**
+     * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+     * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(this.axios, this.basePath));
+    }
 }
 
 /**
@@ -11614,6 +12050,7 @@ export class B2bApi extends BaseAPI {
  */
 export const B2bManagerOrganizationsContractsCodesListStatusEnum = {
     Assigned: 'assigned',
+    Failed: 'failed',
     Redeemed: 'redeemed'
 } as const;
 export type B2bManagerOrganizationsContractsCodesListStatusEnum = typeof B2bManagerOrganizationsContractsCodesListStatusEnum[keyof typeof B2bManagerOrganizationsContractsCodesListStatusEnum];
@@ -19063,6 +19500,74 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+         * @param {RefundRequestRequest} RefundRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersRefundRequestsCreate: async (RefundRequestRequest: RefundRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'RefundRequestRequest' is not null or undefined
+            assertParamExists('ordersRefundRequestsCreate', 'RefundRequestRequest', RefundRequestRequest)
+            const localVarPath = `/api/v0/orders/refund-requests/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(RefundRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {string} order_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersStatusRetrieve: async (order_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'order_id' is not null or undefined
+            assertParamExists('ordersStatusRetrieve', 'order_id', order_id)
+            const localVarPath = `/api/v0/orders/status/{order_id}/`
+                .replace(`{${"order_id"}}`, encodeURIComponent(String(order_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -19110,6 +19615,30 @@ export const OrdersApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['OrdersApi.ordersReceiptRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+         * @param {RefundRequestRequest} RefundRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersRefundRequestsCreate(RefundRequestRequest: RefundRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefundRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersRefundRequestsCreate(RefundRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersRefundRequestsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {string} order_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersStatusRetrieve(order_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersStatusRetrieve(order_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersStatusRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -19146,6 +19675,24 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          */
         ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Order> {
             return localVarFp.ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+         * @param {OrdersApiOrdersRefundRequestsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersRefundRequestsCreate(requestParameters: OrdersApiOrdersRefundRequestsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<RefundRequest> {
+            return localVarFp.ordersRefundRequestsCreate(requestParameters.RefundRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrderStatus> {
+            return localVarFp.ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -19200,6 +19747,34 @@ export interface OrdersApiOrdersReceiptRetrieveRequest {
 }
 
 /**
+ * Request parameters for ordersRefundRequestsCreate operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersRefundRequestsCreateRequest
+ */
+export interface OrdersApiOrdersRefundRequestsCreateRequest {
+    /**
+     * 
+     * @type {RefundRequestRequest}
+     * @memberof OrdersApiOrdersRefundRequestsCreate
+     */
+    readonly RefundRequestRequest: RefundRequestRequest
+}
+
+/**
+ * Request parameters for ordersStatusRetrieve operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersStatusRetrieveRequest
+ */
+export interface OrdersApiOrdersStatusRetrieveRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrdersApiOrdersStatusRetrieve
+     */
+    readonly order_id: string
+}
+
+/**
  * OrdersApi - object-oriented interface
  * @export
  * @class OrdersApi
@@ -19237,6 +19812,28 @@ export class OrdersApi extends BaseAPI {
      */
     public ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+     * @param {OrdersApiOrdersRefundRequestsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersRefundRequestsCreate(requestParameters: OrdersApiOrdersRefundRequestsCreateRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersRefundRequestsCreate(requestParameters.RefundRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Pollable interface to determine status of a particular order.
+     * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
