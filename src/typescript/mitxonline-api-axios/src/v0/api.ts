@@ -4188,10 +4188,10 @@ export interface Order {
     'state': StateEnum;
     /**
      * 
-     * @type {Array<ExtendedLegalAddress>}
+     * @type {ExtendedLegalAddress}
      * @memberof Order
      */
-    'purchaser': Array<ExtendedLegalAddress>;
+    'purchaser': ExtendedLegalAddress;
     /**
      * 
      * @type {string}
