@@ -834,13 +834,13 @@ export interface CheckoutPayload {
      */
     'no_checkout': boolean;
     /**
-     * The URL to POST the form to.
+     * The URL to POST the form to, or to redirect the user to.
      * @type {string}
      * @memberof CheckoutPayload
      */
     'url': string;
     /**
-     * The method to use for the checkout form (always POST).
+     * The method to use for the data - POST for form data, GET for redirect.
      * @type {string}
      * @memberof CheckoutPayload
      */
@@ -4246,6 +4246,30 @@ export interface Order {
      * @memberof Order
      */
     'refund_eligible': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'refund_deadline': string;
+    /**
+     * 
+     * @type {RefundStatusEnum}
+     * @memberof Order
+     */
+    'refund_status': RefundStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'refund_requested_on': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'refund_reviewed_on': string | null;
 }
 
 
@@ -6407,32 +6431,48 @@ export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof Redempti
 
 
 /**
- * * `enrolled_in_another_course` - I enrolled in another course * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - Technical difficulties * `financial_reasons` - Financial reasons * `other` - Other
+ * * `not_enough_time` - I do not have enough time * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - I had a technical issue * `course_too_difficult` - Course is too difficult * `purchased_by_mistake` - I purchased by mistake * `prefer_not_to_say` - Prefer not to say * `other` - Other * `enrolled_in_another_course` - I enrolled in another course * `financial_reasons` - Financial reasons
  * @export
  * @enum {string}
  */
 
 export const RefundReasonEnum = {
     /**
-    * I enrolled in another course
+    * I do not have enough time
     */
-    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    NotEnoughTime: 'not_enough_time',
     /**
     * Course is not what I expected
     */
     CourseNotAsExpected: 'course_not_as_expected',
     /**
-    * Technical difficulties
+    * I had a technical issue
     */
     TechnicalDifficulties: 'technical_difficulties',
     /**
-    * Financial reasons
+    * Course is too difficult
     */
-    FinancialReasons: 'financial_reasons',
+    CourseTooDifficult: 'course_too_difficult',
+    /**
+    * I purchased by mistake
+    */
+    PurchasedByMistake: 'purchased_by_mistake',
+    /**
+    * Prefer not to say
+    */
+    PreferNotToSay: 'prefer_not_to_say',
     /**
     * Other
     */
-    Other: 'other'
+    Other: 'other',
+    /**
+    * I enrolled in another course
+    */
+    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    /**
+    * Financial reasons
+    */
+    FinancialReasons: 'financial_reasons'
 } as const;
 
 export type RefundReasonEnum = typeof RefundReasonEnum[keyof typeof RefundReasonEnum];
@@ -6506,6 +6546,42 @@ export interface RefundRequestRequest {
      */
     'consent_given'?: boolean;
 }
+/**
+ * * `completed` - Completed * `requested` - Requested * `denied` - Denied * `eligible` - Eligible * `window_closed` - Window Closed * `ineligible` - Ineligible
+ * @export
+ * @enum {string}
+ */
+
+export const RefundStatusEnum = {
+    /**
+    * Completed
+    */
+    Completed: 'completed',
+    /**
+    * Requested
+    */
+    Requested: 'requested',
+    /**
+    * Denied
+    */
+    Denied: 'denied',
+    /**
+    * Eligible
+    */
+    Eligible: 'eligible',
+    /**
+    * Window Closed
+    */
+    WindowClosed: 'window_closed',
+    /**
+    * Ineligible
+    */
+    Ineligible: 'ineligible'
+} as const;
+
+export type RefundStatusEnum = typeof RefundStatusEnum[keyof typeof RefundStatusEnum];
+
+
 /**
  * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
  * @export
@@ -6860,6 +6936,12 @@ export interface TransactionLine {
      * @memberof TransactionLine
      */
     'price': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof TransactionLine
+     */
+    'has_free_audit': boolean;
 }
 /**
  * Serializer for users
@@ -12099,7 +12181,7 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12568,7 +12650,7 @@ export const BasketsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12747,7 +12829,7 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(axios, basePath));
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13085,7 +13167,7 @@ export class BasketsApi extends BaseAPI {
     }
 
     /**
-     * Returns the payload necessary to redirect the user to CyberSource for payment.
+     * Returns the payload necessary to start the payment process.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasketsApi
