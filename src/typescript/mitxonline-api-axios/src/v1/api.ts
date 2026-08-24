@@ -834,13 +834,13 @@ export interface CheckoutPayload {
      */
     'no_checkout': boolean;
     /**
-     * The URL to POST the form to.
+     * The URL to POST the form to, or to redirect the user to.
      * @type {string}
      * @memberof CheckoutPayload
      */
     'url': string;
     /**
-     * The method to use for the checkout form (always POST).
+     * The method to use for the data - POST for form data, GET for redirect.
      * @type {string}
      * @memberof CheckoutPayload
      */
@@ -12099,7 +12099,7 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12568,7 +12568,7 @@ export const BasketsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12747,7 +12747,7 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(axios, basePath));
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13085,7 +13085,7 @@ export class BasketsApi extends BaseAPI {
     }
 
     /**
-     * Returns the payload necessary to redirect the user to CyberSource for payment.
+     * Returns the payload necessary to start the payment process.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasketsApi
