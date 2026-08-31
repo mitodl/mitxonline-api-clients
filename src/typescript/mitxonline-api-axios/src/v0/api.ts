@@ -1368,6 +1368,12 @@ export interface CoursePageItem {
      */
     'faq_url': string | null;
     /**
+     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'hubspot_form_id': string;
+    /**
      * Details about this course/program.
      * @type {string}
      * @memberof CoursePageItem
@@ -1433,12 +1439,6 @@ export interface CoursePageItem {
      * @memberof CoursePageItem
      */
     'ingest_content_files_for_ai': boolean | null;
-    /**
-     * If true, show the \'Stay Updated\' sign-up form on this course page.
-     * @type {boolean}
-     * @memberof CoursePageItem
-     */
-    'show_stay_updated': boolean | null;
     /**
      * 
      * @type {Array<HowYoullLearn>}
@@ -6229,6 +6229,12 @@ export interface ProgramPageItem {
      */
     'faq_url': string | null;
     /**
+     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'hubspot_form_id': string;
+    /**
      * Details about this course/program.
      * @type {string}
      * @memberof ProgramPageItem
@@ -6276,12 +6282,6 @@ export interface ProgramPageItem {
      * @memberof ProgramPageItem
      */
     'program_details': V2Program;
-    /**
-     * If true, show the \'Stay Updated\' sign-up form on this program page.
-     * @type {boolean}
-     * @memberof ProgramPageItem
-     */
-    'show_stay_updated': boolean | null;
     /**
      * 
      * @type {Array<HowYoullLearn>}
