@@ -1368,6 +1368,12 @@ export interface CoursePageItem {
      */
     'faq_url': string | null;
     /**
+     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'hubspot_form_id': string;
+    /**
      * Details about this course/program.
      * @type {string}
      * @memberof CoursePageItem
@@ -1433,12 +1439,6 @@ export interface CoursePageItem {
      * @memberof CoursePageItem
      */
     'ingest_content_files_for_ai': boolean | null;
-    /**
-     * If true, show the \'Stay Updated\' sign-up form on this course page.
-     * @type {boolean}
-     * @memberof CoursePageItem
-     */
-    'show_stay_updated': boolean | null;
     /**
      * 
      * @type {Array<HowYoullLearn>}
@@ -4246,6 +4246,30 @@ export interface Order {
      * @memberof Order
      */
     'refund_eligible': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'refund_deadline': string;
+    /**
+     * 
+     * @type {RefundStatusEnum}
+     * @memberof Order
+     */
+    'refund_status': RefundStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'refund_requested_on': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Order
+     */
+    'refund_reviewed_on': string | null;
 }
 
 
@@ -6229,6 +6253,12 @@ export interface ProgramPageItem {
      */
     'faq_url': string | null;
     /**
+     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'hubspot_form_id': string;
+    /**
      * Details about this course/program.
      * @type {string}
      * @memberof ProgramPageItem
@@ -6276,12 +6306,6 @@ export interface ProgramPageItem {
      * @memberof ProgramPageItem
      */
     'program_details': V2Program;
-    /**
-     * If true, show the \'Stay Updated\' sign-up form on this program page.
-     * @type {boolean}
-     * @memberof ProgramPageItem
-     */
-    'show_stay_updated': boolean | null;
     /**
      * 
      * @type {Array<HowYoullLearn>}
@@ -6407,32 +6431,48 @@ export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof Redempti
 
 
 /**
- * * `enrolled_in_another_course` - I enrolled in another course * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - Technical difficulties * `financial_reasons` - Financial reasons * `other` - Other
+ * * `not_enough_time` - I do not have enough time * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - I had a technical issue * `course_too_difficult` - Course is too difficult * `purchased_by_mistake` - I purchased by mistake * `prefer_not_to_say` - Prefer not to say * `other` - Other * `enrolled_in_another_course` - I enrolled in another course * `financial_reasons` - Financial reasons
  * @export
  * @enum {string}
  */
 
 export const RefundReasonEnum = {
     /**
-    * I enrolled in another course
+    * I do not have enough time
     */
-    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    NotEnoughTime: 'not_enough_time',
     /**
     * Course is not what I expected
     */
     CourseNotAsExpected: 'course_not_as_expected',
     /**
-    * Technical difficulties
+    * I had a technical issue
     */
     TechnicalDifficulties: 'technical_difficulties',
     /**
-    * Financial reasons
+    * Course is too difficult
     */
-    FinancialReasons: 'financial_reasons',
+    CourseTooDifficult: 'course_too_difficult',
+    /**
+    * I purchased by mistake
+    */
+    PurchasedByMistake: 'purchased_by_mistake',
+    /**
+    * Prefer not to say
+    */
+    PreferNotToSay: 'prefer_not_to_say',
     /**
     * Other
     */
-    Other: 'other'
+    Other: 'other',
+    /**
+    * I enrolled in another course
+    */
+    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    /**
+    * Financial reasons
+    */
+    FinancialReasons: 'financial_reasons'
 } as const;
 
 export type RefundReasonEnum = typeof RefundReasonEnum[keyof typeof RefundReasonEnum];
@@ -6506,6 +6546,42 @@ export interface RefundRequestRequest {
      */
     'consent_given'?: boolean;
 }
+/**
+ * * `completed` - Completed * `requested` - Requested * `denied` - Denied * `eligible` - Eligible * `window_closed` - Window Closed * `ineligible` - Ineligible
+ * @export
+ * @enum {string}
+ */
+
+export const RefundStatusEnum = {
+    /**
+    * Completed
+    */
+    Completed: 'completed',
+    /**
+    * Requested
+    */
+    Requested: 'requested',
+    /**
+    * Denied
+    */
+    Denied: 'denied',
+    /**
+    * Eligible
+    */
+    Eligible: 'eligible',
+    /**
+    * Window Closed
+    */
+    WindowClosed: 'window_closed',
+    /**
+    * Ineligible
+    */
+    Ineligible: 'ineligible'
+} as const;
+
+export type RefundStatusEnum = typeof RefundStatusEnum[keyof typeof RefundStatusEnum];
+
+
 /**
  * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
  * @export
@@ -6860,6 +6936,12 @@ export interface TransactionLine {
      * @memberof TransactionLine
      */
     'price': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof TransactionLine
+     */
+    'has_free_audit': boolean;
 }
 /**
  * Serializer for users
