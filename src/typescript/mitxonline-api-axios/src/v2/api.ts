@@ -24,6 +24,25 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
+ * Serializer for the assign_code request body.
+ * @export
+ * @interface AssignRevokeCodeRequestRequest
+ */
+export interface AssignRevokeCodeRequestRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof AssignRevokeCodeRequestRequest
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssignRevokeCodeRequestRequest
+     */
+    'name'?: string;
+}
+/**
  * * `anytime` - anytime * `dated` - dated
  * @export
  * @enum {string}
@@ -43,6 +62,19 @@ export const AvailabilityEnum = {
 export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof AvailabilityEnum];
 
 
+/**
+ * Serializer for the B2B enrollment request body.  Accepts an optional program_id so the user can be enrolled in the appropriate program alongside the course run enrollment.
+ * @export
+ * @interface B2BEnrollRequestRequest
+ */
+export interface B2BEnrollRequestRequest {
+    /**
+     * The readable_id of the program to enroll the user in.
+     * @type {string}
+     * @memberof B2BEnrollRequestRequest
+     */
+    'program_id'?: string;
+}
 /**
  * Simplified serializer for the ContractPage model.
  * @export
@@ -92,12 +124,6 @@ export interface BaseContractPage {
      */
     'contract_end': string | null;
     /**
-     * Whether this contract is active or not. Date rules still apply.
-     * @type {boolean}
-     * @memberof BaseContractPage
-     */
-    'active': boolean;
-    /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
      * @type {string}
      * @memberof BaseContractPage
@@ -135,6 +161,184 @@ export interface BaseCourse {
      */
     'type': string;
 }
+/**
+ * Minimal CourseRun model serializer
+ * @export
+ * @interface BaseCourseRun
+ */
+export interface BaseCourseRun {
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The date beyond which the learner should not see link to this course run on their dashboard.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'expiration_date'?: string | null;
+    /**
+     * Get the courseware URL
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'courseware_url': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'courseware_id': string;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * The date beyond which the learner can not enroll in paid course mode.
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'upgrade_deadline'?: string | null;
+    /**
+     * Check if the course run is upgradable
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_upgradable': boolean;
+    /**
+     * Check if the course run is enrollable
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_enrollable': boolean;
+    /**
+     * Check if the course run is archived
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_archived': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_self_paced'?: boolean;
+    /**
+     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'run_tag': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseRun
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'live'?: boolean;
+    /**
+     * Get the course number
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'course_number': string;
+    /**
+     * Get the enrollment modes for the course run
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof BaseCourseRun
+     */
+    'enrollment_modes': Array<{ [key: string]: any; }>;
+    /**
+     * 
+     * @type {BaseCourseRunLanguage}
+     * @memberof BaseCourseRun
+     */
+    'language'?: BaseCourseRunLanguage;
+    /**
+     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
+     * @type {boolean}
+     * @memberof BaseCourseRun
+     */
+    'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof BaseCourseRun
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof BaseCourseRun
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof BaseCourseRun
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseCourseRun
+     */
+    'course_id': number;
+}
+/**
+ * @type BaseCourseRunLanguage
+ * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
+ * @export
+ */
+export type BaseCourseRunLanguage = BlankEnum | LanguageEnum;
+
+/**
+ * @type BaseCourseRunVariantIndustry
+ * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * @export
+ */
+export type BaseCourseRunVariantIndustry = BlankEnum | VariantIndustryEnum;
+
+/**
+ * @type BaseCourseRunVariantLength
+ * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
+ * @export
+ */
+export type BaseCourseRunVariantLength = BlankEnum | VariantLengthEnum;
+
 /**
  * Simple serializer for Product without related purchasable objects
  * @export
@@ -198,17 +402,12 @@ export interface BaseProgram {
     'type': string;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {DisplayModeEnum}
      * @memberof BaseProgram
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode': DisplayModeEnum | null;
 }
-/**
- * @type BaseProgramDisplayMode
- * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
- * @export
- */
-export type BaseProgramDisplayMode = BlankEnum | DisplayModeEnum;
+
 
 /**
  * Basket model serializer
@@ -227,7 +426,7 @@ export interface Basket {
      * @type {number}
      * @memberof Basket
      */
-    'user': number;
+    'user'?: number | null;
     /**
      * 
      * @type {Array<BasketItem>}
@@ -296,7 +495,13 @@ export interface BasketWithProduct {
      * @type {number}
      * @memberof BasketWithProduct
      */
-    'user': number;
+    'user'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof BasketWithProduct
+     */
+    'anonymous_id'?: string | null;
     /**
      * 
      * @type {Array<BasketWithProductBasketItemsInner>}
@@ -397,6 +602,50 @@ export const BlankEnum = {
 export type BlankEnum = typeof BlankEnum[keyof typeof BlankEnum];
 
 
+/**
+ * 
+ * @export
+ * @interface BulkAssignError
+ */
+export interface BulkAssignError {
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkAssignError
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkAssignError
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkAssignError
+     */
+    'detail': string;
+}
+/**
+ * Serializer for the bulk_assign response body.
+ * @export
+ * @interface BulkAssignResult
+ */
+export interface BulkAssignResult {
+    /**
+     * Successfully assigned codes.
+     * @type {Array<ManagerEnrollmentCode>}
+     * @memberof BulkAssignResult
+     */
+    'assigned': Array<ManagerEnrollmentCode>;
+    /**
+     * Records that could not be assigned, with a \'detail\' explanation.
+     * @type {Array<BulkAssignError>}
+     * @memberof BulkAssignResult
+     */
+    'errors': Array<BulkAssignError>;
+}
 /**
  * Serializer for certificate pages, including overrides and signatory items.
  * @export
@@ -585,13 +834,13 @@ export interface CheckoutPayload {
      */
     'no_checkout': boolean;
     /**
-     * The URL to POST the form to.
+     * The URL to POST the form to, or to redirect the user to.
      * @type {string}
      * @memberof CheckoutPayload
      */
     'url': string;
     /**
-     * The method to use for the checkout form (always POST).
+     * The method to use for the data - POST for form data, GET for redirect.
      * @type {string}
      * @memberof CheckoutPayload
      */
@@ -706,12 +955,6 @@ export interface ContractPage {
      */
     'contract_end': string | null;
     /**
-     * Whether this contract is active or not. Date rules still apply.
-     * @type {boolean}
-     * @memberof ContractPage
-     */
-    'active': boolean;
-    /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
      * @type {string}
      * @memberof ContractPage
@@ -731,19 +974,30 @@ export interface ContractPage {
     'welcome_message_extra': string;
     /**
      * 
-     * @type {IntegrationTypeEnum}
-     * @memberof ContractPage
-     */
-    'integration_type': IntegrationTypeEnum;
-    /**
-     * 
      * @type {Array<number>}
      * @memberof ContractPage
      */
     'programs': Array<number>;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof ContractPage
+     */
+    'variant_options': Array<SupportedVariant>;
 }
-
-
+/**
+ * 
+ * @export
+ * @interface ContractPageVariantRunBadRequest
+ */
+export interface ContractPageVariantRunBadRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractPageVariantRunBadRequest
+     */
+    'detail': string;
+}
 /**
  * Serializer for pycountry countries, with states for US/CA
  * @export
@@ -1091,16 +1345,16 @@ export interface CoursePageItem {
     'price': Array<PriceItem>;
     /**
      * Specify the minimum product price. This is used by MIT Learn.
-     * @type {number}
+     * @type {string}
      * @memberof CoursePageItem
      */
-    'min_price': number;
+    'min_price': string;
     /**
      * Specify the maximum product price. This is used by MIT Learn.
-     * @type {number}
+     * @type {string}
      * @memberof CoursePageItem
      */
-    'max_price': number;
+    'max_price': string;
     /**
      * A short description indicating prerequisites of this course/program.
      * @type {string}
@@ -1113,6 +1367,12 @@ export interface CoursePageItem {
      * @memberof CoursePageItem
      */
     'faq_url': string | null;
+    /**
+     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
+     * @type {string}
+     * @memberof CoursePageItem
+     */
+    'hubspot_form_id': string;
     /**
      * Details about this course/program.
      * @type {string}
@@ -1503,49 +1763,6 @@ export interface CourseRunGrade {
     'grade_percent': number;
 }
 /**
- * Compact serializer for a single language variant of a course run.
- * @export
- * @interface CourseRunLanguageOption
- */
-export interface CourseRunLanguageOption {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunLanguageOption
-     */
-    'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunLanguageOption
-     */
-    'courseware_id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunLanguageOption
-     */
-    'courseware_url': string;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
-     * @memberof CourseRunLanguageOption
-     */
-    'language'?: string;
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunLanguageOption
-     */
-    'title': string;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof CourseRunLanguageOption
-     */
-    'run_tag': string;
-}
-/**
  * CourseRun model serializer
  * @export
  * @interface CourseRunV2
@@ -1666,17 +1883,41 @@ export interface CourseRunV2 {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunV2
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof CourseRunV2
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof CourseRunV2
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof CourseRunV2
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof CourseRunV2
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunV2
+     */
+    'course_id': number;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -1817,17 +2058,41 @@ export interface CourseRunWithCourseV3 {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunWithCourseV3
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof CourseRunWithCourseV3
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof CourseRunWithCourseV3
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof CourseRunWithCourseV3
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof CourseRunWithCourseV3
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseRunWithCourseV3
+     */
+    'course_id': number;
     /**
      * 
      * @type {number}
@@ -1932,17 +2197,29 @@ export interface CourseRunWithCourseV3Request {
      */
     'live'?: boolean;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof CourseRunWithCourseV3Request
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof CourseRunWithCourseV3Request
      */
     'is_primary_language'?: boolean;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof CourseRunWithCourseV3Request
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
 }
 /**
  * Course serializer
@@ -2001,6 +2278,38 @@ export interface CourseV3Request {
     'readable_id': string;
 }
 /**
+ * 
+ * @export
+ * @interface CourseVariantRunBadRequest
+ */
+export interface CourseVariantRunBadRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseVariantRunBadRequest
+     */
+    'detail': string;
+}
+/**
+ * Serializer for the course variant run API.
+ * @export
+ * @interface CourseVariantRunsResponse
+ */
+export interface CourseVariantRunsResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseVariantRunsResponse
+     */
+    'id': number;
+    /**
+     * 
+     * @type {Array<BaseCourseRun>}
+     * @memberof CourseVariantRunsResponse
+     */
+    'courseruns': Array<BaseCourseRun>;
+}
+/**
  * Course model serializer - also serializes child course runs
  * @export
  * @interface CourseWithCourseRunsSerializerV2
@@ -2041,13 +2350,13 @@ export interface CourseWithCourseRunsSerializerV2 {
      * @type {CoursePage}
      * @memberof CourseWithCourseRunsSerializerV2
      */
-    'page': CoursePage;
+    'page': CoursePage | null;
     /**
      * 
      * @type {Array<BaseProgram>}
      * @memberof CourseWithCourseRunsSerializerV2
      */
-    'programs': Array<BaseProgram> | null;
+    'programs': Array<BaseProgram>;
     /**
      * List topics of a course
      * @type {Array<{ [key: string]: any; }>}
@@ -2140,16 +2449,16 @@ export interface CourseWithCourseRunsSerializerV2 {
     'ingest_content_files_for_ai': boolean;
     /**
      * 
+     * @type {Array<SupportedVariant>}
+     * @memberof CourseWithCourseRunsSerializerV2
+     */
+    'possible_variant_sets': Array<SupportedVariant>;
+    /**
+     * 
      * @type {Array<CourseRunV2>}
      * @memberof CourseWithCourseRunsSerializerV2
      */
     'courseruns': Array<CourseRunV2>;
-    /**
-     * 
-     * @type {Array<CourseRunLanguageOption>}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
-    'language_options': Array<CourseRunLanguageOption>;
 }
 /**
  * Serializer for the result from create_b2b_enrollment.  There\'s always a result, and it should be one of the B2B messages that are defined in main.constants. The other fields appear or not depending on the result type.
@@ -2321,6 +2630,19 @@ export interface DepartmentWithCoursesAndPrograms {
      * @memberof DepartmentWithCoursesAndPrograms
      */
     'program_ids': Array<number>;
+}
+/**
+ * Serializer for generic detail error responses (404, etc.).
+ * @export
+ * @interface DetailError
+ */
+export interface DetailError {
+    /**
+     * 
+     * @type {string}
+     * @memberof DetailError
+     */
+    'detail': string;
 }
 /**
  * 
@@ -2544,6 +2866,42 @@ export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnu
 
 
 /**
+ * * `delivered` - delivered * `accepted` - accepted * `opened` - opened * `clicked` - clicked * `failed` - failed * `pending` - pending
+ * @export
+ * @enum {string}
+ */
+
+export const EmailStatusEnum = {
+    /**
+    * delivered
+    */
+    Delivered: 'delivered',
+    /**
+    * accepted
+    */
+    Accepted: 'accepted',
+    /**
+    * opened
+    */
+    Opened: 'opened',
+    /**
+    * clicked
+    */
+    Clicked: 'clicked',
+    /**
+    * failed
+    */
+    Failed: 'failed',
+    /**
+    * pending
+    */
+    Pending: 'pending'
+} as const;
+
+export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnum];
+
+
+/**
  * Enrollment mode serializer.
  * @export
  * @interface EnrollmentMode
@@ -2645,7 +3003,43 @@ export interface ExtendedLegalAddress {
      * @type {string}
      * @memberof ExtendedLegalAddress
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExtendedLegalAddress
+     */
+    'postal_code'?: string;
     /**
      * Get email from the linked user object
      * @type {string}
@@ -2938,35 +3332,183 @@ export interface HowYoullLearn {
     'text': string;
 }
 /**
- * * `sso` - SSO * `non-sso` - Non-SSO * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
+ * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
  * @export
  * @enum {string}
  */
 
-export const IntegrationTypeEnum = {
+export const LanguageEnum = {
     /**
-    * SSO
+    * af_ZA
     */
-    Sso: 'sso',
+    AfZa: 'af_ZA',
     /**
-    * Non-SSO
+    * ar
     */
-    NonSso: 'non-sso',
+    Ar: 'ar',
     /**
-    * Managed
+    * az
     */
-    Managed: 'managed',
+    Az: 'az',
     /**
-    * Enrollment Code
+    * bo
     */
-    Code: 'code',
+    Bo: 'bo',
     /**
-    * Auto Enrollment
+    * da
     */
-    Auto: 'auto'
+    Da: 'da',
+    /**
+    * de
+    */
+    De: 'de',
+    /**
+    * de_DE
+    */
+    DeDe: 'de_DE',
+    /**
+    * el
+    */
+    El: 'el',
+    /**
+    * es_419
+    */
+    Es419: 'es_419',
+    /**
+    * es_ES
+    */
+    EsEs: 'es_ES',
+    /**
+    * en
+    */
+    En: 'en',
+    /**
+    * fa
+    */
+    Fa: 'fa',
+    /**
+    * fr
+    */
+    Fr: 'fr',
+    /**
+    * fr_CA
+    */
+    FrCa: 'fr_CA',
+    /**
+    * he
+    */
+    He: 'he',
+    /**
+    * hi
+    */
+    Hi: 'hi',
+    /**
+    * hu
+    */
+    Hu: 'hu',
+    /**
+    * id
+    */
+    Id: 'id',
+    /**
+    * it_IT
+    */
+    ItIt: 'it_IT',
+    /**
+    * ja
+    */
+    Ja: 'ja',
+    /**
+    * ka
+    */
+    Ka: 'ka',
+    /**
+    * kk
+    */
+    Kk: 'kk',
+    /**
+    * ko
+    */
+    Ko: 'ko',
+    /**
+    * lv
+    */
+    Lv: 'lv',
+    /**
+    * nl
+    */
+    Nl: 'nl',
+    /**
+    * pl
+    */
+    Pl: 'pl',
+    /**
+    * pt_BR
+    */
+    PtBr: 'pt_BR',
+    /**
+    * pt_PT
+    */
+    PtPt: 'pt_PT',
+    /**
+    * ro
+    */
+    Ro: 'ro',
+    /**
+    * ru
+    */
+    Ru: 'ru',
+    /**
+    * sq
+    */
+    Sq: 'sq',
+    /**
+    * sv
+    */
+    Sv: 'sv',
+    /**
+    * sw
+    */
+    Sw: 'sw',
+    /**
+    * te
+    */
+    Te: 'te',
+    /**
+    * th
+    */
+    Th: 'th',
+    /**
+    * tr_TR
+    */
+    TrTr: 'tr_TR',
+    /**
+    * uk
+    */
+    Uk: 'uk',
+    /**
+    * uz
+    */
+    Uz: 'uz',
+    /**
+    * vi
+    */
+    Vi: 'vi',
+    /**
+    * zh_CN
+    */
+    ZhCn: 'zh_CN',
+    /**
+    * zh_HANS
+    */
+    ZhHans: 'zh_HANS',
+    /**
+    * zh_HK
+    */
+    ZhHk: 'zh_HK'
 } as const;
 
-export type IntegrationTypeEnum = typeof IntegrationTypeEnum[keyof typeof IntegrationTypeEnum];
+export type LanguageEnum = typeof LanguageEnum[keyof typeof LanguageEnum];
 
 
 /**
@@ -3066,7 +3608,43 @@ export interface LegalAddress {
      * @type {string}
      * @memberof LegalAddress
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddress
+     */
+    'postal_code'?: string;
 }
 /**
  * Serializer for legal address
@@ -3085,7 +3663,43 @@ export interface LegalAddressRequest {
      * @type {string}
      * @memberof LegalAddressRequest
      */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'street_address_1'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'street_address_2'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
     'state'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LegalAddressRequest
+     */
+    'postal_code'?: string;
 }
 /**
  * Serializes order lines.
@@ -3179,12 +3793,6 @@ export interface ManagerContractDetail {
      */
     'contract_end': string | null;
     /**
-     * Whether this contract is active or not. Date rules still apply.
-     * @type {boolean}
-     * @memberof ManagerContractDetail
-     */
-    'active': boolean;
-    /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
      * @type {string}
      * @memberof ManagerContractDetail
@@ -3204,16 +3812,16 @@ export interface ManagerContractDetail {
     'welcome_message_extra': string;
     /**
      * 
-     * @type {IntegrationTypeEnum}
-     * @memberof ManagerContractDetail
-     */
-    'integration_type': IntegrationTypeEnum;
-    /**
-     * 
      * @type {Array<number>}
      * @memberof ManagerContractDetail
      */
     'programs': Array<number>;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof ManagerContractDetail
+     */
+    'variant_options': Array<SupportedVariant>;
     /**
      * Calculate attachment percentage if seat-limited.
      * @type {number}
@@ -3227,11 +3835,200 @@ export interface ManagerContractDetail {
      */
     'total_enrollments': number;
     /**
-     * Get total number of discount codes for this contract.
+     * 
      * @type {number}
      * @memberof ManagerContractDetail
      */
-    'total_codes': number;
+    'total_codes': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'assigned_codes': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'unassigned_codes': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ManagerContractDetail
+     */
+    'redeemed_codes': number;
+}
+/**
+ * Serializer for course runs in a contract.
+ * @export
+ * @interface ManagerCourseRun
+ */
+export interface ManagerCourseRun {
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'readable_id': string;
+    /**
+     * The title of the course. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'title': string;
+    /**
+     * The day the course begins. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'start_date'?: string | null;
+    /**
+     * The last day the course is active. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'end_date'?: string | null;
+    /**
+     * The first day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'enrollment_start'?: string | null;
+    /**
+     * The last day students can enroll. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'enrollment_end'?: string | null;
+    /**
+     * The day certificates should be available to users. This value is synced automatically with edX studio.
+     * @type {string}
+     * @memberof ManagerCourseRun
+     */
+    'certificate_available_date'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ManagerCourseRun
+     */
+    'live'?: boolean;
+}
+/**
+ * Serializer for enrollments in a specific course run.
+ * @export
+ * @interface ManagerEnrollment
+ */
+export interface ManagerEnrollment {
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollment
+     */
+    'learner_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollment
+     */
+    'learner_email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollment
+     */
+    'enrollment_date': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollment
+     */
+    'enrollment_type': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollment
+     */
+    'enrollment_status': string;
+    /**
+     * Indicates whether or not this enrollment should be considered active
+     * @type {boolean}
+     * @memberof ManagerEnrollment
+     */
+    'active'?: boolean;
+}
+/**
+ * Serializer for enrollment codes available to a contract.
+ * @export
+ * @interface ManagerEnrollmentCode
+ */
+export interface ManagerEnrollmentCode {
+    /**
+     * 
+     * @type {number}
+     * @memberof ManagerEnrollmentCode
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'code': string;
+    /**
+     * 
+     * @type {RedemptionStatusEnum}
+     * @memberof ManagerEnrollmentCode
+     */
+    'redemption_status': RedemptionStatusEnum;
+    /**
+     * Return the email address this code is assigned to.
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'assigned_to': string | null;
+    /**
+     * Return when the invite/assignment was created.
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'assigned_on': string | null;
+    /**
+     * Return the name of the user this code is assigned to.
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'assigned_name': string | null;
+    /**
+     * Return when the code was actually claimed.
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'redeemed_on': string | null;
+    /**
+     * Return the email address of the user who redeemed this code.
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'redeemed_by': string | null;
+    /**
+     * Return when the last reminder email was sent.
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'last_sent': string | null;
+    /**
+     * 
+     * @type {EmailStatusEnum}
+     * @memberof ManagerEnrollmentCode
+     */
+    'email_status': EmailStatusEnum | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManagerEnrollmentCode
+     */
+    'email_status_event_timestamp': string | null;
 }
 
 
@@ -3391,10 +4188,10 @@ export interface Order {
     'state': StateEnum;
     /**
      * 
-     * @type {Array<ExtendedLegalAddress>}
+     * @type {ExtendedLegalAddress}
      * @memberof Order
      */
-    'purchaser': Array<ExtendedLegalAddress>;
+    'purchaser': ExtendedLegalAddress;
     /**
      * 
      * @type {string}
@@ -3443,6 +4240,12 @@ export interface Order {
      * @memberof Order
      */
     'street_address': OrderStreetAddress;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Order
+     */
+    'refund_eligible': boolean;
 }
 
 
@@ -3506,6 +4309,12 @@ export interface OrderHistory {
      * @memberof OrderHistory
      */
     'updated_on': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrderHistory
+     */
+    'refund_eligible': boolean;
 }
 
 
@@ -3552,6 +4361,39 @@ export interface OrderRequest {
      * @memberof OrderRequest
      */
     'reference_number'?: string | null;
+}
+
+
+/**
+ * Very simple serializer for order information.
+ * @export
+ * @interface OrderStatus
+ */
+export interface OrderStatus {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderStatus
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStatus
+     */
+    'reference_number': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderStatus
+     */
+    'total_price_paid': string;
+    /**
+     * 
+     * @type {StateEnum}
+     * @memberof OrderStatus
+     */
+    'state': StateEnum;
 }
 
 
@@ -3630,6 +4472,19 @@ export interface OrderTransactions {
     'payment_method'?: string;
 }
 /**
+ * Response shape for the org-manager check.
+ * @export
+ * @interface OrganizationManagerCheck
+ */
+export interface OrganizationManagerCheck {
+    /**
+     * True if the user manages the organization.
+     * @type {boolean}
+     * @memberof OrganizationManagerCheck
+     */
+    'is_manager': boolean;
+}
+/**
  * Serializer for the OrganizationPage model.
  * @export
  * @interface OrganizationPage
@@ -3665,6 +4520,12 @@ export interface OrganizationPage {
      * @memberof OrganizationPage
      */
     'slug': string;
+    /**
+     * The UUID for the organization in the SSO provider.
+     * @type {string}
+     * @memberof OrganizationPage
+     */
+    'sso_organization_id': string | null;
     /**
      * 
      * @type {Array<ContractPage>}
@@ -3940,6 +4801,37 @@ export type PagesRetrieve200Response = CertificatePage | CoursePageItem | Page |
 /**
  * 
  * @export
+ * @interface PaginatedBaseContractPageList
+ */
+export interface PaginatedBaseContractPageList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<BaseContractPage>}
+     * @memberof PaginatedBaseContractPageList
+     */
+    'results': Array<BaseContractPage>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedCourseWithCourseRunsSerializerV2List
  */
 export interface PaginatedCourseWithCourseRunsSerializerV2List {
@@ -4064,6 +4956,99 @@ export interface PaginatedFlexiblePriceTierList {
 /**
  * 
  * @export
+ * @interface PaginatedManagerCourseRunList
+ */
+export interface PaginatedManagerCourseRunList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<ManagerCourseRun>}
+     * @memberof PaginatedManagerCourseRunList
+     */
+    'results': Array<ManagerCourseRun>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedManagerEnrollmentCodeList
+ */
+export interface PaginatedManagerEnrollmentCodeList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<ManagerEnrollmentCode>}
+     * @memberof PaginatedManagerEnrollmentCodeList
+     */
+    'results': Array<ManagerEnrollmentCode>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedManagerEnrollmentList
+ */
+export interface PaginatedManagerEnrollmentList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<ManagerEnrollment>}
+     * @memberof PaginatedManagerEnrollmentList
+     */
+    'results': Array<ManagerEnrollment>;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedOrderHistoryList
  */
 export interface PaginatedOrderHistoryList {
@@ -4091,6 +5076,37 @@ export interface PaginatedOrderHistoryList {
      * @memberof PaginatedOrderHistoryList
      */
     'results': Array<OrderHistory>;
+}
+/**
+ * 
+ * @export
+ * @interface PaginatedOrganizationPageList
+ */
+export interface PaginatedOrganizationPageList {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'count': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'next'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'previous'?: string | null;
+    /**
+     * 
+     * @type {Array<OrganizationPage>}
+     * @memberof PaginatedOrganizationPageList
+     */
+    'results': Array<OrganizationPage>;
 }
 /**
  * 
@@ -4357,31 +5373,7 @@ export interface PartnerSchool {
      * @type {string}
      * @memberof PartnerSchool
      */
-    'created_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartnerSchool
-     */
-    'updated_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartnerSchool
-     */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartnerSchool
-     */
-    'email': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PartnerSchool
-     */
-    'is_active'?: boolean;
 }
 /**
  * 
@@ -4395,18 +5387,6 @@ export interface PartnerSchoolRequest {
      * @memberof PartnerSchoolRequest
      */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartnerSchoolRequest
-     */
-    'email': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PartnerSchoolRequest
-     */
-    'is_active'?: boolean;
 }
 /**
  * Serializer for confirming a user email change
@@ -5145,6 +6125,12 @@ export interface ProgramPage {
      * @memberof ProgramPage
      */
     'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgramPage
+     */
+    'list_price': string;
 }
 /**
  * Serializer for individual program page items, including all relevant fields.
@@ -5220,16 +6206,16 @@ export interface ProgramPageItem {
     'price': Array<PriceItem>;
     /**
      * Specify the minimum product price. This is used by MIT Learn.
-     * @type {number}
+     * @type {string}
      * @memberof ProgramPageItem
      */
-    'min_price': number;
+    'min_price': string;
     /**
      * Specify the maximum product price. This is used by MIT Learn.
-     * @type {number}
+     * @type {string}
      * @memberof ProgramPageItem
      */
-    'max_price': number;
+    'max_price': string;
     /**
      * A short description indicating prerequisites of this course/program.
      * @type {string}
@@ -5242,6 +6228,12 @@ export interface ProgramPageItem {
      * @memberof ProgramPageItem
      */
     'faq_url': string | null;
+    /**
+     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
+     * @type {string}
+     * @memberof ProgramPageItem
+     */
+    'hubspot_form_id': string;
     /**
      * Details about this course/program.
      * @type {string}
@@ -5367,6 +6359,30 @@ export interface RedeemedDiscount {
     'redeemed_discount': Nested;
 }
 /**
+ * * `unassigned` - unassigned * `assigned` - assigned * `redeemed` - redeemed
+ * @export
+ * @enum {string}
+ */
+
+export const RedemptionStatusEnum = {
+    /**
+    * unassigned
+    */
+    Unassigned: 'unassigned',
+    /**
+    * assigned
+    */
+    Assigned: 'assigned',
+    /**
+    * redeemed
+    */
+    Redeemed: 'redeemed'
+} as const;
+
+export type RedemptionStatusEnum = typeof RedemptionStatusEnum[keyof typeof RedemptionStatusEnum];
+
+
+/**
  * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
  * @export
  * @enum {string}
@@ -5391,7 +6407,107 @@ export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof Redempti
 
 
 /**
- * * `b2b-disallowed` - b2b-disallowed * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
+ * * `enrolled_in_another_course` - I enrolled in another course * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - Technical difficulties * `financial_reasons` - Financial reasons * `other` - Other
+ * @export
+ * @enum {string}
+ */
+
+export const RefundReasonEnum = {
+    /**
+    * I enrolled in another course
+    */
+    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    /**
+    * Course is not what I expected
+    */
+    CourseNotAsExpected: 'course_not_as_expected',
+    /**
+    * Technical difficulties
+    */
+    TechnicalDifficulties: 'technical_difficulties',
+    /**
+    * Financial reasons
+    */
+    FinancialReasons: 'financial_reasons',
+    /**
+    * Other
+    */
+    Other: 'other'
+} as const;
+
+export type RefundReasonEnum = typeof RefundReasonEnum[keyof typeof RefundReasonEnum];
+
+
+/**
+ * Serializer for creating learner-submitted refund requests.
+ * @export
+ * @interface RefundRequest
+ */
+export interface RefundRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof RefundRequest
+     */
+    'order': number;
+    /**
+     * 
+     * @type {RefundRequestRefundReason}
+     * @memberof RefundRequest
+     */
+    'refund_reason'?: RefundRequestRefundReason;
+    /**
+     * 
+     * @type {string}
+     * @memberof RefundRequest
+     */
+    'refund_reason_text'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RefundRequest
+     */
+    'consent_given'?: boolean;
+}
+/**
+ * @type RefundRequestRefundReason
+ * @export
+ */
+export type RefundRequestRefundReason = BlankEnum | RefundReasonEnum;
+
+/**
+ * Serializer for creating learner-submitted refund requests.
+ * @export
+ * @interface RefundRequestRequest
+ */
+export interface RefundRequestRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof RefundRequestRequest
+     */
+    'order': number;
+    /**
+     * 
+     * @type {RefundRequestRefundReason}
+     * @memberof RefundRequestRequest
+     */
+    'refund_reason'?: RefundRequestRefundReason;
+    /**
+     * 
+     * @type {string}
+     * @memberof RefundRequestRequest
+     */
+    'refund_reason_text'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RefundRequestRequest
+     */
+    'consent_given'?: boolean;
+}
+/**
+ * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
  * @export
  * @enum {string}
  */
@@ -5401,6 +6517,10 @@ export const ResultEnum = {
     * b2b-disallowed
     */
     Disallowed: 'b2b-disallowed',
+    /**
+    * b2b-error-already-enrolled
+    */
+    ErrorAlreadyEnrolled: 'b2b-error-already-enrolled',
     /**
     * b2b-error-no-contract
     */
@@ -5434,6 +6554,32 @@ export const ResultEnum = {
 export type ResultEnum = typeof ResultEnum[keyof typeof ResultEnum];
 
 
+/**
+ * Serializer for the send_test_email request body.
+ * @export
+ * @interface SendTestEmailRequest
+ */
+export interface SendTestEmailRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof SendTestEmailRequest
+     */
+    'email': string;
+}
+/**
+ * Response shape for the 400 error responses below.  Same shape as b2b.serializers.v0.manager.DetailErrorSerializer, but duplicated rather than imported (and distinctly named, since drf-spectacular keys its component registry on class identity, not structural equality -- reusing the same name for a different class produces a \"components with identical names\" warning and an unpredictable schema) so this module stays self-contained and its deletion remains a plain file removal (see the module docstring in b2b/views/v0/service.py).
+ * @export
+ * @interface ServiceDetailError
+ */
+export interface ServiceDetailError {
+    /**
+     * 
+     * @type {string}
+     * @memberof ServiceDetailError
+     */
+    'detail': string;
+}
 /**
  * Serializer for signatory items used in certificate pages.
  * @export
@@ -5569,6 +6715,65 @@ export const StateEnum = {
 
 export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
 
+
+/**
+ * Serializer for the SupportedVariant model.
+ * @export
+ * @interface SupportedVariant
+ */
+export interface SupportedVariant {
+    /**
+     * 
+     * @type {LanguageEnum}
+     * @memberof SupportedVariant
+     */
+    'language': LanguageEnum;
+    /**
+     * 
+     * @type {SupportedVariantVariantLength}
+     * @memberof SupportedVariant
+     */
+    'variant_length': SupportedVariantVariantLength;
+    /**
+     * 
+     * @type {SupportedVariantVariantIndustry}
+     * @memberof SupportedVariant
+     */
+    'variant_industry': SupportedVariantVariantIndustry;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SupportedVariant
+     */
+    'active': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SupportedVariant
+     */
+    'b2b_only': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SupportedVariant
+     */
+    'default_variant': boolean;
+}
+
+
+/**
+ * @type SupportedVariantVariantIndustry
+ * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * @export
+ */
+export type SupportedVariantVariantIndustry = BlankEnum | VariantIndustryEnum;
+
+/**
+ * @type SupportedVariantVariantLength
+ * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
+ * @export
+ */
+export type SupportedVariantVariantLength = BlankEnum | VariantLengthEnum;
 
 /**
  * Serializer for topics used in course pages.
@@ -5764,6 +6969,12 @@ export interface User {
      * @memberof User
      */
     'global_id': string | null;
+    /**
+     * Get the profile fields missing for an export compliance check
+     * @type {Array<string>}
+     * @memberof User
+     */
+    'compliance_missing_fields': Array<string>;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
@@ -6352,17 +7563,41 @@ export interface V1BaseCourseRun {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V1BaseCourseRun
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V1BaseCourseRun
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof V1BaseCourseRun
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V1BaseCourseRun
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V1BaseCourseRun
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof V1BaseCourseRun
+     */
+    'course_id': number;
     /**
      * 
      * @type {Array<ProductFlexibilePrice>}
@@ -6497,17 +7732,41 @@ export interface V1CourseRunWithCourse {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V1CourseRunWithCourse
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V1CourseRunWithCourse
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof V1CourseRunWithCourse
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V1CourseRunWithCourse
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V1CourseRunWithCourse
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof V1CourseRunWithCourse
+     */
+    'course_id': number;
     /**
      * List of products associated with this course run
      * @type {Array<ProductFlexibilePrice>}
@@ -6606,17 +7865,29 @@ export interface V1CourseRunWithCourseRequest {
      */
     'live'?: boolean;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V1CourseRunWithCourseRequest
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V1CourseRunWithCourseRequest
      */
     'is_primary_language'?: boolean;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V1CourseRunWithCourseRequest
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V1CourseRunWithCourseRequest
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
 }
 /**
  * Course model serializer - also serializes child course runs
@@ -6913,13 +8184,13 @@ export interface V2Course {
      * @type {CoursePage}
      * @memberof V2Course
      */
-    'page': CoursePage;
+    'page': CoursePage | null;
     /**
      * 
      * @type {Array<BaseProgram>}
      * @memberof V2Course
      */
-    'programs': Array<BaseProgram> | null;
+    'programs': Array<BaseProgram>;
     /**
      * List topics of a course
      * @type {Array<{ [key: string]: any; }>}
@@ -7010,6 +8281,12 @@ export interface V2Course {
      * @memberof V2Course
      */
     'ingest_content_files_for_ai': boolean;
+    /**
+     * 
+     * @type {Array<SupportedVariant>}
+     * @memberof V2Course
+     */
+    'possible_variant_sets': Array<SupportedVariant>;
 }
 /**
  * Course model serializer
@@ -7054,6 +8331,12 @@ export interface V2CourseRunCertificate {
      * @memberof V2CourseRunCertificate
      */
     'is_revoked': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2CourseRunCertificate
+     */
+    'issue_date': string;
     /**
      * 
      * @type {CertificatePageModel}
@@ -7200,17 +8483,41 @@ export interface V2CourseRunWithCourse {
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V2CourseRunWithCourse
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V2CourseRunWithCourse
      */
     'is_primary_language'?: boolean;
+    /**
+     * Return the label for the language, using the override if necessary
+     * @type {string}
+     * @memberof V2CourseRunWithCourse
+     */
+    'language_label': string;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V2CourseRunWithCourse
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V2CourseRunWithCourse
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
+    /**
+     * 
+     * @type {number}
+     * @memberof V2CourseRunWithCourse
+     */
+    'course_id': number;
     /**
      * 
      * @type {Array<BaseProduct>}
@@ -7315,17 +8622,29 @@ export interface V2CourseRunWithCourseRequest {
      */
     'live'?: boolean;
     /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.
-     * @type {string}
+     * 
+     * @type {BaseCourseRunLanguage}
      * @memberof V2CourseRunWithCourseRequest
      */
-    'language'?: string;
+    'language'?: BaseCourseRunLanguage;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
      * @type {boolean}
      * @memberof V2CourseRunWithCourseRequest
      */
     'is_primary_language'?: boolean;
+    /**
+     * 
+     * @type {BaseCourseRunVariantIndustry}
+     * @memberof V2CourseRunWithCourseRequest
+     */
+    'variant_industry'?: BaseCourseRunVariantIndustry;
+    /**
+     * 
+     * @type {BaseCourseRunVariantLength}
+     * @memberof V2CourseRunWithCourseRequest
+     */
+    'variant_length'?: BaseCourseRunVariantLength;
     /**
      * 
      * @type {number}
@@ -7392,7 +8711,7 @@ export interface V2Program {
      * @type {ProgramPage}
      * @memberof V2Program
      */
-    'page': ProgramPage;
+    'page': ProgramPage | null;
     /**
      * 
      * @type {string}
@@ -7425,10 +8744,10 @@ export interface V2Program {
     'live'?: boolean;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {V2ProgramDisplayMode}
      * @memberof V2Program
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode'?: V2ProgramDisplayMode | null;
     /**
      * 
      * @type {Array<V2ProgramTopicsInner>}
@@ -7508,13 +8827,13 @@ export interface V2Program {
      */
     'time_commitment': string | null;
     /**
-     * Get the min weekly hours of the course from the course page CMS.
+     * Get the min weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2Program
      */
     'min_weekly_hours': string | null;
     /**
-     * Get the max weekly hours of the course from the course page CMS.
+     * Get the max weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2Program
      */
@@ -7552,6 +8871,12 @@ export interface V2ProgramCertificate {
      * @memberof V2ProgramCertificate
      */
     'is_revoked': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof V2ProgramCertificate
+     */
+    'issue_date': string;
     /**
      * 
      * @type {CertificatePageModel}
@@ -7704,7 +9029,7 @@ export interface V2ProgramDetail {
      * @type {ProgramPage}
      * @memberof V2ProgramDetail
      */
-    'page': ProgramPage;
+    'page': ProgramPage | null;
     /**
      * 
      * @type {string}
@@ -7737,10 +9062,10 @@ export interface V2ProgramDetail {
     'live'?: boolean;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {V2ProgramDisplayMode}
      * @memberof V2ProgramDetail
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode'?: V2ProgramDisplayMode | null;
     /**
      * 
      * @type {Array<V2ProgramTopicsInner>}
@@ -7820,13 +9145,13 @@ export interface V2ProgramDetail {
      */
     'time_commitment': string | null;
     /**
-     * Get the min weekly hours of the course from the course page CMS.
+     * Get the min weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2ProgramDetail
      */
     'min_weekly_hours': string | null;
     /**
-     * Get the max weekly hours of the course from the course page CMS.
+     * Get the max weekly hours of the program from the program page CMS.
      * @type {string}
      * @memberof V2ProgramDetail
      */
@@ -7845,6 +9170,13 @@ export interface V2ProgramDetail {
     'products': Array<BaseProduct>;
 }
 
+
+/**
+ * @type V2ProgramDisplayMode
+ * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
+ * @export
+ */
+export type V2ProgramDisplayMode = BlankEnum | DisplayModeEnum;
 
 /**
  * Serializer for a ProgramRequirement
@@ -8131,10 +9463,10 @@ export interface V3SimpleProgram {
     'live'?: boolean;
     /**
      * 
-     * @type {BaseProgramDisplayMode}
+     * @type {V2ProgramDisplayMode}
      * @memberof V3SimpleProgram
      */
-    'display_mode'?: BaseProgramDisplayMode | null;
+    'display_mode'?: V2ProgramDisplayMode | null;
 }
 /**
  * Serializer for user program enrollments.
@@ -8161,6 +9493,46 @@ export interface V3UserProgramEnrollment {
      */
     'enrollment_mode'?: string;
 }
+/**
+ * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * @export
+ * @enum {string}
+ */
+
+export const VariantIndustryEnum = {
+    /**
+    * Energy
+    */
+    E: 'E',
+    /**
+    * Finance
+    */
+    F: 'F',
+    /**
+    * Healthcare
+    */
+    Hc: 'HC'
+} as const;
+
+export type VariantIndustryEnum = typeof VariantIndustryEnum[keyof typeof VariantIndustryEnum];
+
+
+/**
+ * * `` - Full * `S` - Short
+ * @export
+ * @enum {string}
+ */
+
+export const VariantLengthEnum = {
+    /**
+    * Short
+    */
+    S: 'S'
+} as const;
+
+export type VariantLengthEnum = typeof VariantLengthEnum[keyof typeof VariantLengthEnum];
+
+
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
  * @export
@@ -8611,6 +9983,44 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Return the variant runs for a contract.
+         * @param {string} contract_slug 
+         * @param {Array<number>} [course_id] Course ID(s) to use
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bContractsAllVariantRunsList: async (contract_slug: string, course_id?: Array<number>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contract_slug' is not null or undefined
+            assertParamExists('b2bContractsAllVariantRunsList', 'contract_slug', contract_slug)
+            const localVarPath = `/api/v0/b2b/contracts/{contract_slug}/all_variant_runs/`
+                .replace(`{${"contract_slug"}}`, encodeURIComponent(String(contract_slug)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (course_id) {
+                localVarQueryParameter['course_id'] = course_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Viewset for the ContractPage model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8675,14 +10085,253 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Create an enrollment for the given course run.
          * @param {string} readable_id 
+         * @param {B2BEnrollRequestRequest} [B2BEnrollRequestRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bEnrollCreate: async (readable_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bEnrollCreate: async (readable_id: string, B2BEnrollRequestRequest?: B2BEnrollRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'readable_id' is not null or undefined
             assertParamExists('b2bEnrollCreate', 'readable_id', readable_id)
             const localVarPath = `/api/v0/b2b/enroll/{readable_id}/`
                 .replace(`{${"readable_id"}}`, encodeURIComponent(String(readable_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(B2BEnrollRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Assign an available enrollment code to an email address and send an invite email.
+         * @param {string} code The discount code to assign.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesAssignCreate: async (code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'code', code)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'parent_lookup_organization', parent_lookup_organization)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/assign/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {Array<AssignRevokeCodeRequestRequest>} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesBulkAssignCreate: async (id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'parent_lookup_organization', parent_lookup_organization)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/bulk_assign/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [search_term] Filter codes by assigned email, user email, user name, or assigned name.
+         * @param {B2bManagerOrganizationsContractsCodesListStatusEnum} [status] Filter codes by status. Supported values are assigned, redeemed, and failed.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesList: async (id: number, parent_lookup_organization: number, page?: number, page_size?: number, search_term?: string, status?: B2bManagerOrganizationsContractsCodesListStatusEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesList', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesList', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
+            if (search_term !== undefined) {
+                localVarQueryParameter['search_term'] = search_term;
+            }
+
+            if (status !== undefined) {
+                localVarQueryParameter['status'] = status;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Reassign the assignment for a specific enrollment code
+         * @param {string} code The discount code to reassign.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesReassignUpdate: async (code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'code', code)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'parent_lookup_organization', parent_lookup_organization)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/reassign/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
+         * @param {string} code The discount code to send a reminder for.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesRemindCreate: async (code: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'code', code)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/remind/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -8706,18 +10355,22 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
+         * @param {string} code The discount code to revoke.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesRetrieve: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCodesRevokeDestroy: async (code: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'code', code)
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRetrieve', 'id', id)
+            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCodesRetrieve', 'parent_lookup_organization', parent_lookup_organization)
-            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/`
+            assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'parent_lookup_organization', parent_lookup_organization)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/revoke/`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -8727,7 +10380,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -8743,20 +10396,65 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Send test assignment email to specified email address. This does not include an enrollment code.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {SendTestEmailRequest} SendTestEmailRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesSendTestEmailCreate: async (id: number, parent_lookup_organization: number, SendTestEmailRequest: SendTestEmailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'parent_lookup_organization', parent_lookup_organization)
+            // verify required parameter 'SendTestEmailRequest' is not null or undefined
+            assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'SendTestEmailRequest', SendTestEmailRequest)
+            const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/send_test_email/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(SendTestEmailRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * List enrollments for a specific course run within a contract.
          * @param {string} course_run_id Courseware ID to pull enrollments for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve: async (course_run_id: string, id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCourseRunsEnrollmentsList: async (course_run_id: string, id: number, parent_lookup_organization: number, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'course_run_id' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve', 'course_run_id', course_run_id)
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsList', 'course_run_id', course_run_id)
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve', 'id', id)
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsList', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve', 'parent_lookup_organization', parent_lookup_organization)
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsList', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/course_runs/{course_run_id}/enrollments/`
                 .replace(`{${"course_run_id"}}`, encodeURIComponent(String(course_run_id)))
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
@@ -8772,6 +10470,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8784,17 +10490,19 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
+         * List course runs available for a specific contract.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsRetrieve: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsCourseRunsList: async (id: number, parent_lookup_organization: number, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCourseRunsRetrieve', 'id', id)
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsList', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
-            assertParamExists('b2bManagerOrganizationsContractsCourseRunsRetrieve', 'parent_lookup_organization', parent_lookup_organization)
+            assertParamExists('b2bManagerOrganizationsContractsCourseRunsList', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/course_runs/`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
@@ -8808,6 +10516,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
 
 
     
@@ -8824,10 +10540,12 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
          * List an organization\'s contracts.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsList: async (id: number, parent_lookup_organization: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsContractsList: async (id: number, parent_lookup_organization: number, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsList', 'id', id)
             // verify required parameter 'parent_lookup_organization' is not null or undefined
@@ -8845,6 +10563,14 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
 
 
     
@@ -8929,10 +10655,13 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
         },
         /**
          * List managed organizations
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [sso_organization_id] Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        b2bManagerOrganizationsList: async (page?: number, page_size?: number, sso_organization_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v0/b2b/manager/organizations/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8944,6 +10673,18 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
+            if (sso_organization_id !== undefined) {
+                localVarQueryParameter['sso_organization_id'] = sso_organization_id;
+            }
 
 
     
@@ -9018,6 +10759,49 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+         * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bServiceOrganizationManagerCheck: async (sso_organization_id: string, user_global_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sso_organization_id' is not null or undefined
+            assertParamExists('b2bServiceOrganizationManagerCheck', 'sso_organization_id', sso_organization_id)
+            // verify required parameter 'user_global_id' is not null or undefined
+            assertParamExists('b2bServiceOrganizationManagerCheck', 'user_global_id', user_global_id)
+            const localVarPath = `/api/v0/b2b/service/organization-manager-check/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (sso_organization_id !== undefined) {
+                localVarQueryParameter['sso_organization_id'] = sso_organization_id;
+            }
+
+            if (user_global_id !== undefined) {
+                localVarQueryParameter['user_global_id'] = user_global_id;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -9038,6 +10822,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bAttachCreate(enrollment_code, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bAttachCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Return the variant runs for a contract.
+         * @param {string} contract_slug 
+         * @param {Array<number>} [course_id] Course ID(s) to use
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bContractsAllVariantRunsList(contract_slug: string, course_id?: Array<number>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseCourseRun>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bContractsAllVariantRunsList(contract_slug, course_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bContractsAllVariantRunsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9066,26 +10863,117 @@ export const B2bApiFp = function(configuration?: Configuration) {
         /**
          * Create an enrollment for the given course run.
          * @param {string} readable_id 
+         * @param {B2BEnrollRequestRequest} [B2BEnrollRequestRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bEnrollCreate(readable_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateB2BEnrollment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bEnrollCreate(readable_id, options);
+        async b2bEnrollCreate(readable_id: string, B2BEnrollRequestRequest?: B2BEnrollRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateB2BEnrollment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bEnrollCreate(readable_id, B2BEnrollRequestRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bEnrollCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * Assign an available enrollment code to an email address and send an invite email.
+         * @param {string} code The discount code to assign.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesAssignCreate(code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesAssignCreate(code, id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesAssignCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {Array<AssignRevokeCodeRequestRequest>} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesBulkAssignCreate(id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BulkAssignResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesBulkAssignCreate(id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesBulkAssignCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [search_term] Filter codes by assigned email, user email, user name, or assigned name.
+         * @param {B2bManagerOrganizationsContractsCodesListStatusEnum} [status] Filter codes by status. Supported values are assigned, redeemed, and failed.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, search_term?: string, status?: B2bManagerOrganizationsContractsCodesListStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentCodeList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesList(id, parent_lookup_organization, page, page_size, search_term, status, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Reassign the assignment for a specific enrollment code
+         * @param {string} code The discount code to reassign.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {AssignRevokeCodeRequestRequest} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesReassignUpdate(code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesReassignUpdate(code, id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesReassignUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
+         * @param {string} code The discount code to send a reminder for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCodesRetrieve(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRetrieve(id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsCodesRemindCreate(code: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRemindCreate(code, id, parent_lookup_organization, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRetrieve']?.[index]?.url;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRemindCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
+         * @param {string} code The discount code to revoke.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesRevokeDestroy(code: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRevokeDestroy(code, id, parent_lookup_organization, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRevokeDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Send test assignment email to specified email address. This does not include an enrollment code.
+         * @param {number} id ID of the contract
+         * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {SendTestEmailRequest} SendTestEmailRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bManagerOrganizationsContractsCodesSendTestEmailCreate(id: number, parent_lookup_organization: number, SendTestEmailRequest: SendTestEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesSendTestEmailCreate(id, parent_lookup_organization, SendTestEmailRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesSendTestEmailCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9093,37 +10981,43 @@ export const B2bApiFp = function(configuration?: Configuration) {
          * @param {string} course_run_id Courseware ID to pull enrollments for.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(course_run_id: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(course_run_id, id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id: string, id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id, id, parent_lookup_organization, page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve']?.[index]?.url;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
+         * List course runs available for a specific contract.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsCourseRunsRetrieve(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsRetrieve(id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsCourseRunsList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerCourseRunList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsList(id, parent_lookup_organization, page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsRetrieve']?.[index]?.url;
+            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * List an organization\'s contracts.
          * @param {number} id ID of the contract
          * @param {number} parent_lookup_organization ID of the parent organization
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsContractsList(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseContractPage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsList(id, parent_lookup_organization, options);
+        async b2bManagerOrganizationsContractsList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedBaseContractPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsList(id, parent_lookup_organization, page, page_size, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -9155,11 +11049,14 @@ export const B2bApiFp = function(configuration?: Configuration) {
         },
         /**
          * List managed organizations
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {string} [sso_organization_id] Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bManagerOrganizationsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationPage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(options);
+        async b2bManagerOrganizationsList(page?: number, page_size?: number, sso_organization_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrganizationPageList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(page, page_size, sso_organization_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -9187,6 +11084,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['B2bApi.b2bOrganizationsRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+         * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bServiceOrganizationManagerCheck(sso_organization_id: string, user_global_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationManagerCheck>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bServiceOrganizationManagerCheck(sso_organization_id, user_global_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bServiceOrganizationManagerCheck']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -9205,6 +11115,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bAttachCreate(requestParameters: B2bApiB2bAttachCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ContractPage>> {
             return localVarFp.b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return the variant runs for a contract.
+         * @param {B2bApiB2bContractsAllVariantRunsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bContractsAllVariantRunsList(requestParameters: B2bApiB2bContractsAllVariantRunsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<BaseCourseRun>> {
+            return localVarFp.b2bContractsAllVariantRunsList(requestParameters.contract_slug, requestParameters.course_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Viewset for the ContractPage model.
@@ -9230,34 +11149,88 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @throws {RequiredError}
          */
         b2bEnrollCreate(requestParameters: B2bApiB2bEnrollCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CreateB2BEnrollment> {
-            return localVarFp.b2bEnrollCreate(requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.b2bEnrollCreate(requestParameters.readable_id, requestParameters.B2BEnrollRequestRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
-         * @param {B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest} requestParameters Request parameters.
+         * Assign an available enrollment code to an email address and send an invite email.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCodesRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
-            return localVarFp.b2bManagerOrganizationsContractsCodesRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BulkAssignResult> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerEnrollmentCodeList> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, requestParameters.search_term, requestParameters.status, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Reassign the assignment for a specific enrollment code
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerEnrollmentCode> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Send test assignment email to specified email address. This does not include an enrollment code.
+         * @param {B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.SendTestEmailRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * List enrollments for a specific course run within a contract.
-         * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
-            return localVarFp.b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerEnrollmentList> {
+            return localVarFp.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
-         * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
-         * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest} requestParameters Request parameters.
+         * List course runs available for a specific contract.
+         * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ManagerContractDetail> {
-            return localVarFp.b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsCourseRunsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerCourseRunList> {
+            return localVarFp.b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
          * List an organization\'s contracts.
@@ -9265,8 +11238,8 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<BaseContractPage>> {
-            return localVarFp.b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedBaseContractPageList> {
+            return localVarFp.b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
          * List an organization\'s contracts.
@@ -9288,11 +11261,12 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
         },
         /**
          * List managed organizations
+         * @param {B2bApiB2bManagerOrganizationsListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bManagerOrganizationsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<OrganizationPage>> {
-            return localVarFp.b2bManagerOrganizationsList(options).then((request) => request(axios, basePath));
+        b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedOrganizationPageList> {
+            return localVarFp.b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, requestParameters.sso_organization_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Viewset for the OrganizationPage model.
@@ -9311,6 +11285,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
         b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationPage> {
             return localVarFp.b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+         * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationManagerCheck> {
+            return localVarFp.b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -9326,6 +11309,27 @@ export interface B2bApiB2bAttachCreateRequest {
      * @memberof B2bApiB2bAttachCreate
      */
     readonly enrollment_code: string
+}
+
+/**
+ * Request parameters for b2bContractsAllVariantRunsList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bContractsAllVariantRunsListRequest
+ */
+export interface B2bApiB2bContractsAllVariantRunsListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bContractsAllVariantRunsList
+     */
+    readonly contract_slug: string
+
+    /**
+     * Course ID(s) to use
+     * @type {Array<number>}
+     * @memberof B2bApiB2bContractsAllVariantRunsList
+     */
+    readonly course_id?: Array<number>
 }
 
 /**
@@ -9354,76 +11358,321 @@ export interface B2bApiB2bEnrollCreateRequest {
      * @memberof B2bApiB2bEnrollCreate
      */
     readonly readable_id: string
+
+    /**
+     * 
+     * @type {B2BEnrollRequestRequest}
+     * @memberof B2bApiB2bEnrollCreate
+     */
+    readonly B2BEnrollRequestRequest?: B2BEnrollRequestRequest
 }
 
 /**
- * Request parameters for b2bManagerOrganizationsContractsCodesRetrieve operation in B2bApi.
+ * Request parameters for b2bManagerOrganizationsContractsCodesAssignCreate operation in B2bApi.
  * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest
  */
-export interface B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest {
+export interface B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest {
+    /**
+     * The discount code to assign.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
+     */
+    readonly code: string
+
     /**
      * ID of the contract
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
      */
     readonly id: number
 
     /**
      * ID of the parent organization
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * 
+     * @type {AssignRevokeCodeRequestRequest}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
+     */
+    readonly AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesBulkAssignCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * 
+     * @type {Array<AssignRevokeCodeRequestRequest>}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
+     */
+    readonly AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesListRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesListRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly page_size?: number
+
+    /**
+     * Filter codes by assigned email, user email, user name, or assigned name.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly search_term?: string
+
+    /**
+     * Filter codes by status. Supported values are assigned, redeemed, and failed.
+     * @type {'assigned' | 'failed' | 'redeemed'}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
+     */
+    readonly status?: B2bManagerOrganizationsContractsCodesListStatusEnum
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesReassignUpdate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest {
+    /**
+     * The discount code to reassign.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly code: string
+
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * 
+     * @type {AssignRevokeCodeRequestRequest}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
+     */
+    readonly AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesRemindCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest {
+    /**
+     * The discount code to send a reminder for.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
+     */
+    readonly code: string
+
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
      */
     readonly parent_lookup_organization: number
 }
 
 /**
- * Request parameters for b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve operation in B2bApi.
+ * Request parameters for b2bManagerOrganizationsContractsCodesRevokeDestroy operation in B2bApi.
  * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest
  */
-export interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest {
+export interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest {
+    /**
+     * The discount code to revoke.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
+     */
+    readonly code: string
+
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
+     */
+    readonly parent_lookup_organization: number
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCodesSendTestEmailCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest {
+    /**
+     * ID of the contract
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
+     */
+    readonly id: number
+
+    /**
+     * ID of the parent organization
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
+     */
+    readonly parent_lookup_organization: number
+
+    /**
+     * 
+     * @type {SendTestEmailRequest}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
+     */
+    readonly SendTestEmailRequest: SendTestEmailRequest
+}
+
+/**
+ * Request parameters for b2bManagerOrganizationsContractsCourseRunsEnrollmentsList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest
+ */
+export interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest {
     /**
      * Courseware ID to pull enrollments for.
      * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly course_run_id: string
 
     /**
      * ID of the contract
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly id: number
 
     /**
      * ID of the parent organization
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
+     */
+    readonly page_size?: number
 }
 
 /**
- * Request parameters for b2bManagerOrganizationsContractsCourseRunsRetrieve operation in B2bApi.
+ * Request parameters for b2bManagerOrganizationsContractsCourseRunsList operation in B2bApi.
  * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest
+ * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest
  */
-export interface B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest {
+export interface B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest {
     /**
      * ID of the contract
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly id: number
 
     /**
      * ID of the parent organization
      * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieve
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
+     */
+    readonly page_size?: number
 }
 
 /**
@@ -9445,6 +11694,20 @@ export interface B2bApiB2bManagerOrganizationsContractsListRequest {
      * @memberof B2bApiB2bManagerOrganizationsContractsList
      */
     readonly parent_lookup_organization: number
+
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsContractsList
+     */
+    readonly page_size?: number
 }
 
 /**
@@ -9483,6 +11746,34 @@ export interface B2bApiB2bManagerOrganizationsDetailRequest {
 }
 
 /**
+ * Request parameters for b2bManagerOrganizationsList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bManagerOrganizationsListRequest
+ */
+export interface B2bApiB2bManagerOrganizationsListRequest {
+    /**
+     * A page number within the paginated result set.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsList
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     * @type {number}
+     * @memberof B2bApiB2bManagerOrganizationsList
+     */
+    readonly page_size?: number
+
+    /**
+     * Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
+     * @type {string}
+     * @memberof B2bApiB2bManagerOrganizationsList
+     */
+    readonly sso_organization_id?: string
+}
+
+/**
  * Request parameters for b2bOrganizationsRetrieve operation in B2bApi.
  * @export
  * @interface B2bApiB2bOrganizationsRetrieveRequest
@@ -9494,6 +11785,27 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
      * @memberof B2bApiB2bOrganizationsRetrieve
      */
     readonly organization_slug: string
+}
+
+/**
+ * Request parameters for b2bServiceOrganizationManagerCheck operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bServiceOrganizationManagerCheckRequest
+ */
+export interface B2bApiB2bServiceOrganizationManagerCheckRequest {
+    /**
+     * The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
+     * @type {string}
+     * @memberof B2bApiB2bServiceOrganizationManagerCheck
+     */
+    readonly sso_organization_id: string
+
+    /**
+     * The user\&#39;s Keycloak subject (User.global_id).
+     * @type {string}
+     * @memberof B2bApiB2bServiceOrganizationManagerCheck
+     */
+    readonly user_global_id: string
 }
 
 /**
@@ -9512,6 +11824,17 @@ export class B2bApi extends BaseAPI {
      */
     public b2bAttachCreate(requestParameters: B2bApiB2bAttachCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return the variant runs for a contract.
+     * @param {B2bApiB2bContractsAllVariantRunsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bContractsAllVariantRunsList(requestParameters: B2bApiB2bContractsAllVariantRunsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bContractsAllVariantRunsList(requestParameters.contract_slug, requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9543,40 +11866,106 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bEnrollCreate(requestParameters: B2bApiB2bEnrollCreateRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bEnrollCreate(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bEnrollCreate(requestParameters.readable_id, requestParameters.B2BEnrollRequestRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * List enrollment codes for a contract.  Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
-     * @param {B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest} requestParameters Request parameters.
+     * Assign an available enrollment code to an email address and send an invite email.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
-    public b2bManagerOrganizationsContractsCodesRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    public b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, requestParameters.search_term, requestParameters.status, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Reassign the assignment for a specific enrollment code
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Send test assignment email to specified email address. This does not include an enrollment code.
+     * @param {B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.SendTestEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * List enrollments for a specific course run within a contract.
-     * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
-    public b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsEnrollmentsRetrieve(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    public b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * List course runs available for a specific contract.  GET /api/v0/b2b/orgs/{org_id}/manager/contracts/{contract_id}/course_runs/
-     * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest} requestParameters Request parameters.
+     * List course runs available for a specific contract.
+     * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
-    public b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+    public b2bManagerOrganizationsContractsCourseRunsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9587,7 +11976,7 @@ export class B2bApi extends BaseAPI {
      * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9614,12 +12003,13 @@ export class B2bApi extends BaseAPI {
 
     /**
      * List managed organizations
+     * @param {B2bApiB2bManagerOrganizationsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof B2bApi
      */
-    public b2bManagerOrganizationsList(options?: RawAxiosRequestConfig) {
-        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(options).then((request) => request(this.axios, this.basePath));
+    public b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, requestParameters.sso_organization_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9642,8 +12032,28 @@ export class B2bApi extends BaseAPI {
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
     }
+
+    /**
+     * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
+     * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(this.axios, this.basePath));
+    }
 }
 
+/**
+ * @export
+ */
+export const B2bManagerOrganizationsContractsCodesListStatusEnum = {
+    Assigned: 'assigned',
+    Failed: 'failed',
+    Redeemed: 'redeemed'
+} as const;
+export type B2bManagerOrganizationsContractsCodesListStatusEnum = typeof B2bManagerOrganizationsContractsCodesListStatusEnum[keyof typeof B2bManagerOrganizationsContractsCodesListStatusEnum];
 
 
 /**
@@ -9689,7 +12099,7 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10158,7 +12568,7 @@ export const BasketsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10337,7 +12747,7 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(axios, basePath));
         },
         /**
-         * Returns the payload necessary to redirect the user to CyberSource for payment.
+         * Returns the payload necessary to start the payment process.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10675,7 +13085,7 @@ export class BasketsApi extends BaseAPI {
     }
 
     /**
-     * Returns the payload necessary to redirect the user to CyberSource for payment.
+     * Returns the payload necessary to start the payment process.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasketsApi
@@ -11225,16 +13635,16 @@ export class CountriesApi extends BaseAPI {
 export const CourseCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Get a course certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        courseCertificatesRetrieve: async (cert_uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'cert_uuid' is not null or undefined
-            assertParamExists('courseCertificatesRetrieve', 'cert_uuid', cert_uuid)
-            const localVarPath = `/api/v2/course_certificates/{cert_uuid}/`
-                .replace(`{${"cert_uuid"}}`, encodeURIComponent(String(cert_uuid)));
+        courseCertificatesRetrieve: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uuid' is not null or undefined
+            assertParamExists('courseCertificatesRetrieve', 'uuid', uuid)
+            const localVarPath = `/api/v2/course_certificates/{uuid}/`
+                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -11268,13 +13678,13 @@ export const CourseCertificatesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CourseCertificatesApiAxiosParamCreator(configuration)
     return {
         /**
-         * Get a course certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async courseCertificatesRetrieve(cert_uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseRunCertificate>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseCertificatesRetrieve(cert_uuid, options);
+        async courseCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseRunCertificate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseCertificatesRetrieve(uuid, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CourseCertificatesApi.courseCertificatesRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -11290,13 +13700,13 @@ export const CourseCertificatesApiFactory = function (configuration?: Configurat
     const localVarFp = CourseCertificatesApiFp(configuration)
     return {
         /**
-         * Get a course certificate by UUID.
+         * Viewset to read a single course certificate
          * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2CourseRunCertificate> {
-            return localVarFp.courseCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(axios, basePath));
+            return localVarFp.courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -11312,7 +13722,7 @@ export interface CourseCertificatesApiCourseCertificatesRetrieveRequest {
      * @type {string}
      * @memberof CourseCertificatesApiCourseCertificatesRetrieve
      */
-    readonly cert_uuid: string
+    readonly uuid: string
 }
 
 /**
@@ -11323,14 +13733,14 @@ export interface CourseCertificatesApiCourseCertificatesRetrieveRequest {
  */
 export class CourseCertificatesApi extends BaseAPI {
     /**
-     * Get a course certificate by UUID.
+     * Viewset to read a single course certificate
      * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseCertificatesApi
      */
     public courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return CourseCertificatesApiFp(this.configuration).courseCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(this.axios, this.basePath));
+        return CourseCertificatesApiFp(this.configuration).courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -11654,7 +14064,9 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * List all courses - API v2
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {string} [courseruns__language] 
+         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
+         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+         * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
@@ -11666,7 +14078,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2CoursesList: async (contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: string, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV2CoursesList: async (contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/courses/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11689,6 +14101,14 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
 
             if (courseruns__language !== undefined) {
                 localVarQueryParameter['courseruns__language'] = courseruns__language;
+            }
+
+            if (courseruns__variant_industry !== undefined) {
+                localVarQueryParameter['courseruns__variant_industry'] = courseruns__variant_industry;
+            }
+
+            if (courseruns__variant_length !== undefined) {
+                localVarQueryParameter['courseruns__variant_length'] = courseruns__variant_length;
             }
 
             if (id) {
@@ -11800,6 +14220,64 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Fetch variant runs for a course(s) matching the specified filters.
+         * @param {number} contract Contract to filter by
+         * @param {Array<number>} course_id Course ID(s) to use
+         * @param {string} [industry] Industry focus to retrieve
+         * @param {string} [language] Language to retrieve
+         * @param {string} [length] Language to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseVariantRunsV3: async (contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contract' is not null or undefined
+            assertParamExists('courseVariantRunsV3', 'contract', contract)
+            // verify required parameter 'course_id' is not null or undefined
+            assertParamExists('courseVariantRunsV3', 'course_id', course_id)
+            const localVarPath = `/api/v3/courses/variant_runs/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (contract !== undefined) {
+                localVarQueryParameter['contract'] = contract;
+            }
+
+            if (course_id) {
+                localVarQueryParameter['course_id'] = course_id;
+            }
+
+            if (industry !== undefined) {
+                localVarQueryParameter['industry'] = industry;
+            }
+
+            if (language !== undefined) {
+                localVarQueryParameter['language'] = language;
+            }
+
+            if (length !== undefined) {
+                localVarQueryParameter['length'] = length;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -11844,7 +14322,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * List all courses - API v2
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {string} [courseruns__language] 
+         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
+         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+         * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
          * @param {boolean} [live] 
@@ -11856,8 +14336,8 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: string, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, courseruns__language, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
+        async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, courseruns__language, courseruns__variant_industry, courseruns__variant_length, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -11884,6 +14364,22 @@ export const CoursesApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseOutlineRetrieveV3(course_id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['CoursesApi.courseOutlineRetrieveV3']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Fetch variant runs for a course(s) matching the specified filters.
+         * @param {number} contract Contract to filter by
+         * @param {Array<number>} course_id Course ID(s) to use
+         * @param {string} [industry] Industry focus to retrieve
+         * @param {string} [language] Language to retrieve
+         * @param {string} [length] Language to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async courseVariantRunsV3(contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseVariantRunsResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseVariantRunsV3(contract, course_id, industry, language, length, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CoursesApi.courseVariantRunsV3']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -11921,7 +14417,7 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List> {
-            return localVarFp.apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
+            return localVarFp.apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieve a specific course - API v2
@@ -11940,6 +14436,15 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
          */
         courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig): AxiosPromise<CourseOutlineResponse> {
             return localVarFp.courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Fetch variant runs for a course(s) matching the specified filters.
+         * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseVariantRunsResponse>> {
+            return localVarFp.courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -12035,11 +14540,25 @@ export interface CoursesApiApiV2CoursesListRequest {
     readonly courserun_is_enrollable?: boolean
 
     /**
-     * 
-     * @type {string}
+     * ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
+     * @type {'af_ZA' | 'ar' | 'az' | 'bo' | 'da' | 'de' | 'de_DE' | 'el' | 'en' | 'es_419' | 'es_ES' | 'fa' | 'fr' | 'fr_CA' | 'he' | 'hi' | 'hu' | 'id' | 'it_IT' | 'ja' | 'ka' | 'kk' | 'ko' | 'lv' | 'nl' | 'pl' | 'pt_BR' | 'pt_PT' | 'ro' | 'ru' | 'sq' | 'sv' | 'sw' | 'te' | 'th' | 'tr_TR' | 'uk' | 'uz' | 'vi' | 'zh_CN' | 'zh_HANS' | 'zh_HK'}
      * @memberof CoursesApiApiV2CoursesList
      */
-    readonly courseruns__language?: string
+    readonly courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum
+
+    /**
+     * Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+     * @type {'' | 'E' | 'F' | 'HC'}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum
+
+    /**
+     * Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
+     * @type {'' | 'S'}
+     * @memberof CoursesApiApiV2CoursesList
+     */
+    readonly courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum
 
     /**
      * Multiple values may be separated by commas.
@@ -12127,6 +14646,48 @@ export interface CoursesApiCourseOutlineRetrieveV3Request {
 }
 
 /**
+ * Request parameters for courseVariantRunsV3 operation in CoursesApi.
+ * @export
+ * @interface CoursesApiCourseVariantRunsV3Request
+ */
+export interface CoursesApiCourseVariantRunsV3Request {
+    /**
+     * Contract to filter by
+     * @type {number}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly contract: number
+
+    /**
+     * Course ID(s) to use
+     * @type {Array<number>}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly course_id: Array<number>
+
+    /**
+     * Industry focus to retrieve
+     * @type {string}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly industry?: string
+
+    /**
+     * Language to retrieve
+     * @type {string}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly language?: string
+
+    /**
+     * Language to retrieve
+     * @type {string}
+     * @memberof CoursesApiCourseVariantRunsV3
+     */
+    readonly length?: string
+}
+
+/**
  * CoursesApi - object-oriented interface
  * @export
  * @class CoursesApi
@@ -12163,7 +14724,7 @@ export class CoursesApi extends BaseAPI {
      * @memberof CoursesApi
      */
     public apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
+        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -12187,8 +14748,85 @@ export class CoursesApi extends BaseAPI {
     public courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
     }
+
+    /**
+     * Fetch variant runs for a course(s) matching the specified filters.
+     * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CoursesApi
+     */
+    public courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig) {
+        return CoursesApiFp(this.configuration).courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(this.axios, this.basePath));
+    }
 }
 
+/**
+ * @export
+ */
+export const ApiV2CoursesListCourserunsLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    En: 'en',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK'
+} as const;
+export type ApiV2CoursesListCourserunsLanguageEnum = typeof ApiV2CoursesListCourserunsLanguageEnum[keyof typeof ApiV2CoursesListCourserunsLanguageEnum];
+/**
+ * @export
+ */
+export const ApiV2CoursesListCourserunsVariantIndustryEnum = {
+    Empty: '',
+    E: 'E',
+    F: 'F',
+    Hc: 'HC'
+} as const;
+export type ApiV2CoursesListCourserunsVariantIndustryEnum = typeof ApiV2CoursesListCourserunsVariantIndustryEnum[keyof typeof ApiV2CoursesListCourserunsVariantIndustryEnum];
+/**
+ * @export
+ */
+export const ApiV2CoursesListCourserunsVariantLengthEnum = {
+    Empty: '',
+    S: 'S'
+} as const;
+export type ApiV2CoursesListCourserunsVariantLengthEnum = typeof ApiV2CoursesListCourserunsVariantLengthEnum[keyof typeof ApiV2CoursesListCourserunsVariantLengthEnum];
 
 
 /**
@@ -16862,6 +19500,74 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+         * @param {RefundRequestRequest} RefundRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersRefundRequestsCreate: async (RefundRequestRequest: RefundRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'RefundRequestRequest' is not null or undefined
+            assertParamExists('ordersRefundRequestsCreate', 'RefundRequestRequest', RefundRequestRequest)
+            const localVarPath = `/api/v0/orders/refund-requests/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(RefundRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {string} order_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersStatusRetrieve: async (order_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'order_id' is not null or undefined
+            assertParamExists('ordersStatusRetrieve', 'order_id', order_id)
+            const localVarPath = `/api/v0/orders/status/{order_id}/`
+                .replace(`{${"order_id"}}`, encodeURIComponent(String(order_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -16909,6 +19615,30 @@ export const OrdersApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['OrdersApi.ordersReceiptRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+         * @param {RefundRequestRequest} RefundRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersRefundRequestsCreate(RefundRequestRequest: RefundRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefundRequest>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersRefundRequestsCreate(RefundRequestRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersRefundRequestsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {string} order_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async ordersStatusRetrieve(order_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.ordersStatusRetrieve(order_id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrdersApi.ordersStatusRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -16945,6 +19675,24 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
          */
         ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<Order> {
             return localVarFp.ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+         * @param {OrdersApiOrdersRefundRequestsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersRefundRequestsCreate(requestParameters: OrdersApiOrdersRefundRequestsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<RefundRequest> {
+            return localVarFp.ordersRefundRequestsCreate(requestParameters.RefundRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Pollable interface to determine status of a particular order.
+         * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrderStatus> {
+            return localVarFp.ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -16999,6 +19747,34 @@ export interface OrdersApiOrdersReceiptRetrieveRequest {
 }
 
 /**
+ * Request parameters for ordersRefundRequestsCreate operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersRefundRequestsCreateRequest
+ */
+export interface OrdersApiOrdersRefundRequestsCreateRequest {
+    /**
+     * 
+     * @type {RefundRequestRequest}
+     * @memberof OrdersApiOrdersRefundRequestsCreate
+     */
+    readonly RefundRequestRequest: RefundRequestRequest
+}
+
+/**
+ * Request parameters for ordersStatusRetrieve operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrdersStatusRetrieveRequest
+ */
+export interface OrdersApiOrdersStatusRetrieveRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrdersApiOrdersStatusRetrieve
+     */
+    readonly order_id: string
+}
+
+/**
  * OrdersApi - object-oriented interface
  * @export
  * @class OrdersApi
@@ -17036,6 +19812,28 @@ export class OrdersApi extends BaseAPI {
      */
     public ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
+     * @param {OrdersApiOrdersRefundRequestsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersRefundRequestsCreate(requestParameters: OrdersApiOrdersRefundRequestsCreateRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersRefundRequestsCreate(requestParameters.RefundRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Pollable interface to determine status of a particular order.
+     * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrdersApi
+     */
+    public ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -18316,16 +21114,16 @@ export class ProductsApi extends BaseAPI {
 export const ProgramCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Get a program certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        programCertificatesRetrieve: async (cert_uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'cert_uuid' is not null or undefined
-            assertParamExists('programCertificatesRetrieve', 'cert_uuid', cert_uuid)
-            const localVarPath = `/api/v2/program_certificates/{cert_uuid}/`
-                .replace(`{${"cert_uuid"}}`, encodeURIComponent(String(cert_uuid)));
+        programCertificatesRetrieve: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uuid' is not null or undefined
+            assertParamExists('programCertificatesRetrieve', 'uuid', uuid)
+            const localVarPath = `/api/v2/program_certificates/{uuid}/`
+                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18359,13 +21157,13 @@ export const ProgramCertificatesApiFp = function(configuration?: Configuration) 
     const localVarAxiosParamCreator = ProgramCertificatesApiAxiosParamCreator(configuration)
     return {
         /**
-         * Get a program certificate by UUID.
-         * @param {string} cert_uuid 
+         * Viewset to read a single course certificate
+         * @param {string} uuid 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async programCertificatesRetrieve(cert_uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCertificate>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programCertificatesRetrieve(cert_uuid, options);
+        async programCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCertificate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programCertificatesRetrieve(uuid, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProgramCertificatesApi.programCertificatesRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -18381,13 +21179,13 @@ export const ProgramCertificatesApiFactory = function (configuration?: Configura
     const localVarFp = ProgramCertificatesApiFp(configuration)
     return {
         /**
-         * Get a program certificate by UUID.
+         * Viewset to read a single course certificate
          * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramCertificate> {
-            return localVarFp.programCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(axios, basePath));
+            return localVarFp.programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -18403,7 +21201,7 @@ export interface ProgramCertificatesApiProgramCertificatesRetrieveRequest {
      * @type {string}
      * @memberof ProgramCertificatesApiProgramCertificatesRetrieve
      */
-    readonly cert_uuid: string
+    readonly uuid: string
 }
 
 /**
@@ -18414,14 +21212,14 @@ export interface ProgramCertificatesApiProgramCertificatesRetrieveRequest {
  */
 export class ProgramCertificatesApi extends BaseAPI {
     /**
-     * Get a program certificate by UUID.
+     * Viewset to read a single course certificate
      * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgramCertificatesApi
      */
     public programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramCertificatesApiFp(this.configuration).programCertificatesRetrieve(requestParameters.cert_uuid, options).then((request) => request(this.axios, this.basePath));
+        return ProgramCertificatesApiFp(this.configuration).programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
