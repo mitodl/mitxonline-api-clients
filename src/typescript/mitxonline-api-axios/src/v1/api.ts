@@ -647,6 +647,81 @@ export interface BulkAssignResult {
     'errors': Array<BulkAssignError>;
 }
 /**
+ * For validating bulk discount requests.
+ * @export
+ * @interface BulkDiscountRequest
+ */
+export interface BulkDiscountRequest {
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof BulkDiscountRequest
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {RedemptionTypeEnum}
+     * @memberof BulkDiscountRequest
+     */
+    'redemption_type'?: RedemptionTypeEnum;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof BulkDiscountRequest
+     */
+    'payment_type': PaymentTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkDiscountRequest
+     */
+    'amount': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BulkDiscountRequest
+     */
+    'one_time'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BulkDiscountRequest
+     */
+    'once_per_user'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkDiscountRequest
+     */
+    'activates'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BulkDiscountRequest
+     */
+    'expires'?: string;
+    /**
+     * Generate codes from this prefix plus a UUID.
+     * @type {string}
+     * @memberof BulkDiscountRequest
+     */
+    'prefix'?: string;
+    /**
+     * How many codes to generate from prefix. Defaults to 1.
+     * @type {number}
+     * @memberof BulkDiscountRequest
+     */
+    'count'?: number;
+    /**
+     * The exact codes to create, instead of generating from a prefix.
+     * @type {Array<string>}
+     * @memberof BulkDiscountRequest
+     */
+    'codes'?: Array<string>;
+}
+
+
+/**
  * Serializer for certificate pages, including overrides and signatory items.
  * @export
  * @interface CertificatePage
@@ -2513,17 +2588,11 @@ export interface CreateBasketWithProductIDRequest {
     'quantity': number;
 }
 /**
- * Serializer for creating a basket with products. (For OpenAPI spec.)
+ * Serializer for creating a basket with products.
  * @export
  * @interface CreateBasketWithProductsRequest
  */
 export interface CreateBasketWithProductsRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateBasketWithProductsRequest
-     */
-    'system_slug': string;
     /**
      * 
      * @type {Array<CreateBasketWithProductIDRequest>}
@@ -2535,13 +2604,13 @@ export interface CreateBasketWithProductsRequest {
      * @type {boolean}
      * @memberof CreateBasketWithProductsRequest
      */
-    'checkout': boolean;
+    'checkout'?: boolean;
     /**
      * 
      * @type {string}
      * @memberof CreateBasketWithProductsRequest
      */
-    'discount_code': string;
+    'discount_code'?: string | null;
 }
 /**
  * Department model serializer
@@ -15515,13 +15584,13 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
-         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {BulkDiscountRequest} BulkDiscountRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        discountsCreateBatchCreate: async (V0DiscountRequest: V0DiscountRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'V0DiscountRequest' is not null or undefined
-            assertParamExists('discountsCreateBatchCreate', 'V0DiscountRequest', V0DiscountRequest)
+        discountsCreateBatchCreate: async (BulkDiscountRequest: BulkDiscountRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'BulkDiscountRequest' is not null or undefined
+            assertParamExists('discountsCreateBatchCreate', 'BulkDiscountRequest', BulkDiscountRequest)
             const localVarPath = `/api/v0/discounts/create_batch/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15541,7 +15610,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(V0DiscountRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(BulkDiscountRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16600,12 +16669,12 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
-         * @param {V0DiscountRequest} V0DiscountRequest 
+         * @param {BulkDiscountRequest} BulkDiscountRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async discountsCreateBatchCreate(V0DiscountRequest: V0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsCreateBatchCreate(V0DiscountRequest, options);
+        async discountsCreateBatchCreate(BulkDiscountRequest: BulkDiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V0Discount>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discountsCreateBatchCreate(BulkDiscountRequest, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['DiscountsApi.discountsCreateBatchCreate']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -17005,8 +17074,8 @@ export const DiscountsApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        discountsCreateBatchCreate(requestParameters: DiscountsApiDiscountsCreateBatchCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V0Discount> {
-            return localVarFp.discountsCreateBatchCreate(requestParameters.V0DiscountRequest, options).then((request) => request(axios, basePath));
+        discountsCreateBatchCreate(requestParameters: DiscountsApiDiscountsCreateBatchCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<V0Discount>> {
+            return localVarFp.discountsCreateBatchCreate(requestParameters.BulkDiscountRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * API view set for Discounts
@@ -17401,10 +17470,10 @@ export interface DiscountsApiDiscountsCreateRequest {
 export interface DiscountsApiDiscountsCreateBatchCreateRequest {
     /**
      * 
-     * @type {V0DiscountRequest}
+     * @type {BulkDiscountRequest}
      * @memberof DiscountsApiDiscountsCreateBatchCreate
      */
-    readonly V0DiscountRequest: V0DiscountRequest
+    readonly BulkDiscountRequest: BulkDiscountRequest
 }
 
 /**
@@ -18101,7 +18170,7 @@ export class DiscountsApi extends BaseAPI {
      * @memberof DiscountsApi
      */
     public discountsCreateBatchCreate(requestParameters: DiscountsApiDiscountsCreateBatchCreateRequest, options?: RawAxiosRequestConfig) {
-        return DiscountsApiFp(this.configuration).discountsCreateBatchCreate(requestParameters.V0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
+        return DiscountsApiFp(this.configuration).discountsCreateBatchCreate(requestParameters.BulkDiscountRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
