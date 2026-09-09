@@ -18,34 +18,20 @@ import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction, replaceWithSerializableTypeIfNeeded } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * Serializer for the assign_code request body.
- * @export
- * @interface AssignRevokeCodeRequestRequest
  */
 export interface AssignRevokeCodeRequestRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof AssignRevokeCodeRequestRequest
-     */
     'email': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AssignRevokeCodeRequestRequest
-     */
     'name'?: string;
 }
 /**
  * * `anytime` - anytime * `dated` - dated
- * @export
- * @enum {string}
  */
 
 export const AvailabilityEnum = {
@@ -56,7 +42,7 @@ export const AvailabilityEnum = {
     /**
     * dated
     */
-    Dated: 'dated'
+    Dated: 'dated',
 } as const;
 
 export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof AvailabilityEnum];
@@ -64,878 +50,483 @@ export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof Availability
 
 /**
  * Serializer for the B2B enrollment request body.  Accepts an optional program_id so the user can be enrolled in the appropriate program alongside the course run enrollment.
- * @export
- * @interface B2BEnrollRequestRequest
  */
 export interface B2BEnrollRequestRequest {
     /**
      * The readable_id of the program to enroll the user in.
-     * @type {string}
-     * @memberof B2BEnrollRequestRequest
      */
     'program_id'?: string;
 }
 /**
  * Simplified serializer for the ContractPage model.
- * @export
- * @interface BaseContractPage
  */
 export interface BaseContractPage {
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseContractPage
-     */
     'id': number;
     /**
      * The name of the contract.
-     * @type {string}
-     * @memberof BaseContractPage
      */
     'name': string;
     /**
      * Any useful extra information about the contract.
-     * @type {string}
-     * @memberof BaseContractPage
      */
     'description': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseContractPage
-     */
     'membership_type': string;
     /**
      * The organization that owns this contract.
-     * @type {number}
-     * @memberof BaseContractPage
      */
     'organization': number;
     /**
      * The start date of the contract.
-     * @type {string}
-     * @memberof BaseContractPage
      */
     'contract_start': string | null;
     /**
      * The end date of the contract.
-     * @type {string}
-     * @memberof BaseContractPage
      */
     'contract_end': string | null;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
-     * @type {string}
-     * @memberof BaseContractPage
      */
     'slug': string;
 }
 /**
  * Basic course model serializer
- * @export
- * @interface BaseCourse
  */
 export interface BaseCourse {
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseCourse
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseCourse
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseCourse
-     */
     'readable_id': string;
     /**
      * Returns the type of object this is serializing.
-     * @type {string}
-     * @memberof BaseCourse
      */
     'type': string;
 }
 /**
  * Minimal CourseRun model serializer
- * @export
- * @interface BaseCourseRun
  */
 export interface BaseCourseRun {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'expiration_date'?: string | null;
     /**
      * Get the courseware URL
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'courseware_url': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseCourseRun
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'upgrade_deadline'?: string | null;
     /**
      * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof BaseCourseRun
      */
     'is_upgradable': boolean;
     /**
      * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof BaseCourseRun
      */
     'is_enrollable': boolean;
     /**
      * Check if the course run is archived
-     * @type {boolean}
-     * @memberof BaseCourseRun
      */
     'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BaseCourseRun
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseCourseRun
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BaseCourseRun
-     */
     'live'?: boolean;
     /**
      * Get the course number
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'course_number': string;
     /**
      * Get the enrollment modes for the course run
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof BaseCourseRun
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof BaseCourseRun
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: BaseCourseRunLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof BaseCourseRun
      */
     'is_primary_language'?: boolean;
     /**
      * Return the label for the language, using the override if necessary
-     * @type {string}
-     * @memberof BaseCourseRun
      */
     'language_label': string;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof BaseCourseRun
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: BaseCourseRunVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof BaseCourseRun
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseCourseRun
-     */
+    'variant_length'?: BaseCourseRunVariantLengthEnum;
     'course_id': number;
 }
-/**
- * @type BaseCourseRunLanguage
- * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
- * @export
- */
-export type BaseCourseRunLanguage = BlankEnum | LanguageEnum;
 
-/**
- * @type BaseCourseRunVariantIndustry
- * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
- * @export
- */
-export type BaseCourseRunVariantIndustry = BlankEnum | VariantIndustryEnum;
+export const BaseCourseRunLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
 
-/**
- * @type BaseCourseRunVariantLength
- * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
- * @export
- */
-export type BaseCourseRunVariantLength = BlankEnum | VariantLengthEnum;
+export type BaseCourseRunLanguageEnum = typeof BaseCourseRunLanguageEnum[keyof typeof BaseCourseRunLanguageEnum];
+export const BaseCourseRunVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type BaseCourseRunVariantIndustryEnum = typeof BaseCourseRunVariantIndustryEnum[keyof typeof BaseCourseRunVariantIndustryEnum];
+export const BaseCourseRunVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type BaseCourseRunVariantLengthEnum = typeof BaseCourseRunVariantLengthEnum[keyof typeof BaseCourseRunVariantLengthEnum];
 
 /**
  * Simple serializer for Product without related purchasable objects
- * @export
- * @interface BaseProduct
  */
 export interface BaseProduct {
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseProduct
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseProduct
-     */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseProduct
-     */
     'description': string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof BaseProduct
      */
     'is_active'?: boolean;
 }
 /**
  * Basic program model serializer
- * @export
- * @interface BaseProgram
  */
 export interface BaseProgram {
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseProgram
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseProgram
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof BaseProgram
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseProgram
-     */
     'type': string;
     /**
-     * 
-     * @type {DisplayModeEnum}
-     * @memberof BaseProgram
+     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
      */
-    'display_mode': DisplayModeEnum | null;
+    'display_mode': BaseProgramDisplayModeEnum | null;
 }
 
+export const BaseProgramDisplayModeEnum = {
+    /**
+    * * &#x60;course&#x60; - course
+    */
+    Course: 'course',
+} as const;
+
+export type BaseProgramDisplayModeEnum = typeof BaseProgramDisplayModeEnum[keyof typeof BaseProgramDisplayModeEnum];
 
 /**
  * Basket model serializer
- * @export
- * @interface Basket
  */
 export interface Basket {
-    /**
-     * 
-     * @type {number}
-     * @memberof Basket
-     */
     'id': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Basket
-     */
     'user'?: number | null;
-    /**
-     * 
-     * @type {Array<BasketItem>}
-     * @memberof Basket
-     */
     'basket_items': Array<BasketItem>;
 }
 /**
  * BasketDiscount model serializer
- * @export
- * @interface BasketDiscountDetail
  */
 export interface BasketDiscountDetail {
-    /**
-     * 
-     * @type {V0Discount}
-     * @memberof BasketDiscountDetail
-     */
     'redeemed_discount': V0Discount;
-    /**
-     * 
-     * @type {Basket}
-     * @memberof BasketDiscountDetail
-     */
     'redeemed_basket': Basket;
 }
 /**
  * BasketItem model serializer
- * @export
- * @interface BasketItem
  */
 export interface BasketItem {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketItem
-     */
     'basket': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketItem
-     */
     'product': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketItem
-     */
     'id': number;
 }
 /**
  * Serializer for Basket model with product details
- * @export
- * @interface BasketWithProduct
  */
 export interface BasketWithProduct {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketWithProduct
-     */
     'id': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketWithProduct
-     */
     'user'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof BasketWithProduct
-     */
     'anonymous_id'?: string | null;
-    /**
-     * 
-     * @type {Array<BasketWithProductBasketItemsInner>}
-     * @memberof BasketWithProduct
-     */
     'basket_items': Array<BasketWithProductBasketItemsInner>;
     /**
      * Get total price of all items in basket before discounts
-     * @type {number}
-     * @memberof BasketWithProduct
      */
     'total_price': number;
     /**
      * Get total price after any discounts are applied
-     * @type {number}
-     * @memberof BasketWithProduct
      */
     'discounted_price': number;
-    /**
-     * 
-     * @type {Array<BasketDiscountDetail>}
-     * @memberof BasketWithProduct
-     */
     'discounts': Array<BasketDiscountDetail>;
 }
-/**
- * 
- * @export
- * @interface BasketWithProductBasketItemsInner
- */
 export interface BasketWithProductBasketItemsInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketWithProductBasketItemsInner
-     */
     'basket'?: number;
-    /**
-     * 
-     * @type {BasketWithProductBasketItemsInnerProduct}
-     * @memberof BasketWithProductBasketItemsInner
-     */
     'product'?: BasketWithProductBasketItemsInnerProduct;
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketWithProductBasketItemsInner
-     */
     'id'?: number;
 }
-/**
- * 
- * @export
- * @interface BasketWithProductBasketItemsInnerProduct
- */
 export interface BasketWithProductBasketItemsInnerProduct {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketWithProductBasketItemsInnerProduct
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketWithProductBasketItemsInnerProduct
-     */
     'price'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof BasketWithProductBasketItemsInnerProduct
-     */
     'description'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BasketWithProductBasketItemsInnerProduct
-     */
     'is_active'?: boolean;
-    /**
-     * 
-     * @type {object}
-     * @memberof BasketWithProductBasketItemsInnerProduct
-     */
     'purchasable_object'?: object;
 }
-/**
- * 
- * @export
- * @enum {string}
- */
 
 export const BlankEnum = {
-    Empty: ''
+    Empty: '',
 } as const;
 
 export type BlankEnum = typeof BlankEnum[keyof typeof BlankEnum];
 
 
-/**
- * 
- * @export
- * @interface BulkAssignError
- */
 export interface BulkAssignError {
-    /**
-     * 
-     * @type {string}
-     * @memberof BulkAssignError
-     */
     'email': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BulkAssignError
-     */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BulkAssignError
-     */
     'detail': string;
 }
 /**
  * Serializer for the bulk_assign response body.
- * @export
- * @interface BulkAssignResult
  */
 export interface BulkAssignResult {
     /**
      * Successfully assigned codes.
-     * @type {Array<ManagerEnrollmentCode>}
-     * @memberof BulkAssignResult
      */
     'assigned': Array<ManagerEnrollmentCode>;
     /**
      * Records that could not be assigned, with a \'detail\' explanation.
-     * @type {Array<BulkAssignError>}
-     * @memberof BulkAssignResult
      */
     'errors': Array<BulkAssignError>;
 }
 /**
  * For validating bulk discount requests.
- * @export
- * @interface BulkDiscountRequest
  */
 export interface BulkDiscountRequest {
-    /**
-     * 
-     * @type {DiscountTypeEnum}
-     * @memberof BulkDiscountRequest
-     */
-    'discount_type': DiscountTypeEnum;
-    /**
-     * 
-     * @type {RedemptionTypeEnum}
-     * @memberof BulkDiscountRequest
-     */
-    'redemption_type'?: RedemptionTypeEnum;
-    /**
-     * 
-     * @type {PaymentTypeEnum}
-     * @memberof BulkDiscountRequest
-     */
+    'discount_type': BulkGenerationDiscountTypeEnum;
+    'redemption_type'?: BulkGenerationRedemptionTypeEnum;
     'payment_type': PaymentTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof BulkDiscountRequest
-     */
     'amount': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BulkDiscountRequest
-     */
     'one_time'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BulkDiscountRequest
-     */
     'once_per_user'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof BulkDiscountRequest
-     */
     'activates'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BulkDiscountRequest
-     */
     'expires'?: string;
     /**
      * Generate codes from this prefix plus a UUID.
-     * @type {string}
-     * @memberof BulkDiscountRequest
      */
     'prefix'?: string;
     /**
      * How many codes to generate from prefix. Defaults to 1.
-     * @type {number}
-     * @memberof BulkDiscountRequest
      */
     'count'?: number;
     /**
      * The exact codes to create, instead of generating from a prefix.
-     * @type {Array<string>}
-     * @memberof BulkDiscountRequest
      */
     'codes'?: Array<string>;
 }
 
 
 /**
+ * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price
+ */
+
+export const BulkGenerationDiscountTypeEnum = {
+    /**
+    * percent-off
+    */
+    PercentOff: 'percent-off',
+    /**
+    * dollars-off
+    */
+    DollarsOff: 'dollars-off',
+    /**
+    * fixed-price
+    */
+    FixedPrice: 'fixed-price',
+} as const;
+
+export type BulkGenerationDiscountTypeEnum = typeof BulkGenerationDiscountTypeEnum[keyof typeof BulkGenerationDiscountTypeEnum];
+
+
+/**
+ * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
+ */
+
+export const BulkGenerationRedemptionTypeEnum = {
+    /**
+    * one-time
+    */
+    OneTime: 'one-time',
+    /**
+    * one-time-per-user
+    */
+    OneTimePerUser: 'one-time-per-user',
+    /**
+    * unlimited
+    */
+    Unlimited: 'unlimited',
+} as const;
+
+export type BulkGenerationRedemptionTypeEnum = typeof BulkGenerationRedemptionTypeEnum[keyof typeof BulkGenerationRedemptionTypeEnum];
+
+
+/**
  * Serializer for certificate pages, including overrides and signatory items.
- * @export
- * @interface CertificatePage
  */
 export interface CertificatePage {
-    /**
-     * 
-     * @type {number}
-     * @memberof CertificatePage
-     */
     'id': number;
-    /**
-     * 
-     * @type {PageMeta}
-     * @memberof CertificatePage
-     */
     'meta': PageMeta;
-    /**
-     * 
-     * @type {string}
-     * @memberof CertificatePage
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CertificatePage
-     */
     'product_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CertificatePage
-     */
     'CEUs': string;
-    /**
-     * 
-     * @type {Array<Override>}
-     * @memberof CertificatePage
-     */
     'overrides': Array<Override>;
-    /**
-     * 
-     * @type {Array<SignatoryItem>}
-     * @memberof CertificatePage
-     */
     'signatory_items': Array<SignatoryItem>;
 }
 /**
  * Serializer for a list of certificate pages.
- * @export
- * @interface CertificatePageList
  */
 export interface CertificatePageList {
-    /**
-     * 
-     * @type {PageListMeta}
-     * @memberof CertificatePageList
-     */
     'meta': PageListMeta;
-    /**
-     * 
-     * @type {Array<CertificatePage>}
-     * @memberof CertificatePageList
-     */
     'items': Array<CertificatePage>;
 }
 /**
  * Extends the CertificatePageSerializer to work with a model object.
- * @export
- * @interface CertificatePageModel
  */
 export interface CertificatePageModel {
-    /**
-     * 
-     * @type {number}
-     * @memberof CertificatePageModel
-     */
     'id': number;
-    /**
-     * 
-     * @type {PageMetaModel}
-     * @memberof CertificatePageModel
-     */
     'meta': PageMetaModel;
-    /**
-     * 
-     * @type {string}
-     * @memberof CertificatePageModel
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CertificatePageModel
-     */
     'product_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CertificatePageModel
-     */
     'CEUs': string;
-    /**
-     * 
-     * @type {Array<Override>}
-     * @memberof CertificatePageModel
-     */
     'overrides': Array<Override>;
-    /**
-     * 
-     * @type {Array<SignatoryItem>}
-     * @memberof CertificatePageModel
-     */
     'signatory_items': Array<SignatoryItem>;
 }
 /**
  * Serializer for starting a user email change
- * @export
- * @interface ChangeEmailRequestCreate
  */
 export interface ChangeEmailRequestCreate {
-    /**
-     * 
-     * @type {string}
-     * @memberof ChangeEmailRequestCreate
-     */
     'new_email': string;
 }
 /**
  * Serializer for starting a user email change
- * @export
- * @interface ChangeEmailRequestCreateRequest
  */
 export interface ChangeEmailRequestCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ChangeEmailRequestCreateRequest
-     */
     'new_email': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChangeEmailRequestCreateRequest
-     */
     'password': string;
 }
 /**
  * Serializer for confirming a user email change
- * @export
- * @interface ChangeEmailRequestUpdate
  */
 export interface ChangeEmailRequestUpdate {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ChangeEmailRequestUpdate
-     */
     'confirmed': boolean;
 }
 /**
  * Serializer for confirming a user email change
- * @export
- * @interface ChangeEmailRequestUpdateRequest
  */
 export interface ChangeEmailRequestUpdateRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ChangeEmailRequestUpdateRequest
-     */
     'confirmed': boolean;
 }
 /**
  * Serializes the payload for the checkout data.
- * @export
- * @interface CheckoutPayload
  */
 export interface CheckoutPayload {
     /**
      * Set if the order was automatically completed and no checkout process is required.
-     * @type {boolean}
-     * @memberof CheckoutPayload
      */
     'no_checkout': boolean;
     /**
      * The URL to POST the form to, or to redirect the user to.
-     * @type {string}
-     * @memberof CheckoutPayload
      */
     'url': string;
     /**
      * The method to use for the data - POST for form data, GET for redirect.
-     * @type {string}
-     * @memberof CheckoutPayload
      */
     'method': string;
     /**
      * The data for the form.
-     * @type {any}
-     * @memberof CheckoutPayload
      */
     'payload': any;
     /**
      * If the order was automatically completed, the ID of the new order.
-     * @type {number}
-     * @memberof CheckoutPayload
      */
     'order_id': number;
     /**
-     * 
-     * @type {ErrorEnum}
-     * @memberof CheckoutPayload
+     * Error message for the order, if there is one.  * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
      */
     'error': ErrorEnum;
 }
@@ -943,8 +534,6 @@ export interface CheckoutPayload {
 
 /**
  * * `None` - ---- * `1` - Small/Start-up (1+ employees) * `9` - Small/Home office (1-9 employees) * `99` - Small (10-99 employees) * `999` - Small to medium-sized (100-999 employees) * `9999` - Medium-sized (1000-9999 employees) * `10000` - Large Enterprise (10,000+ employees) * `0` - Other (N/A or Don\'t know)
- * @export
- * @enum {string}
  */
 
 export const CompanySizeEnum = {
@@ -975,7 +564,7 @@ export const CompanySizeEnum = {
     /**
     * Other (N/A or Don&#39;t know)
     */
-    NUMBER_0: 0
+    NUMBER_0: 0,
 } as const;
 
 export type CompanySizeEnum = typeof CompanySizeEnum[keyof typeof CompanySizeEnum];
@@ -983,1921 +572,1027 @@ export type CompanySizeEnum = typeof CompanySizeEnum[keyof typeof CompanySizeEnu
 
 /**
  * Serializer for the ContractPage model.
- * @export
- * @interface ContractPage
  */
 export interface ContractPage {
-    /**
-     * 
-     * @type {number}
-     * @memberof ContractPage
-     */
     'id': number;
     /**
      * The name of the contract.
-     * @type {string}
-     * @memberof ContractPage
      */
     'name': string;
     /**
      * Any useful extra information about the contract.
-     * @type {string}
-     * @memberof ContractPage
      */
     'description': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ContractPage
-     */
     'membership_type': string;
     /**
      * The organization that owns this contract.
-     * @type {number}
-     * @memberof ContractPage
      */
     'organization': number;
     /**
      * The start date of the contract.
-     * @type {string}
-     * @memberof ContractPage
      */
     'contract_start': string | null;
     /**
      * The end date of the contract.
-     * @type {string}
-     * @memberof ContractPage
      */
     'contract_end': string | null;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
-     * @type {string}
-     * @memberof ContractPage
      */
     'slug': string;
     /**
      * A welcome message for learners.
-     * @type {string}
-     * @memberof ContractPage
      */
     'welcome_message': string;
     /**
      * Additional welcome message content for learners.
-     * @type {string}
-     * @memberof ContractPage
      */
     'welcome_message_extra': string;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof ContractPage
-     */
     'programs': Array<number>;
-    /**
-     * 
-     * @type {Array<SupportedVariant>}
-     * @memberof ContractPage
-     */
     'variant_options': Array<SupportedVariant>;
 }
-/**
- * 
- * @export
- * @interface ContractPageVariantRunBadRequest
- */
 export interface ContractPageVariantRunBadRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ContractPageVariantRunBadRequest
-     */
     'detail': string;
 }
 /**
  * Serializer for pycountry countries, with states for US/CA
- * @export
- * @interface Country
  */
 export interface Country {
     /**
      * Get the country alpha_2 code
-     * @type {string}
-     * @memberof Country
      */
     'code': string;
     /**
      * Get the country name (common name preferred if available)
-     * @type {string}
-     * @memberof Country
      */
     'name': string;
     /**
      * Get a list of states/provinces if USA or Canada
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof Country
      */
     'states': Array<{ [key: string]: any; }>;
 }
 /**
  * Course model serializer
- * @export
- * @interface Course
  */
 export interface Course {
-    /**
-     * 
-     * @type {number}
-     * @memberof Course
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Course
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Course
-     */
     'readable_id': string;
     /**
      * Get next run id
-     * @type {number}
-     * @memberof Course
      */
     'next_run_id': number | null;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof Course
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {CoursePage}
-     * @memberof Course
-     */
     'page': CoursePage;
-    /**
-     * 
-     * @type {Program}
-     * @memberof Course
-     */
     'programs': Program | null;
 }
-/**
- * 
- * @export
- * @interface CourseOutlineBadRequestResponse
- */
 export interface CourseOutlineBadRequestResponse {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineBadRequestResponse
-     */
     'detail': string;
 }
 /**
  * A single module within a course outline.
- * @export
- * @interface CourseOutlineModule
  */
 export interface CourseOutlineModule {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineModule
-     */
     'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineModule
-     */
     'title': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModule
-     */
     'effort_time': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModule
-     */
     'effort_activities': number;
-    /**
-     * 
-     * @type {CourseOutlineModuleCounts}
-     * @memberof CourseOutlineModule
-     */
     'counts': CourseOutlineModuleCounts;
 }
 /**
  * Activity counts within a course outline module.
- * @export
- * @interface CourseOutlineModuleCounts
  */
 export interface CourseOutlineModuleCounts {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModuleCounts
-     */
     'videos': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModuleCounts
-     */
     'readings': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModuleCounts
-     */
     'problems': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModuleCounts
-     */
     'assignments': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseOutlineModuleCounts
-     */
     'app_items': number;
 }
 /**
  * Course outline data fetched from Open edX.
- * @export
- * @interface CourseOutlineResponse
  */
 export interface CourseOutlineResponse {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineResponse
-     */
     'course_id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineResponse
-     */
     'generated_at': string;
-    /**
-     * 
-     * @type {Array<CourseOutlineModule>}
-     * @memberof CourseOutlineResponse
-     */
     'modules': Array<CourseOutlineModule>;
 }
-/**
- * 
- * @export
- * @interface CourseOutlineServerErrorResponse
- */
 export interface CourseOutlineServerErrorResponse {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineServerErrorResponse
-     */
     'detail': string;
 }
-/**
- * 
- * @export
- * @interface CourseOutlineUpstreamErrorResponse
- */
 export interface CourseOutlineUpstreamErrorResponse {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseOutlineUpstreamErrorResponse
-     */
     'detail': string;
 }
 /**
  * Course page model serializer
- * @export
- * @interface CoursePage
  */
 export interface CoursePage {
-    /**
-     * 
-     * @type {string}
-     * @memberof CoursePage
-     */
     'feature_image_src': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CoursePage
-     */
     'page_url': string;
     /**
      * Get cleaned description text.
-     * @type {string}
-     * @memberof CoursePage
      */
     'description': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CoursePage
-     */
     'live': boolean;
     /**
      * Get cleaned length text.
-     * @type {string}
-     * @memberof CoursePage
      */
     'length': string;
     /**
      * Get cleaned effort text.
-     * @type {string}
-     * @memberof CoursePage
      */
     'effort': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CoursePage
-     */
     'financial_assistance_form_url': string;
     /**
      * Get the current price of the course product.
-     * @type {number}
-     * @memberof CoursePage
      */
     'current_price': number | null;
     /**
      * Get instructor information
-     * @type {Array<any>}
-     * @memberof CoursePage
      */
     'instructors': Array<any>;
 }
 /**
  * Serializer for individual course page items, including all relevant fields.
- * @export
- * @interface CoursePageItem
  */
 export interface CoursePageItem {
-    /**
-     * 
-     * @type {number}
-     * @memberof CoursePageItem
-     */
     'id': number;
-    /**
-     * 
-     * @type {PageMeta}
-     * @memberof CoursePageItem
-     */
     'meta': PageMeta;
     /**
      * The page title as you\'d like it to be seen by the public
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'title': string;
     /**
      * The description shown on the home page and product page.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'description': string;
     /**
      * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'length': string;
     /**
      * A short description indicating how much effort is required (e.g. 1-3 hours per week).
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'effort': string | null;
     /**
      * The minimum number of hours per week required to complete the course.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'min_weekly_hours': string;
     /**
      * The maximum number of hours per week required to complete the course.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'max_weekly_hours': string;
     /**
      * The minimum number of weeks required to complete the course/program.
-     * @type {number}
-     * @memberof CoursePageItem
      */
     'min_weeks': number | null;
     /**
      * The maximum number of weeks required to complete the course/program.
-     * @type {number}
-     * @memberof CoursePageItem
      */
     'max_weeks': number | null;
-    /**
-     * 
-     * @type {Array<PriceItem>}
-     * @memberof CoursePageItem
-     */
     'price': Array<PriceItem>;
     /**
      * Specify the minimum product price. This is used by MIT Learn.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'min_price': string;
     /**
      * Specify the maximum product price. This is used by MIT Learn.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'max_price': string;
     /**
      * A short description indicating prerequisites of this course/program.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'prerequisites': string | null;
     /**
      * URL a relevant FAQ page or entry for the course/program.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'faq_url': string | null;
     /**
      * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'hubspot_form_id': string;
     /**
      * Details about this course/program.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'about': string | null;
     /**
      * *Required for Verifiable Credential generation. What you will learn from this course.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'what_you_learn': string | null;
-    /**
-     * 
-     * @type {FeatureImage}
-     * @memberof CoursePageItem
-     */
     'feature_image': FeatureImage;
     /**
      * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'video_url': string | null;
     /**
      * The title text to display in the faculty cards section of the product page.
-     * @type {string}
-     * @memberof CoursePageItem
      */
     'faculty_section_title': string | null;
-    /**
-     * 
-     * @type {Array<Faculty>}
-     * @memberof CoursePageItem
-     */
     'faculty': Array<Faculty>;
-    /**
-     * 
-     * @type {CertificatePage}
-     * @memberof CoursePageItem
-     */
     'certificate_page': CertificatePage | null;
-    /**
-     * 
-     * @type {V2Course}
-     * @memberof CoursePageItem
-     */
     'course_details': V2Course;
-    /**
-     * 
-     * @type {Array<Topic>}
-     * @memberof CoursePageItem
-     */
     'topic_list': Array<Topic>;
     /**
      * If true, Learn should include this in its catalog.
-     * @type {boolean}
-     * @memberof CoursePageItem
      */
     'include_in_learn_catalog': boolean | null;
     /**
      * If true, allow the AI chatbots to ingest the course\'s content files.
-     * @type {boolean}
-     * @memberof CoursePageItem
      */
     'ingest_content_files_for_ai': boolean | null;
-    /**
-     * 
-     * @type {Array<HowYoullLearn>}
-     * @memberof CoursePageItem
-     */
     'how_youll_learn': Array<HowYoullLearn>;
 }
 /**
  * Serializer for a list of course pages, including metadata and items.
- * @export
- * @interface CoursePageList
  */
 export interface CoursePageList {
-    /**
-     * 
-     * @type {PageListMeta}
-     * @memberof CoursePageList
-     */
     'meta': PageListMeta;
-    /**
-     * 
-     * @type {Array<CoursePageItem>}
-     * @memberof CoursePageList
-     */
     'items': Array<CoursePageItem>;
 }
 /**
  * Course model serializer
- * @export
- * @interface CourseRequest
  */
 export interface CourseRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRequest
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRequest
-     */
     'readable_id': string;
 }
 /**
  * CourseRunCertificate model serializer
- * @export
- * @interface CourseRunCertificate
  */
 export interface CourseRunCertificate {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunCertificate
-     */
     'uuid': string;
     /**
      * Get the link at which this certificate will be served Format: /certificate/<uuid>/ Example: /certificate/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     * @type {string}
-     * @memberof CourseRunCertificate
      */
     'link': string;
 }
 /**
  * CourseRunEnrollment model serializer
- * @export
- * @interface CourseRunEnrollment
  */
 export interface CourseRunEnrollment {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollment
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollment
-     */
     'edx_emails_subscription'?: boolean;
-    /**
-     * 
-     * @type {CourseRunCertificate}
-     * @memberof CourseRunEnrollment
-     */
     'certificate': CourseRunCertificate | null;
-    /**
-     * 
-     * @type {EnrollmentModeEnum}
-     * @memberof CourseRunEnrollment
-     */
     'enrollment_mode': EnrollmentModeEnum;
-    /**
-     * 
-     * @type {Array<CourseRunGrade>}
-     * @memberof CourseRunEnrollment
-     */
     'grades': Array<CourseRunGrade>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollment
-     */
     'approved_flexible_price_exists': boolean;
-    /**
-     * 
-     * @type {V1CourseRunWithCourse}
-     * @memberof CourseRunEnrollment
-     */
     'run': V1CourseRunWithCourse;
 }
 
 
 /**
  * CourseRunEnrollment model serializer
- * @export
- * @interface CourseRunEnrollmentRequest
  */
 export interface CourseRunEnrollmentRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollmentRequest
-     */
     'edx_emails_subscription'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentRequest
-     */
     'run_id': number;
 }
 /**
  * CourseRunEnrollment model serializer
- * @export
- * @interface CourseRunEnrollmentRequestV2
  */
 export interface CourseRunEnrollmentRequestV2 {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'edx_emails_subscription'?: boolean;
-    /**
-     * 
-     * @type {CourseRunCertificate}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'certificate': CourseRunCertificate | null;
-    /**
-     * 
-     * @type {EnrollmentModeEnum}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'enrollment_mode': EnrollmentModeEnum;
-    /**
-     * 
-     * @type {Array<CourseRunGrade>}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'grades': Array<CourseRunGrade>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'approved_flexible_price_exists': boolean;
-    /**
-     * 
-     * @type {V2CourseRunWithCourse}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'run': V2CourseRunWithCourse;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'b2b_organization_id': number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentRequestV2
-     */
     'b2b_contract_id': number | null;
 }
 
 
 /**
  * CourseRunEnrollment model serializer
- * @export
- * @interface CourseRunEnrollmentRequestV2Request
  */
 export interface CourseRunEnrollmentRequestV2Request {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollmentRequestV2Request
-     */
     'edx_emails_subscription'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentRequestV2Request
-     */
     'run_id': number;
 }
 /**
  * CourseRunEnrollment model serializer
- * @export
- * @interface CourseRunEnrollmentV3
  */
 export interface CourseRunEnrollmentV3 {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentV3
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollmentV3
-     */
     'edx_emails_subscription'?: boolean;
-    /**
-     * 
-     * @type {V3CourseRunCertificate}
-     * @memberof CourseRunEnrollmentV3
-     */
     'certificate': V3CourseRunCertificate | null;
-    /**
-     * 
-     * @type {EnrollmentModeEnum}
-     * @memberof CourseRunEnrollmentV3
-     */
     'enrollment_mode': EnrollmentModeEnum;
-    /**
-     * 
-     * @type {Array<CourseRunGrade>}
-     * @memberof CourseRunEnrollmentV3
-     */
     'grades': Array<CourseRunGrade>;
-    /**
-     * 
-     * @type {CourseRunWithCourseV3}
-     * @memberof CourseRunEnrollmentV3
-     */
     'run': CourseRunWithCourseV3;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentV3
-     */
     'b2b_organization_id': number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunEnrollmentV3
-     */
     'b2b_contract_id': number | null;
 }
 
 
 /**
  * CourseRunEnrollment model serializer
- * @export
- * @interface CourseRunEnrollmentV3Request
  */
 export interface CourseRunEnrollmentV3Request {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunEnrollmentV3Request
-     */
     'edx_emails_subscription'?: boolean;
 }
 /**
  * CourseRunGrade serializer
- * @export
- * @interface CourseRunGrade
  */
 export interface CourseRunGrade {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunGrade
-     */
     'grade': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunGrade
-     */
     'letter_grade': string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunGrade
-     */
     'passed': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunGrade
-     */
     'set_by_admin': boolean;
     /**
      * Returns the grade field value as a number out of 100 (or Decimal(0) if the value is None)
-     * @type {number}
-     * @memberof CourseRunGrade
      */
     'grade_percent': number;
 }
 /**
  * CourseRun model serializer
- * @export
- * @interface CourseRunV2
  */
 export interface CourseRunV2 {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'expiration_date'?: string | null;
     /**
      * Get the courseware URL
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'courseware_url': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunV2
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'upgrade_deadline'?: string | null;
     /**
      * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof CourseRunV2
      */
     'is_upgradable': boolean;
     /**
      * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof CourseRunV2
      */
     'is_enrollable': boolean;
     /**
      * Check if the course run is archived
-     * @type {boolean}
-     * @memberof CourseRunV2
      */
     'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunV2
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunV2
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunV2
-     */
     'live'?: boolean;
     /**
      * Get the course number
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'course_number': string;
     /**
      * Get the enrollment modes for the course run
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof CourseRunV2
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof CourseRunV2
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: CourseRunV2LanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof CourseRunV2
      */
     'is_primary_language'?: boolean;
     /**
      * Return the label for the language, using the override if necessary
-     * @type {string}
-     * @memberof CourseRunV2
      */
     'language_label': string;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof CourseRunV2
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: CourseRunV2VariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof CourseRunV2
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunV2
-     */
+    'variant_length'?: CourseRunV2VariantLengthEnum;
     'course_id': number;
-    /**
-     * 
-     * @type {Array<BaseProduct>}
-     * @memberof CourseRunV2
-     */
     'products': Array<BaseProduct>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunV2
-     */
     'approved_flexible_price_exists': boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunV2
-     */
     'b2b_contract'?: number | null;
 }
+
+export const CourseRunV2LanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type CourseRunV2LanguageEnum = typeof CourseRunV2LanguageEnum[keyof typeof CourseRunV2LanguageEnum];
+export const CourseRunV2VariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type CourseRunV2VariantIndustryEnum = typeof CourseRunV2VariantIndustryEnum[keyof typeof CourseRunV2VariantIndustryEnum];
+export const CourseRunV2VariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type CourseRunV2VariantLengthEnum = typeof CourseRunV2VariantLengthEnum[keyof typeof CourseRunV2VariantLengthEnum];
+
 /**
  * CourseRun serializer
- * @export
- * @interface CourseRunWithCourseV3
  */
 export interface CourseRunWithCourseV3 {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'expiration_date'?: string | null;
     /**
      * Get the courseware URL
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'courseware_url': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'upgrade_deadline'?: string | null;
     /**
      * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
      */
     'is_upgradable': boolean;
     /**
      * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
      */
     'is_enrollable': boolean;
     /**
      * Check if the course run is archived
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
      */
     'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunWithCourseV3
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
-     */
     'live'?: boolean;
     /**
      * Get the course number
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'course_number': string;
     /**
      * Get the enrollment modes for the course run
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof CourseRunWithCourseV3
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof CourseRunWithCourseV3
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: CourseRunWithCourseV3LanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
      */
     'is_primary_language'?: boolean;
     /**
      * Return the label for the language, using the override if necessary
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
      */
     'language_label': string;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof CourseRunWithCourseV3
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: CourseRunWithCourseV3VariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof CourseRunWithCourseV3
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunWithCourseV3
-     */
+    'variant_length'?: CourseRunWithCourseV3VariantLengthEnum;
     'course_id': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunWithCourseV3
-     */
     'upgrade_product_id': number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunWithCourseV3
-     */
     'upgrade_product_price': string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3
-     */
     'upgrade_product_is_active': boolean | null;
-    /**
-     * 
-     * @type {CourseV3}
-     * @memberof CourseRunWithCourseV3
-     */
     'course': CourseV3;
 }
+
+export const CourseRunWithCourseV3LanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type CourseRunWithCourseV3LanguageEnum = typeof CourseRunWithCourseV3LanguageEnum[keyof typeof CourseRunWithCourseV3LanguageEnum];
+export const CourseRunWithCourseV3VariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type CourseRunWithCourseV3VariantIndustryEnum = typeof CourseRunWithCourseV3VariantIndustryEnum[keyof typeof CourseRunWithCourseV3VariantIndustryEnum];
+export const CourseRunWithCourseV3VariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type CourseRunWithCourseV3VariantLengthEnum = typeof CourseRunWithCourseV3VariantLengthEnum[keyof typeof CourseRunWithCourseV3VariantLengthEnum];
+
 /**
  * CourseRun serializer
- * @export
- * @interface CourseRunWithCourseV3Request
  */
 export interface CourseRunWithCourseV3Request {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'expiration_date'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'upgrade_deadline'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3Request
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof CourseRunWithCourseV3Request
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3Request
-     */
     'live'?: boolean;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof CourseRunWithCourseV3Request
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: CourseRunWithCourseV3RequestLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof CourseRunWithCourseV3Request
      */
     'is_primary_language'?: boolean;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof CourseRunWithCourseV3Request
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: CourseRunWithCourseV3RequestVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof CourseRunWithCourseV3Request
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
+    'variant_length'?: CourseRunWithCourseV3RequestVariantLengthEnum;
 }
+
+export const CourseRunWithCourseV3RequestLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type CourseRunWithCourseV3RequestLanguageEnum = typeof CourseRunWithCourseV3RequestLanguageEnum[keyof typeof CourseRunWithCourseV3RequestLanguageEnum];
+export const CourseRunWithCourseV3RequestVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type CourseRunWithCourseV3RequestVariantIndustryEnum = typeof CourseRunWithCourseV3RequestVariantIndustryEnum[keyof typeof CourseRunWithCourseV3RequestVariantIndustryEnum];
+export const CourseRunWithCourseV3RequestVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type CourseRunWithCourseV3RequestVariantLengthEnum = typeof CourseRunWithCourseV3RequestVariantLengthEnum[keyof typeof CourseRunWithCourseV3RequestVariantLengthEnum];
+
 /**
  * Course serializer
- * @export
- * @interface CourseV3
  */
 export interface CourseV3 {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseV3
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseV3
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseV3
-     */
     'readable_id': string;
     /**
      * Returns the type of object this is serializing.
-     * @type {string}
-     * @memberof CourseV3
      */
     'type': string;
     /**
      * Return true if the course should be included in the Learn catalog.  This is controlled in the CoursePage for the course, and will default to False if there isn\'t one.
-     * @type {boolean}
-     * @memberof CourseV3
      */
     'include_in_learn_catalog': boolean;
 }
 /**
  * Course serializer
- * @export
- * @interface CourseV3Request
  */
 export interface CourseV3Request {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseV3Request
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseV3Request
-     */
     'readable_id': string;
 }
-/**
- * 
- * @export
- * @interface CourseVariantRunBadRequest
- */
 export interface CourseVariantRunBadRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseVariantRunBadRequest
-     */
     'detail': string;
 }
 /**
  * Serializer for the course variant run API.
- * @export
- * @interface CourseVariantRunsResponse
  */
 export interface CourseVariantRunsResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseVariantRunsResponse
-     */
     'id': number;
-    /**
-     * 
-     * @type {Array<BaseCourseRun>}
-     * @memberof CourseVariantRunsResponse
-     */
     'courseruns': Array<BaseCourseRun>;
 }
 /**
  * Course model serializer - also serializes child course runs
- * @export
- * @interface CourseWithCourseRunsSerializerV2
  */
 export interface CourseWithCourseRunsSerializerV2 {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'readable_id': string;
     /**
      * Get next run id
-     * @type {number}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'next_run_id': number | null;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {CoursePage}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'page': CoursePage | null;
-    /**
-     * 
-     * @type {Array<BaseProgram>}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'programs': Array<BaseProgram>;
     /**
      * List topics of a course
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'topics': Array<{ [key: string]: any; }>;
     /**
      * Return the certificate type.
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'certificate_type': string;
     /**
      * Return if there is a certificate available for the course.
-     * @type {boolean}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'certificate_available': boolean;
     /**
      * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
-     * @type {boolean}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'required_prerequisites': boolean;
     /**
      * Get the duration of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'duration': string;
     /**
      * Get the min weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'min_weeks': number | null;
     /**
      * Get the max weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'max_weeks': number | null;
     /**
      * Get the min price of the product from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'min_price': number | null;
     /**
      * Get the max price of the product from the CMS page.
-     * @type {number}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'max_price': number | null;
     /**
      * Get the time commitment of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'time_commitment': string | null;
     /**
      * Get course availability
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'availability': string;
     /**
      * Get the min weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'min_weekly_hours': string | null;
     /**
      * Get the max weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof CourseWithCourseRunsSerializerV2
      */
     'max_weekly_hours': string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'include_in_learn_catalog': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'ingest_content_files_for_ai': boolean;
-    /**
-     * 
-     * @type {Array<SupportedVariant>}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'possible_variant_sets': Array<SupportedVariant>;
-    /**
-     * 
-     * @type {Array<CourseRunV2>}
-     * @memberof CourseWithCourseRunsSerializerV2
-     */
     'courseruns': Array<CourseRunV2>;
 }
 /**
  * Serializer for the result from create_b2b_enrollment.  There\'s always a result, and it should be one of the B2B messages that are defined in main.constants. The other fields appear or not depending on the result type.
- * @export
- * @interface CreateB2BEnrollment
  */
 export interface CreateB2BEnrollment {
-    /**
-     * 
-     * @type {ResultEnum}
-     * @memberof CreateB2BEnrollment
-     */
     'result': ResultEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateB2BEnrollment
-     */
     'order': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateB2BEnrollment
-     */
     'price': string;
-    /**
-     * 
-     * @type {GenerateCheckoutPayload}
-     * @memberof CreateB2BEnrollment
-     */
     'checkout_result'?: GenerateCheckoutPayload;
 }
 
 
 /**
  * Defines the schema for a product ID and quantity in the CreateBasketWithProductsSerializer.
- * @export
- * @interface CreateBasketWithProductIDRequest
  */
 export interface CreateBasketWithProductIDRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateBasketWithProductIDRequest
-     */
     'product_id': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateBasketWithProductIDRequest
-     */
     'quantity': number;
 }
 /**
  * Serializer for creating a basket with products.
- * @export
- * @interface CreateBasketWithProductsRequest
  */
 export interface CreateBasketWithProductsRequest {
-    /**
-     * 
-     * @type {Array<CreateBasketWithProductIDRequest>}
-     * @memberof CreateBasketWithProductsRequest
-     */
     'product_ids': Array<CreateBasketWithProductIDRequest>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateBasketWithProductsRequest
-     */
     'checkout'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateBasketWithProductsRequest
-     */
     'discount_code'?: string | null;
 }
 /**
  * Department model serializer
- * @export
- * @interface Department
  */
 export interface Department {
-    /**
-     * 
-     * @type {string}
-     * @memberof Department
-     */
     'name': string;
 }
 /**
  * Department model serializer
- * @export
- * @interface DepartmentRequest
  */
 export interface DepartmentRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof DepartmentRequest
-     */
     'name': string;
 }
 /**
  * CourseRun model serializer that includes the number of courses and programs associated with each departments
- * @export
- * @interface DepartmentWithCount
  */
 export interface DepartmentWithCount {
-    /**
-     * 
-     * @type {string}
-     * @memberof DepartmentWithCount
-     */
     'name': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof DepartmentWithCount
-     */
     'courses': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof DepartmentWithCount
-     */
     'programs': number;
 }
 /**
  * Department model serializer that includes the number of courses and programs associated with each
- * @export
- * @interface DepartmentWithCoursesAndPrograms
  */
 export interface DepartmentWithCoursesAndPrograms {
-    /**
-     * 
-     * @type {number}
-     * @memberof DepartmentWithCoursesAndPrograms
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DepartmentWithCoursesAndPrograms
-     */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DepartmentWithCoursesAndPrograms
-     */
     'slug': string;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof DepartmentWithCoursesAndPrograms
-     */
     'course_ids': Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof DepartmentWithCoursesAndPrograms
-     */
     'program_ids': Array<number>;
 }
 /**
  * Serializer for generic detail error responses (404, etc.).
- * @export
- * @interface DetailError
  */
 export interface DetailError {
-    /**
-     * 
-     * @type {string}
-     * @memberof DetailError
-     */
     'detail': string;
 }
 /**
- * 
- * @export
- * @interface Discount
+ * Serializes a discount.
  */
 export interface Discount {
-    /**
-     * 
-     * @type {number}
-     * @memberof Discount
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Discount
-     */
     'amount': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Discount
-     */
     'automatic'?: boolean;
-    /**
-     * 
-     * @type {DiscountTypeEnum}
-     * @memberof Discount
-     */
     'discount_type': DiscountTypeEnum;
-    /**
-     * 
-     * @type {RedemptionTypeEnum}
-     * @memberof Discount
-     */
     'redemption_type': RedemptionTypeEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof Discount
-     */
     'max_redemptions'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Discount
-     */
     'discount_code': string;
-    /**
-     * 
-     * @type {PaymentTypeEnum}
-     * @memberof Discount
-     */
-    'payment_type'?: PaymentTypeEnum | null;
+    'payment_type'?: DiscountPaymentTypeEnum | null;
     /**
      * Returns True if the discount has been redeemed
-     * @type {boolean}
-     * @memberof Discount
      */
     'is_redeemed': boolean;
     /**
      * If set, this discount code will not be redeemable before this date.
-     * @type {string}
-     * @memberof Discount
      */
     'activation_date'?: string | null;
     /**
      * If set, this discount code will not be redeemable after this date.
-     * @type {string}
-     * @memberof Discount
      */
     'expiration_date'?: string | null;
 }
 
+export const DiscountPaymentTypeEnum = {
+    Marketing: 'marketing',
+    Sales: 'sales',
+    FinancialAssistance: 'financial-assistance',
+    CustomerSupport: 'customer-support',
+    Staff: 'staff',
+    Legacy: 'legacy',
+} as const;
 
-/**
- * 
- * @export
- * @interface DiscountProduct
- */
+export type DiscountPaymentTypeEnum = typeof DiscountPaymentTypeEnum[keyof typeof DiscountPaymentTypeEnum];
+
 export interface DiscountProduct {
-    /**
-     * 
-     * @type {number}
-     * @memberof DiscountProduct
-     */
     'id': number;
-    /**
-     * 
-     * @type {V0Discount}
-     * @memberof DiscountProduct
-     */
     'discount': V0Discount;
-    /**
-     * 
-     * @type {Product}
-     * @memberof DiscountProduct
-     */
     'product': Product;
 }
-/**
- * 
- * @export
- * @interface DiscountProductRequest
- */
 export interface DiscountProductRequest {
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof DiscountProductRequest
-     */
     'discount': V0DiscountRequest;
-    /**
-     * 
-     * @type {ProductRequest}
-     * @memberof DiscountProductRequest
-     */
     'product': ProductRequest;
 }
 /**
  * Serializes a discount redemption.
- * @export
- * @interface DiscountRedemption
  */
 export interface DiscountRedemption {
-    /**
-     * 
-     * @type {number}
-     * @memberof DiscountRedemption
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DiscountRedemption
-     */
     'redemption_date': string;
-    /**
-     * 
-     * @type {User}
-     * @memberof DiscountRedemption
-     */
     'redeemed_by': User;
-    /**
-     * 
-     * @type {V0Discount}
-     * @memberof DiscountRedemption
-     */
     'redeemed_discount': V0Discount;
-    /**
-     * 
-     * @type {Order}
-     * @memberof DiscountRedemption
-     */
     'redeemed_order': Order;
 }
 /**
  * Serializes a discount redemption.
- * @export
- * @interface DiscountRedemptionRequest
  */
 export interface DiscountRedemptionRequest {
-    /**
-     * 
-     * @type {UserRequest}
-     * @memberof DiscountRedemptionRequest
-     */
     'redeemed_by': UserRequest;
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof DiscountRedemptionRequest
-     */
     'redeemed_discount': V0DiscountRequest;
-    /**
-     * 
-     * @type {OrderRequest}
-     * @memberof DiscountRedemptionRequest
-     */
     'redeemed_order': OrderRequest;
 }
 /**
- * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price
- * @export
- * @enum {string}
+ * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price * `paid-amount-off` - paid-amount-off
  */
 
 export const DiscountTypeEnum = {
@@ -2912,7 +1607,11 @@ export const DiscountTypeEnum = {
     /**
     * fixed-price
     */
-    FixedPrice: 'fixed-price'
+    FixedPrice: 'fixed-price',
+    /**
+    * paid-amount-off
+    */
+    PaidAmountOff: 'paid-amount-off',
 } as const;
 
 export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountTypeEnum];
@@ -2920,15 +1619,13 @@ export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountType
 
 /**
  * * `course` - course
- * @export
- * @enum {string}
  */
 
 export const DisplayModeEnum = {
     /**
     * course
     */
-    Course: 'course'
+    Course: 'course',
 } as const;
 
 export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnum];
@@ -2936,8 +1633,6 @@ export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnu
 
 /**
  * * `delivered` - delivered * `accepted` - accepted * `opened` - opened * `clicked` - clicked * `failed` - failed * `pending` - pending
- * @export
- * @enum {string}
  */
 
 export const EmailStatusEnum = {
@@ -2964,7 +1659,7 @@ export const EmailStatusEnum = {
     /**
     * pending
     */
-    Pending: 'pending'
+    Pending: 'pending',
 } as const;
 
 export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnum];
@@ -2972,33 +1667,14 @@ export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnu
 
 /**
  * Enrollment mode serializer.
- * @export
- * @interface EnrollmentMode
  */
 export interface EnrollmentMode {
-    /**
-     * 
-     * @type {string}
-     * @memberof EnrollmentMode
-     */
     'mode_slug'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EnrollmentMode
-     */
     'mode_display_name'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof EnrollmentMode
-     */
     'requires_payment'?: boolean;
 }
 /**
  * * `audit` - audit * `verified` - verified
- * @export
- * @enum {string}
  */
 
 export const EnrollmentModeEnum = {
@@ -3009,7 +1685,7 @@ export const EnrollmentModeEnum = {
     /**
     * verified
     */
-    Verified: 'verified'
+    Verified: 'verified',
 } as const;
 
 export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof EnrollmentModeEnum];
@@ -3017,8 +1693,6 @@ export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof Enrollme
 
 /**
  * * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
- * @export
- * @enum {string}
  */
 
 export const ErrorEnum = {
@@ -3049,7 +1723,7 @@ export const ErrorEnum = {
     /**
     * basket-empty
     */
-    BasketEmpty: 'basket-empty'
+    BasketEmpty: 'basket-empty',
 } as const;
 
 export type ErrorEnum = typeof ErrorEnum[keyof typeof ErrorEnum];
@@ -3057,205 +1731,55 @@ export type ErrorEnum = typeof ErrorEnum[keyof typeof ErrorEnum];
 
 /**
  * Serializer class that includes email address as part of the legal address
- * @export
- * @interface ExtendedLegalAddress
  */
 export interface ExtendedLegalAddress {
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'country': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'first_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'last_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'street_address_1'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'street_address_2'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'city'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'state'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExtendedLegalAddress
-     */
     'postal_code'?: string;
     /**
      * Get email from the linked user object
-     * @type {string}
-     * @memberof ExtendedLegalAddress
      */
     'email': string;
 }
 /**
  * Serializer for faculty details used in course pages.
- * @export
- * @interface Faculty
  */
 export interface Faculty {
-    /**
-     * 
-     * @type {number}
-     * @memberof Faculty
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Faculty
-     */
     'instructor_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Faculty
-     */
     'instructor_title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Faculty
-     */
     'instructor_bio_short': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Faculty
-     */
     'instructor_bio_long': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Faculty
-     */
     'feature_image_src': string | null;
 }
 /**
  * Serializer for feature images used in course pages.
- * @export
- * @interface FeatureImage
  */
 export interface FeatureImage {
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureImage
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureImage
-     */
     'image_url': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FeatureImage
-     */
     'height': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof FeatureImage
-     */
     'width': number;
 }
-/**
- * 
- * @export
- * @interface FlexiblePriceTier
- */
 export interface FlexiblePriceTier {
-    /**
-     * 
-     * @type {number}
-     * @memberof FlexiblePriceTier
-     */
     'id': number;
-    /**
-     * 
-     * @type {BaseCourse}
-     * @memberof FlexiblePriceTier
-     */
     'courseware_object': BaseCourse;
-    /**
-     * 
-     * @type {number}
-     * @memberof FlexiblePriceTier
-     */
     'discount': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof FlexiblePriceTier
-     */
     'current'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof FlexiblePriceTier
-     */
     'income_threshold_usd': number;
 }
-/**
- * 
- * @export
- * @interface FlexiblePriceTierRequest
- */
 export interface FlexiblePriceTierRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof FlexiblePriceTierRequest
-     */
     'discount': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof FlexiblePriceTierRequest
-     */
     'current'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof FlexiblePriceTierRequest
-     */
     'income_threshold_usd': number;
 }
 /**
  * * `m` - Male * `f` - Female * `t` - Transgender * `nb` - Non-binary/non-conforming * `o` - Other/Prefer Not to Say
- * @export
- * @enum {string}
  */
 
 export const GenderEnum = {
@@ -3278,7 +1802,7 @@ export const GenderEnum = {
     /**
     * Other/Prefer Not to Say
     */
-    O: 'o'
+    O: 'o',
 } as const;
 
 export type GenderEnum = typeof GenderEnum[keyof typeof GenderEnum];
@@ -3286,45 +1810,16 @@ export type GenderEnum = typeof GenderEnum[keyof typeof GenderEnum];
 
 /**
  * Serializer for the result from ecommerce.api.generate_checkout_payload.  The B2B enrollment API will return the result of the checkout call if the user needs to pay for the cart because of an error creating the checkout payload. In that case, we really just need the error states; it will also include a HttpResponseRedirect that we don\'t really care about for the API\'s purposes.
- * @export
- * @interface GenerateCheckoutPayload
  */
 export interface GenerateCheckoutPayload {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GenerateCheckoutPayload
-     */
     'country_blocked'?: boolean | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GenerateCheckoutPayload
-     */
     'purchased_same_courserun'?: boolean | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GenerateCheckoutPayload
-     */
     'purchased_non_upgradeable_courserun'?: boolean | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GenerateCheckoutPayload
-     */
     'invalid_discounts'?: boolean | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GenerateCheckoutPayload
-     */
     'no_checkout'?: boolean | null;
 }
 /**
  * * `None` - ---- * `Doctorate` - Doctorate * `Master\'s or professional degree` - Master\'s or professional degree * `Bachelor\'s degree` - Bachelor\'s degree * `Associate degree` - Associate degree * `Secondary/high school` - Secondary/high school * `Junior secondary/junior high/middle school` - Junior secondary/junior high/middle school * `Elementary/primary school` - Elementary/primary school * `No formal education` - No formal education * `Other education` - Other education
- * @export
- * @enum {string}
  */
 
 export const HighestEducationEnum = {
@@ -3363,7 +1858,7 @@ export const HighestEducationEnum = {
     /**
     * Other education
     */
-    OtherEducation: 'Other education'
+    OtherEducation: 'Other education',
 } as const;
 
 export type HighestEducationEnum = typeof HighestEducationEnum[keyof typeof HighestEducationEnum];
@@ -3371,39 +1866,15 @@ export type HighestEducationEnum = typeof HighestEducationEnum[keyof typeof High
 
 /**
  * Serializer for the How You\'ll Learn generated property
- * @export
- * @interface HowYoullLearn
  */
 export interface HowYoullLearn {
-    /**
-     * 
-     * @type {string}
-     * @memberof HowYoullLearn
-     */
     'key': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof HowYoullLearn
-     */
     'icon': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof HowYoullLearn
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof HowYoullLearn
-     */
     'text': string;
 }
 /**
  * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
- * @export
- * @enum {string}
  */
 
 export const LanguageEnum = {
@@ -3574,636 +2045,266 @@ export const LanguageEnum = {
     /**
     * zh_HK
     */
-    ZhHk: 'zh_HK'
+    ZhHk: 'zh_HK',
 } as const;
 
 export type LanguageEnum = typeof LanguageEnum[keyof typeof LanguageEnum];
 
 
-/**
- * 
- * @export
- * @interface LearnerProgramRecordShare
- */
 export interface LearnerProgramRecordShare {
-    /**
-     * 
-     * @type {string}
-     * @memberof LearnerProgramRecordShare
-     */
     'share_uuid': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LearnerProgramRecordShare
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LearnerProgramRecordShare
-     */
     'updated_on': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LearnerProgramRecordShare
-     */
     'is_active'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof LearnerProgramRecordShare
-     */
     'user': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof LearnerProgramRecordShare
-     */
     'program': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof LearnerProgramRecordShare
-     */
     'partner_school'?: number | null;
 }
 /**
  * Gathers the various data needed to display the learner\'s program record. Pass the program you want the record for and attach the learner via context object.
- * @export
- * @interface LearnerRecord
  */
 export interface LearnerRecord {
     /**
      * User information including name, email, and username
-     * @type {{ [key: string]: string; }}
-     * @memberof LearnerRecord
      */
     'user': { [key: string]: string; };
     /**
      * Program details including title, readable_id, courses, and requirements
-     * @type {{ [key: string]: { [key: string]: any; }; }}
-     * @memberof LearnerRecord
      */
     'program': { [key: string]: { [key: string]: any; }; };
     /**
      * Active program record shares for this user
-     * @type {Array<LearnerProgramRecordShare>}
-     * @memberof LearnerRecord
      */
     'sharing': Array<LearnerProgramRecordShare>;
     /**
      * List of partner schools
-     * @type {Array<PartnerSchool>}
-     * @memberof LearnerRecord
      */
     'partner_schools': Array<PartnerSchool>;
 }
 /**
  * Serializer for legal address
- * @export
- * @interface LegalAddress
  */
 export interface LegalAddress {
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'country': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'first_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'last_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'street_address_1'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'street_address_2'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'city'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'state'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddress
-     */
     'postal_code'?: string;
 }
 /**
  * Serializer for legal address
- * @export
- * @interface LegalAddressRequest
  */
 export interface LegalAddressRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'country': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'first_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'last_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'street_address_1'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'street_address_2'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'city'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'state'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof LegalAddressRequest
-     */
     'postal_code'?: string;
 }
 /**
  * Serializes order lines.
- * @export
- * @interface Line
  */
 export interface Line {
-    /**
-     * 
-     * @type {number}
-     * @memberof Line
-     */
     'quantity': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Line
-     */
     'item_description': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Line
-     */
     'unit_price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Line
-     */
     'total_price': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Line
-     */
     'id': number;
-    /**
-     * 
-     * @type {Product}
-     * @memberof Line
-     */
     'product': Product;
 }
 /**
  * Serializer for detailed contract view with statistics.
- * @export
- * @interface ManagerContractDetail
  */
 export interface ManagerContractDetail {
-    /**
-     * 
-     * @type {number}
-     * @memberof ManagerContractDetail
-     */
     'id': number;
     /**
      * The name of the contract.
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'name': string;
     /**
      * Any useful extra information about the contract.
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'description': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerContractDetail
-     */
     'membership_type': string;
     /**
      * The organization that owns this contract.
-     * @type {number}
-     * @memberof ManagerContractDetail
      */
     'organization': number;
     /**
      * The start date of the contract.
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'contract_start': string | null;
     /**
      * The end date of the contract.
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'contract_end': string | null;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'slug': string;
     /**
      * A welcome message for learners.
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'welcome_message': string;
     /**
      * Additional welcome message content for learners.
-     * @type {string}
-     * @memberof ManagerContractDetail
      */
     'welcome_message_extra': string;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof ManagerContractDetail
-     */
     'programs': Array<number>;
-    /**
-     * 
-     * @type {Array<SupportedVariant>}
-     * @memberof ManagerContractDetail
-     */
     'variant_options': Array<SupportedVariant>;
     /**
      * Calculate attachment percentage if seat-limited.
-     * @type {number}
-     * @memberof ManagerContractDetail
      */
     'attachment_percentage': number | null;
     /**
      * Get total number of enrollments across all contract course runs.
-     * @type {number}
-     * @memberof ManagerContractDetail
      */
     'total_enrollments': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ManagerContractDetail
-     */
     'total_codes': number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof ManagerContractDetail
-     */
     'assigned_codes': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ManagerContractDetail
-     */
     'unassigned_codes': number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof ManagerContractDetail
-     */
     'redeemed_codes': number;
 }
 /**
  * Serializer for course runs in a contract.
- * @export
- * @interface ManagerCourseRun
  */
 export interface ManagerCourseRun {
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerCourseRun
-     */
     'readable_id': string;
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof ManagerCourseRun
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof ManagerCourseRun
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof ManagerCourseRun
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof ManagerCourseRun
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof ManagerCourseRun
      */
     'enrollment_end'?: string | null;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof ManagerCourseRun
      */
     'certificate_available_date'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ManagerCourseRun
-     */
     'live'?: boolean;
 }
 /**
  * Serializer for enrollments in a specific course run.
- * @export
- * @interface ManagerEnrollment
  */
 export interface ManagerEnrollment {
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollment
-     */
     'learner_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollment
-     */
     'learner_email': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollment
-     */
     'enrollment_date': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollment
-     */
     'enrollment_type': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollment
-     */
     'enrollment_status': string;
     /**
      * Indicates whether or not this enrollment should be considered active
-     * @type {boolean}
-     * @memberof ManagerEnrollment
      */
     'active'?: boolean;
 }
 /**
  * Serializer for enrollment codes available to a contract.
- * @export
- * @interface ManagerEnrollmentCode
  */
 export interface ManagerEnrollmentCode {
-    /**
-     * 
-     * @type {number}
-     * @memberof ManagerEnrollmentCode
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
-     */
     'code': string;
-    /**
-     * 
-     * @type {RedemptionStatusEnum}
-     * @memberof ManagerEnrollmentCode
-     */
     'redemption_status': RedemptionStatusEnum;
     /**
      * Return the email address this code is assigned to.
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
      */
     'assigned_to': string | null;
     /**
      * Return when the invite/assignment was created.
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
      */
     'assigned_on': string | null;
     /**
      * Return the name of the user this code is assigned to.
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
      */
     'assigned_name': string | null;
     /**
      * Return when the code was actually claimed.
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
      */
     'redeemed_on': string | null;
     /**
      * Return the email address of the user who redeemed this code.
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
      */
     'redeemed_by': string | null;
     /**
      * Return when the last reminder email was sent.
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
      */
     'last_sent': string | null;
-    /**
-     * 
-     * @type {EmailStatusEnum}
-     * @memberof ManagerEnrollmentCode
-     */
-    'email_status': EmailStatusEnum | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof ManagerEnrollmentCode
-     */
+    'email_status': ManagerEnrollmentCodeEmailStatusEnum | null;
     'email_status_event_timestamp': string | null;
 }
 
+export const ManagerEnrollmentCodeEmailStatusEnum = {
+    Delivered: 'delivered',
+    Accepted: 'accepted',
+    Opened: 'opened',
+    Clicked: 'clicked',
+    Failed: 'failed',
+    Pending: 'pending',
+} as const;
 
-/**
- * 
- * @export
- * @interface Nested
- */
+export type ManagerEnrollmentCodeEmailStatusEnum = typeof ManagerEnrollmentCodeEmailStatusEnum[keyof typeof ManagerEnrollmentCodeEmailStatusEnum];
+
 export interface Nested {
-    /**
-     * 
-     * @type {number}
-     * @memberof Nested
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Nested
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Nested
-     */
     'updated_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Nested
-     */
     'amount': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Nested
-     */
     'automatic'?: boolean;
-    /**
-     * 
-     * @type {DiscountTypeEnum}
-     * @memberof Nested
-     */
     'discount_type': DiscountTypeEnum;
-    /**
-     * 
-     * @type {RedemptionTypeEnum}
-     * @memberof Nested
-     */
     'redemption_type': RedemptionTypeEnum;
-    /**
-     * 
-     * @type {PaymentTypeEnum}
-     * @memberof Nested
-     */
-    'payment_type'?: PaymentTypeEnum | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof Nested
-     */
+    'payment_type'?: NestedPaymentTypeEnum | null;
     'max_redemptions'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Nested
-     */
     'discount_code': string;
     /**
      * If set, this discount code will not be redeemable before this date.
-     * @type {string}
-     * @memberof Nested
      */
     'activation_date'?: string | null;
     /**
      * If set, this discount code will not be redeemable after this date.
-     * @type {string}
-     * @memberof Nested
      */
     'expiration_date'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Nested
-     */
     'is_bulk'?: boolean;
     /**
      * Discount is only for creating verified course run enrollments for a program.
-     * @type {boolean}
-     * @memberof Nested
      */
     'is_program_discount'?: boolean | null;
     /**
      * The location of this code in the B2B contract\'s code sheet.
-     * @type {string}
-     * @memberof Nested
      */
     'b2b_sheet_location'?: string | null;
 }
 
+export const NestedPaymentTypeEnum = {
+    Marketing: 'marketing',
+    Sales: 'sales',
+    FinancialAssistance: 'financial-assistance',
+    CustomerSupport: 'customer-support',
+    Staff: 'staff',
+    Legacy: 'legacy',
+} as const;
+
+export type NestedPaymentTypeEnum = typeof NestedPaymentTypeEnum[keyof typeof NestedPaymentTypeEnum];
 
 /**
  * * `operator` - operator * `course` - course * `program` - program
- * @export
- * @enum {string}
  */
 
 export const NodeTypeEnum = {
@@ -4218,1524 +2319,420 @@ export const NodeTypeEnum = {
     /**
     * program
     */
-    Program: 'program'
+    Program: 'program',
 } as const;
 
 export type NodeTypeEnum = typeof NodeTypeEnum[keyof typeof NodeTypeEnum];
 
 
-/**
- * 
- * @export
- * @enum {string}
- */
 
 export const NullEnum = {
-    Null: 'null'
 } as const;
 
 export type NullEnum = typeof NullEnum[keyof typeof NullEnum];
 
 
-/**
- * 
- * @export
- * @interface Order
- */
 export interface Order {
-    /**
-     * 
-     * @type {number}
-     * @memberof Order
-     */
     'id': number;
-    /**
-     * 
-     * @type {StateEnum}
-     * @memberof Order
-     */
     'state': StateEnum;
-    /**
-     * 
-     * @type {ExtendedLegalAddress}
-     * @memberof Order
-     */
     'purchaser': ExtendedLegalAddress;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
     'total_price_paid': string;
-    /**
-     * 
-     * @type {Array<TransactionLine>}
-     * @memberof Order
-     */
     'lines': Array<TransactionLine>;
-    /**
-     * 
-     * @type {Array<RedeemedDiscount>}
-     * @memberof Order
-     */
     'discounts': Array<RedeemedDiscount>;
-    /**
-     * 
-     * @type {Array<OrderRefundsInner>}
-     * @memberof Order
-     */
     'refunds': Array<OrderRefundsInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
     'reference_number'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {OrderTransactions}
-     * @memberof Order
-     */
     'transactions': OrderTransactions;
-    /**
-     * 
-     * @type {OrderStreetAddress}
-     * @memberof Order
-     */
     'street_address': OrderStreetAddress;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Order
-     */
     'refund_eligible': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
     'refund_deadline': string;
-    /**
-     * 
-     * @type {RefundStatusEnum}
-     * @memberof Order
-     */
     'refund_status': RefundStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
     'refund_requested_on': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Order
-     */
     'refund_reviewed_on': string | null;
 }
 
 
-/**
- * 
- * @export
- * @interface OrderHistory
- */
 export interface OrderHistory {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrderHistory
-     */
     'id': number;
-    /**
-     * 
-     * @type {StateEnum}
-     * @memberof OrderHistory
-     */
     'state': StateEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderHistory
-     */
     'reference_number'?: string | null;
-    /**
-     * 
-     * @type {PublicUser}
-     * @memberof OrderHistory
-     */
     'purchaser': PublicUser;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderHistory
-     */
     'total_price_paid': string;
-    /**
-     * 
-     * @type {Array<Line>}
-     * @memberof OrderHistory
-     */
     'lines': Array<Line>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderHistory
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {Array<any>}
-     * @memberof OrderHistory
-     */
     'titles': Array<any>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderHistory
-     */
     'updated_on': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrderHistory
-     */
     'refund_eligible': boolean;
 }
 
 
-/**
- * 
- * @export
- * @interface OrderRefundsInner
- */
 export interface OrderRefundsInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrderRefundsInner
-     */
     'amount'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderRefundsInner
-     */
     'date'?: string;
 }
-/**
- * 
- * @export
- * @interface OrderRequest
- */
 export interface OrderRequest {
-    /**
-     * 
-     * @type {StateEnum}
-     * @memberof OrderRequest
-     */
     'state': StateEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderRequest
-     */
     'total_price_paid': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderRequest
-     */
     'reference_number'?: string | null;
 }
 
 
 /**
  * Very simple serializer for order information.
- * @export
- * @interface OrderStatus
  */
 export interface OrderStatus {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrderStatus
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderStatus
-     */
     'reference_number': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderStatus
-     */
     'total_price_paid': string;
-    /**
-     * 
-     * @type {StateEnum}
-     * @memberof OrderStatus
-     */
     'state': StateEnum;
 }
 
 
-/**
- * 
- * @export
- * @interface OrderStreetAddress
- */
 export interface OrderStreetAddress {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrderStreetAddress
-     */
     'line'?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderStreetAddress
-     */
     'postal_code'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderStreetAddress
-     */
     'state'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderStreetAddress
-     */
     'city'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderStreetAddress
-     */
     'country'?: string;
 }
-/**
- * 
- * @export
- * @interface OrderTransactions
- */
 export interface OrderTransactions {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderTransactions
-     */
     'card_number'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderTransactions
-     */
     'card_type'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderTransactions
-     */
     'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderTransactions
-     */
     'bill_to_email'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderTransactions
-     */
     'payment_method'?: string;
 }
 /**
  * Response shape for the org-manager check.
- * @export
- * @interface OrganizationManagerCheck
  */
 export interface OrganizationManagerCheck {
     /**
      * True if the user manages the organization.
-     * @type {boolean}
-     * @memberof OrganizationManagerCheck
      */
     'is_manager': boolean;
 }
 /**
  * Serializer for the OrganizationPage model.
- * @export
- * @interface OrganizationPage
  */
 export interface OrganizationPage {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrganizationPage
-     */
     'id': number;
     /**
      * The name of the organization
-     * @type {string}
-     * @memberof OrganizationPage
      */
     'name': string;
     /**
      * Any useful extra information about the organization
-     * @type {string}
-     * @memberof OrganizationPage
      */
     'description': string;
     /**
      * The organization\'s logo. Will be displayed in the app in various places.
-     * @type {string}
-     * @memberof OrganizationPage
      */
     'logo': string;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
-     * @type {string}
-     * @memberof OrganizationPage
      */
     'slug': string;
     /**
      * The UUID for the organization in the SSO provider.
-     * @type {string}
-     * @memberof OrganizationPage
      */
     'sso_organization_id': string | null;
-    /**
-     * 
-     * @type {Array<ContractPage>}
-     * @memberof OrganizationPage
-     */
     'contracts': Array<ContractPage>;
 }
 /**
  * Serializer for overrides used in certificate pages.
- * @export
- * @interface Override
  */
 export interface Override {
-    /**
-     * 
-     * @type {string}
-     * @memberof Override
-     */
     'type': string;
-    /**
-     * 
-     * @type {OverrideValue}
-     * @memberof Override
-     */
     'value': OverrideValue;
-    /**
-     * 
-     * @type {string}
-     * @memberof Override
-     */
     'id': string;
 }
 /**
  * Serializer for override values used in certificate pages.
- * @export
- * @interface OverrideValue
  */
 export interface OverrideValue {
-    /**
-     * 
-     * @type {string}
-     * @memberof OverrideValue
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OverrideValue
-     */
     'CEUs': string;
 }
 /**
  * Serializer for individual Wagtail pages.
- * @export
- * @interface Page
  */
 export interface Page {
-    /**
-     * 
-     * @type {number}
-     * @memberof Page
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Page
-     */
     'title': string;
-    /**
-     * 
-     * @type {PageMeta}
-     * @memberof Page
-     */
     'meta': PageMeta;
 }
 /**
  * Serializer for a list of Wagtail pages.
- * @export
- * @interface PageList
  */
 export interface PageList {
-    /**
-     * 
-     * @type {PageListMeta}
-     * @memberof PageList
-     */
     'meta': PageListMeta;
-    /**
-     * 
-     * @type {Array<Page>}
-     * @memberof PageList
-     */
     'items': Array<Page>;
 }
 /**
  * Serializer for metadata of a list of Wagtail pages.
- * @export
- * @interface PageListMeta
  */
 export interface PageListMeta {
-    /**
-     * 
-     * @type {number}
-     * @memberof PageListMeta
-     */
     'total_count': number;
 }
 /**
  * Serializer for page metadata used in various Wagtail pages.
- * @export
- * @interface PageMeta
  */
 export interface PageMeta {
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'type': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'detail_url': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'html_url': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'slug': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageMeta
-     */
     'show_in_menus': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'seo_title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'search_description': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'first_published_at': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'alias_of': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'locale': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageMeta
-     */
     'live': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMeta
-     */
     'last_published_at': string | null;
 }
 /**
  * Extends the PageMetaSerializer to work with a Page object
- * @export
- * @interface PageMetaModel
  */
 export interface PageMetaModel {
     /**
      * Get the page type, in a more simple manner than Wagtail.  The Wagtail version of this is PageTypeField, and it tries to modify the context, which we neither need nor is in the correct format for it.
-     * @type {string}
-     * @memberof PageMetaModel
      */
     'type': string;
     /**
      * Get the detail URL, which should be the API call for this page.  The Wagtail version of this is DetailUrlField and it also tries to make changes to the context that we don\'t need.
-     * @type {string}
-     * @memberof PageMetaModel
      */
     'detail_url': string;
     /**
      * Return PageHtmlUrlField. This is wrapped for OpenAPI schema generation.
-     * @type {string}
-     * @memberof PageMetaModel
      */
     'html_url': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMetaModel
-     */
     'slug': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageMetaModel
-     */
     'show_in_menus': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMetaModel
-     */
     'seo_title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMetaModel
-     */
     'search_description': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMetaModel
-     */
     'first_published_at': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMetaModel
-     */
     'alias_of': string | null;
     /**
      * Return PageLocaleField. This is wrapped for OpenAPI schema generation.
-     * @type {string}
-     * @memberof PageMetaModel
      */
     'locale': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageMetaModel
-     */
     'live': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PageMetaModel
-     */
     'last_published_at': string | null;
 }
 /**
  * @type PagesRetrieve200Response
- * @export
  */
 export type PagesRetrieve200Response = CertificatePage | CoursePageItem | Page | ProgramPageItem;
 
-/**
- * 
- * @export
- * @interface PaginatedBaseContractPageList
- */
 export interface PaginatedBaseContractPageList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedBaseContractPageList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedBaseContractPageList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedBaseContractPageList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<BaseContractPage>}
-     * @memberof PaginatedBaseContractPageList
-     */
     'results': Array<BaseContractPage>;
 }
-/**
- * 
- * @export
- * @interface PaginatedCourseWithCourseRunsSerializerV2List
- */
 export interface PaginatedCourseWithCourseRunsSerializerV2List {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<CourseWithCourseRunsSerializerV2>}
-     * @memberof PaginatedCourseWithCourseRunsSerializerV2List
-     */
     'results': Array<CourseWithCourseRunsSerializerV2>;
 }
-/**
- * 
- * @export
- * @interface PaginatedDiscountProductList
- */
 export interface PaginatedDiscountProductList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedDiscountProductList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedDiscountProductList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedDiscountProductList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<DiscountProduct>}
-     * @memberof PaginatedDiscountProductList
-     */
     'results': Array<DiscountProduct>;
 }
-/**
- * 
- * @export
- * @interface PaginatedDiscountRedemptionList
- */
 export interface PaginatedDiscountRedemptionList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedDiscountRedemptionList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedDiscountRedemptionList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedDiscountRedemptionList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<DiscountRedemption>}
-     * @memberof PaginatedDiscountRedemptionList
-     */
     'results': Array<DiscountRedemption>;
 }
-/**
- * 
- * @export
- * @interface PaginatedFlexiblePriceTierList
- */
 export interface PaginatedFlexiblePriceTierList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedFlexiblePriceTierList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedFlexiblePriceTierList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedFlexiblePriceTierList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<FlexiblePriceTier>}
-     * @memberof PaginatedFlexiblePriceTierList
-     */
     'results': Array<FlexiblePriceTier>;
 }
-/**
- * 
- * @export
- * @interface PaginatedManagerCourseRunList
- */
 export interface PaginatedManagerCourseRunList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedManagerCourseRunList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedManagerCourseRunList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedManagerCourseRunList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<ManagerCourseRun>}
-     * @memberof PaginatedManagerCourseRunList
-     */
     'results': Array<ManagerCourseRun>;
 }
-/**
- * 
- * @export
- * @interface PaginatedManagerEnrollmentCodeList
- */
 export interface PaginatedManagerEnrollmentCodeList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedManagerEnrollmentCodeList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedManagerEnrollmentCodeList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedManagerEnrollmentCodeList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<ManagerEnrollmentCode>}
-     * @memberof PaginatedManagerEnrollmentCodeList
-     */
     'results': Array<ManagerEnrollmentCode>;
 }
-/**
- * 
- * @export
- * @interface PaginatedManagerEnrollmentList
- */
 export interface PaginatedManagerEnrollmentList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedManagerEnrollmentList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedManagerEnrollmentList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedManagerEnrollmentList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<ManagerEnrollment>}
-     * @memberof PaginatedManagerEnrollmentList
-     */
     'results': Array<ManagerEnrollment>;
 }
-/**
- * 
- * @export
- * @interface PaginatedOrderHistoryList
- */
 export interface PaginatedOrderHistoryList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedOrderHistoryList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedOrderHistoryList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedOrderHistoryList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<OrderHistory>}
-     * @memberof PaginatedOrderHistoryList
-     */
     'results': Array<OrderHistory>;
 }
-/**
- * 
- * @export
- * @interface PaginatedOrganizationPageList
- */
 export interface PaginatedOrganizationPageList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedOrganizationPageList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedOrganizationPageList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedOrganizationPageList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<OrganizationPage>}
-     * @memberof PaginatedOrganizationPageList
-     */
     'results': Array<OrganizationPage>;
 }
-/**
- * 
- * @export
- * @interface PaginatedProductList
- */
 export interface PaginatedProductList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedProductList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedProductList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedProductList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<Product>}
-     * @memberof PaginatedProductList
-     */
     'results': Array<Product>;
 }
-/**
- * 
- * @export
- * @interface PaginatedStaffDashboardUserList
- */
 export interface PaginatedStaffDashboardUserList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedStaffDashboardUserList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedStaffDashboardUserList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedStaffDashboardUserList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<StaffDashboardUser>}
-     * @memberof PaginatedStaffDashboardUserList
-     */
     'results': Array<StaffDashboardUser>;
 }
-/**
- * 
- * @export
- * @interface PaginatedUserDiscountMetaList
- */
 export interface PaginatedUserDiscountMetaList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedUserDiscountMetaList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedUserDiscountMetaList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedUserDiscountMetaList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<UserDiscountMeta>}
-     * @memberof PaginatedUserDiscountMetaList
-     */
     'results': Array<UserDiscountMeta>;
 }
-/**
- * 
- * @export
- * @interface PaginatedV0DiscountList
- */
 export interface PaginatedV0DiscountList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedV0DiscountList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV0DiscountList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV0DiscountList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<V0Discount>}
-     * @memberof PaginatedV0DiscountList
-     */
     'results': Array<V0Discount>;
 }
-/**
- * 
- * @export
- * @interface PaginatedV1CourseWithCourseRunsList
- */
 export interface PaginatedV1CourseWithCourseRunsList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedV1CourseWithCourseRunsList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV1CourseWithCourseRunsList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV1CourseWithCourseRunsList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<V1CourseWithCourseRuns>}
-     * @memberof PaginatedV1CourseWithCourseRunsList
-     */
     'results': Array<V1CourseWithCourseRuns>;
 }
-/**
- * 
- * @export
- * @interface PaginatedV1ProgramList
- */
 export interface PaginatedV1ProgramList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedV1ProgramList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV1ProgramList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV1ProgramList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<V1Program>}
-     * @memberof PaginatedV1ProgramList
-     */
     'results': Array<V1Program>;
 }
-/**
- * 
- * @export
- * @interface PaginatedV2ProgramCollectionList
- */
 export interface PaginatedV2ProgramCollectionList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedV2ProgramCollectionList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV2ProgramCollectionList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV2ProgramCollectionList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<V2ProgramCollection>}
-     * @memberof PaginatedV2ProgramCollectionList
-     */
     'results': Array<V2ProgramCollection>;
 }
-/**
- * 
- * @export
- * @interface PaginatedV2ProgramDetailList
- */
 export interface PaginatedV2ProgramDetailList {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginatedV2ProgramDetailList
-     */
     'count': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV2ProgramDetailList
-     */
     'next'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PaginatedV2ProgramDetailList
-     */
     'previous'?: string | null;
-    /**
-     * 
-     * @type {Array<V2ProgramDetail>}
-     * @memberof PaginatedV2ProgramDetailList
-     */
     'results': Array<V2ProgramDetail>;
 }
-/**
- * 
- * @export
- * @interface PartnerSchool
- */
 export interface PartnerSchool {
-    /**
-     * 
-     * @type {number}
-     * @memberof PartnerSchool
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartnerSchool
-     */
     'name': string;
 }
-/**
- * 
- * @export
- * @interface PartnerSchoolRequest
- */
 export interface PartnerSchoolRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof PartnerSchoolRequest
-     */
     'name': string;
 }
 /**
  * Serializer for confirming a user email change
- * @export
- * @interface PatchedChangeEmailRequestUpdateRequest
  */
 export interface PatchedChangeEmailRequestUpdateRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PatchedChangeEmailRequestUpdateRequest
-     */
     'confirmed'?: boolean;
 }
-/**
- * 
- * @export
- * @interface PatchedDiscountProductRequest
- */
 export interface PatchedDiscountProductRequest {
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof PatchedDiscountProductRequest
-     */
     'discount'?: V0DiscountRequest;
-    /**
-     * 
-     * @type {ProductRequest}
-     * @memberof PatchedDiscountProductRequest
-     */
     'product'?: ProductRequest;
 }
 /**
  * Serializes a discount redemption.
- * @export
- * @interface PatchedDiscountRedemptionRequest
  */
 export interface PatchedDiscountRedemptionRequest {
-    /**
-     * 
-     * @type {UserRequest}
-     * @memberof PatchedDiscountRedemptionRequest
-     */
     'redeemed_by'?: UserRequest;
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof PatchedDiscountRedemptionRequest
-     */
     'redeemed_discount'?: V0DiscountRequest;
-    /**
-     * 
-     * @type {OrderRequest}
-     * @memberof PatchedDiscountRedemptionRequest
-     */
     'redeemed_order'?: OrderRequest;
 }
-/**
- * 
- * @export
- * @interface PatchedFlexiblePriceTierRequest
- */
 export interface PatchedFlexiblePriceTierRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof PatchedFlexiblePriceTierRequest
-     */
     'discount'?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PatchedFlexiblePriceTierRequest
-     */
     'current'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PatchedFlexiblePriceTierRequest
-     */
     'income_threshold_usd'?: number;
 }
 /**
  * Serializes a product, including the purchasable object.
- * @export
- * @interface PatchedProductRequest
  */
 export interface PatchedProductRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedProductRequest
-     */
     'price'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedProductRequest
-     */
     'description'?: string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof PatchedProductRequest
      */
     'is_active'?: boolean;
 }
-/**
- * 
- * @export
- * @interface PatchedUpdateCourseRunEnrollmentRequest
- */
 export interface PatchedUpdateCourseRunEnrollmentRequest {
     /**
      * Whether to receive course emails
-     * @type {boolean}
-     * @memberof PatchedUpdateCourseRunEnrollmentRequest
      */
     'receive_emails'?: boolean;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
- * @export
- * @interface PatchedUserDiscountMetaRequest
  */
 export interface PatchedUserDiscountMetaRequest {
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof PatchedUserDiscountMetaRequest
-     */
     'discount'?: V0DiscountRequest;
-    /**
-     * 
-     * @type {UserRequest}
-     * @memberof PatchedUserDiscountMetaRequest
-     */
     'user'?: UserRequest;
 }
 /**
  * Serializer for users
- * @export
- * @interface PatchedUserRequest
  */
 export interface PatchedUserRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedUserRequest
-     */
     'username'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedUserRequest
-     */
     'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedUserRequest
-     */
     'email'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedUserRequest
-     */
     'password'?: string;
-    /**
-     * 
-     * @type {LegalAddressRequest}
-     * @memberof PatchedUserRequest
-     */
     'legal_address'?: LegalAddressRequest | null;
-    /**
-     * 
-     * @type {UserProfileRequest}
-     * @memberof PatchedUserRequest
-     */
     'user_profile'?: UserProfileRequest | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PatchedUserRequest
-     */
     'is_active'?: boolean;
 }
 /**
  * Serializes a discount.
- * @export
- * @interface PatchedV0DiscountRequest
  */
 export interface PatchedV0DiscountRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedV0DiscountRequest
-     */
     'amount'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PatchedV0DiscountRequest
-     */
     'automatic'?: boolean;
-    /**
-     * 
-     * @type {DiscountTypeEnum}
-     * @memberof PatchedV0DiscountRequest
-     */
     'discount_type'?: DiscountTypeEnum;
-    /**
-     * 
-     * @type {RedemptionTypeEnum}
-     * @memberof PatchedV0DiscountRequest
-     */
     'redemption_type'?: RedemptionTypeEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof PatchedV0DiscountRequest
-     */
     'max_redemptions'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedV0DiscountRequest
-     */
     'discount_code'?: string;
-    /**
-     * 
-     * @type {PaymentTypeEnum}
-     * @memberof PatchedV0DiscountRequest
-     */
-    'payment_type'?: PaymentTypeEnum | null;
+    'payment_type'?: PatchedV0DiscountRequestPaymentTypeEnum | null;
     /**
      * If set, this discount code will not be redeemable before this date.
-     * @type {string}
-     * @memberof PatchedV0DiscountRequest
      */
     'activation_date'?: string | null;
     /**
      * If set, this discount code will not be redeemable after this date.
-     * @type {string}
-     * @memberof PatchedV0DiscountRequest
      */
     'expiration_date'?: string | null;
 }
 
+export const PatchedV0DiscountRequestPaymentTypeEnum = {
+    Marketing: 'marketing',
+    Sales: 'sales',
+    FinancialAssistance: 'financial-assistance',
+    CustomerSupport: 'customer-support',
+    Staff: 'staff',
+    Legacy: 'legacy',
+} as const;
+
+export type PatchedV0DiscountRequestPaymentTypeEnum = typeof PatchedV0DiscountRequestPaymentTypeEnum[keyof typeof PatchedV0DiscountRequestPaymentTypeEnum];
 
 /**
  * * `marketing` - marketing * `sales` - sales * `financial-assistance` - financial-assistance * `customer-support` - customer-support * `staff` - staff * `legacy` - legacy
- * @export
- * @enum {string}
  */
 
 export const PaymentTypeEnum = {
@@ -5762,7 +2759,7 @@ export const PaymentTypeEnum = {
     /**
     * legacy
     */
-    Legacy: 'legacy'
+    Legacy: 'legacy',
 } as const;
 
 export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnum];
@@ -5770,691 +2767,258 @@ export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnu
 
 /**
  * Serializer for price items used in course pages.
- * @export
- * @interface PriceItem
  */
 export interface PriceItem {
-    /**
-     * 
-     * @type {string}
-     * @memberof PriceItem
-     */
     'type': string;
-    /**
-     * 
-     * @type {{ [key: string]: any; }}
-     * @memberof PriceItem
-     */
     'value': { [key: string]: any; };
-    /**
-     * 
-     * @type {string}
-     * @memberof PriceItem
-     */
     'id': string;
 }
 /**
  * Serializes a product, including the purchasable object.
- * @export
- * @interface Product
  */
 export interface Product {
-    /**
-     * 
-     * @type {number}
-     * @memberof Product
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Product
-     */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Product
-     */
     'description': string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof Product
      */
     'is_active'?: boolean;
-    /**
-     * 
-     * @type {ProductPurchasableObject}
-     * @memberof Product
-     */
     'purchasable_object': ProductPurchasableObject;
 }
 /**
  * Simple serializer for Product without related purchasable objects
- * @export
- * @interface ProductFlexibilePrice
  */
 export interface ProductFlexibilePrice {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProductFlexibilePrice
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductFlexibilePrice
-     */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductFlexibilePrice
-     */
     'description': string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof ProductFlexibilePrice
      */
     'is_active'?: boolean;
-    /**
-     * 
-     * @type {Discount}
-     * @memberof ProductFlexibilePrice
-     */
     'product_flexible_price': Discount | null;
 }
 /**
  * Simple serializer for Product without related purchasable objects
- * @export
- * @interface ProductFlexibilePriceRequest
  */
 export interface ProductFlexibilePriceRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductFlexibilePriceRequest
-     */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductFlexibilePriceRequest
-     */
     'description': string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof ProductFlexibilePriceRequest
      */
     'is_active'?: boolean;
 }
 /**
  * Simple serializer for Product without related purchasable objects
- * @export
- * @interface ProductFlexiblePrice
  */
 export interface ProductFlexiblePrice {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProductFlexiblePrice
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductFlexiblePrice
-     */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductFlexiblePrice
-     */
     'description': string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof ProductFlexiblePrice
      */
     'is_active'?: boolean;
-    /**
-     * 
-     * @type {V0Discount}
-     * @memberof ProductFlexiblePrice
-     */
     'product_flexible_price': V0Discount | null;
 }
 /**
  * @type ProductPurchasableObject
- * @export
  */
 export type ProductPurchasableObject = ProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf1 | ProductPurchasableObjectOneOf2;
 
-/**
- * 
- * @export
- * @interface ProductPurchasableObjectOneOf
- */
 export interface ProductPurchasableObjectOneOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProductPurchasableObjectOneOf
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf
-     */
     'run_tag'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf
-     */
     'start_date'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf
-     */
     'end_date'?: string;
 }
-/**
- * 
- * @export
- * @interface ProductPurchasableObjectOneOf1
- */
 export interface ProductPurchasableObjectOneOf1 {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'run_tag'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'start_date'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'end_date'?: string;
-    /**
-     * 
-     * @type {ProductPurchasableObjectOneOf1Course}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'course'?: ProductPurchasableObjectOneOf1Course;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'readable_id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'enrollment_start'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'enrollment_end'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1
-     */
     'course_number'?: string;
 }
-/**
- * 
- * @export
- * @interface ProductPurchasableObjectOneOf1Course
- */
 export interface ProductPurchasableObjectOneOf1Course {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProductPurchasableObjectOneOf1Course
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf1Course
-     */
     'title'?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof ProductPurchasableObjectOneOf1Course
-     */
     'page'?: object;
 }
-/**
- * 
- * @export
- * @interface ProductPurchasableObjectOneOf2
- */
 export interface ProductPurchasableObjectOneOf2 {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProductPurchasableObjectOneOf2
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf2
-     */
     'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductPurchasableObjectOneOf2
-     */
     'readable_id'?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof ProductPurchasableObjectOneOf2
-     */
     'page'?: object;
 }
 /**
  * Serializes a product, including the purchasable object.
- * @export
- * @interface ProductRequest
  */
 export interface ProductRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductRequest
-     */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductRequest
-     */
     'description': string;
     /**
      * Controls visibility of the product in the app.
-     * @type {boolean}
-     * @memberof ProductRequest
      */
     'is_active'?: boolean;
 }
-/**
- * 
- * @export
- * @interface Program
- */
 export interface Program {
-    /**
-     * 
-     * @type {number}
-     * @memberof Program
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Program
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Program
-     */
     'readable_id': string;
 }
 /**
  * ProgramCertificate model serializer
- * @export
- * @interface ProgramCertificate
  */
 export interface ProgramCertificate {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramCertificate
-     */
     'uuid': string;
     /**
      * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     * @type {string}
-     * @memberof ProgramCertificate
      */
     'link': string;
 }
 /**
  * Program page model serializer
- * @export
- * @interface ProgramPage
  */
 export interface ProgramPage {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramPage
-     */
     'feature_image_src': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramPage
-     */
     'page_url': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramPage
-     */
     'financial_assistance_form_url': string;
     /**
      * The description shown on the home page and product page.
-     * @type {string}
-     * @memberof ProgramPage
      */
     'description': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ProgramPage
-     */
     'live': boolean;
     /**
      * If true, Learn should include this in its catalog.
-     * @type {boolean}
-     * @memberof ProgramPage
      */
     'include_in_learn_catalog'?: boolean | null;
     /**
      * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
-     * @type {string}
-     * @memberof ProgramPage
      */
     'length'?: string;
     /**
      * A short description indicating how much effort is required (e.g. 1-3 hours per week).
-     * @type {string}
-     * @memberof ProgramPage
      */
     'effort'?: string | null;
     /**
      * Get the price text from the program page.
-     * @type {string}
-     * @memberof ProgramPage
      */
     'price': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramPage
-     */
     'list_price': string;
 }
 /**
  * Serializer for individual program page items, including all relevant fields.
- * @export
- * @interface ProgramPageItem
  */
 export interface ProgramPageItem {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProgramPageItem
-     */
     'id': number;
-    /**
-     * 
-     * @type {PageMeta}
-     * @memberof ProgramPageItem
-     */
     'meta': PageMeta;
     /**
      * The page title as you\'d like it to be seen by the public
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'title': string;
     /**
      * The description shown on the home page and product page.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'description': string;
     /**
      * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'length': string;
     /**
      * A short description indicating how much effort is required (e.g. 1-3 hours per week).
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'effort': string | null;
     /**
      * The minimum number of hours per week required to complete the course.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'min_weekly_hours': string;
     /**
      * The maximum number of hours per week required to complete the course.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'max_weekly_hours': string;
     /**
      * The minimum number of weeks required to complete the course/program.
-     * @type {number}
-     * @memberof ProgramPageItem
      */
     'min_weeks': number | null;
     /**
      * The maximum number of weeks required to complete the course/program.
-     * @type {number}
-     * @memberof ProgramPageItem
      */
     'max_weeks': number | null;
-    /**
-     * 
-     * @type {Array<PriceItem>}
-     * @memberof ProgramPageItem
-     */
     'price': Array<PriceItem>;
     /**
      * Specify the minimum product price. This is used by MIT Learn.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'min_price': string;
     /**
      * Specify the maximum product price. This is used by MIT Learn.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'max_price': string;
     /**
      * A short description indicating prerequisites of this course/program.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'prerequisites': string | null;
     /**
      * URL a relevant FAQ page or entry for the course/program.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'faq_url': string | null;
     /**
      * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'hubspot_form_id': string;
     /**
      * Details about this course/program.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'about': string | null;
     /**
      * *Required for Verifiable Credential generation. What you will learn from this course.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'what_you_learn': string | null;
-    /**
-     * 
-     * @type {FeatureImage}
-     * @memberof ProgramPageItem
-     */
     'feature_image': FeatureImage;
     /**
      * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'video_url': string | null;
     /**
      * The title text to display in the faculty cards section of the product page.
-     * @type {string}
-     * @memberof ProgramPageItem
      */
     'faculty_section_title': string | null;
-    /**
-     * 
-     * @type {Array<Faculty>}
-     * @memberof ProgramPageItem
-     */
     'faculty': Array<Faculty>;
-    /**
-     * 
-     * @type {CertificatePage}
-     * @memberof ProgramPageItem
-     */
     'certificate_page': CertificatePage;
-    /**
-     * 
-     * @type {V2Program}
-     * @memberof ProgramPageItem
-     */
     'program_details': V2Program;
-    /**
-     * 
-     * @type {Array<HowYoullLearn>}
-     * @memberof ProgramPageItem
-     */
     'how_youll_learn': Array<HowYoullLearn>;
 }
 /**
  * Serializer for a list of program pages, including metadata and items.
- * @export
- * @interface ProgramPageList
  */
 export interface ProgramPageList {
-    /**
-     * 
-     * @type {PageListMeta}
-     * @memberof ProgramPageList
-     */
     'meta': PageListMeta;
-    /**
-     * 
-     * @type {Array<ProgramPageItem>}
-     * @memberof ProgramPageList
-     */
     'items': Array<ProgramPageItem>;
 }
 /**
  * Serializer for public user data
- * @export
- * @interface PublicUser
  */
 export interface PublicUser {
-    /**
-     * 
-     * @type {number}
-     * @memberof PublicUser
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicUser
-     */
     'username'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicUser
-     */
     'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicUser
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicUser
-     */
     'updated_on': string;
 }
 /**
  * DiscountRedemption model serializer
- * @export
- * @interface RedeemedDiscount
  */
 export interface RedeemedDiscount {
-    /**
-     * 
-     * @type {Nested}
-     * @memberof RedeemedDiscount
-     */
     'redeemed_discount': Nested;
 }
 /**
  * * `unassigned` - unassigned * `assigned` - assigned * `redeemed` - redeemed
- * @export
- * @enum {string}
  */
 
 export const RedemptionStatusEnum = {
@@ -6469,16 +3033,14 @@ export const RedemptionStatusEnum = {
     /**
     * redeemed
     */
-    Redeemed: 'redeemed'
+    Redeemed: 'redeemed',
 } as const;
 
 export type RedemptionStatusEnum = typeof RedemptionStatusEnum[keyof typeof RedemptionStatusEnum];
 
 
 /**
- * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
- * @export
- * @enum {string}
+ * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase
  */
 
 export const RedemptionTypeEnum = {
@@ -6493,7 +3055,11 @@ export const RedemptionTypeEnum = {
     /**
     * unlimited
     */
-    Unlimited: 'unlimited'
+    Unlimited: 'unlimited',
+    /**
+    * program-child-purchase
+    */
+    ProgramChildPurchase: 'program-child-purchase',
 } as const;
 
 export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof RedemptionTypeEnum];
@@ -6501,8 +3067,6 @@ export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof Redempti
 
 /**
  * * `not_enough_time` - I do not have enough time * `course_not_as_expected` - Course is not what I expected * `technical_difficulties` - I had a technical issue * `course_too_difficult` - Course is too difficult * `purchased_by_mistake` - I purchased by mistake * `prefer_not_to_say` - Prefer not to say * `other` - Other * `enrolled_in_another_course` - I enrolled in another course * `financial_reasons` - Financial reasons
- * @export
- * @enum {string}
  */
 
 export const RefundReasonEnum = {
@@ -6541,7 +3105,7 @@ export const RefundReasonEnum = {
     /**
     * Financial reasons
     */
-    FinancialReasons: 'financial_reasons'
+    FinancialReasons: 'financial_reasons',
 } as const;
 
 export type RefundReasonEnum = typeof RefundReasonEnum[keyof typeof RefundReasonEnum];
@@ -6549,76 +3113,56 @@ export type RefundReasonEnum = typeof RefundReasonEnum[keyof typeof RefundReason
 
 /**
  * Serializer for creating learner-submitted refund requests.
- * @export
- * @interface RefundRequest
  */
 export interface RefundRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof RefundRequest
-     */
     'order': number;
-    /**
-     * 
-     * @type {RefundRequestRefundReason}
-     * @memberof RefundRequest
-     */
-    'refund_reason'?: RefundRequestRefundReason;
-    /**
-     * 
-     * @type {string}
-     * @memberof RefundRequest
-     */
+    'refund_reason'?: RefundRequestRefundReasonEnum;
     'refund_reason_text'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RefundRequest
-     */
     'consent_given'?: boolean;
 }
-/**
- * @type RefundRequestRefundReason
- * @export
- */
-export type RefundRequestRefundReason = BlankEnum | RefundReasonEnum;
+
+export const RefundRequestRefundReasonEnum = {
+    NotEnoughTime: 'not_enough_time',
+    CourseNotAsExpected: 'course_not_as_expected',
+    TechnicalDifficulties: 'technical_difficulties',
+    CourseTooDifficult: 'course_too_difficult',
+    PurchasedByMistake: 'purchased_by_mistake',
+    PreferNotToSay: 'prefer_not_to_say',
+    Other: 'other',
+    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    FinancialReasons: 'financial_reasons',
+    Empty: '',
+} as const;
+
+export type RefundRequestRefundReasonEnum = typeof RefundRequestRefundReasonEnum[keyof typeof RefundRequestRefundReasonEnum];
 
 /**
  * Serializer for creating learner-submitted refund requests.
- * @export
- * @interface RefundRequestRequest
  */
 export interface RefundRequestRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof RefundRequestRequest
-     */
     'order': number;
-    /**
-     * 
-     * @type {RefundRequestRefundReason}
-     * @memberof RefundRequestRequest
-     */
-    'refund_reason'?: RefundRequestRefundReason;
-    /**
-     * 
-     * @type {string}
-     * @memberof RefundRequestRequest
-     */
+    'refund_reason'?: RefundRequestRequestRefundReasonEnum;
     'refund_reason_text'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RefundRequestRequest
-     */
     'consent_given'?: boolean;
 }
+
+export const RefundRequestRequestRefundReasonEnum = {
+    NotEnoughTime: 'not_enough_time',
+    CourseNotAsExpected: 'course_not_as_expected',
+    TechnicalDifficulties: 'technical_difficulties',
+    CourseTooDifficult: 'course_too_difficult',
+    PurchasedByMistake: 'purchased_by_mistake',
+    PreferNotToSay: 'prefer_not_to_say',
+    Other: 'other',
+    EnrolledInAnotherCourse: 'enrolled_in_another_course',
+    FinancialReasons: 'financial_reasons',
+    Empty: '',
+} as const;
+
+export type RefundRequestRequestRefundReasonEnum = typeof RefundRequestRequestRefundReasonEnum[keyof typeof RefundRequestRequestRefundReasonEnum];
+
 /**
  * * `completed` - Completed * `requested` - Requested * `denied` - Denied * `eligible` - Eligible * `window_closed` - Window Closed * `ineligible` - Ineligible
- * @export
- * @enum {string}
  */
 
 export const RefundStatusEnum = {
@@ -6645,7 +3189,7 @@ export const RefundStatusEnum = {
     /**
     * Ineligible
     */
-    Ineligible: 'ineligible'
+    Ineligible: 'ineligible',
 } as const;
 
 export type RefundStatusEnum = typeof RefundStatusEnum[keyof typeof RefundStatusEnum];
@@ -6653,47 +3197,45 @@ export type RefundStatusEnum = typeof RefundStatusEnum[keyof typeof RefundStatus
 
 /**
  * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
- * @export
- * @enum {string}
  */
 
 export const ResultEnum = {
     /**
     * b2b-disallowed
     */
-    Disallowed: 'b2b-disallowed',
+    B2bDisallowed: 'b2b-disallowed',
     /**
     * b2b-error-already-enrolled
     */
-    ErrorAlreadyEnrolled: 'b2b-error-already-enrolled',
+    B2bErrorAlreadyEnrolled: 'b2b-error-already-enrolled',
     /**
     * b2b-error-no-contract
     */
-    ErrorNoContract: 'b2b-error-no-contract',
+    B2bErrorNoContract: 'b2b-error-no-contract',
     /**
     * b2b-error-no-product
     */
-    ErrorNoProduct: 'b2b-error-no-product',
+    B2bErrorNoProduct: 'b2b-error-no-product',
     /**
     * b2b-error-missing-enrollment-code
     */
-    ErrorMissingEnrollmentCode: 'b2b-error-missing-enrollment-code',
+    B2bErrorMissingEnrollmentCode: 'b2b-error-missing-enrollment-code',
     /**
     * b2b-error-invalid-enrollment-code
     */
-    ErrorInvalidEnrollmentCode: 'b2b-error-invalid-enrollment-code',
+    B2bErrorInvalidEnrollmentCode: 'b2b-error-invalid-enrollment-code',
     /**
     * b2b-error-requires-checkout
     */
-    ErrorRequiresCheckout: 'b2b-error-requires-checkout',
+    B2bErrorRequiresCheckout: 'b2b-error-requires-checkout',
     /**
     * b2b-error-not-enrollable
     */
-    ErrorNotEnrollable: 'b2b-error-not-enrollable',
+    B2bErrorNotEnrollable: 'b2b-error-not-enrollable',
     /**
     * b2b-enroll-success
     */
-    EnrollSuccess: 'b2b-enroll-success'
+    B2bEnrollSuccess: 'b2b-enroll-success',
 } as const;
 
 export type ResultEnum = typeof ResultEnum[keyof typeof ResultEnum];
@@ -6701,126 +3243,47 @@ export type ResultEnum = typeof ResultEnum[keyof typeof ResultEnum];
 
 /**
  * Serializer for the send_test_email request body.
- * @export
- * @interface SendTestEmailRequest
  */
 export interface SendTestEmailRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof SendTestEmailRequest
-     */
     'email': string;
 }
 /**
  * Response shape for the 400 error responses below.  Same shape as b2b.serializers.v0.manager.DetailErrorSerializer, but duplicated rather than imported (and distinctly named, since drf-spectacular keys its component registry on class identity, not structural equality -- reusing the same name for a different class produces a \"components with identical names\" warning and an unpredictable schema) so this module stays self-contained and its deletion remains a plain file removal (see the module docstring in b2b/views/v0/service.py).
- * @export
- * @interface ServiceDetailError
  */
 export interface ServiceDetailError {
-    /**
-     * 
-     * @type {string}
-     * @memberof ServiceDetailError
-     */
     'detail': string;
 }
 /**
  * Serializer for signatory items used in certificate pages.
- * @export
- * @interface SignatoryItem
  */
 export interface SignatoryItem {
-    /**
-     * 
-     * @type {string}
-     * @memberof SignatoryItem
-     */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignatoryItem
-     */
     'title_1': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignatoryItem
-     */
     'title_2': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignatoryItem
-     */
     'title_3': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignatoryItem
-     */
     'organization': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignatoryItem
-     */
     'signature_image': string;
 }
 /**
  * Serializer for data we care about in the staff dashboard
- * @export
- * @interface StaffDashboardUser
  */
 export interface StaffDashboardUser {
-    /**
-     * 
-     * @type {number}
-     * @memberof StaffDashboardUser
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof StaffDashboardUser
-     */
     'username': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof StaffDashboardUser
-     */
     'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof StaffDashboardUser
-     */
     'email': string;
-    /**
-     * 
-     * @type {LegalAddress}
-     * @memberof StaffDashboardUser
-     */
     'legal_address': LegalAddress | null;
     /**
      * The user can access the admin site
-     * @type {boolean}
-     * @memberof StaffDashboardUser
      */
     'is_staff'?: boolean;
     /**
      * Designates that this user has all permissions without explicitly assigning them.
-     * @type {boolean}
-     * @memberof StaffDashboardUser
      */
     'is_superuser'?: boolean;
 }
 /**
  * * `pending` - Pending * `fulfilled` - Fulfilled * `canceled` - Canceled * `declined` - Declined * `errored` - Errored * `refunded` - Refunded * `review` - Review * `partially_refunded` - Partially Refunded
- * @export
- * @enum {string}
  */
 
 export const StateEnum = {
@@ -6855,7 +3318,7 @@ export const StateEnum = {
     /**
     * Partially Refunded
     */
-    PartiallyRefunded: 'partially_refunded'
+    PartiallyRefunded: 'partially_refunded',
 } as const;
 
 export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
@@ -6863,2791 +3326,1582 @@ export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
 
 /**
  * Serializer for the SupportedVariant model.
- * @export
- * @interface SupportedVariant
  */
 export interface SupportedVariant {
     /**
-     * 
-     * @type {LanguageEnum}
-     * @memberof SupportedVariant
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
     'language': LanguageEnum;
     /**
-     * 
-     * @type {SupportedVariantVariantLength}
-     * @memberof SupportedVariant
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length': SupportedVariantVariantLength;
+    'variant_length': SupportedVariantVariantLengthEnum;
     /**
-     * 
-     * @type {SupportedVariantVariantIndustry}
-     * @memberof SupportedVariant
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry': SupportedVariantVariantIndustry;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SupportedVariant
-     */
+    'variant_industry': SupportedVariantVariantIndustryEnum;
     'active': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SupportedVariant
-     */
     'b2b_only': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SupportedVariant
-     */
     'default_variant': boolean;
 }
 
+export const SupportedVariantVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
 
-/**
- * @type SupportedVariantVariantIndustry
- * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
- * @export
- */
-export type SupportedVariantVariantIndustry = BlankEnum | VariantIndustryEnum;
+export type SupportedVariantVariantLengthEnum = typeof SupportedVariantVariantLengthEnum[keyof typeof SupportedVariantVariantLengthEnum];
+export const SupportedVariantVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
 
-/**
- * @type SupportedVariantVariantLength
- * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
- * @export
- */
-export type SupportedVariantVariantLength = BlankEnum | VariantLengthEnum;
+export type SupportedVariantVariantIndustryEnum = typeof SupportedVariantVariantIndustryEnum[keyof typeof SupportedVariantVariantIndustryEnum];
 
 /**
  * Serializer for topics used in course pages.
- * @export
- * @interface Topic
  */
 export interface Topic {
-    /**
-     * 
-     * @type {string}
-     * @memberof Topic
-     */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Topic
-     */
     'parent'?: string;
 }
 /**
  * Serializes a line item from a transaction.
- * @export
- * @interface TransactionLine
  */
 export interface TransactionLine {
-    /**
-     * 
-     * @type {number}
-     * @memberof TransactionLine
-     */
     'quantity': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'CEUs': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'content_title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'content_type': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'start_date': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'end_date': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'total_paid': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'discount': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionLine
-     */
     'price': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TransactionLine
-     */
     'has_free_audit': boolean;
 }
 /**
  * Serializer for users
- * @export
- * @interface User
  */
 export interface User {
-    /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
     'username'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
     'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
     'email'?: string | null;
-    /**
-     * 
-     * @type {LegalAddress}
-     * @memberof User
-     */
     'legal_address': LegalAddress | null;
-    /**
-     * 
-     * @type {UserProfile}
-     * @memberof User
-     */
     'user_profile'?: UserProfile | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
     'is_anonymous': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
     'is_authenticated': boolean;
     /**
      * Returns True if the user has editor permissions for the CMS
-     * @type {boolean}
-     * @memberof User
      */
     'is_editor': boolean;
     /**
      * The user can access the admin site
-     * @type {boolean}
-     * @memberof User
      */
     'is_staff': boolean;
     /**
      * Designates that this user has all permissions without explicitly assigning them.
-     * @type {boolean}
-     * @memberof User
      */
     'is_superuser': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
     'updated_on': string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof User
-     */
     'grants': Array<string>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof User
-     */
     'is_active'?: boolean;
-    /**
-     * 
-     * @type {Array<OrganizationPage>}
-     * @memberof User
-     */
     'b2b_organizations': Array<OrganizationPage>;
     /**
      * The SSO ID (usually a Keycloak UUID) for the user.
-     * @type {string}
-     * @memberof User
      */
     'global_id': string | null;
     /**
      * Get the profile fields missing for an export compliance check
-     * @type {Array<string>}
-     * @memberof User
      */
     'compliance_missing_fields': Array<string>;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
- * @export
- * @interface UserDiscountMeta
  */
 export interface UserDiscountMeta {
-    /**
-     * 
-     * @type {number}
-     * @memberof UserDiscountMeta
-     */
     'id': number;
-    /**
-     * 
-     * @type {V0Discount}
-     * @memberof UserDiscountMeta
-     */
     'discount': V0Discount;
-    /**
-     * 
-     * @type {User}
-     * @memberof UserDiscountMeta
-     */
     'user': User;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
- * @export
- * @interface UserDiscountMetaRequest
  */
 export interface UserDiscountMetaRequest {
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof UserDiscountMetaRequest
-     */
     'discount': V0DiscountRequest;
-    /**
-     * 
-     * @type {UserRequest}
-     * @memberof UserDiscountMetaRequest
-     */
     'user': UserRequest;
 }
 /**
  * Serializer for profile
- * @export
- * @interface UserProfile
  */
 export interface UserProfile {
-    /**
-     * 
-     * @type {UserProfileGender}
-     * @memberof UserProfile
-     */
-    'gender'?: UserProfileGender | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof UserProfile
-     */
+    'gender'?: UserProfileGenderEnum | null;
     'year_of_birth'?: number | null;
     /**
      * Flags if we\'ve asked the user for additional information
-     * @type {boolean}
-     * @memberof UserProfile
      */
     'addl_field_flag'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfile
-     */
     'company'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfile
-     */
     'job_title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfile
-     */
     'industry'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfile
-     */
     'job_function'?: string | null;
-    /**
-     * 
-     * @type {CompanySizeEnum}
-     * @memberof UserProfile
-     */
     'company_size'?: CompanySizeEnum | null;
-    /**
-     * 
-     * @type {YearsExperienceEnum}
-     * @memberof UserProfile
-     */
     'years_experience'?: YearsExperienceEnum | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfile
-     */
     'leadership_level'?: string | null;
-    /**
-     * 
-     * @type {UserProfileHighestEducation}
-     * @memberof UserProfile
-     */
-    'highest_education'?: UserProfileHighestEducation | null;
+    'highest_education'?: UserProfileHighestEducationEnum | null;
     /**
      * The learner identifies as type Student
-     * @type {boolean}
-     * @memberof UserProfile
      */
     'type_is_student'?: boolean | null;
     /**
      * The learner identifies as type Professional
-     * @type {boolean}
-     * @memberof UserProfile
      */
     'type_is_professional'?: boolean | null;
     /**
      * The learner identifies as type Educator
-     * @type {boolean}
-     * @memberof UserProfile
      */
     'type_is_educator'?: boolean | null;
     /**
      * The learner identifies as type Other (not professional, student, or educator)
-     * @type {boolean}
-     * @memberof UserProfile
      */
     'type_is_other'?: boolean | null;
 }
 
+export const UserProfileGenderEnum = {
+    M: 'm',
+    F: 'f',
+    T: 't',
+    Nb: 'nb',
+    O: 'o',
+    Empty: '',
+} as const;
 
-/**
- * @type UserProfileGender
- * @export
- */
-export type UserProfileGender = BlankEnum | GenderEnum;
+export type UserProfileGenderEnum = typeof UserProfileGenderEnum[keyof typeof UserProfileGenderEnum];
+export const UserProfileHighestEducationEnum = {
+    Doctorate: 'Doctorate',
+    MastersOrProfessionalDegree: 'Master\'s or professional degree',
+    BachelorsDegree: 'Bachelor\'s degree',
+    AssociateDegree: 'Associate degree',
+    SecondaryHighSchool: 'Secondary/high school',
+    JuniorSecondaryJuniorHighMiddleSchool: 'Junior secondary/junior high/middle school',
+    ElementaryPrimarySchool: 'Elementary/primary school',
+    NoFormalEducation: 'No formal education',
+    OtherEducation: 'Other education',
+    Empty: '',
+} as const;
 
-/**
- * @type UserProfileHighestEducation
- * @export
- */
-export type UserProfileHighestEducation = BlankEnum | HighestEducationEnum;
+export type UserProfileHighestEducationEnum = typeof UserProfileHighestEducationEnum[keyof typeof UserProfileHighestEducationEnum];
 
 /**
  * Serializer for profile
- * @export
- * @interface UserProfileRequest
  */
 export interface UserProfileRequest {
-    /**
-     * 
-     * @type {UserProfileGender}
-     * @memberof UserProfileRequest
-     */
-    'gender'?: UserProfileGender | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof UserProfileRequest
-     */
+    'gender'?: UserProfileRequestGenderEnum | null;
     'year_of_birth'?: number | null;
     /**
      * Flags if we\'ve asked the user for additional information
-     * @type {boolean}
-     * @memberof UserProfileRequest
      */
     'addl_field_flag'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfileRequest
-     */
     'company'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfileRequest
-     */
     'job_title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfileRequest
-     */
     'industry'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfileRequest
-     */
     'job_function'?: string | null;
-    /**
-     * 
-     * @type {CompanySizeEnum}
-     * @memberof UserProfileRequest
-     */
     'company_size'?: CompanySizeEnum | null;
-    /**
-     * 
-     * @type {YearsExperienceEnum}
-     * @memberof UserProfileRequest
-     */
     'years_experience'?: YearsExperienceEnum | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserProfileRequest
-     */
     'leadership_level'?: string | null;
-    /**
-     * 
-     * @type {UserProfileHighestEducation}
-     * @memberof UserProfileRequest
-     */
-    'highest_education'?: UserProfileHighestEducation | null;
+    'highest_education'?: UserProfileRequestHighestEducationEnum | null;
     /**
      * The learner identifies as type Student
-     * @type {boolean}
-     * @memberof UserProfileRequest
      */
     'type_is_student'?: boolean | null;
     /**
      * The learner identifies as type Professional
-     * @type {boolean}
-     * @memberof UserProfileRequest
      */
     'type_is_professional'?: boolean | null;
     /**
      * The learner identifies as type Educator
-     * @type {boolean}
-     * @memberof UserProfileRequest
      */
     'type_is_educator'?: boolean | null;
     /**
      * The learner identifies as type Other (not professional, student, or educator)
-     * @type {boolean}
-     * @memberof UserProfileRequest
      */
     'type_is_other'?: boolean | null;
 }
 
+export const UserProfileRequestGenderEnum = {
+    M: 'm',
+    F: 'f',
+    T: 't',
+    Nb: 'nb',
+    O: 'o',
+    Empty: '',
+} as const;
 
-/**
- * 
- * @export
- * @interface UserProgramEnrollmentDetail
- */
+export type UserProfileRequestGenderEnum = typeof UserProfileRequestGenderEnum[keyof typeof UserProfileRequestGenderEnum];
+export const UserProfileRequestHighestEducationEnum = {
+    Doctorate: 'Doctorate',
+    MastersOrProfessionalDegree: 'Master\'s or professional degree',
+    BachelorsDegree: 'Bachelor\'s degree',
+    AssociateDegree: 'Associate degree',
+    SecondaryHighSchool: 'Secondary/high school',
+    JuniorSecondaryJuniorHighMiddleSchool: 'Junior secondary/junior high/middle school',
+    ElementaryPrimarySchool: 'Elementary/primary school',
+    NoFormalEducation: 'No formal education',
+    OtherEducation: 'Other education',
+    Empty: '',
+} as const;
+
+export type UserProfileRequestHighestEducationEnum = typeof UserProfileRequestHighestEducationEnum[keyof typeof UserProfileRequestHighestEducationEnum];
+
 export interface UserProgramEnrollmentDetail {
-    /**
-     * 
-     * @type {V1Program}
-     * @memberof UserProgramEnrollmentDetail
-     */
     'program': V1Program;
-    /**
-     * 
-     * @type {Array<CourseRunEnrollment>}
-     * @memberof UserProgramEnrollmentDetail
-     */
     'enrollments': Array<CourseRunEnrollment>;
-    /**
-     * 
-     * @type {V1ProgramCertificate}
-     * @memberof UserProgramEnrollmentDetail
-     */
     'certificate': V1ProgramCertificate | null;
 }
 /**
  * Serializer for users
- * @export
- * @interface UserRequest
  */
 export interface UserRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof UserRequest
-     */
     'username'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserRequest
-     */
     'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserRequest
-     */
     'email'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserRequest
-     */
     'password'?: string;
-    /**
-     * 
-     * @type {LegalAddressRequest}
-     * @memberof UserRequest
-     */
     'legal_address': LegalAddressRequest | null;
-    /**
-     * 
-     * @type {UserProfileRequest}
-     * @memberof UserRequest
-     */
     'user_profile'?: UserProfileRequest | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserRequest
-     */
     'is_active'?: boolean;
 }
 /**
  * Serializes a discount.
- * @export
- * @interface V0Discount
  */
 export interface V0Discount {
-    /**
-     * 
-     * @type {number}
-     * @memberof V0Discount
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V0Discount
-     */
     'amount': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V0Discount
-     */
     'automatic'?: boolean;
-    /**
-     * 
-     * @type {DiscountTypeEnum}
-     * @memberof V0Discount
-     */
     'discount_type': DiscountTypeEnum;
-    /**
-     * 
-     * @type {RedemptionTypeEnum}
-     * @memberof V0Discount
-     */
     'redemption_type': RedemptionTypeEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof V0Discount
-     */
     'max_redemptions'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V0Discount
-     */
     'discount_code': string;
-    /**
-     * 
-     * @type {PaymentTypeEnum}
-     * @memberof V0Discount
-     */
-    'payment_type'?: PaymentTypeEnum | null;
+    'payment_type'?: V0DiscountPaymentTypeEnum | null;
     /**
      * Returns True if the discount has been redeemed
-     * @type {boolean}
-     * @memberof V0Discount
      */
     'is_redeemed': boolean;
     /**
      * If set, this discount code will not be redeemable before this date.
-     * @type {string}
-     * @memberof V0Discount
      */
     'activation_date'?: string | null;
     /**
      * If set, this discount code will not be redeemable after this date.
-     * @type {string}
-     * @memberof V0Discount
      */
     'expiration_date'?: string | null;
 }
 
+export const V0DiscountPaymentTypeEnum = {
+    Marketing: 'marketing',
+    Sales: 'sales',
+    FinancialAssistance: 'financial-assistance',
+    CustomerSupport: 'customer-support',
+    Staff: 'staff',
+    Legacy: 'legacy',
+} as const;
+
+export type V0DiscountPaymentTypeEnum = typeof V0DiscountPaymentTypeEnum[keyof typeof V0DiscountPaymentTypeEnum];
 
 /**
  * Serializes a discount.
- * @export
- * @interface V0DiscountRequest
  */
 export interface V0DiscountRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof V0DiscountRequest
-     */
     'amount': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V0DiscountRequest
-     */
     'automatic'?: boolean;
-    /**
-     * 
-     * @type {DiscountTypeEnum}
-     * @memberof V0DiscountRequest
-     */
     'discount_type': DiscountTypeEnum;
-    /**
-     * 
-     * @type {RedemptionTypeEnum}
-     * @memberof V0DiscountRequest
-     */
     'redemption_type': RedemptionTypeEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof V0DiscountRequest
-     */
     'max_redemptions'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V0DiscountRequest
-     */
     'discount_code': string;
-    /**
-     * 
-     * @type {PaymentTypeEnum}
-     * @memberof V0DiscountRequest
-     */
-    'payment_type'?: PaymentTypeEnum | null;
+    'payment_type'?: V0DiscountRequestPaymentTypeEnum | null;
     /**
      * If set, this discount code will not be redeemable before this date.
-     * @type {string}
-     * @memberof V0DiscountRequest
      */
     'activation_date'?: string | null;
     /**
      * If set, this discount code will not be redeemable after this date.
-     * @type {string}
-     * @memberof V0DiscountRequest
      */
     'expiration_date'?: string | null;
 }
 
+export const V0DiscountRequestPaymentTypeEnum = {
+    Marketing: 'marketing',
+    Sales: 'sales',
+    FinancialAssistance: 'financial-assistance',
+    CustomerSupport: 'customer-support',
+    Staff: 'staff',
+    Legacy: 'legacy',
+} as const;
+
+export type V0DiscountRequestPaymentTypeEnum = typeof V0DiscountRequestPaymentTypeEnum[keyof typeof V0DiscountRequestPaymentTypeEnum];
 
 /**
  * CourseRun model serializer
- * @export
- * @interface V1BaseCourseRun
  */
 export interface V1BaseCourseRun {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'expiration_date'?: string | null;
     /**
      * Get the courseware URL
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'courseware_url': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1BaseCourseRun
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'upgrade_deadline'?: string | null;
     /**
      * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
      */
     'is_upgradable': boolean;
     /**
      * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
      */
     'is_enrollable': boolean;
     /**
      * Check if the course run is archived
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
      */
     'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V1BaseCourseRun
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
-     */
     'live'?: boolean;
     /**
      * Get the course number
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'course_number': string;
     /**
      * Get the enrollment modes for the course run
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof V1BaseCourseRun
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof V1BaseCourseRun
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: V1BaseCourseRunLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
      */
     'is_primary_language'?: boolean;
     /**
      * Return the label for the language, using the override if necessary
-     * @type {string}
-     * @memberof V1BaseCourseRun
      */
     'language_label': string;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof V1BaseCourseRun
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: V1BaseCourseRunVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof V1BaseCourseRun
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof V1BaseCourseRun
-     */
+    'variant_length'?: V1BaseCourseRunVariantLengthEnum;
     'course_id': number;
-    /**
-     * 
-     * @type {Array<ProductFlexibilePrice>}
-     * @memberof V1BaseCourseRun
-     */
     'products': Array<ProductFlexibilePrice>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1BaseCourseRun
-     */
     'approved_flexible_price_exists': boolean;
 }
+
+export const V1BaseCourseRunLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type V1BaseCourseRunLanguageEnum = typeof V1BaseCourseRunLanguageEnum[keyof typeof V1BaseCourseRunLanguageEnum];
+export const V1BaseCourseRunVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type V1BaseCourseRunVariantIndustryEnum = typeof V1BaseCourseRunVariantIndustryEnum[keyof typeof V1BaseCourseRunVariantIndustryEnum];
+export const V1BaseCourseRunVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V1BaseCourseRunVariantLengthEnum = typeof V1BaseCourseRunVariantLengthEnum[keyof typeof V1BaseCourseRunVariantLengthEnum];
+
 /**
  * CourseRun model serializer - also serializes the parent Course.
- * @export
- * @interface V1CourseRunWithCourse
  */
 export interface V1CourseRunWithCourse {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'expiration_date'?: string | null;
     /**
      * Get the courseware URL
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'courseware_url': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'upgrade_deadline'?: string | null;
     /**
      * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
      */
     'is_upgradable': boolean;
     /**
      * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
      */
     'is_enrollable': boolean;
     /**
      * Check if the course run is archived
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
      */
     'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V1CourseRunWithCourse
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
-     */
     'live'?: boolean;
     /**
      * Get the course number
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'course_number': string;
     /**
      * Get the enrollment modes for the course run
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof V1CourseRunWithCourse
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof V1CourseRunWithCourse
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: V1CourseRunWithCourseLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
      */
     'is_primary_language'?: boolean;
     /**
      * Return the label for the language, using the override if necessary
-     * @type {string}
-     * @memberof V1CourseRunWithCourse
      */
     'language_label': string;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof V1CourseRunWithCourse
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: V1CourseRunWithCourseVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof V1CourseRunWithCourse
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof V1CourseRunWithCourse
-     */
+    'variant_length'?: V1CourseRunWithCourseVariantLengthEnum;
     'course_id': number;
     /**
      * List of products associated with this course run
-     * @type {Array<ProductFlexibilePrice>}
-     * @memberof V1CourseRunWithCourse
      */
     'products': Array<ProductFlexibilePrice>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourse
-     */
     'approved_flexible_price_exists': boolean;
-    /**
-     * 
-     * @type {Course}
-     * @memberof V1CourseRunWithCourse
-     */
     'course': Course;
 }
+
+export const V1CourseRunWithCourseLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type V1CourseRunWithCourseLanguageEnum = typeof V1CourseRunWithCourseLanguageEnum[keyof typeof V1CourseRunWithCourseLanguageEnum];
+export const V1CourseRunWithCourseVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type V1CourseRunWithCourseVariantIndustryEnum = typeof V1CourseRunWithCourseVariantIndustryEnum[keyof typeof V1CourseRunWithCourseVariantIndustryEnum];
+export const V1CourseRunWithCourseVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V1CourseRunWithCourseVariantLengthEnum = typeof V1CourseRunWithCourseVariantLengthEnum[keyof typeof V1CourseRunWithCourseVariantLengthEnum];
+
 /**
  * CourseRun model serializer - also serializes the parent Course.
- * @export
- * @interface V1CourseRunWithCourseRequest
  */
 export interface V1CourseRunWithCourseRequest {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'expiration_date'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'upgrade_deadline'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourseRequest
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourseRequest
-     */
     'live'?: boolean;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof V1CourseRunWithCourseRequest
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: V1CourseRunWithCourseRequestLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof V1CourseRunWithCourseRequest
      */
     'is_primary_language'?: boolean;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof V1CourseRunWithCourseRequest
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: V1CourseRunWithCourseRequestVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof V1CourseRunWithCourseRequest
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
+    'variant_length'?: V1CourseRunWithCourseRequestVariantLengthEnum;
 }
+
+export const V1CourseRunWithCourseRequestLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type V1CourseRunWithCourseRequestLanguageEnum = typeof V1CourseRunWithCourseRequestLanguageEnum[keyof typeof V1CourseRunWithCourseRequestLanguageEnum];
+export const V1CourseRunWithCourseRequestVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type V1CourseRunWithCourseRequestVariantIndustryEnum = typeof V1CourseRunWithCourseRequestVariantIndustryEnum[keyof typeof V1CourseRunWithCourseRequestVariantIndustryEnum];
+export const V1CourseRunWithCourseRequestVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V1CourseRunWithCourseRequestVariantLengthEnum = typeof V1CourseRunWithCourseRequestVariantLengthEnum[keyof typeof V1CourseRunWithCourseRequestVariantLengthEnum];
+
 /**
  * Course model serializer - also serializes child course runs
- * @export
- * @interface V1CourseWithCourseRuns
  */
 export interface V1CourseWithCourseRuns {
-    /**
-     * 
-     * @type {number}
-     * @memberof V1CourseWithCourseRuns
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1CourseWithCourseRuns
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1CourseWithCourseRuns
-     */
     'readable_id': string;
     /**
      * Get next run id
-     * @type {number}
-     * @memberof V1CourseWithCourseRuns
      */
     'next_run_id': number | null;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof V1CourseWithCourseRuns
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {CoursePage}
-     * @memberof V1CourseWithCourseRuns
-     */
     'page': CoursePage;
-    /**
-     * 
-     * @type {Program}
-     * @memberof V1CourseWithCourseRuns
-     */
     'programs': Program | null;
-    /**
-     * 
-     * @type {Array<V1BaseCourseRun>}
-     * @memberof V1CourseWithCourseRuns
-     */
     'courseruns': Array<V1BaseCourseRun>;
 }
 /**
  * Program model serializer
- * @export
- * @interface V1Program
  */
 export interface V1Program {
-    /**
-     * 
-     * @type {string}
-     * @memberof V1Program
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1Program
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V1Program
-     */
     'id': number;
-    /**
-     * 
-     * @type {V1CourseWithCourseRuns}
-     * @memberof V1Program
-     */
     'courses': V1CourseWithCourseRuns;
-    /**
-     * 
-     * @type {V1ProgramRequirements}
-     * @memberof V1Program
-     */
     'requirements': V1ProgramRequirements;
-    /**
-     * 
-     * @type {Array<V1ProgramRequirement>}
-     * @memberof V1Program
-     */
     'req_tree': Array<V1ProgramRequirement>;
-    /**
-     * 
-     * @type {ProgramPage}
-     * @memberof V1Program
-     */
     'page': ProgramPage;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1Program
-     */
     'program_type'?: string | null;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof V1Program
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1Program
-     */
     'live'?: boolean;
-    /**
-     * 
-     * @type {Array<EnrollmentMode>}
-     * @memberof V1Program
-     */
     'enrollment_modes': Array<EnrollmentMode>;
 }
 /**
  * ProgramCertificate model serializer
- * @export
- * @interface V1ProgramCertificate
  */
 export interface V1ProgramCertificate {
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramCertificate
-     */
     'uuid': string;
     /**
      * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     * @type {string}
-     * @memberof V1ProgramCertificate
      */
     'link': string;
 }
 /**
  * Serializer for a ProgramRequirement
- * @export
- * @interface V1ProgramRequirement
  */
 export interface V1ProgramRequirement {
-    /**
-     * 
-     * @type {number}
-     * @memberof V1ProgramRequirement
-     */
     'id'?: number | null;
-    /**
-     * 
-     * @type {V1ProgramRequirementData}
-     * @memberof V1ProgramRequirement
-     */
     'data': V1ProgramRequirementData;
-    /**
-     * 
-     * @type {Array<V1ProgramRequirement>}
-     * @memberof V1ProgramRequirement
-     */
     'children'?: Array<V1ProgramRequirement>;
 }
 /**
  * Serializer for ProgramRequirement data
- * @export
- * @interface V1ProgramRequirementData
  */
 export interface V1ProgramRequirementData {
-    /**
-     * 
-     * @type {NodeTypeEnum}
-     * @memberof V1ProgramRequirementData
-     */
     'node_type': NodeTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramRequirementData
-     */
     'course'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramRequirementData
-     */
     'required_program'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramRequirementData
-     */
     'program'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramRequirementData
-     */
     'title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramRequirementData
-     */
     'operator'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V1ProgramRequirementData
-     */
     'operator_value'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V1ProgramRequirementData
-     */
     'elective_flag'?: boolean | null;
 }
 
 
-/**
- * 
- * @export
- * @interface V1ProgramRequirements
- */
 export interface V1ProgramRequirements {
     /**
      * List of required course IDs
-     * @type {Array<V1ProgramRequirementsRequiredInner>}
-     * @memberof V1ProgramRequirements
      */
     'required'?: Array<V1ProgramRequirementsRequiredInner>;
     /**
      * List of elective course IDs
-     * @type {Array<V1ProgramRequirementsRequiredInner>}
-     * @memberof V1ProgramRequirements
      */
     'electives'?: Array<V1ProgramRequirementsRequiredInner>;
 }
 /**
  * @type V1ProgramRequirementsRequiredInner
- * @export
  */
 export type V1ProgramRequirementsRequiredInner = number;
 
 /**
  * Course model serializer
- * @export
- * @interface V2Course
  */
 export interface V2Course {
-    /**
-     * 
-     * @type {number}
-     * @memberof V2Course
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Course
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Course
-     */
     'readable_id': string;
     /**
      * Get next run id
-     * @type {number}
-     * @memberof V2Course
      */
     'next_run_id': number | null;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof V2Course
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {CoursePage}
-     * @memberof V2Course
-     */
     'page': CoursePage | null;
-    /**
-     * 
-     * @type {Array<BaseProgram>}
-     * @memberof V2Course
-     */
     'programs': Array<BaseProgram>;
     /**
      * List topics of a course
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof V2Course
      */
     'topics': Array<{ [key: string]: any; }>;
     /**
      * Return the certificate type.
-     * @type {string}
-     * @memberof V2Course
      */
     'certificate_type': string;
     /**
      * Return if there is a certificate available for the course.
-     * @type {boolean}
-     * @memberof V2Course
      */
     'certificate_available': boolean;
     /**
      * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
-     * @type {boolean}
-     * @memberof V2Course
      */
     'required_prerequisites': boolean;
     /**
      * Get the duration of the course from the course page CMS.
-     * @type {string}
-     * @memberof V2Course
      */
     'duration': string;
     /**
      * Get the min weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof V2Course
      */
     'min_weeks': number | null;
     /**
      * Get the max weeks of the course from the CMS page.
-     * @type {number}
-     * @memberof V2Course
      */
     'max_weeks': number | null;
     /**
      * Get the min price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2Course
      */
     'min_price': number | null;
     /**
      * Get the max price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2Course
      */
     'max_price': number | null;
     /**
      * Get the time commitment of the course from the course page CMS.
-     * @type {string}
-     * @memberof V2Course
      */
     'time_commitment': string | null;
     /**
      * Get course availability
-     * @type {string}
-     * @memberof V2Course
      */
     'availability': string;
     /**
      * Get the min weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof V2Course
      */
     'min_weekly_hours': string | null;
     /**
      * Get the max weekly hours of the course from the course page CMS.
-     * @type {string}
-     * @memberof V2Course
      */
     'max_weekly_hours': string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2Course
-     */
     'include_in_learn_catalog': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2Course
-     */
     'ingest_content_files_for_ai': boolean;
-    /**
-     * 
-     * @type {Array<SupportedVariant>}
-     * @memberof V2Course
-     */
     'possible_variant_sets': Array<SupportedVariant>;
 }
 /**
  * Course model serializer
- * @export
- * @interface V2CourseRequest
  */
 export interface V2CourseRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof V2CourseRequest
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2CourseRequest
-     */
     'readable_id': string;
 }
 /**
  * Serializer for course certificates.
- * @export
- * @interface V2CourseRunCertificate
  */
 export interface V2CourseRunCertificate {
-    /**
-     * 
-     * @type {PublicUser}
-     * @memberof V2CourseRunCertificate
-     */
     'user': PublicUser;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2CourseRunCertificate
-     */
     'uuid': string;
     /**
      * Indicates whether or not the certificate is revoked
-     * @type {boolean}
-     * @memberof V2CourseRunCertificate
      */
     'is_revoked': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2CourseRunCertificate
-     */
     'issue_date': string;
-    /**
-     * 
-     * @type {CertificatePageModel}
-     * @memberof V2CourseRunCertificate
-     */
     'certificate_page': CertificatePageModel;
-    /**
-     * 
-     * @type {any}
-     * @memberof V2CourseRunCertificate
-     */
     'verifiable_credential_json': any;
-    /**
-     * 
-     * @type {V2CourseRunWithCourse}
-     * @memberof V2CourseRunCertificate
-     */
     'course_run': V2CourseRunWithCourse;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRunCertificate
-     */
     'certificate_page_revision': number | null;
 }
 /**
  * CourseRun model serializer - also serializes the parent Course.
- * @export
- * @interface V2CourseRunWithCourse
  */
 export interface V2CourseRunWithCourse {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'expiration_date'?: string | null;
     /**
      * Get the courseware URL
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'courseware_url': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'upgrade_deadline'?: string | null;
     /**
      * Check if the course run is upgradable
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
      */
     'is_upgradable': boolean;
     /**
      * Check if the course run is enrollable
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
      */
     'is_enrollable': boolean;
     /**
      * Check if the course run is archived
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
      */
     'is_archived': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRunWithCourse
-     */
     'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
-     */
     'live'?: boolean;
     /**
      * Get the course number
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'course_number': string;
     /**
      * Get the enrollment modes for the course run
-     * @type {Array<{ [key: string]: any; }>}
-     * @memberof V2CourseRunWithCourse
      */
     'enrollment_modes': Array<{ [key: string]: any; }>;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof V2CourseRunWithCourse
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: V2CourseRunWithCourseLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
      */
     'is_primary_language'?: boolean;
     /**
      * Return the label for the language, using the override if necessary
-     * @type {string}
-     * @memberof V2CourseRunWithCourse
      */
     'language_label': string;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof V2CourseRunWithCourse
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: V2CourseRunWithCourseVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof V2CourseRunWithCourse
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRunWithCourse
-     */
+    'variant_length'?: V2CourseRunWithCourseVariantLengthEnum;
     'course_id': number;
-    /**
-     * 
-     * @type {Array<BaseProduct>}
-     * @memberof V2CourseRunWithCourse
-     */
     'products': Array<BaseProduct>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourse
-     */
     'approved_flexible_price_exists': boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRunWithCourse
-     */
     'b2b_contract'?: number | null;
-    /**
-     * 
-     * @type {V2Course}
-     * @memberof V2CourseRunWithCourse
-     */
     'course': V2Course;
 }
+
+export const V2CourseRunWithCourseLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type V2CourseRunWithCourseLanguageEnum = typeof V2CourseRunWithCourseLanguageEnum[keyof typeof V2CourseRunWithCourseLanguageEnum];
+export const V2CourseRunWithCourseVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type V2CourseRunWithCourseVariantIndustryEnum = typeof V2CourseRunWithCourseVariantIndustryEnum[keyof typeof V2CourseRunWithCourseVariantIndustryEnum];
+export const V2CourseRunWithCourseVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V2CourseRunWithCourseVariantLengthEnum = typeof V2CourseRunWithCourseVariantLengthEnum[keyof typeof V2CourseRunWithCourseVariantLengthEnum];
+
 /**
  * CourseRun model serializer - also serializes the parent Course.
- * @export
- * @interface V2CourseRunWithCourseRequest
  */
 export interface V2CourseRunWithCourseRequest {
     /**
      * The title of the course. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'title': string;
     /**
      * The day the course begins. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'start_date'?: string | null;
     /**
      * The last day the course is active. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'end_date'?: string | null;
     /**
      * The first day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'enrollment_start'?: string | null;
     /**
      * The last day students can enroll. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'enrollment_end'?: string | null;
     /**
      * The date beyond which the learner should not see link to this course run on their dashboard.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'expiration_date'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
-     */
     'courseware_id': string;
     /**
      * The day certificates should be available to users. This value is synced automatically with edX studio.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'certificate_available_date'?: string | null;
     /**
      * The date beyond which the learner can not enroll in paid course mode.
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'upgrade_deadline'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourseRequest
-     */
     'is_self_paced'?: boolean;
     /**
      * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     * @type {string}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'run_tag': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourseRequest
-     */
     'live'?: boolean;
     /**
-     * 
-     * @type {BaseCourseRunLanguage}
-     * @memberof V2CourseRunWithCourseRequest
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
      */
-    'language'?: BaseCourseRunLanguage;
+    'language'?: V2CourseRunWithCourseRequestLanguageEnum;
     /**
      * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     * @type {boolean}
-     * @memberof V2CourseRunWithCourseRequest
      */
     'is_primary_language'?: boolean;
     /**
-     * 
-     * @type {BaseCourseRunVariantIndustry}
-     * @memberof V2CourseRunWithCourseRequest
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
      */
-    'variant_industry'?: BaseCourseRunVariantIndustry;
+    'variant_industry'?: V2CourseRunWithCourseRequestVariantIndustryEnum;
     /**
-     * 
-     * @type {BaseCourseRunVariantLength}
-     * @memberof V2CourseRunWithCourseRequest
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
-    'variant_length'?: BaseCourseRunVariantLength;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2CourseRunWithCourseRequest
-     */
+    'variant_length'?: V2CourseRunWithCourseRequestVariantLengthEnum;
     'b2b_contract'?: number | null;
 }
+
+export const V2CourseRunWithCourseRequestLanguageEnum = {
+    AfZa: 'af_ZA',
+    Ar: 'ar',
+    Az: 'az',
+    Bo: 'bo',
+    Da: 'da',
+    De: 'de',
+    DeDe: 'de_DE',
+    El: 'el',
+    Es419: 'es_419',
+    EsEs: 'es_ES',
+    En: 'en',
+    Fa: 'fa',
+    Fr: 'fr',
+    FrCa: 'fr_CA',
+    He: 'he',
+    Hi: 'hi',
+    Hu: 'hu',
+    Id: 'id',
+    ItIt: 'it_IT',
+    Ja: 'ja',
+    Ka: 'ka',
+    Kk: 'kk',
+    Ko: 'ko',
+    Lv: 'lv',
+    Nl: 'nl',
+    Pl: 'pl',
+    PtBr: 'pt_BR',
+    PtPt: 'pt_PT',
+    Ro: 'ro',
+    Ru: 'ru',
+    Sq: 'sq',
+    Sv: 'sv',
+    Sw: 'sw',
+    Te: 'te',
+    Th: 'th',
+    TrTr: 'tr_TR',
+    Uk: 'uk',
+    Uz: 'uz',
+    Vi: 'vi',
+    ZhCn: 'zh_CN',
+    ZhHans: 'zh_HANS',
+    ZhHk: 'zh_HK',
+    Empty: '',
+} as const;
+
+export type V2CourseRunWithCourseRequestLanguageEnum = typeof V2CourseRunWithCourseRequestLanguageEnum[keyof typeof V2CourseRunWithCourseRequestLanguageEnum];
+export const V2CourseRunWithCourseRequestVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    Empty: '',
+} as const;
+
+export type V2CourseRunWithCourseRequestVariantIndustryEnum = typeof V2CourseRunWithCourseRequestVariantIndustryEnum[keyof typeof V2CourseRunWithCourseRequestVariantIndustryEnum];
+export const V2CourseRunWithCourseRequestVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V2CourseRunWithCourseRequestVariantLengthEnum = typeof V2CourseRunWithCourseRequestVariantLengthEnum[keyof typeof V2CourseRunWithCourseRequestVariantLengthEnum];
+
 /**
  * Program Model Serializer v2
- * @export
- * @interface V2Program
  */
 export interface V2Program {
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2Program
-     */
     'id': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof V2Program
-     */
     'courses': Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof V2Program
-     */
     'collections': Array<number>;
-    /**
-     * 
-     * @type {Array<BaseProgram>}
-     * @memberof V2Program
-     */
     'programs': Array<BaseProgram> | null;
-    /**
-     * 
-     * @type {V2ProgramRequirements}
-     * @memberof V2Program
-     */
     'requirements': V2ProgramRequirements;
-    /**
-     * 
-     * @type {Array<V2ProgramRequirement>}
-     * @memberof V2Program
-     */
     'req_tree': Array<V2ProgramRequirement>;
-    /**
-     * 
-     * @type {ProgramPage}
-     * @memberof V2Program
-     */
     'page': ProgramPage | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'program_type'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'certificate_type': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2Program
-     */
     'certificate_available': boolean;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof V2Program
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2Program
-     */
     'live'?: boolean;
     /**
-     * 
-     * @type {V2ProgramDisplayMode}
-     * @memberof V2Program
+     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
      */
-    'display_mode'?: V2ProgramDisplayMode | null;
-    /**
-     * 
-     * @type {Array<V2ProgramTopicsInner>}
-     * @memberof V2Program
-     */
+    'display_mode'?: V2ProgramDisplayModeEnum | null;
     'topics': Array<V2ProgramTopicsInner>;
-    /**
-     * 
-     * @type {AvailabilityEnum}
-     * @memberof V2Program
-     */
     'availability'?: AvailabilityEnum;
     /**
      * Get the start date of the program by finding the first available run.
-     * @type {string}
-     * @memberof V2Program
      */
     'start_date': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'end_date'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'enrollment_start'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2Program
-     */
     'enrollment_end'?: string | null;
     /**
      * Check if the prerequisites field is populated in the program page CMS.
-     * @type {boolean}
-     * @memberof V2Program
      */
     'required_prerequisites': boolean;
     /**
      * Get the length/duration field from the program page CMS.
-     * @type {string}
-     * @memberof V2Program
      */
     'duration': string | null;
     /**
      * Get the min weeks of the program from the CMS page.
-     * @type {number}
-     * @memberof V2Program
      */
     'min_weeks': number | null;
     /**
      * Get the max weeks of the program from the CMS page.
-     * @type {number}
-     * @memberof V2Program
      */
     'max_weeks': number | null;
     /**
      * Get the min price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2Program
      */
     'min_price': number | null;
     /**
      * Get the max price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2Program
      */
     'max_price': number | null;
     /**
      * Get the effort/time_commitment field from the program page CMS.
-     * @type {string}
-     * @memberof V2Program
      */
     'time_commitment': string | null;
     /**
      * Get the min weekly hours of the program from the program page CMS.
-     * @type {string}
-     * @memberof V2Program
      */
     'min_weekly_hours': string | null;
     /**
      * Get the max weekly hours of the program from the program page CMS.
-     * @type {string}
-     * @memberof V2Program
      */
     'max_weekly_hours': string | null;
-    /**
-     * 
-     * @type {Array<EnrollmentMode>}
-     * @memberof V2Program
-     */
     'enrollment_modes': Array<EnrollmentMode>;
 }
 
+export const V2ProgramDisplayModeEnum = {
+    /**
+    * * &#x60;course&#x60; - course
+    */
+    Course: 'course',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V2ProgramDisplayModeEnum = typeof V2ProgramDisplayModeEnum[keyof typeof V2ProgramDisplayModeEnum];
 
 /**
  * Serializer for course certificates.
- * @export
- * @interface V2ProgramCertificate
  */
 export interface V2ProgramCertificate {
-    /**
-     * 
-     * @type {PublicUser}
-     * @memberof V2ProgramCertificate
-     */
     'user': PublicUser;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCertificate
-     */
     'uuid': string;
     /**
      * Indicates whether or not the certificate is revoked
-     * @type {boolean}
-     * @memberof V2ProgramCertificate
      */
     'is_revoked': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCertificate
-     */
     'issue_date': string;
-    /**
-     * 
-     * @type {CertificatePageModel}
-     * @memberof V2ProgramCertificate
-     */
     'certificate_page': CertificatePageModel;
-    /**
-     * 
-     * @type {any}
-     * @memberof V2ProgramCertificate
-     */
     'verifiable_credential_json': any;
-    /**
-     * 
-     * @type {V2Program}
-     * @memberof V2ProgramCertificate
-     */
     'program': V2Program;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramCertificate
-     */
     'certificate_page_revision': number | null;
 }
 /**
  * Serializer for ProgramCollection
- * @export
- * @interface V2ProgramCollection
  */
 export interface V2ProgramCollection {
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramCollection
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCollection
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCollection
-     */
     'description': string;
-    /**
-     * 
-     * @type {Array<V2ProgramCollectionProgramsInner>}
-     * @memberof V2ProgramCollection
-     */
     'programs': Array<V2ProgramCollectionProgramsInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCollection
-     */
     'created_on': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCollection
-     */
     'updated_on': string;
 }
-/**
- * 
- * @export
- * @interface V2ProgramCollectionProgramsInner
- */
 export interface V2ProgramCollectionProgramsInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramCollectionProgramsInner
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramCollectionProgramsInner
-     */
     'title'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramCollectionProgramsInner
-     */
     'order'?: number;
 }
 /**
  * Extended Program serializer that includes products. Used by the programs API.
- * @export
- * @interface V2ProgramDetail
  */
 export interface V2ProgramDetail {
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramDetail
-     */
     'id': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof V2ProgramDetail
-     */
     'courses': Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof V2ProgramDetail
-     */
     'collections': Array<number>;
-    /**
-     * 
-     * @type {Array<BaseProgram>}
-     * @memberof V2ProgramDetail
-     */
     'programs': Array<BaseProgram> | null;
-    /**
-     * 
-     * @type {V2ProgramRequirements}
-     * @memberof V2ProgramDetail
-     */
     'requirements': V2ProgramRequirements;
-    /**
-     * 
-     * @type {Array<V2ProgramRequirement>}
-     * @memberof V2ProgramDetail
-     */
     'req_tree': Array<V2ProgramRequirement>;
-    /**
-     * 
-     * @type {ProgramPage}
-     * @memberof V2ProgramDetail
-     */
     'page': ProgramPage | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'program_type'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'certificate_type': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2ProgramDetail
-     */
     'certificate_available': boolean;
-    /**
-     * 
-     * @type {Array<Department>}
-     * @memberof V2ProgramDetail
-     */
     'departments': Array<Department>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2ProgramDetail
-     */
     'live'?: boolean;
     /**
-     * 
-     * @type {V2ProgramDisplayMode}
-     * @memberof V2ProgramDetail
+     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
      */
-    'display_mode'?: V2ProgramDisplayMode | null;
-    /**
-     * 
-     * @type {Array<V2ProgramTopicsInner>}
-     * @memberof V2ProgramDetail
-     */
+    'display_mode'?: V2ProgramDetailDisplayModeEnum | null;
     'topics': Array<V2ProgramTopicsInner>;
-    /**
-     * 
-     * @type {AvailabilityEnum}
-     * @memberof V2ProgramDetail
-     */
     'availability'?: AvailabilityEnum;
     /**
      * Get the start date of the program by finding the first available run.
-     * @type {string}
-     * @memberof V2ProgramDetail
      */
     'start_date': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'end_date'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'enrollment_start'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramDetail
-     */
     'enrollment_end'?: string | null;
     /**
      * Check if the prerequisites field is populated in the program page CMS.
-     * @type {boolean}
-     * @memberof V2ProgramDetail
      */
     'required_prerequisites': boolean;
     /**
      * Get the length/duration field from the program page CMS.
-     * @type {string}
-     * @memberof V2ProgramDetail
      */
     'duration': string | null;
     /**
      * Get the min weeks of the program from the CMS page.
-     * @type {number}
-     * @memberof V2ProgramDetail
      */
     'min_weeks': number | null;
     /**
      * Get the max weeks of the program from the CMS page.
-     * @type {number}
-     * @memberof V2ProgramDetail
      */
     'max_weeks': number | null;
     /**
      * Get the min price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2ProgramDetail
      */
     'min_price': number | null;
     /**
      * Get the max price of the product from the CMS page.
-     * @type {number}
-     * @memberof V2ProgramDetail
      */
     'max_price': number | null;
     /**
      * Get the effort/time_commitment field from the program page CMS.
-     * @type {string}
-     * @memberof V2ProgramDetail
      */
     'time_commitment': string | null;
     /**
      * Get the min weekly hours of the program from the program page CMS.
-     * @type {string}
-     * @memberof V2ProgramDetail
      */
     'min_weekly_hours': string | null;
     /**
      * Get the max weekly hours of the program from the program page CMS.
-     * @type {string}
-     * @memberof V2ProgramDetail
      */
     'max_weekly_hours': string | null;
-    /**
-     * 
-     * @type {Array<EnrollmentMode>}
-     * @memberof V2ProgramDetail
-     */
     'enrollment_modes': Array<EnrollmentMode>;
-    /**
-     * 
-     * @type {Array<BaseProduct>}
-     * @memberof V2ProgramDetail
-     */
     'products': Array<BaseProduct>;
 }
 
+export const V2ProgramDetailDisplayModeEnum = {
+    /**
+    * * &#x60;course&#x60; - course
+    */
+    Course: 'course',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
 
-/**
- * @type V2ProgramDisplayMode
- * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
- * @export
- */
-export type V2ProgramDisplayMode = BlankEnum | DisplayModeEnum;
+export type V2ProgramDetailDisplayModeEnum = typeof V2ProgramDetailDisplayModeEnum[keyof typeof V2ProgramDetailDisplayModeEnum];
 
 /**
  * Serializer for a ProgramRequirement
- * @export
- * @interface V2ProgramRequirement
  */
 export interface V2ProgramRequirement {
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramRequirement
-     */
     'id'?: number | null;
-    /**
-     * 
-     * @type {V2ProgramRequirementData}
-     * @memberof V2ProgramRequirement
-     */
     'data': V2ProgramRequirementData;
-    /**
-     * 
-     * @type {Array<V2ProgramRequirement>}
-     * @memberof V2ProgramRequirement
-     */
     'children'?: Array<V2ProgramRequirement>;
 }
 /**
  * Serializer for ProgramRequirement data
- * @export
- * @interface V2ProgramRequirementData
  */
 export interface V2ProgramRequirementData {
-    /**
-     * 
-     * @type {NodeTypeEnum}
-     * @memberof V2ProgramRequirementData
-     */
     'node_type': NodeTypeEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramRequirementData
-     */
     'course'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramRequirementData
-     */
     'program'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramRequirementData
-     */
     'required_program'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramRequirementData
-     */
     'title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramRequirementData
-     */
     'operator'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramRequirementData
-     */
     'operator_value'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V2ProgramRequirementData
-     */
     'elective_flag'?: boolean | null;
 }
 
 
-/**
- * 
- * @export
- * @interface V2ProgramRequirements
- */
 export interface V2ProgramRequirements {
-    /**
-     * 
-     * @type {V2ProgramRequirementsCourses}
-     * @memberof V2ProgramRequirements
-     */
     'courses'?: V2ProgramRequirementsCourses;
-    /**
-     * 
-     * @type {V2ProgramRequirementsPrograms}
-     * @memberof V2ProgramRequirements
-     */
     'programs'?: V2ProgramRequirementsPrograms;
 }
-/**
- * 
- * @export
- * @interface V2ProgramRequirementsCourses
- */
 export interface V2ProgramRequirementsCourses {
     /**
      * List of required courses with id and readable_id
-     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
-     * @memberof V2ProgramRequirementsCourses
      */
     'required'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
     /**
      * List of elective courses with id and readable_id
-     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
-     * @memberof V2ProgramRequirementsCourses
      */
     'electives'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
 }
-/**
- * 
- * @export
- * @interface V2ProgramRequirementsCoursesRequiredInner
- */
 export interface V2ProgramRequirementsCoursesRequiredInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof V2ProgramRequirementsCoursesRequiredInner
-     */
     'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramRequirementsCoursesRequiredInner
-     */
     'readable_id'?: string;
 }
-/**
- * 
- * @export
- * @interface V2ProgramRequirementsPrograms
- */
 export interface V2ProgramRequirementsPrograms {
     /**
      * List of required programs with id and readable_id
-     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
-     * @memberof V2ProgramRequirementsPrograms
      */
     'required'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
     /**
      * List of elective programs with id and readable_id
-     * @type {Array<V2ProgramRequirementsCoursesRequiredInner>}
-     * @memberof V2ProgramRequirementsPrograms
      */
     'electives'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
 }
-/**
- * 
- * @export
- * @interface V2ProgramTopicsInner
- */
 export interface V2ProgramTopicsInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof V2ProgramTopicsInner
-     */
     'name'?: string;
 }
 /**
  * Serializer for user program enrollments with associated course enrollments.  This aggregates a program, its course enrollments for the user, and any program certificate that has been earned.
- * @export
- * @interface V2UserProgramEnrollmentDetail
  */
 export interface V2UserProgramEnrollmentDetail {
-    /**
-     * 
-     * @type {V2Program}
-     * @memberof V2UserProgramEnrollmentDetail
-     */
     'program': V2Program;
-    /**
-     * 
-     * @type {Array<CourseRunEnrollmentRequestV2>}
-     * @memberof V2UserProgramEnrollmentDetail
-     */
     'enrollments': Array<CourseRunEnrollmentRequestV2>;
-    /**
-     * 
-     * @type {ProgramCertificate}
-     * @memberof V2UserProgramEnrollmentDetail
-     */
     'certificate': ProgramCertificate | null;
 }
 /**
  * CourseRunCertificate model serializer
- * @export
- * @interface V3CourseRunCertificate
  */
 export interface V3CourseRunCertificate {
-    /**
-     * 
-     * @type {string}
-     * @memberof V3CourseRunCertificate
-     */
     'uuid': string;
     /**
      * Get the link at which this certificate will be served Format: /certificate/<uuid>/ Example: /certificate/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     * @type {string}
-     * @memberof V3CourseRunCertificate
      */
     'link': string;
 }
 /**
  * ProgramCertificate model serializer
- * @export
- * @interface V3ProgramCertificate
  */
 export interface V3ProgramCertificate {
-    /**
-     * 
-     * @type {string}
-     * @memberof V3ProgramCertificate
-     */
     'uuid': string;
     /**
      * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     * @type {string}
-     * @memberof V3ProgramCertificate
      */
     'link': string;
 }
 /**
  * Serializer for creating a program enrollment. Accepts a program_id and validates it corresponds to a live program.
- * @export
- * @interface V3ProgramEnrollmentRequestRequest
  */
 export interface V3ProgramEnrollmentRequestRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof V3ProgramEnrollmentRequestRequest
-     */
     'program_id': number;
 }
 /**
  * Program Model Serializer v2
- * @export
- * @interface V3SimpleProgram
  */
 export interface V3SimpleProgram {
-    /**
-     * 
-     * @type {string}
-     * @memberof V3SimpleProgram
-     */
     'title': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof V3SimpleProgram
-     */
     'readable_id': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof V3SimpleProgram
-     */
     'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof V3SimpleProgram
-     */
     'program_type'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof V3SimpleProgram
-     */
     'live'?: boolean;
     /**
-     * 
-     * @type {V2ProgramDisplayMode}
-     * @memberof V3SimpleProgram
+     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
      */
-    'display_mode'?: V2ProgramDisplayMode | null;
+    'display_mode'?: V3SimpleProgramDisplayModeEnum | null;
 }
+
+export const V3SimpleProgramDisplayModeEnum = {
+    /**
+    * * &#x60;course&#x60; - course
+    */
+    Course: 'course',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type V3SimpleProgramDisplayModeEnum = typeof V3SimpleProgramDisplayModeEnum[keyof typeof V3SimpleProgramDisplayModeEnum];
+
 /**
  * Serializer for user program enrollments.
- * @export
- * @interface V3UserProgramEnrollment
  */
 export interface V3UserProgramEnrollment {
-    /**
-     * 
-     * @type {V3SimpleProgram}
-     * @memberof V3UserProgramEnrollment
-     */
     'program': V3SimpleProgram;
-    /**
-     * 
-     * @type {V3ProgramCertificate}
-     * @memberof V3UserProgramEnrollment
-     */
     'certificate': V3ProgramCertificate | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof V3UserProgramEnrollment
-     */
     'enrollment_mode'?: string;
 }
 /**
  * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
- * @export
- * @enum {string}
  */
 
 export const VariantIndustryEnum = {
@@ -9662,7 +4916,7 @@ export const VariantIndustryEnum = {
     /**
     * Healthcare
     */
-    Hc: 'HC'
+    Hc: 'HC',
 } as const;
 
 export type VariantIndustryEnum = typeof VariantIndustryEnum[keyof typeof VariantIndustryEnum];
@@ -9670,15 +4924,13 @@ export type VariantIndustryEnum = typeof VariantIndustryEnum[keyof typeof Varian
 
 /**
  * * `` - Full * `S` - Short
- * @export
- * @enum {string}
  */
 
 export const VariantLengthEnum = {
     /**
     * Short
     */
-    S: 'S'
+    S: 'S',
 } as const;
 
 export type VariantLengthEnum = typeof VariantLengthEnum[keyof typeof VariantLengthEnum];
@@ -9686,8 +4938,6 @@ export type VariantLengthEnum = typeof VariantLengthEnum[keyof typeof VariantLen
 
 /**
  * * `None` - ---- * `2` - Less than 2 years * `5` - 2-5 years * `10` - 6 - 10 years * `15` - 11 - 15 years * `20` - 16 - 20 years * `21` - More than 20 years * `0` - Prefer not to say
- * @export
- * @enum {string}
  */
 
 export const YearsExperienceEnum = {
@@ -9718,7 +4968,7 @@ export const YearsExperienceEnum = {
     /**
     * Prefer not to say
     */
-    NUMBER_0: 0
+    NUMBER_0: 0,
 } as const;
 
 export type YearsExperienceEnum = typeof YearsExperienceEnum[keyof typeof YearsExperienceEnum];
@@ -9727,7 +4977,6 @@ export type YearsExperienceEnum = typeof YearsExperienceEnum[keyof typeof YearsE
 
 /**
  * ApiApi - axios parameter creator
- * @export
  */
 export const ApiApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -9741,7 +4990,7 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiRecordsProgramRevokeCreate', 'id', id)
             const localVarPath = `/api/records/program/{id}/revoke/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -9753,8 +5002,8 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9777,7 +5026,7 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'PartnerSchoolRequest' is not null or undefined
             assertParamExists('apiRecordsProgramShareCreate', 'PartnerSchoolRequest', PartnerSchoolRequest)
             const localVarPath = `/api/records/program/{id}/share/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -9789,9 +5038,8 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -9813,7 +5061,7 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('learnerRecordRetrieveById', 'id', id)
             const localVarPath = `/api/records/program/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -9825,8 +5073,8 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9846,7 +5094,7 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'uuid' is not null or undefined
             assertParamExists('learnerRecordRetrieveByUuid', 'uuid', uuid)
             const localVarPath = `/api/records/shared/{uuid}/`
-                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
+                .replace('{uuid}', encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -9858,8 +5106,8 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9874,7 +5122,6 @@ export const ApiApiAxiosParamCreator = function (configuration?: Configuration) 
 
 /**
  * ApiApi - functional programming interface
- * @export
  */
 export const ApiApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ApiApiAxiosParamCreator(configuration)
@@ -9887,9 +5134,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async apiRecordsProgramRevokeCreate(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiRecordsProgramRevokeCreate(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiRecordsProgramRevokeCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiRecordsProgramRevokeCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Sets up a sharing link for the learner\'s record. Returns back the entire learner record.
@@ -9900,9 +5147,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async apiRecordsProgramShareCreate(id: number, PartnerSchoolRequest: PartnerSchoolRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiRecordsProgramShareCreate(id, PartnerSchoolRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.apiRecordsProgramShareCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiRecordsProgramShareCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get learner record using program ID
@@ -9912,9 +5159,9 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async learnerRecordRetrieveById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.learnerRecordRetrieveById(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.learnerRecordRetrieveById']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.learnerRecordRetrieveById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get learner record using share UUID
@@ -9924,16 +5171,15 @@ export const ApiApiFp = function(configuration?: Configuration) {
          */
         async learnerRecordRetrieveByUuid(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.learnerRecordRetrieveByUuid(uuid, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ApiApi.learnerRecordRetrieveByUuid']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.learnerRecordRetrieveByUuid']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ApiApi - factory interface
- * @export
  */
 export const ApiApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ApiApiFp(configuration)
@@ -9979,72 +5225,36 @@ export const ApiApiFactory = function (configuration?: Configuration, basePath?:
 
 /**
  * Request parameters for apiRecordsProgramRevokeCreate operation in ApiApi.
- * @export
- * @interface ApiApiApiRecordsProgramRevokeCreateRequest
  */
 export interface ApiApiApiRecordsProgramRevokeCreateRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ApiApiApiRecordsProgramRevokeCreate
-     */
     readonly id: number
 }
 
 /**
  * Request parameters for apiRecordsProgramShareCreate operation in ApiApi.
- * @export
- * @interface ApiApiApiRecordsProgramShareCreateRequest
  */
 export interface ApiApiApiRecordsProgramShareCreateRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ApiApiApiRecordsProgramShareCreate
-     */
     readonly id: number
 
-    /**
-     * 
-     * @type {PartnerSchoolRequest}
-     * @memberof ApiApiApiRecordsProgramShareCreate
-     */
     readonly PartnerSchoolRequest: PartnerSchoolRequest
 }
 
 /**
  * Request parameters for learnerRecordRetrieveById operation in ApiApi.
- * @export
- * @interface ApiApiLearnerRecordRetrieveByIdRequest
  */
 export interface ApiApiLearnerRecordRetrieveByIdRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ApiApiLearnerRecordRetrieveById
-     */
     readonly id: number
 }
 
 /**
  * Request parameters for learnerRecordRetrieveByUuid operation in ApiApi.
- * @export
- * @interface ApiApiLearnerRecordRetrieveByUuidRequest
  */
 export interface ApiApiLearnerRecordRetrieveByUuidRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ApiApiLearnerRecordRetrieveByUuid
-     */
     readonly uuid: string
 }
 
 /**
  * ApiApi - object-oriented interface
- * @export
- * @class ApiApi
- * @extends {BaseAPI}
  */
 export class ApiApi extends BaseAPI {
     /**
@@ -10052,7 +5262,6 @@ export class ApiApi extends BaseAPI {
      * @param {ApiApiApiRecordsProgramRevokeCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ApiApi
      */
     public apiRecordsProgramRevokeCreate(requestParameters: ApiApiApiRecordsProgramRevokeCreateRequest, options?: RawAxiosRequestConfig) {
         return ApiApiFp(this.configuration).apiRecordsProgramRevokeCreate(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -10063,7 +5272,6 @@ export class ApiApi extends BaseAPI {
      * @param {ApiApiApiRecordsProgramShareCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ApiApi
      */
     public apiRecordsProgramShareCreate(requestParameters: ApiApiApiRecordsProgramShareCreateRequest, options?: RawAxiosRequestConfig) {
         return ApiApiFp(this.configuration).apiRecordsProgramShareCreate(requestParameters.id, requestParameters.PartnerSchoolRequest, options).then((request) => request(this.axios, this.basePath));
@@ -10074,7 +5282,6 @@ export class ApiApi extends BaseAPI {
      * @param {ApiApiLearnerRecordRetrieveByIdRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ApiApi
      */
     public learnerRecordRetrieveById(requestParameters: ApiApiLearnerRecordRetrieveByIdRequest, options?: RawAxiosRequestConfig) {
         return ApiApiFp(this.configuration).learnerRecordRetrieveById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -10085,7 +5292,6 @@ export class ApiApi extends BaseAPI {
      * @param {ApiApiLearnerRecordRetrieveByUuidRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ApiApi
      */
     public learnerRecordRetrieveByUuid(requestParameters: ApiApiLearnerRecordRetrieveByUuidRequest, options?: RawAxiosRequestConfig) {
         return ApiApiFp(this.configuration).learnerRecordRetrieveByUuid(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
@@ -10096,7 +5302,6 @@ export class ApiApi extends BaseAPI {
 
 /**
  * B2bApi - axios parameter creator
- * @export
  */
 export const B2bApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -10110,7 +5315,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'enrollment_code' is not null or undefined
             assertParamExists('b2bAttachCreate', 'enrollment_code', enrollment_code)
             const localVarPath = `/api/v0/b2b/attach/{enrollment_code}/`
-                .replace(`{${"enrollment_code"}}`, encodeURIComponent(String(enrollment_code)));
+                .replace('{enrollment_code}', encodeURIComponent(String(enrollment_code)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10122,8 +5327,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10144,7 +5349,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'contract_slug' is not null or undefined
             assertParamExists('b2bContractsAllVariantRunsList', 'contract_slug', contract_slug)
             const localVarPath = `/api/v0/b2b/contracts/{contract_slug}/all_variant_runs/`
-                .replace(`{${"contract_slug"}}`, encodeURIComponent(String(contract_slug)));
+                .replace('{contract_slug}', encodeURIComponent(String(contract_slug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10160,8 +5365,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['course_id'] = course_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10189,8 +5394,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10210,7 +5415,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'contract_slug' is not null or undefined
             assertParamExists('b2bContractsRetrieve', 'contract_slug', contract_slug)
             const localVarPath = `/api/v0/b2b/contracts/{contract_slug}/`
-                .replace(`{${"contract_slug"}}`, encodeURIComponent(String(contract_slug)));
+                .replace('{contract_slug}', encodeURIComponent(String(contract_slug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10222,8 +5427,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10244,7 +5449,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'readable_id' is not null or undefined
             assertParamExists('b2bEnrollCreate', 'readable_id', readable_id)
             const localVarPath = `/api/v0/b2b/enroll/{readable_id}/`
-                .replace(`{${"readable_id"}}`, encodeURIComponent(String(readable_id)));
+                .replace('{readable_id}', encodeURIComponent(String(readable_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10256,9 +5461,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -10289,9 +5493,9 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/assign/`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{code}', encodeURIComponent(String(code)))
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10303,9 +5507,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -10333,8 +5536,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesBulkAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/bulk_assign/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10346,9 +5549,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -10377,8 +5579,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesList', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10406,8 +5608,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['status'] = status;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10436,9 +5638,9 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesReassignUpdate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/reassign/`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{code}', encodeURIComponent(String(code)))
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10450,9 +5652,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -10480,9 +5681,9 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesRemindCreate', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/remind/`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{code}', encodeURIComponent(String(code)))
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10494,8 +5695,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10521,9 +5722,9 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesRevokeDestroy', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/{code}/revoke/`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{code}', encodeURIComponent(String(code)))
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10535,8 +5736,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10562,8 +5763,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'SendTestEmailRequest' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCodesSendTestEmailCreate', 'SendTestEmailRequest', SendTestEmailRequest)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/codes/send_test_email/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10575,9 +5776,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -10607,9 +5807,9 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCourseRunsEnrollmentsList', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/course_runs/{course_run_id}/enrollments/`
-                .replace(`{${"course_run_id"}}`, encodeURIComponent(String(course_run_id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{course_run_id}', encodeURIComponent(String(course_run_id)))
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10629,8 +5829,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['page_size'] = page_size;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10655,8 +5855,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsCourseRunsList', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/course_runs/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10676,8 +5876,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['page_size'] = page_size;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10702,8 +5902,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsList', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10723,8 +5923,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['page_size'] = page_size;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10747,8 +5947,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'parent_lookup_organization' is not null or undefined
             assertParamExists('b2bManagerOrganizationsContractsRetrieve', 'parent_lookup_organization', parent_lookup_organization)
             const localVarPath = `/api/v0/b2b/manager/organizations/{parent_lookup_organization}/contracts/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_organization"}}`, encodeURIComponent(String(parent_lookup_organization)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization}', encodeURIComponent(String(parent_lookup_organization)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10760,8 +5960,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10781,7 +5981,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('b2bManagerOrganizationsDetail', 'id', id)
             const localVarPath = `/api/v0/b2b/manager/organizations/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10793,8 +5993,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10837,8 +6037,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['sso_organization_id'] = sso_organization_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10866,8 +6066,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10887,7 +6087,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             // verify required parameter 'organization_slug' is not null or undefined
             assertParamExists('b2bOrganizationsRetrieve', 'organization_slug', organization_slug)
             const localVarPath = `/api/v0/b2b/organizations/{organization_slug}/`
-                .replace(`{${"organization_slug"}}`, encodeURIComponent(String(organization_slug)));
+                .replace('{organization_slug}', encodeURIComponent(String(organization_slug)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -10899,8 +6099,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10942,8 +6142,8 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
                 localVarQueryParameter['user_global_id'] = user_global_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10958,7 +6158,6 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
 
 /**
  * B2bApi - functional programming interface
- * @export
  */
 export const B2bApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = B2bApiAxiosParamCreator(configuration)
@@ -10971,9 +6170,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bAttachCreate(enrollment_code: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ContractPage>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bAttachCreate(enrollment_code, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bAttachCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bAttachCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Return the variant runs for a contract.
@@ -10984,9 +6183,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bContractsAllVariantRunsList(contract_slug: string, course_id?: Array<number>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseCourseRun>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bContractsAllVariantRunsList(contract_slug, course_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bContractsAllVariantRunsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bContractsAllVariantRunsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset for the ContractPage model.
@@ -10995,9 +6194,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bContractsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ContractPage>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bContractsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bContractsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bContractsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset for the ContractPage model.
@@ -11007,9 +6206,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bContractsRetrieve(contract_slug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContractPage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bContractsRetrieve(contract_slug, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bContractsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bContractsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Create an enrollment for the given course run.
@@ -11020,9 +6219,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bEnrollCreate(readable_id: string, B2BEnrollRequestRequest?: B2BEnrollRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateB2BEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bEnrollCreate(readable_id, B2BEnrollRequestRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bEnrollCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bEnrollCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Assign an available enrollment code to an email address and send an invite email.
@@ -11035,9 +6234,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesAssignCreate(code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesAssignCreate(code, id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesAssignCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesAssignCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Bulk-assign enrollment codes from a list of (email, name) records. One available code is assigned per record and an invite email is sent to each successfully assigned address. Returns lists of assigned codes and any errors.
@@ -11049,9 +6248,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesBulkAssignCreate(id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BulkAssignResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesBulkAssignCreate(id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesBulkAssignCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesBulkAssignCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List enrollment codes for a contract. Only shows codes for contracts that require them (non-auto membership types). Logic varies based on whether contract has learner limits.
@@ -11066,9 +6265,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, search_term?: string, status?: B2bManagerOrganizationsContractsCodesListStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentCodeList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesList(id, parent_lookup_organization, page, page_size, search_term, status, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Reassign the assignment for a specific enrollment code
@@ -11081,9 +6280,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesReassignUpdate(code: string, id: number, parent_lookup_organization: number, AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesReassignUpdate(code, id, parent_lookup_organization, AssignRevokeCodeRequestRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesReassignUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesReassignUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Send a reminder email to the user assigned to a specific enrollment code who has not yet claimed it.
@@ -11095,9 +6294,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesRemindCreate(code: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRemindCreate(code, id, parent_lookup_organization, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRemindCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRemindCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Revoke the assignment for a specific enrollment code, returning it to the unassigned pool.
@@ -11109,9 +6308,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesRevokeDestroy(code: string, id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerEnrollmentCode>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesRevokeDestroy(code, id, parent_lookup_organization, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRevokeDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesRevokeDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Send test assignment email to specified email address. This does not include an enrollment code.
@@ -11123,9 +6322,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCodesSendTestEmailCreate(id: number, parent_lookup_organization: number, SendTestEmailRequest: SendTestEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCodesSendTestEmailCreate(id, parent_lookup_organization, SendTestEmailRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesSendTestEmailCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCodesSendTestEmailCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List enrollments for a specific course run within a contract.
@@ -11139,9 +6338,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id: string, id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(course_run_id, id, parent_lookup_organization, page, page_size, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsEnrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List course runs available for a specific contract.
@@ -11154,9 +6353,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsCourseRunsList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerCourseRunList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsCourseRunsList(id, parent_lookup_organization, page, page_size, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsCourseRunsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List an organization\'s contracts.
@@ -11169,9 +6368,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsList(id: number, parent_lookup_organization: number, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedBaseContractPageList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsList(id, parent_lookup_organization, page, page_size, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List an organization\'s contracts.
@@ -11182,9 +6381,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsContractsRetrieve(id: number, parent_lookup_organization: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ManagerContractDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsContractsRetrieve(id, parent_lookup_organization, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsContractsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve managed organizations
@@ -11194,9 +6393,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsDetail(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationPage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsDetail(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsDetail']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsDetail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List managed organizations
@@ -11208,9 +6407,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bManagerOrganizationsList(page?: number, page_size?: number, sso_organization_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrganizationPageList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bManagerOrganizationsList(page, page_size, sso_organization_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bManagerOrganizationsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset for the OrganizationPage model.
@@ -11219,9 +6418,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bOrganizationsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationPage>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bOrganizationsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bOrganizationsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bOrganizationsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset for the OrganizationPage model.
@@ -11231,9 +6430,9 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bOrganizationsRetrieve(organization_slug: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationPage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bOrganizationsRetrieve(organization_slug, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bOrganizationsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bOrganizationsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
@@ -11244,16 +6443,15 @@ export const B2bApiFp = function(configuration?: Configuration) {
          */
         async b2bServiceOrganizationManagerCheck(sso_organization_id: string, user_global_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationManagerCheck>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bServiceOrganizationManagerCheck(sso_organization_id, user_global_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['B2bApi.b2bServiceOrganizationManagerCheck']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bServiceOrganizationManagerCheck']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * B2bApi - factory interface
- * @export
  */
 export const B2bApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = B2bApiFp(configuration)
@@ -11450,520 +6648,341 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
 
 /**
  * Request parameters for b2bAttachCreate operation in B2bApi.
- * @export
- * @interface B2bApiB2bAttachCreateRequest
  */
 export interface B2bApiB2bAttachCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof B2bApiB2bAttachCreate
-     */
     readonly enrollment_code: string
 }
 
 /**
  * Request parameters for b2bContractsAllVariantRunsList operation in B2bApi.
- * @export
- * @interface B2bApiB2bContractsAllVariantRunsListRequest
  */
 export interface B2bApiB2bContractsAllVariantRunsListRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof B2bApiB2bContractsAllVariantRunsList
-     */
     readonly contract_slug: string
 
     /**
      * Course ID(s) to use
-     * @type {Array<number>}
-     * @memberof B2bApiB2bContractsAllVariantRunsList
      */
     readonly course_id?: Array<number>
 }
 
 /**
  * Request parameters for b2bContractsRetrieve operation in B2bApi.
- * @export
- * @interface B2bApiB2bContractsRetrieveRequest
  */
 export interface B2bApiB2bContractsRetrieveRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof B2bApiB2bContractsRetrieve
-     */
     readonly contract_slug: string
 }
 
 /**
  * Request parameters for b2bEnrollCreate operation in B2bApi.
- * @export
- * @interface B2bApiB2bEnrollCreateRequest
  */
 export interface B2bApiB2bEnrollCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof B2bApiB2bEnrollCreate
-     */
     readonly readable_id: string
 
-    /**
-     * 
-     * @type {B2BEnrollRequestRequest}
-     * @memberof B2bApiB2bEnrollCreate
-     */
     readonly B2BEnrollRequestRequest?: B2BEnrollRequestRequest
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesAssignCreate operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest {
     /**
      * The discount code to assign.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
      */
     readonly code: string
 
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
      */
     readonly parent_lookup_organization: number
 
-    /**
-     * 
-     * @type {AssignRevokeCodeRequestRequest}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesAssignCreate
-     */
     readonly AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesBulkAssignCreate operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest {
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
      */
     readonly parent_lookup_organization: number
 
-    /**
-     * 
-     * @type {Array<AssignRevokeCodeRequestRequest>}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreate
-     */
     readonly AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesList operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesListRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesListRequest {
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly parent_lookup_organization: number
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly page_size?: number
 
     /**
      * Filter codes by assigned email, user email, user name, or assigned name.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly search_term?: string
 
     /**
      * Filter codes by status. Supported values are assigned, redeemed, and failed.
-     * @type {'assigned' | 'failed' | 'redeemed'}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesList
      */
     readonly status?: B2bManagerOrganizationsContractsCodesListStatusEnum
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesReassignUpdate operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest {
     /**
      * The discount code to reassign.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
      */
     readonly code: string
 
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
      */
     readonly parent_lookup_organization: number
 
-    /**
-     * 
-     * @type {AssignRevokeCodeRequestRequest}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesReassignUpdate
-     */
     readonly AssignRevokeCodeRequestRequest: AssignRevokeCodeRequestRequest
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesRemindCreate operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest {
     /**
      * The discount code to send a reminder for.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
      */
     readonly code: string
 
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRemindCreate
      */
     readonly parent_lookup_organization: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesRevokeDestroy operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest {
     /**
      * The discount code to revoke.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
      */
     readonly code: string
 
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroy
      */
     readonly parent_lookup_organization: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCodesSendTestEmailCreate operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest {
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
      */
     readonly parent_lookup_organization: number
 
-    /**
-     * 
-     * @type {SendTestEmailRequest}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreate
-     */
     readonly SendTestEmailRequest: SendTestEmailRequest
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCourseRunsEnrollmentsList operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest {
     /**
      * Courseware ID to pull enrollments for.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly course_run_id: string
 
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly parent_lookup_organization: number
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsList
      */
     readonly page_size?: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsCourseRunsList operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest {
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly parent_lookup_organization: number
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsCourseRunsList
      */
     readonly page_size?: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsList operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsListRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsListRequest {
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsList
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsList
      */
     readonly parent_lookup_organization: number
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsList
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsList
      */
     readonly page_size?: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsContractsRetrieve operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsContractsRetrieveRequest
  */
 export interface B2bApiB2bManagerOrganizationsContractsRetrieveRequest {
     /**
      * ID of the contract
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsRetrieve
      */
     readonly id: number
 
     /**
      * ID of the parent organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsContractsRetrieve
      */
     readonly parent_lookup_organization: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsDetail operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsDetailRequest
  */
 export interface B2bApiB2bManagerOrganizationsDetailRequest {
     /**
      * ID of the organization
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsDetail
      */
     readonly id: number
 }
 
 /**
  * Request parameters for b2bManagerOrganizationsList operation in B2bApi.
- * @export
- * @interface B2bApiB2bManagerOrganizationsListRequest
  */
 export interface B2bApiB2bManagerOrganizationsListRequest {
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsList
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof B2bApiB2bManagerOrganizationsList
      */
     readonly page_size?: number
 
     /**
      * Narrow the result to the single org with this Keycloak organization UUID (sso_organization_id). A non-empty response means the caller manages that org.
-     * @type {string}
-     * @memberof B2bApiB2bManagerOrganizationsList
      */
     readonly sso_organization_id?: string
 }
 
 /**
  * Request parameters for b2bOrganizationsRetrieve operation in B2bApi.
- * @export
- * @interface B2bApiB2bOrganizationsRetrieveRequest
  */
 export interface B2bApiB2bOrganizationsRetrieveRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof B2bApiB2bOrganizationsRetrieve
-     */
     readonly organization_slug: string
 }
 
 /**
  * Request parameters for b2bServiceOrganizationManagerCheck operation in B2bApi.
- * @export
- * @interface B2bApiB2bServiceOrganizationManagerCheckRequest
  */
 export interface B2bApiB2bServiceOrganizationManagerCheckRequest {
     /**
      * The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
-     * @type {string}
-     * @memberof B2bApiB2bServiceOrganizationManagerCheck
      */
     readonly sso_organization_id: string
 
     /**
      * The user\&#39;s Keycloak subject (User.global_id).
-     * @type {string}
-     * @memberof B2bApiB2bServiceOrganizationManagerCheck
      */
     readonly user_global_id: string
 }
 
 /**
  * B2bApi - object-oriented interface
- * @export
- * @class B2bApi
- * @extends {BaseAPI}
  */
 export class B2bApi extends BaseAPI {
     /**
@@ -11971,7 +6990,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bAttachCreate(requestParameters: B2bApiB2bAttachCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bAttachCreate(requestParameters.enrollment_code, options).then((request) => request(this.axios, this.basePath));
@@ -11982,7 +7000,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bContractsAllVariantRunsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bContractsAllVariantRunsList(requestParameters: B2bApiB2bContractsAllVariantRunsListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bContractsAllVariantRunsList(requestParameters.contract_slug, requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
@@ -11992,7 +7009,6 @@ export class B2bApi extends BaseAPI {
      * Viewset for the ContractPage model.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bContractsList(options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bContractsList(options).then((request) => request(this.axios, this.basePath));
@@ -12003,7 +7019,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bContractsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bContractsRetrieve(requestParameters: B2bApiB2bContractsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bContractsRetrieve(requestParameters.contract_slug, options).then((request) => request(this.axios, this.basePath));
@@ -12014,7 +7029,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bEnrollCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bEnrollCreate(requestParameters: B2bApiB2bEnrollCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bEnrollCreate(requestParameters.readable_id, requestParameters.B2BEnrollRequestRequest, options).then((request) => request(this.axios, this.basePath));
@@ -12025,7 +7039,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesAssignCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
@@ -12036,7 +7049,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesBulkAssignCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesBulkAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
@@ -12047,7 +7059,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesList(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, requestParameters.search_term, requestParameters.status, options).then((request) => request(this.axios, this.basePath));
@@ -12058,7 +7069,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesReassignUpdateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesReassignUpdate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
@@ -12069,7 +7079,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRemindCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRemindCreate(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
@@ -12080,7 +7089,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesRevokeDestroyRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesRevokeDestroy(requestParameters.code, requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
@@ -12091,7 +7099,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters: B2bApiB2bManagerOrganizationsContractsCodesSendTestEmailCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCodesSendTestEmailCreate(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.SendTestEmailRequest, options).then((request) => request(this.axios, this.basePath));
@@ -12102,7 +7109,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsEnrollmentsListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsEnrollmentsList(requestParameters.course_run_id, requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
@@ -12113,7 +7119,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsCourseRunsList(requestParameters: B2bApiB2bManagerOrganizationsContractsCourseRunsListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsCourseRunsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
@@ -12124,7 +7129,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsList(requestParameters: B2bApiB2bManagerOrganizationsContractsListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsList(requestParameters.id, requestParameters.parent_lookup_organization, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
@@ -12135,7 +7139,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsContractsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsContractsRetrieve(requestParameters: B2bApiB2bManagerOrganizationsContractsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsContractsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization, options).then((request) => request(this.axios, this.basePath));
@@ -12146,7 +7149,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsDetailRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsDetail(requestParameters: B2bApiB2bManagerOrganizationsDetailRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsDetail(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -12157,7 +7159,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bManagerOrganizationsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bManagerOrganizationsList(requestParameters: B2bApiB2bManagerOrganizationsListRequest = {}, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bManagerOrganizationsList(requestParameters.page, requestParameters.page_size, requestParameters.sso_organization_id, options).then((request) => request(this.axios, this.basePath));
@@ -12167,7 +7168,6 @@ export class B2bApi extends BaseAPI {
      * Viewset for the OrganizationPage model.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bOrganizationsList(options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsList(options).then((request) => request(this.axios, this.basePath));
@@ -12178,7 +7178,6 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bOrganizationsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
@@ -12189,27 +7188,22 @@ export class B2bApi extends BaseAPI {
      * @param {B2bApiB2bServiceOrganizationManagerCheckRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof B2bApi
      */
     public b2bServiceOrganizationManagerCheck(requestParameters: B2bApiB2bServiceOrganizationManagerCheckRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bServiceOrganizationManagerCheck(requestParameters.sso_organization_id, requestParameters.user_global_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
-/**
- * @export
- */
 export const B2bManagerOrganizationsContractsCodesListStatusEnum = {
     Assigned: 'assigned',
     Failed: 'failed',
-    Redeemed: 'redeemed'
+    Redeemed: 'redeemed',
 } as const;
 export type B2bManagerOrganizationsContractsCodesListStatusEnum = typeof B2bManagerOrganizationsContractsCodesListStatusEnum[keyof typeof B2bManagerOrganizationsContractsCodesListStatusEnum];
 
 
 /**
  * BasketsApi - axios parameter creator
- * @export
  */
 export const BasketsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -12238,8 +7232,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['discount_code'] = discount_code;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12267,8 +7261,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12297,7 +7291,6 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12317,7 +7310,7 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'product_id' is not null or undefined
             assertParamExists('basketsCreateFromProductCreate', 'product_id', product_id)
             const localVarPath = `/api/v0/baskets/create_from_product/{product_id}/`
-                .replace(`{${"product_id"}}`, encodeURIComponent(String(product_id)));
+                .replace('{product_id}', encodeURIComponent(String(product_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12329,8 +7322,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12361,9 +7354,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -12388,8 +7380,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'parent_lookup_basket' is not null or undefined
             assertParamExists('basketsItemsCreate', 'parent_lookup_basket', parent_lookup_basket)
             const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_basket}', encodeURIComponent(String(parent_lookup_basket)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12401,8 +7393,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12425,8 +7417,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'parent_lookup_basket' is not null or undefined
             assertParamExists('basketsItemsDestroy', 'parent_lookup_basket', parent_lookup_basket)
             const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_basket}', encodeURIComponent(String(parent_lookup_basket)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12439,7 +7431,6 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12462,8 +7453,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'parent_lookup_basket' is not null or undefined
             assertParamExists('basketsItemsList', 'parent_lookup_basket', parent_lookup_basket)
             const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_basket}', encodeURIComponent(String(parent_lookup_basket)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12475,8 +7466,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12499,8 +7490,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'parent_lookup_basket' is not null or undefined
             assertParamExists('basketsItemsPartialUpdate', 'parent_lookup_basket', parent_lookup_basket)
             const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_basket}', encodeURIComponent(String(parent_lookup_basket)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12512,8 +7503,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12536,8 +7527,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'parent_lookup_basket' is not null or undefined
             assertParamExists('basketsItemsRetrieve', 'parent_lookup_basket', parent_lookup_basket)
             const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_basket}', encodeURIComponent(String(parent_lookup_basket)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12549,8 +7540,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12573,8 +7564,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'parent_lookup_basket' is not null or undefined
             assertParamExists('basketsItemsUpdate', 'parent_lookup_basket', parent_lookup_basket)
             const localVarPath = `/api/v0/baskets/{parent_lookup_basket}/items/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_basket"}}`, encodeURIComponent(String(parent_lookup_basket)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_basket}', encodeURIComponent(String(parent_lookup_basket)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12586,8 +7577,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12615,8 +7606,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12636,7 +7627,7 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'id' is not null or undefined
             assertParamExists('basketsRetrieve', 'id', id)
             const localVarPath = `/api/v0/baskets/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12648,8 +7639,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12672,8 +7663,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'product_id' is not null or undefined
             assertParamExists('createBasketFromProductWithDiscount', 'product_id', product_id)
             const localVarPath = `/api/v0/baskets/create_from_product/{product_id}/{discount_code}/`
-                .replace(`{${"discount_code"}}`, encodeURIComponent(String(discount_code)))
-                .replace(`{${"product_id"}}`, encodeURIComponent(String(product_id)));
+                .replace('{discount_code}', encodeURIComponent(String(discount_code)))
+                .replace('{product_id}', encodeURIComponent(String(product_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -12685,8 +7676,8 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12701,7 +7692,6 @@ export const BasketsApiAxiosParamCreator = function (configuration?: Configurati
 
 /**
  * BasketsApi - functional programming interface
- * @export
  */
 export const BasketsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = BasketsApiAxiosParamCreator(configuration)
@@ -12714,9 +7704,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsAddDiscountCreate(discount_code: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsAddDiscountCreate(discount_code, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsAddDiscountCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsAddDiscountCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the payload necessary to start the payment process.
@@ -12725,9 +7715,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsCheckoutRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutPayload>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCheckoutRetrieve(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsCheckoutRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsCheckoutRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Clears the basket for the current user.
@@ -12736,9 +7726,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsClearDestroy(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsClearDestroy(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsClearDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsClearDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Creates or updates a basket for the current user, adding the selected product.
@@ -12748,9 +7738,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsCreateFromProductCreate(product_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCreateFromProductCreate(product_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsCreateFromProductCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsCreateFromProductCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Creates or updates a basket for the current user, adding the selected product.
@@ -12760,9 +7750,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsCreateWithProductsCreate(CreateBasketWithProductsRequest: CreateBasketWithProductsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsCreateWithProductsCreate(CreateBasketWithProductsRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsCreateWithProductsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsCreateWithProductsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the basket items for the current user.
@@ -12773,9 +7763,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsItemsCreate(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsCreate(id, parent_lookup_basket, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsItemsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsItemsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the basket items for the current user.
@@ -12786,9 +7776,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsItemsDestroy(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsDestroy(id, parent_lookup_basket, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsItemsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsItemsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the basket items for the current user.
@@ -12799,9 +7789,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsItemsList(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BasketItem>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsList(id, parent_lookup_basket, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsItemsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsItemsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the basket items for the current user.
@@ -12812,9 +7802,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsItemsPartialUpdate(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsPartialUpdate(id, parent_lookup_basket, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsItemsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsItemsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the basket items for the current user.
@@ -12825,9 +7815,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsItemsRetrieve(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsRetrieve(id, parent_lookup_basket, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsItemsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsItemsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns the basket items for the current user.
@@ -12838,9 +7828,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsItemsUpdate(id: number, parent_lookup_basket: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketItem>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsItemsUpdate(id, parent_lookup_basket, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsItemsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsItemsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrives the current user\'s baskets.
@@ -12849,9 +7839,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BasketWithProduct>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a basket for the current user.
@@ -12861,9 +7851,9 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async basketsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.basketsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.basketsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.basketsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Creates or updates a basket for the current user, adding the selected product and discount.
@@ -12874,16 +7864,15 @@ export const BasketsApiFp = function(configuration?: Configuration) {
          */
         async createBasketFromProductWithDiscount(discount_code: string, product_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BasketWithProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createBasketFromProductWithDiscount(discount_code, product_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BasketsApi.createBasketFromProductWithDiscount']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BasketsApi.createBasketFromProductWithDiscount']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * BasketsApi - factory interface
- * @export
  */
 export const BasketsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = BasketsApiFp(configuration)
@@ -13016,212 +8005,133 @@ export const BasketsApiFactory = function (configuration?: Configuration, basePa
 
 /**
  * Request parameters for basketsAddDiscountCreate operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsAddDiscountCreateRequest
  */
 export interface BasketsApiBasketsAddDiscountCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof BasketsApiBasketsAddDiscountCreate
-     */
     readonly discount_code: string
 }
 
 /**
  * Request parameters for basketsCreateFromProductCreate operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsCreateFromProductCreateRequest
  */
 export interface BasketsApiBasketsCreateFromProductCreateRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketsApiBasketsCreateFromProductCreate
-     */
     readonly product_id: number
 }
 
 /**
  * Request parameters for basketsCreateWithProductsCreate operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsCreateWithProductsCreateRequest
  */
 export interface BasketsApiBasketsCreateWithProductsCreateRequest {
-    /**
-     * 
-     * @type {CreateBasketWithProductsRequest}
-     * @memberof BasketsApiBasketsCreateWithProductsCreate
-     */
     readonly CreateBasketWithProductsRequest: CreateBasketWithProductsRequest
 }
 
 /**
  * Request parameters for basketsItemsCreate operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsItemsCreateRequest
  */
 export interface BasketsApiBasketsItemsCreateRequest {
     /**
      * ID of the basket item
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsCreate
      */
     readonly id: number
 
     /**
      * ID of the parent basket
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsCreate
      */
     readonly parent_lookup_basket: number
 }
 
 /**
  * Request parameters for basketsItemsDestroy operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsItemsDestroyRequest
  */
 export interface BasketsApiBasketsItemsDestroyRequest {
     /**
      * ID of the basket item
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent basket
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsDestroy
      */
     readonly parent_lookup_basket: number
 }
 
 /**
  * Request parameters for basketsItemsList operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsItemsListRequest
  */
 export interface BasketsApiBasketsItemsListRequest {
     /**
      * ID of the basket item
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsList
      */
     readonly id: number
 
     /**
      * ID of the parent basket
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsList
      */
     readonly parent_lookup_basket: number
 }
 
 /**
  * Request parameters for basketsItemsPartialUpdate operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsItemsPartialUpdateRequest
  */
 export interface BasketsApiBasketsItemsPartialUpdateRequest {
     /**
      * ID of the basket item
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsPartialUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent basket
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsPartialUpdate
      */
     readonly parent_lookup_basket: number
 }
 
 /**
  * Request parameters for basketsItemsRetrieve operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsItemsRetrieveRequest
  */
 export interface BasketsApiBasketsItemsRetrieveRequest {
     /**
      * ID of the basket item
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsRetrieve
      */
     readonly id: number
 
     /**
      * ID of the parent basket
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsRetrieve
      */
     readonly parent_lookup_basket: number
 }
 
 /**
  * Request parameters for basketsItemsUpdate operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsItemsUpdateRequest
  */
 export interface BasketsApiBasketsItemsUpdateRequest {
     /**
      * ID of the basket item
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent basket
-     * @type {number}
-     * @memberof BasketsApiBasketsItemsUpdate
      */
     readonly parent_lookup_basket: number
 }
 
 /**
  * Request parameters for basketsRetrieve operation in BasketsApi.
- * @export
- * @interface BasketsApiBasketsRetrieveRequest
  */
 export interface BasketsApiBasketsRetrieveRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketsApiBasketsRetrieve
-     */
     readonly id: number
 }
 
 /**
  * Request parameters for createBasketFromProductWithDiscount operation in BasketsApi.
- * @export
- * @interface BasketsApiCreateBasketFromProductWithDiscountRequest
  */
 export interface BasketsApiCreateBasketFromProductWithDiscountRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof BasketsApiCreateBasketFromProductWithDiscount
-     */
     readonly discount_code: string
 
-    /**
-     * 
-     * @type {number}
-     * @memberof BasketsApiCreateBasketFromProductWithDiscount
-     */
     readonly product_id: number
 }
 
 /**
  * BasketsApi - object-oriented interface
- * @export
- * @class BasketsApi
- * @extends {BaseAPI}
  */
 export class BasketsApi extends BaseAPI {
     /**
@@ -13229,7 +8139,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsAddDiscountCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsAddDiscountCreate(requestParameters: BasketsApiBasketsAddDiscountCreateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsAddDiscountCreate(requestParameters.discount_code, options).then((request) => request(this.axios, this.basePath));
@@ -13239,7 +8148,6 @@ export class BasketsApi extends BaseAPI {
      * Returns the payload necessary to start the payment process.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsCheckoutRetrieve(options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsCheckoutRetrieve(options).then((request) => request(this.axios, this.basePath));
@@ -13249,7 +8157,6 @@ export class BasketsApi extends BaseAPI {
      * Clears the basket for the current user.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsClearDestroy(options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsClearDestroy(options).then((request) => request(this.axios, this.basePath));
@@ -13260,7 +8167,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsCreateFromProductCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsCreateFromProductCreate(requestParameters: BasketsApiBasketsCreateFromProductCreateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsCreateFromProductCreate(requestParameters.product_id, options).then((request) => request(this.axios, this.basePath));
@@ -13271,7 +8177,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsCreateWithProductsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsCreateWithProductsCreate(requestParameters: BasketsApiBasketsCreateWithProductsCreateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsCreateWithProductsCreate(requestParameters.CreateBasketWithProductsRequest, options).then((request) => request(this.axios, this.basePath));
@@ -13282,7 +8187,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsItemsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsItemsCreate(requestParameters: BasketsApiBasketsItemsCreateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsItemsCreate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
@@ -13293,7 +8197,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsItemsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsItemsDestroy(requestParameters: BasketsApiBasketsItemsDestroyRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsItemsDestroy(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
@@ -13304,7 +8207,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsItemsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsItemsList(requestParameters: BasketsApiBasketsItemsListRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsItemsList(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
@@ -13315,7 +8217,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsItemsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsItemsPartialUpdate(requestParameters: BasketsApiBasketsItemsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsItemsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
@@ -13326,7 +8227,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsItemsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsItemsRetrieve(requestParameters: BasketsApiBasketsItemsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsItemsRetrieve(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
@@ -13337,7 +8237,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsItemsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsItemsUpdate(requestParameters: BasketsApiBasketsItemsUpdateRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsItemsUpdate(requestParameters.id, requestParameters.parent_lookup_basket, options).then((request) => request(this.axios, this.basePath));
@@ -13347,7 +8246,6 @@ export class BasketsApi extends BaseAPI {
      * Retrives the current user\'s baskets.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsList(options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsList(options).then((request) => request(this.axios, this.basePath));
@@ -13358,7 +8256,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiBasketsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public basketsRetrieve(requestParameters: BasketsApiBasketsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).basketsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -13369,7 +8266,6 @@ export class BasketsApi extends BaseAPI {
      * @param {BasketsApiCreateBasketFromProductWithDiscountRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof BasketsApi
      */
     public createBasketFromProductWithDiscount(requestParameters: BasketsApiCreateBasketFromProductWithDiscountRequest, options?: RawAxiosRequestConfig) {
         return BasketsApiFp(this.configuration).createBasketFromProductWithDiscount(requestParameters.discount_code, requestParameters.product_id, options).then((request) => request(this.axios, this.basePath));
@@ -13380,7 +8276,6 @@ export class BasketsApi extends BaseAPI {
 
 /**
  * ChangeEmailsApi - axios parameter creator
- * @export
  */
 export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -13405,9 +8300,8 @@ export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -13430,7 +8324,7 @@ export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Config
             // verify required parameter 'code' is not null or undefined
             assertParamExists('changeEmailsPartialUpdate', 'code', code)
             const localVarPath = `/api/v0/change-emails/{code}/`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+                .replace('{code}', encodeURIComponent(String(code)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -13442,9 +8336,8 @@ export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -13469,7 +8362,7 @@ export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Config
             // verify required parameter 'ChangeEmailRequestUpdateRequest' is not null or undefined
             assertParamExists('changeEmailsUpdate', 'ChangeEmailRequestUpdateRequest', ChangeEmailRequestUpdateRequest)
             const localVarPath = `/api/v0/change-emails/{code}/`
-                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+                .replace('{code}', encodeURIComponent(String(code)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -13481,9 +8374,8 @@ export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -13500,7 +8392,6 @@ export const ChangeEmailsApiAxiosParamCreator = function (configuration?: Config
 
 /**
  * ChangeEmailsApi - functional programming interface
- * @export
  */
 export const ChangeEmailsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ChangeEmailsApiAxiosParamCreator(configuration)
@@ -13513,9 +8404,9 @@ export const ChangeEmailsApiFp = function(configuration?: Configuration) {
          */
         async changeEmailsCreate(ChangeEmailRequestCreateRequest: ChangeEmailRequestCreateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChangeEmailRequestCreate>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.changeEmailsCreate(ChangeEmailRequestCreateRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ChangeEmailsApi.changeEmailsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChangeEmailsApi.changeEmailsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset for creating and updating email change requests
@@ -13526,9 +8417,9 @@ export const ChangeEmailsApiFp = function(configuration?: Configuration) {
          */
         async changeEmailsPartialUpdate(code: string, PatchedChangeEmailRequestUpdateRequest?: PatchedChangeEmailRequestUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChangeEmailRequestUpdate>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.changeEmailsPartialUpdate(code, PatchedChangeEmailRequestUpdateRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ChangeEmailsApi.changeEmailsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChangeEmailsApi.changeEmailsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset for creating and updating email change requests
@@ -13539,16 +8430,15 @@ export const ChangeEmailsApiFp = function(configuration?: Configuration) {
          */
         async changeEmailsUpdate(code: string, ChangeEmailRequestUpdateRequest: ChangeEmailRequestUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChangeEmailRequestUpdate>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.changeEmailsUpdate(code, ChangeEmailRequestUpdateRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ChangeEmailsApi.changeEmailsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChangeEmailsApi.changeEmailsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ChangeEmailsApi - factory interface
- * @export
  */
 export const ChangeEmailsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ChangeEmailsApiFp(configuration)
@@ -13585,65 +8475,31 @@ export const ChangeEmailsApiFactory = function (configuration?: Configuration, b
 
 /**
  * Request parameters for changeEmailsCreate operation in ChangeEmailsApi.
- * @export
- * @interface ChangeEmailsApiChangeEmailsCreateRequest
  */
 export interface ChangeEmailsApiChangeEmailsCreateRequest {
-    /**
-     * 
-     * @type {ChangeEmailRequestCreateRequest}
-     * @memberof ChangeEmailsApiChangeEmailsCreate
-     */
     readonly ChangeEmailRequestCreateRequest: ChangeEmailRequestCreateRequest
 }
 
 /**
  * Request parameters for changeEmailsPartialUpdate operation in ChangeEmailsApi.
- * @export
- * @interface ChangeEmailsApiChangeEmailsPartialUpdateRequest
  */
 export interface ChangeEmailsApiChangeEmailsPartialUpdateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ChangeEmailsApiChangeEmailsPartialUpdate
-     */
     readonly code: string
 
-    /**
-     * 
-     * @type {PatchedChangeEmailRequestUpdateRequest}
-     * @memberof ChangeEmailsApiChangeEmailsPartialUpdate
-     */
     readonly PatchedChangeEmailRequestUpdateRequest?: PatchedChangeEmailRequestUpdateRequest
 }
 
 /**
  * Request parameters for changeEmailsUpdate operation in ChangeEmailsApi.
- * @export
- * @interface ChangeEmailsApiChangeEmailsUpdateRequest
  */
 export interface ChangeEmailsApiChangeEmailsUpdateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ChangeEmailsApiChangeEmailsUpdate
-     */
     readonly code: string
 
-    /**
-     * 
-     * @type {ChangeEmailRequestUpdateRequest}
-     * @memberof ChangeEmailsApiChangeEmailsUpdate
-     */
     readonly ChangeEmailRequestUpdateRequest: ChangeEmailRequestUpdateRequest
 }
 
 /**
  * ChangeEmailsApi - object-oriented interface
- * @export
- * @class ChangeEmailsApi
- * @extends {BaseAPI}
  */
 export class ChangeEmailsApi extends BaseAPI {
     /**
@@ -13651,7 +8507,6 @@ export class ChangeEmailsApi extends BaseAPI {
      * @param {ChangeEmailsApiChangeEmailsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChangeEmailsApi
      */
     public changeEmailsCreate(requestParameters: ChangeEmailsApiChangeEmailsCreateRequest, options?: RawAxiosRequestConfig) {
         return ChangeEmailsApiFp(this.configuration).changeEmailsCreate(requestParameters.ChangeEmailRequestCreateRequest, options).then((request) => request(this.axios, this.basePath));
@@ -13662,7 +8517,6 @@ export class ChangeEmailsApi extends BaseAPI {
      * @param {ChangeEmailsApiChangeEmailsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChangeEmailsApi
      */
     public changeEmailsPartialUpdate(requestParameters: ChangeEmailsApiChangeEmailsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return ChangeEmailsApiFp(this.configuration).changeEmailsPartialUpdate(requestParameters.code, requestParameters.PatchedChangeEmailRequestUpdateRequest, options).then((request) => request(this.axios, this.basePath));
@@ -13673,7 +8527,6 @@ export class ChangeEmailsApi extends BaseAPI {
      * @param {ChangeEmailsApiChangeEmailsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChangeEmailsApi
      */
     public changeEmailsUpdate(requestParameters: ChangeEmailsApiChangeEmailsUpdateRequest, options?: RawAxiosRequestConfig) {
         return ChangeEmailsApiFp(this.configuration).changeEmailsUpdate(requestParameters.code, requestParameters.ChangeEmailRequestUpdateRequest, options).then((request) => request(this.axios, this.basePath));
@@ -13684,7 +8537,6 @@ export class ChangeEmailsApi extends BaseAPI {
 
 /**
  * CountriesApi - axios parameter creator
- * @export
  */
 export const CountriesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -13706,8 +8558,8 @@ export const CountriesApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13722,7 +8574,6 @@ export const CountriesApiAxiosParamCreator = function (configuration?: Configura
 
 /**
  * CountriesApi - functional programming interface
- * @export
  */
 export const CountriesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CountriesApiAxiosParamCreator(configuration)
@@ -13734,16 +8585,15 @@ export const CountriesApiFp = function(configuration?: Configuration) {
          */
         async countriesList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Country>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.countriesList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CountriesApi.countriesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CountriesApi.countriesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * CountriesApi - factory interface
- * @export
  */
 export const CountriesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = CountriesApiFp(configuration)
@@ -13761,16 +8611,12 @@ export const CountriesApiFactory = function (configuration?: Configuration, base
 
 /**
  * CountriesApi - object-oriented interface
- * @export
- * @class CountriesApi
- * @extends {BaseAPI}
  */
 export class CountriesApi extends BaseAPI {
     /**
      * Get generator for countries/states list
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CountriesApi
      */
     public countriesList(options?: RawAxiosRequestConfig) {
         return CountriesApiFp(this.configuration).countriesList(options).then((request) => request(this.axios, this.basePath));
@@ -13781,7 +8627,6 @@ export class CountriesApi extends BaseAPI {
 
 /**
  * CourseCertificatesApi - axios parameter creator
- * @export
  */
 export const CourseCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -13795,7 +8640,7 @@ export const CourseCertificatesApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'uuid' is not null or undefined
             assertParamExists('courseCertificatesRetrieve', 'uuid', uuid)
             const localVarPath = `/api/v2/course_certificates/{uuid}/`
-                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
+                .replace('{uuid}', encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -13807,8 +8652,8 @@ export const CourseCertificatesApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13823,7 +8668,6 @@ export const CourseCertificatesApiAxiosParamCreator = function (configuration?: 
 
 /**
  * CourseCertificatesApi - functional programming interface
- * @export
  */
 export const CourseCertificatesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CourseCertificatesApiAxiosParamCreator(configuration)
@@ -13836,16 +8680,15 @@ export const CourseCertificatesApiFp = function(configuration?: Configuration) {
          */
         async courseCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseRunCertificate>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseCertificatesRetrieve(uuid, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CourseCertificatesApi.courseCertificatesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseCertificatesApi.courseCertificatesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * CourseCertificatesApi - factory interface
- * @export
  */
 export const CourseCertificatesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = CourseCertificatesApiFp(configuration)
@@ -13864,23 +8707,13 @@ export const CourseCertificatesApiFactory = function (configuration?: Configurat
 
 /**
  * Request parameters for courseCertificatesRetrieve operation in CourseCertificatesApi.
- * @export
- * @interface CourseCertificatesApiCourseCertificatesRetrieveRequest
  */
 export interface CourseCertificatesApiCourseCertificatesRetrieveRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseCertificatesApiCourseCertificatesRetrieve
-     */
     readonly uuid: string
 }
 
 /**
  * CourseCertificatesApi - object-oriented interface
- * @export
- * @class CourseCertificatesApi
- * @extends {BaseAPI}
  */
 export class CourseCertificatesApi extends BaseAPI {
     /**
@@ -13888,7 +8721,6 @@ export class CourseCertificatesApi extends BaseAPI {
      * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CourseCertificatesApi
      */
     public courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return CourseCertificatesApiFp(this.configuration).courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
@@ -13899,7 +8731,6 @@ export class CourseCertificatesApi extends BaseAPI {
 
 /**
  * CourseRunsApi - axios parameter creator
- * @export
  */
 export const CourseRunsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -13931,8 +8762,8 @@ export const CourseRunsApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['live'] = live;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13952,7 +8783,7 @@ export const CourseRunsApiAxiosParamCreator = function (configuration?: Configur
             // verify required parameter 'id' is not null or undefined
             assertParamExists('courseRunsRetrieve', 'id', id)
             const localVarPath = `/api/v1/course_runs/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -13964,8 +8795,8 @@ export const CourseRunsApiAxiosParamCreator = function (configuration?: Configur
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13980,7 +8811,6 @@ export const CourseRunsApiAxiosParamCreator = function (configuration?: Configur
 
 /**
  * CourseRunsApi - functional programming interface
- * @export
  */
 export const CourseRunsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CourseRunsApiAxiosParamCreator(configuration)
@@ -13994,9 +8824,9 @@ export const CourseRunsApiFp = function(configuration?: Configuration) {
          */
         async courseRunsList(id?: number, live?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V1CourseRunWithCourse>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsList(id, live, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CourseRunsApi.courseRunsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for CourseRuns
@@ -14006,16 +8836,15 @@ export const CourseRunsApiFp = function(configuration?: Configuration) {
          */
         async courseRunsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1CourseRunWithCourse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CourseRunsApi.courseRunsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * CourseRunsApi - factory interface
- * @export
  */
 export const CourseRunsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = CourseRunsApiFp(configuration)
@@ -14043,44 +8872,25 @@ export const CourseRunsApiFactory = function (configuration?: Configuration, bas
 
 /**
  * Request parameters for courseRunsList operation in CourseRunsApi.
- * @export
- * @interface CourseRunsApiCourseRunsListRequest
  */
 export interface CourseRunsApiCourseRunsListRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseRunsApiCourseRunsList
-     */
     readonly id?: number
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseRunsApiCourseRunsList
-     */
     readonly live?: boolean
 }
 
 /**
  * Request parameters for courseRunsRetrieve operation in CourseRunsApi.
- * @export
- * @interface CourseRunsApiCourseRunsRetrieveRequest
  */
 export interface CourseRunsApiCourseRunsRetrieveRequest {
     /**
      * A unique integer value identifying this course run.
-     * @type {number}
-     * @memberof CourseRunsApiCourseRunsRetrieve
      */
     readonly id: number
 }
 
 /**
  * CourseRunsApi - object-oriented interface
- * @export
- * @class CourseRunsApi
- * @extends {BaseAPI}
  */
 export class CourseRunsApi extends BaseAPI {
     /**
@@ -14088,7 +8898,6 @@ export class CourseRunsApi extends BaseAPI {
      * @param {CourseRunsApiCourseRunsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CourseRunsApi
      */
     public courseRunsList(requestParameters: CourseRunsApiCourseRunsListRequest = {}, options?: RawAxiosRequestConfig) {
         return CourseRunsApiFp(this.configuration).courseRunsList(requestParameters.id, requestParameters.live, options).then((request) => request(this.axios, this.basePath));
@@ -14099,7 +8908,6 @@ export class CourseRunsApi extends BaseAPI {
      * @param {CourseRunsApiCourseRunsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CourseRunsApi
      */
     public courseRunsRetrieve(requestParameters: CourseRunsApiCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return CourseRunsApiFp(this.configuration).courseRunsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -14110,7 +8918,6 @@ export class CourseRunsApi extends BaseAPI {
 
 /**
  * CoursesApi - axios parameter creator
- * @export
  */
 export const CoursesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -14167,8 +8974,8 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['readable_id'] = readable_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14188,7 +8995,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiV1CoursesRetrieve', 'id', id)
             const localVarPath = `/api/v1/courses/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -14200,8 +9007,8 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14294,8 +9101,8 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['readable_id'] = readable_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14315,7 +9122,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiV2CoursesRetrieve', 'id', id)
             const localVarPath = `/api/v2/courses/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -14327,8 +9134,8 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14348,7 +9155,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'course_id' is not null or undefined
             assertParamExists('courseOutlineRetrieveV3', 'course_id', course_id)
             const localVarPath = `/api/v3/courses/{course_id}/ol_openedx_outline/`
-                .replace(`{${"course_id"}}`, encodeURIComponent(String(course_id)));
+                .replace('{course_id}', encodeURIComponent(String(course_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -14360,8 +9167,8 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14418,8 +9225,8 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['length'] = length;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14434,7 +9241,6 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
 
 /**
  * CoursesApi - functional programming interface
- * @export
  */
 export const CoursesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CoursesApiAxiosParamCreator(configuration)
@@ -14453,9 +9259,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV1CoursesList(courserun_is_enrollable?: boolean, id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV1CourseWithCourseRunsList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1CoursesList(courserun_is_enrollable, id, live, page, page__live, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV1CoursesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV1CoursesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a specific course - API v1
@@ -14465,9 +9271,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV1CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1CourseWithCourseRuns>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1CoursesRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV1CoursesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV1CoursesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List all courses - API v2
@@ -14489,9 +9295,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, courseruns__language, courseruns__variant_industry, courseruns__variant_length, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a specific course - API v2
@@ -14501,9 +9307,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async apiV2CoursesRetrieve(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRunsSerializerV2>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Fetch course outline data for the given course key from Open edX.
@@ -14513,9 +9319,9 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async courseOutlineRetrieveV3(course_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseOutlineResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseOutlineRetrieveV3(course_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.courseOutlineRetrieveV3']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.courseOutlineRetrieveV3']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Fetch variant runs for a course(s) matching the specified filters.
@@ -14529,16 +9335,15 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          */
         async courseVariantRunsV3(contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseVariantRunsResponse>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.courseVariantRunsV3(contract, course_id, industry, language, length, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CoursesApi.courseVariantRunsV3']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CoursesApi.courseVariantRunsV3']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * CoursesApi - factory interface
- * @export
  */
 export const CoursesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = CoursesApiFp(configuration)
@@ -14602,247 +9407,152 @@ export const CoursesApiFactory = function (configuration?: Configuration, basePa
 
 /**
  * Request parameters for apiV1CoursesList operation in CoursesApi.
- * @export
- * @interface CoursesApiApiV1CoursesListRequest
  */
 export interface CoursesApiApiV1CoursesListRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CoursesApiApiV1CoursesList
-     */
     readonly courserun_is_enrollable?: boolean
 
-    /**
-     * 
-     * @type {number}
-     * @memberof CoursesApiApiV1CoursesList
-     */
     readonly id?: number
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CoursesApiApiV1CoursesList
-     */
     readonly live?: boolean
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof CoursesApiApiV1CoursesList
      */
     readonly page?: number
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CoursesApiApiV1CoursesList
-     */
     readonly page__live?: boolean
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof CoursesApiApiV1CoursesList
      */
     readonly page_size?: number
 
-    /**
-     * 
-     * @type {string}
-     * @memberof CoursesApiApiV1CoursesList
-     */
     readonly readable_id?: string
 }
 
 /**
  * Request parameters for apiV1CoursesRetrieve operation in CoursesApi.
- * @export
- * @interface CoursesApiApiV1CoursesRetrieveRequest
  */
 export interface CoursesApiApiV1CoursesRetrieveRequest {
     /**
      * A unique integer value identifying this course.
-     * @type {number}
-     * @memberof CoursesApiApiV1CoursesRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for apiV2CoursesList operation in CoursesApi.
- * @export
- * @interface CoursesApiApiV2CoursesListRequest
  */
 export interface CoursesApiApiV2CoursesListRequest {
     /**
      * Only show courses belonging to this B2B contract
-     * @type {number}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly contract_id?: number
 
     /**
      * Course Run Is Enrollable
-     * @type {boolean}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly courserun_is_enrollable?: boolean
 
     /**
      * ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
-     * @type {'af_ZA' | 'ar' | 'az' | 'bo' | 'da' | 'de' | 'de_DE' | 'el' | 'en' | 'es_419' | 'es_ES' | 'fa' | 'fr' | 'fr_CA' | 'he' | 'hi' | 'hu' | 'id' | 'it_IT' | 'ja' | 'ka' | 'kk' | 'ko' | 'lv' | 'nl' | 'pl' | 'pt_BR' | 'pt_PT' | 'ro' | 'ru' | 'sq' | 'sv' | 'sw' | 'te' | 'th' | 'tr_TR' | 'uk' | 'uz' | 'vi' | 'zh_CN' | 'zh_HANS' | 'zh_HK'}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum
 
     /**
      * Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
-     * @type {'' | 'E' | 'F' | 'HC'}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum
 
     /**
      * Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
-     * @type {'' | 'S'}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum
 
     /**
      * Multiple values may be separated by commas.
-     * @type {Array<number>}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly id?: Array<number>
 
     /**
      * Include approved financial assistance information
-     * @type {boolean}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly include_approved_financial_aid?: boolean
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CoursesApiApiV2CoursesList
-     */
     readonly live?: boolean
 
     /**
      * Only show courses belonging to this B2B/UAI organization
-     * @type {number}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly org_id?: number
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly page?: number
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CoursesApiApiV2CoursesList
-     */
     readonly page__live?: boolean
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof CoursesApiApiV2CoursesList
      */
     readonly page_size?: number
 
-    /**
-     * 
-     * @type {string}
-     * @memberof CoursesApiApiV2CoursesList
-     */
     readonly readable_id?: string
 }
 
 /**
  * Request parameters for apiV2CoursesRetrieve operation in CoursesApi.
- * @export
- * @interface CoursesApiApiV2CoursesRetrieveRequest
  */
 export interface CoursesApiApiV2CoursesRetrieveRequest {
     /**
      * A unique integer value (pk) or readable_id string identifying this course.
-     * @type {string}
-     * @memberof CoursesApiApiV2CoursesRetrieve
      */
     readonly id: string
 }
 
 /**
  * Request parameters for courseOutlineRetrieveV3 operation in CoursesApi.
- * @export
- * @interface CoursesApiCourseOutlineRetrieveV3Request
  */
 export interface CoursesApiCourseOutlineRetrieveV3Request {
     /**
      * Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
-     * @type {string}
-     * @memberof CoursesApiCourseOutlineRetrieveV3
      */
     readonly course_id: string
 }
 
 /**
  * Request parameters for courseVariantRunsV3 operation in CoursesApi.
- * @export
- * @interface CoursesApiCourseVariantRunsV3Request
  */
 export interface CoursesApiCourseVariantRunsV3Request {
     /**
      * Contract to filter by
-     * @type {number}
-     * @memberof CoursesApiCourseVariantRunsV3
      */
     readonly contract: number
 
     /**
      * Course ID(s) to use
-     * @type {Array<number>}
-     * @memberof CoursesApiCourseVariantRunsV3
      */
     readonly course_id: Array<number>
 
     /**
      * Industry focus to retrieve
-     * @type {string}
-     * @memberof CoursesApiCourseVariantRunsV3
      */
     readonly industry?: string
 
     /**
      * Language to retrieve
-     * @type {string}
-     * @memberof CoursesApiCourseVariantRunsV3
      */
     readonly language?: string
 
     /**
      * Language to retrieve
-     * @type {string}
-     * @memberof CoursesApiCourseVariantRunsV3
      */
     readonly length?: string
 }
 
 /**
  * CoursesApi - object-oriented interface
- * @export
- * @class CoursesApi
- * @extends {BaseAPI}
  */
 export class CoursesApi extends BaseAPI {
     /**
@@ -14850,7 +9560,6 @@ export class CoursesApi extends BaseAPI {
      * @param {CoursesApiApiV1CoursesListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoursesApi
      */
     public apiV1CoursesList(requestParameters: CoursesApiApiV1CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).apiV1CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
@@ -14861,7 +9570,6 @@ export class CoursesApi extends BaseAPI {
      * @param {CoursesApiApiV1CoursesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoursesApi
      */
     public apiV1CoursesRetrieve(requestParameters: CoursesApiApiV1CoursesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).apiV1CoursesRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -14872,7 +9580,6 @@ export class CoursesApi extends BaseAPI {
      * @param {CoursesApiApiV2CoursesListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoursesApi
      */
     public apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
@@ -14883,7 +9590,6 @@ export class CoursesApi extends BaseAPI {
      * @param {CoursesApiApiV2CoursesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoursesApi
      */
     public apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -14894,7 +9600,6 @@ export class CoursesApi extends BaseAPI {
      * @param {CoursesApiCourseOutlineRetrieveV3Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoursesApi
      */
     public courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
@@ -14905,16 +9610,12 @@ export class CoursesApi extends BaseAPI {
      * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoursesApi
      */
     public courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig) {
         return CoursesApiFp(this.configuration).courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
-/**
- * @export
- */
 export const ApiV2CoursesListCourserunsLanguageEnum = {
     AfZa: 'af_ZA',
     Ar: 'ar',
@@ -14957,32 +9658,25 @@ export const ApiV2CoursesListCourserunsLanguageEnum = {
     Vi: 'vi',
     ZhCn: 'zh_CN',
     ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK'
+    ZhHk: 'zh_HK',
 } as const;
 export type ApiV2CoursesListCourserunsLanguageEnum = typeof ApiV2CoursesListCourserunsLanguageEnum[keyof typeof ApiV2CoursesListCourserunsLanguageEnum];
-/**
- * @export
- */
 export const ApiV2CoursesListCourserunsVariantIndustryEnum = {
     Empty: '',
     E: 'E',
     F: 'F',
-    Hc: 'HC'
+    Hc: 'HC',
 } as const;
 export type ApiV2CoursesListCourserunsVariantIndustryEnum = typeof ApiV2CoursesListCourserunsVariantIndustryEnum[keyof typeof ApiV2CoursesListCourserunsVariantIndustryEnum];
-/**
- * @export
- */
 export const ApiV2CoursesListCourserunsVariantLengthEnum = {
     Empty: '',
-    S: 'S'
+    S: 'S',
 } as const;
 export type ApiV2CoursesListCourserunsVariantLengthEnum = typeof ApiV2CoursesListCourserunsVariantLengthEnum[keyof typeof ApiV2CoursesListCourserunsVariantLengthEnum];
 
 
 /**
  * DepartmentsApi - axios parameter creator
- * @export
  */
 export const DepartmentsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -15004,8 +9698,8 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15033,8 +9727,8 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15054,7 +9748,7 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('departmentsRetrieveV1', 'id', id)
             const localVarPath = `/api/v1/departments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15066,8 +9760,8 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15087,7 +9781,7 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('departmentsRetrieveV2', 'id', id)
             const localVarPath = `/api/v2/departments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15099,8 +9793,8 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15115,7 +9809,6 @@ export const DepartmentsApiAxiosParamCreator = function (configuration?: Configu
 
 /**
  * DepartmentsApi - functional programming interface
- * @export
  */
 export const DepartmentsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DepartmentsApiAxiosParamCreator(configuration)
@@ -15127,9 +9820,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsListV1(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DepartmentWithCount>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsListV1(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsListV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsListV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List departments - v2
@@ -15138,9 +9831,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsListV2(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DepartmentWithCoursesAndPrograms>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsListV2(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsListV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsListV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get department details - v1
@@ -15150,9 +9843,9 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsRetrieveV1(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DepartmentWithCount>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsRetrieveV1(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get department details - v2
@@ -15162,16 +9855,15 @@ export const DepartmentsApiFp = function(configuration?: Configuration) {
          */
         async departmentsRetrieveV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DepartmentWithCoursesAndPrograms>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsRetrieveV2(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * DepartmentsApi - factory interface
- * @export
  */
 export const DepartmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = DepartmentsApiFp(configuration)
@@ -15215,44 +9907,32 @@ export const DepartmentsApiFactory = function (configuration?: Configuration, ba
 
 /**
  * Request parameters for departmentsRetrieveV1 operation in DepartmentsApi.
- * @export
- * @interface DepartmentsApiDepartmentsRetrieveV1Request
  */
 export interface DepartmentsApiDepartmentsRetrieveV1Request {
     /**
      * A unique integer value identifying this department.
-     * @type {number}
-     * @memberof DepartmentsApiDepartmentsRetrieveV1
      */
     readonly id: number
 }
 
 /**
  * Request parameters for departmentsRetrieveV2 operation in DepartmentsApi.
- * @export
- * @interface DepartmentsApiDepartmentsRetrieveV2Request
  */
 export interface DepartmentsApiDepartmentsRetrieveV2Request {
     /**
      * A unique integer value identifying this department.
-     * @type {number}
-     * @memberof DepartmentsApiDepartmentsRetrieveV2
      */
     readonly id: number
 }
 
 /**
  * DepartmentsApi - object-oriented interface
- * @export
- * @class DepartmentsApi
- * @extends {BaseAPI}
  */
 export class DepartmentsApi extends BaseAPI {
     /**
      * List departments - v1
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DepartmentsApi
      */
     public departmentsListV1(options?: RawAxiosRequestConfig) {
         return DepartmentsApiFp(this.configuration).departmentsListV1(options).then((request) => request(this.axios, this.basePath));
@@ -15262,7 +9942,6 @@ export class DepartmentsApi extends BaseAPI {
      * List departments - v2
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DepartmentsApi
      */
     public departmentsListV2(options?: RawAxiosRequestConfig) {
         return DepartmentsApiFp(this.configuration).departmentsListV2(options).then((request) => request(this.axios, this.basePath));
@@ -15273,7 +9952,6 @@ export class DepartmentsApi extends BaseAPI {
      * @param {DepartmentsApiDepartmentsRetrieveV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DepartmentsApi
      */
     public departmentsRetrieveV1(requestParameters: DepartmentsApiDepartmentsRetrieveV1Request, options?: RawAxiosRequestConfig) {
         return DepartmentsApiFp(this.configuration).departmentsRetrieveV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -15284,7 +9962,6 @@ export class DepartmentsApi extends BaseAPI {
      * @param {DepartmentsApiDepartmentsRetrieveV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DepartmentsApi
      */
     public departmentsRetrieveV2(requestParameters: DepartmentsApiDepartmentsRetrieveV2Request, options?: RawAxiosRequestConfig) {
         return DepartmentsApiFp(this.configuration).departmentsRetrieveV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -15295,7 +9972,6 @@ export class DepartmentsApi extends BaseAPI {
 
 /**
  * DiscountsApi - axios parameter creator
- * @export
  */
 export const DiscountsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -15315,8 +9991,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'UserDiscountMetaRequest' is not null or undefined
             assertParamExists('discountsAssigneesCreate', 'UserDiscountMetaRequest', UserDiscountMetaRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15328,9 +10004,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15355,8 +10030,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsAssigneesDestroy', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15369,7 +10044,6 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15394,8 +10068,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsAssigneesList', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15415,8 +10089,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15440,8 +10114,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsAssigneesPartialUpdate', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15453,9 +10127,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15480,8 +10153,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsAssigneesRetrieve', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15493,8 +10166,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15520,8 +10193,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'UserDiscountMetaRequest' is not null or undefined
             assertParamExists('discountsAssigneesUpdate', 'UserDiscountMetaRequest', UserDiscountMetaRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/assignees/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15533,9 +10206,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15568,9 +10240,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15603,9 +10274,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15627,7 +10297,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'id' is not null or undefined
             assertParamExists('discountsDestroy', 'id', id)
             const localVarPath = `/api/v0/discounts/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15640,7 +10310,6 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15657,7 +10326,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
          * @param {number} [offset] The initial index from which to return the results.
          * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
          * @param {string} [q] q
-         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15698,8 +10367,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['redemption_type'] = redemption_type;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15720,7 +10389,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'id' is not null or undefined
             assertParamExists('discountsPartialUpdate', 'id', id)
             const localVarPath = `/api/v0/discounts/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15732,9 +10401,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15762,8 +10430,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'DiscountProductRequest' is not null or undefined
             assertParamExists('discountsProductsCreate', 'DiscountProductRequest', DiscountProductRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15775,9 +10443,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15802,8 +10469,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsProductsDestroy', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15816,7 +10483,6 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15841,8 +10507,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsProductsList', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15862,8 +10528,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15887,8 +10553,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsProductsPartialUpdate', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15900,9 +10566,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -15927,8 +10592,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsProductsRetrieve', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15940,8 +10605,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15967,8 +10632,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'DiscountProductRequest' is not null or undefined
             assertParamExists('discountsProductsUpdate', 'DiscountProductRequest', DiscountProductRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/products/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -15980,9 +10645,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16010,8 +10674,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'DiscountRedemptionRequest' is not null or undefined
             assertParamExists('discountsRedemptionsCreate', 'DiscountRedemptionRequest', DiscountRedemptionRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_redeemed_discount}', encodeURIComponent(String(parent_lookup_redeemed_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16023,9 +10687,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16050,8 +10713,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
             assertParamExists('discountsRedemptionsDestroy', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_redeemed_discount}', encodeURIComponent(String(parent_lookup_redeemed_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16064,7 +10727,6 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16089,8 +10751,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
             assertParamExists('discountsRedemptionsList', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_redeemed_discount}', encodeURIComponent(String(parent_lookup_redeemed_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16110,8 +10772,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16135,8 +10797,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
             assertParamExists('discountsRedemptionsPartialUpdate', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_redeemed_discount}', encodeURIComponent(String(parent_lookup_redeemed_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16148,9 +10810,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16175,8 +10836,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_redeemed_discount' is not null or undefined
             assertParamExists('discountsRedemptionsRetrieve', 'parent_lookup_redeemed_discount', parent_lookup_redeemed_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_redeemed_discount}', encodeURIComponent(String(parent_lookup_redeemed_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16188,8 +10849,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16215,8 +10876,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'DiscountRedemptionRequest' is not null or undefined
             assertParamExists('discountsRedemptionsUpdate', 'DiscountRedemptionRequest', DiscountRedemptionRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_redeemed_discount}/redemptions/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_redeemed_discount"}}`, encodeURIComponent(String(parent_lookup_redeemed_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_redeemed_discount}', encodeURIComponent(String(parent_lookup_redeemed_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16228,9 +10889,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16252,7 +10912,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'id' is not null or undefined
             assertParamExists('discountsRetrieve', 'id', id)
             const localVarPath = `/api/v0/discounts/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16264,8 +10924,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16291,8 +10951,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'FlexiblePriceTierRequest' is not null or undefined
             assertParamExists('discountsTiersCreate', 'FlexiblePriceTierRequest', FlexiblePriceTierRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16304,9 +10964,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16331,8 +10990,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsTiersDestroy', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16345,7 +11004,6 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16370,8 +11028,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsTiersList', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16391,8 +11049,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16416,8 +11074,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsTiersPartialUpdate', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16429,9 +11087,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16456,8 +11113,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'parent_lookup_discount' is not null or undefined
             assertParamExists('discountsTiersRetrieve', 'parent_lookup_discount', parent_lookup_discount)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16469,8 +11126,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16496,8 +11153,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'FlexiblePriceTierRequest' is not null or undefined
             assertParamExists('discountsTiersUpdate', 'FlexiblePriceTierRequest', FlexiblePriceTierRequest)
             const localVarPath = `/api/v0/discounts/{parent_lookup_discount}/tiers/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"parent_lookup_discount"}}`, encodeURIComponent(String(parent_lookup_discount)));
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_discount}', encodeURIComponent(String(parent_lookup_discount)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16509,9 +11166,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16536,7 +11192,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             // verify required parameter 'V0DiscountRequest' is not null or undefined
             assertParamExists('discountsUpdate', 'V0DiscountRequest', V0DiscountRequest)
             const localVarPath = `/api/v0/discounts/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16548,9 +11204,8 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -16567,7 +11222,6 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
 
 /**
  * DiscountsApi - functional programming interface
- * @export
  */
 export const DiscountsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DiscountsApiAxiosParamCreator(configuration)
@@ -16582,9 +11236,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsAssigneesCreate(id: number, parent_lookup_discount: number, UserDiscountMetaRequest: UserDiscountMetaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesCreate(id, parent_lookup_discount, UserDiscountMetaRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsAssigneesCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Delete a user discount.
@@ -16595,9 +11249,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsAssigneesDestroy(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesDestroy(id, parent_lookup_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsAssigneesDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for User Discounts. This one is for use within a Discount.
@@ -16610,9 +11264,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsAssigneesList(id: number, parent_lookup_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedUserDiscountMetaList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesList(id, parent_lookup_discount, limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsAssigneesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Partial update for a user discount.
@@ -16624,9 +11278,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsAssigneesPartialUpdate(id: number, parent_lookup_discount: number, PatchedUserDiscountMetaRequest?: PatchedUserDiscountMetaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesPartialUpdate(id, parent_lookup_discount, PatchedUserDiscountMetaRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsAssigneesPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for User Discounts. This one is for use within a Discount.
@@ -16637,9 +11291,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsAssigneesRetrieve(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesRetrieve(id, parent_lookup_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsAssigneesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for User Discounts. This one is for use within a Discount.
@@ -16651,9 +11305,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsAssigneesUpdate(id: number, parent_lookup_discount: number, UserDiscountMetaRequest: UserDiscountMetaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDiscountMeta>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsAssigneesUpdate(id, parent_lookup_discount, UserDiscountMetaRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsAssigneesUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsAssigneesUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16663,9 +11317,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsCreate(V0DiscountRequest: V0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsCreate(V0DiscountRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Create a batch of codes. This is used in the staff-dashboard. POST arguments are the same as in generate_discount_code - look there for details.
@@ -16675,9 +11329,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsCreateBatchCreate(BulkDiscountRequest: BulkDiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V0Discount>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsCreateBatchCreate(BulkDiscountRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsCreateBatchCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsCreateBatchCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16687,9 +11341,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16698,15 +11352,15 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          * @param {number} [offset] The initial index from which to return the results.
          * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
          * @param {string} [q] q
-         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async discountsList(is_redeemed?: DiscountsListIsRedeemedEnum, limit?: number, offset?: number, payment_type?: DiscountsListPaymentTypeEnum, q?: string, redemption_type?: DiscountsListRedemptionTypeEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV0DiscountList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsList(is_redeemed, limit, offset, payment_type, q, redemption_type, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16717,9 +11371,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsPartialUpdate(id: number, PatchedV0DiscountRequest?: PatchedV0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsPartialUpdate(id, PatchedV0DiscountRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16731,9 +11385,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsProductsCreate(id: number, parent_lookup_discount: number, DiscountProductRequest: DiscountProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsCreate(id, parent_lookup_discount, DiscountProductRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsProductsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Delete a linked product from a discount.
@@ -16744,9 +11398,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsProductsDestroy(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsDestroy(id, parent_lookup_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsProductsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16759,9 +11413,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsProductsList(id: number, parent_lookup_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedDiscountProductList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsList(id, parent_lookup_discount, limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsProductsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Partial update for a discount product.
@@ -16773,9 +11427,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsProductsPartialUpdate(id: number, parent_lookup_discount: number, PatchedDiscountProductRequest?: PatchedDiscountProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsPartialUpdate(id, parent_lookup_discount, PatchedDiscountProductRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsProductsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16786,9 +11440,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsProductsRetrieve(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsRetrieve(id, parent_lookup_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsProductsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16800,9 +11454,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsProductsUpdate(id: number, parent_lookup_discount: number, DiscountProductRequest: DiscountProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountProduct>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsProductsUpdate(id, parent_lookup_discount, DiscountProductRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsProductsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsProductsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discount Redemptions
@@ -16814,9 +11468,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRedemptionsCreate(id: number, parent_lookup_redeemed_discount: number, DiscountRedemptionRequest: DiscountRedemptionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsCreate(id, parent_lookup_redeemed_discount, DiscountRedemptionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRedemptionsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discount Redemptions
@@ -16827,9 +11481,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRedemptionsDestroy(id: number, parent_lookup_redeemed_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsDestroy(id, parent_lookup_redeemed_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRedemptionsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discount Redemptions
@@ -16842,9 +11496,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRedemptionsList(id: number, parent_lookup_redeemed_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedDiscountRedemptionList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsList(id, parent_lookup_redeemed_discount, limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRedemptionsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discount Redemptions
@@ -16856,9 +11510,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRedemptionsPartialUpdate(id: number, parent_lookup_redeemed_discount: number, PatchedDiscountRedemptionRequest?: PatchedDiscountRedemptionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsPartialUpdate(id, parent_lookup_redeemed_discount, PatchedDiscountRedemptionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRedemptionsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discount Redemptions
@@ -16869,9 +11523,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRedemptionsRetrieve(id: number, parent_lookup_redeemed_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsRetrieve(id, parent_lookup_redeemed_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRedemptionsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discount Redemptions
@@ -16883,9 +11537,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRedemptionsUpdate(id: number, parent_lookup_redeemed_discount: number, DiscountRedemptionRequest: DiscountRedemptionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountRedemption>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRedemptionsUpdate(id, parent_lookup_redeemed_discount, DiscountRedemptionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRedemptionsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRedemptionsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16895,9 +11549,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
@@ -16909,9 +11563,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsTiersCreate(id: number, parent_lookup_discount: number, FlexiblePriceTierRequest: FlexiblePriceTierRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersCreate(id, parent_lookup_discount, FlexiblePriceTierRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsTiersCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
@@ -16922,9 +11576,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsTiersDestroy(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersDestroy(id, parent_lookup_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsTiersDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
@@ -16937,9 +11591,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsTiersList(id: number, parent_lookup_discount: number, limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedFlexiblePriceTierList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersList(id, parent_lookup_discount, limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsTiersList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
@@ -16951,9 +11605,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsTiersPartialUpdate(id: number, parent_lookup_discount: number, PatchedFlexiblePriceTierRequest?: PatchedFlexiblePriceTierRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersPartialUpdate(id, parent_lookup_discount, PatchedFlexiblePriceTierRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsTiersPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
@@ -16964,9 +11618,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsTiersRetrieve(id: number, parent_lookup_discount: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersRetrieve(id, parent_lookup_discount, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsTiersRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Flexible Pricing Tiers. This one is for use within a Discount.
@@ -16978,9 +11632,9 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsTiersUpdate(id: number, parent_lookup_discount: number, FlexiblePriceTierRequest: FlexiblePriceTierRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceTier>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsTiersUpdate(id, parent_lookup_discount, FlexiblePriceTierRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsTiersUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsTiersUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Discounts
@@ -16991,16 +11645,15 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          */
         async discountsUpdate(id: number, V0DiscountRequest: V0DiscountRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V0Discount>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discountsUpdate(id, V0DiscountRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DiscountsApi.discountsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DiscountsApi.discountsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * DiscountsApi - factory interface
- * @export
  */
 export const DiscountsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = DiscountsApiFp(configuration)
@@ -17289,800 +11942,523 @@ export const DiscountsApiFactory = function (configuration?: Configuration, base
 
 /**
  * Request parameters for discountsAssigneesCreate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsAssigneesCreateRequest
  */
 export interface DiscountsApiDiscountsAssigneesCreateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesCreate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesCreate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {UserDiscountMetaRequest}
-     * @memberof DiscountsApiDiscountsAssigneesCreate
-     */
     readonly UserDiscountMetaRequest: UserDiscountMetaRequest
 }
 
 /**
  * Request parameters for discountsAssigneesDestroy operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsAssigneesDestroyRequest
  */
 export interface DiscountsApiDiscountsAssigneesDestroyRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesDestroy
      */
     readonly parent_lookup_discount: number
 }
 
 /**
  * Request parameters for discountsAssigneesList operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsAssigneesListRequest
  */
 export interface DiscountsApiDiscountsAssigneesListRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesList
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesList
      */
     readonly parent_lookup_discount: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for discountsAssigneesPartialUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsAssigneesPartialUpdateRequest
  */
 export interface DiscountsApiDiscountsAssigneesPartialUpdateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesPartialUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesPartialUpdate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {PatchedUserDiscountMetaRequest}
-     * @memberof DiscountsApiDiscountsAssigneesPartialUpdate
-     */
     readonly PatchedUserDiscountMetaRequest?: PatchedUserDiscountMetaRequest
 }
 
 /**
  * Request parameters for discountsAssigneesRetrieve operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsAssigneesRetrieveRequest
  */
 export interface DiscountsApiDiscountsAssigneesRetrieveRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesRetrieve
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesRetrieve
      */
     readonly parent_lookup_discount: number
 }
 
 /**
  * Request parameters for discountsAssigneesUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsAssigneesUpdateRequest
  */
 export interface DiscountsApiDiscountsAssigneesUpdateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsAssigneesUpdate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {UserDiscountMetaRequest}
-     * @memberof DiscountsApiDiscountsAssigneesUpdate
-     */
     readonly UserDiscountMetaRequest: UserDiscountMetaRequest
 }
 
 /**
  * Request parameters for discountsCreate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsCreateRequest
  */
 export interface DiscountsApiDiscountsCreateRequest {
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof DiscountsApiDiscountsCreate
-     */
     readonly V0DiscountRequest: V0DiscountRequest
 }
 
 /**
  * Request parameters for discountsCreateBatchCreate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsCreateBatchCreateRequest
  */
 export interface DiscountsApiDiscountsCreateBatchCreateRequest {
-    /**
-     * 
-     * @type {BulkDiscountRequest}
-     * @memberof DiscountsApiDiscountsCreateBatchCreate
-     */
     readonly BulkDiscountRequest: BulkDiscountRequest
 }
 
 /**
  * Request parameters for discountsDestroy operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsDestroyRequest
  */
 export interface DiscountsApiDiscountsDestroyRequest {
     /**
      * A unique integer value identifying this discount.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsDestroy
      */
     readonly id: number
 }
 
 /**
  * Request parameters for discountsList operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsListRequest
  */
 export interface DiscountsApiDiscountsListRequest {
     /**
      * * &#x60;yes&#x60; - yes * &#x60;no&#x60; - no
-     * @type {'no' | 'yes'}
-     * @memberof DiscountsApiDiscountsList
      */
     readonly is_redeemed?: DiscountsListIsRedeemedEnum
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsList
      */
     readonly offset?: number
 
     /**
      * * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
-     * @type {'customer-support' | 'financial-assistance' | 'legacy' | 'marketing' | 'sales' | 'staff'}
-     * @memberof DiscountsApiDiscountsList
      */
     readonly payment_type?: DiscountsListPaymentTypeEnum
 
     /**
      * q
-     * @type {string}
-     * @memberof DiscountsApiDiscountsList
      */
     readonly q?: string
 
     /**
-     * * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
-     * @type {'one-time' | 'one-time-per-user' | 'unlimited'}
-     * @memberof DiscountsApiDiscountsList
+     * * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
      */
     readonly redemption_type?: DiscountsListRedemptionTypeEnum
 }
 
 /**
  * Request parameters for discountsPartialUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsPartialUpdateRequest
  */
 export interface DiscountsApiDiscountsPartialUpdateRequest {
     /**
      * A unique integer value identifying this discount.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsPartialUpdate
      */
     readonly id: number
 
-    /**
-     * 
-     * @type {PatchedV0DiscountRequest}
-     * @memberof DiscountsApiDiscountsPartialUpdate
-     */
     readonly PatchedV0DiscountRequest?: PatchedV0DiscountRequest
 }
 
 /**
  * Request parameters for discountsProductsCreate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsProductsCreateRequest
  */
 export interface DiscountsApiDiscountsProductsCreateRequest {
     /**
      * ID of the discount product
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsCreate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsCreate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {DiscountProductRequest}
-     * @memberof DiscountsApiDiscountsProductsCreate
-     */
     readonly DiscountProductRequest: DiscountProductRequest
 }
 
 /**
  * Request parameters for discountsProductsDestroy operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsProductsDestroyRequest
  */
 export interface DiscountsApiDiscountsProductsDestroyRequest {
     /**
      * ID of the discount product
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsDestroy
      */
     readonly parent_lookup_discount: number
 }
 
 /**
  * Request parameters for discountsProductsList operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsProductsListRequest
  */
 export interface DiscountsApiDiscountsProductsListRequest {
     /**
      * ID of the discount product
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsList
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsList
      */
     readonly parent_lookup_discount: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for discountsProductsPartialUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsProductsPartialUpdateRequest
  */
 export interface DiscountsApiDiscountsProductsPartialUpdateRequest {
     /**
      * ID of the discount product
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsPartialUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsPartialUpdate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {PatchedDiscountProductRequest}
-     * @memberof DiscountsApiDiscountsProductsPartialUpdate
-     */
     readonly PatchedDiscountProductRequest?: PatchedDiscountProductRequest
 }
 
 /**
  * Request parameters for discountsProductsRetrieve operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsProductsRetrieveRequest
  */
 export interface DiscountsApiDiscountsProductsRetrieveRequest {
     /**
      * ID of the discount product
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsRetrieve
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsRetrieve
      */
     readonly parent_lookup_discount: number
 }
 
 /**
  * Request parameters for discountsProductsUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsProductsUpdateRequest
  */
 export interface DiscountsApiDiscountsProductsUpdateRequest {
     /**
      * ID of the discount product
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsProductsUpdate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {DiscountProductRequest}
-     * @memberof DiscountsApiDiscountsProductsUpdate
-     */
     readonly DiscountProductRequest: DiscountProductRequest
 }
 
 /**
  * Request parameters for discountsRedemptionsCreate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRedemptionsCreateRequest
  */
 export interface DiscountsApiDiscountsRedemptionsCreateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsCreate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsCreate
      */
     readonly parent_lookup_redeemed_discount: number
 
-    /**
-     * 
-     * @type {DiscountRedemptionRequest}
-     * @memberof DiscountsApiDiscountsRedemptionsCreate
-     */
     readonly DiscountRedemptionRequest: DiscountRedemptionRequest
 }
 
 /**
  * Request parameters for discountsRedemptionsDestroy operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRedemptionsDestroyRequest
  */
 export interface DiscountsApiDiscountsRedemptionsDestroyRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsDestroy
      */
     readonly parent_lookup_redeemed_discount: number
 }
 
 /**
  * Request parameters for discountsRedemptionsList operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRedemptionsListRequest
  */
 export interface DiscountsApiDiscountsRedemptionsListRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsList
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsList
      */
     readonly parent_lookup_redeemed_discount: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for discountsRedemptionsPartialUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRedemptionsPartialUpdateRequest
  */
 export interface DiscountsApiDiscountsRedemptionsPartialUpdateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsPartialUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsPartialUpdate
      */
     readonly parent_lookup_redeemed_discount: number
 
-    /**
-     * 
-     * @type {PatchedDiscountRedemptionRequest}
-     * @memberof DiscountsApiDiscountsRedemptionsPartialUpdate
-     */
     readonly PatchedDiscountRedemptionRequest?: PatchedDiscountRedemptionRequest
 }
 
 /**
  * Request parameters for discountsRedemptionsRetrieve operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRedemptionsRetrieveRequest
  */
 export interface DiscountsApiDiscountsRedemptionsRetrieveRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsRetrieve
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsRetrieve
      */
     readonly parent_lookup_redeemed_discount: number
 }
 
 /**
  * Request parameters for discountsRedemptionsUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRedemptionsUpdateRequest
  */
 export interface DiscountsApiDiscountsRedemptionsUpdateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRedemptionsUpdate
      */
     readonly parent_lookup_redeemed_discount: number
 
-    /**
-     * 
-     * @type {DiscountRedemptionRequest}
-     * @memberof DiscountsApiDiscountsRedemptionsUpdate
-     */
     readonly DiscountRedemptionRequest: DiscountRedemptionRequest
 }
 
 /**
  * Request parameters for discountsRetrieve operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsRetrieveRequest
  */
 export interface DiscountsApiDiscountsRetrieveRequest {
     /**
      * A unique integer value identifying this discount.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for discountsTiersCreate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsTiersCreateRequest
  */
 export interface DiscountsApiDiscountsTiersCreateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersCreate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersCreate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {FlexiblePriceTierRequest}
-     * @memberof DiscountsApiDiscountsTiersCreate
-     */
     readonly FlexiblePriceTierRequest: FlexiblePriceTierRequest
 }
 
 /**
  * Request parameters for discountsTiersDestroy operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsTiersDestroyRequest
  */
 export interface DiscountsApiDiscountsTiersDestroyRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersDestroy
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersDestroy
      */
     readonly parent_lookup_discount: number
 }
 
 /**
  * Request parameters for discountsTiersList operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsTiersListRequest
  */
 export interface DiscountsApiDiscountsTiersListRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersList
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersList
      */
     readonly parent_lookup_discount: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for discountsTiersPartialUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsTiersPartialUpdateRequest
  */
 export interface DiscountsApiDiscountsTiersPartialUpdateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersPartialUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersPartialUpdate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {PatchedFlexiblePriceTierRequest}
-     * @memberof DiscountsApiDiscountsTiersPartialUpdate
-     */
     readonly PatchedFlexiblePriceTierRequest?: PatchedFlexiblePriceTierRequest
 }
 
 /**
  * Request parameters for discountsTiersRetrieve operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsTiersRetrieveRequest
  */
 export interface DiscountsApiDiscountsTiersRetrieveRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersRetrieve
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersRetrieve
      */
     readonly parent_lookup_discount: number
 }
 
 /**
  * Request parameters for discountsTiersUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsTiersUpdateRequest
  */
 export interface DiscountsApiDiscountsTiersUpdateRequest {
     /**
      * ID of the user discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersUpdate
      */
     readonly id: number
 
     /**
      * ID of the parent discount
-     * @type {number}
-     * @memberof DiscountsApiDiscountsTiersUpdate
      */
     readonly parent_lookup_discount: number
 
-    /**
-     * 
-     * @type {FlexiblePriceTierRequest}
-     * @memberof DiscountsApiDiscountsTiersUpdate
-     */
     readonly FlexiblePriceTierRequest: FlexiblePriceTierRequest
 }
 
 /**
  * Request parameters for discountsUpdate operation in DiscountsApi.
- * @export
- * @interface DiscountsApiDiscountsUpdateRequest
  */
 export interface DiscountsApiDiscountsUpdateRequest {
     /**
      * A unique integer value identifying this discount.
-     * @type {number}
-     * @memberof DiscountsApiDiscountsUpdate
      */
     readonly id: number
 
-    /**
-     * 
-     * @type {V0DiscountRequest}
-     * @memberof DiscountsApiDiscountsUpdate
-     */
     readonly V0DiscountRequest: V0DiscountRequest
 }
 
 /**
  * DiscountsApi - object-oriented interface
- * @export
- * @class DiscountsApi
- * @extends {BaseAPI}
  */
 export class DiscountsApi extends BaseAPI {
     /**
@@ -18090,7 +12466,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsAssigneesCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsAssigneesCreate(requestParameters: DiscountsApiDiscountsAssigneesCreateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsAssigneesCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.UserDiscountMetaRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18101,7 +12476,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsAssigneesDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsAssigneesDestroy(requestParameters: DiscountsApiDiscountsAssigneesDestroyRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsAssigneesDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18112,7 +12486,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsAssigneesListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsAssigneesList(requestParameters: DiscountsApiDiscountsAssigneesListRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsAssigneesList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -18123,7 +12496,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsAssigneesPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsAssigneesPartialUpdate(requestParameters: DiscountsApiDiscountsAssigneesPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsAssigneesPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedUserDiscountMetaRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18134,7 +12506,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsAssigneesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsAssigneesRetrieve(requestParameters: DiscountsApiDiscountsAssigneesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsAssigneesRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18145,7 +12516,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsAssigneesUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsAssigneesUpdate(requestParameters: DiscountsApiDiscountsAssigneesUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsAssigneesUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.UserDiscountMetaRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18156,7 +12526,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsCreate(requestParameters: DiscountsApiDiscountsCreateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsCreate(requestParameters.V0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18167,7 +12536,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsCreateBatchCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsCreateBatchCreate(requestParameters: DiscountsApiDiscountsCreateBatchCreateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsCreateBatchCreate(requestParameters.BulkDiscountRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18178,7 +12546,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsDestroy(requestParameters: DiscountsApiDiscountsDestroyRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -18189,7 +12556,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsList(requestParameters: DiscountsApiDiscountsListRequest = {}, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsList(requestParameters.is_redeemed, requestParameters.limit, requestParameters.offset, requestParameters.payment_type, requestParameters.q, requestParameters.redemption_type, options).then((request) => request(this.axios, this.basePath));
@@ -18200,7 +12566,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsPartialUpdate(requestParameters: DiscountsApiDiscountsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsPartialUpdate(requestParameters.id, requestParameters.PatchedV0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18211,7 +12576,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsProductsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsProductsCreate(requestParameters: DiscountsApiDiscountsProductsCreateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsProductsCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.DiscountProductRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18222,7 +12586,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsProductsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsProductsDestroy(requestParameters: DiscountsApiDiscountsProductsDestroyRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsProductsDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18233,7 +12596,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsProductsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsProductsList(requestParameters: DiscountsApiDiscountsProductsListRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsProductsList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -18244,7 +12606,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsProductsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsProductsPartialUpdate(requestParameters: DiscountsApiDiscountsProductsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsProductsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedDiscountProductRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18255,7 +12616,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsProductsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsProductsRetrieve(requestParameters: DiscountsApiDiscountsProductsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsProductsRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18266,7 +12626,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsProductsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsProductsUpdate(requestParameters: DiscountsApiDiscountsProductsUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsProductsUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.DiscountProductRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18277,7 +12636,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRedemptionsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRedemptionsCreate(requestParameters: DiscountsApiDiscountsRedemptionsCreateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRedemptionsCreate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.DiscountRedemptionRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18288,7 +12646,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRedemptionsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRedemptionsDestroy(requestParameters: DiscountsApiDiscountsRedemptionsDestroyRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRedemptionsDestroy(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18299,7 +12656,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRedemptionsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRedemptionsList(requestParameters: DiscountsApiDiscountsRedemptionsListRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRedemptionsList(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -18310,7 +12666,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRedemptionsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRedemptionsPartialUpdate(requestParameters: DiscountsApiDiscountsRedemptionsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRedemptionsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.PatchedDiscountRedemptionRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18321,7 +12676,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRedemptionsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRedemptionsRetrieve(requestParameters: DiscountsApiDiscountsRedemptionsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRedemptionsRetrieve(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18332,7 +12686,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRedemptionsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRedemptionsUpdate(requestParameters: DiscountsApiDiscountsRedemptionsUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRedemptionsUpdate(requestParameters.id, requestParameters.parent_lookup_redeemed_discount, requestParameters.DiscountRedemptionRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18343,7 +12696,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsRetrieve(requestParameters: DiscountsApiDiscountsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -18354,7 +12706,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsTiersCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsTiersCreate(requestParameters: DiscountsApiDiscountsTiersCreateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsTiersCreate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.FlexiblePriceTierRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18365,7 +12716,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsTiersDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsTiersDestroy(requestParameters: DiscountsApiDiscountsTiersDestroyRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsTiersDestroy(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18376,7 +12726,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsTiersListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsTiersList(requestParameters: DiscountsApiDiscountsTiersListRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsTiersList(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -18387,7 +12736,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsTiersPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsTiersPartialUpdate(requestParameters: DiscountsApiDiscountsTiersPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsTiersPartialUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.PatchedFlexiblePriceTierRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18398,7 +12746,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsTiersRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsTiersRetrieve(requestParameters: DiscountsApiDiscountsTiersRetrieveRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsTiersRetrieve(requestParameters.id, requestParameters.parent_lookup_discount, options).then((request) => request(this.axios, this.basePath));
@@ -18409,7 +12756,6 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsTiersUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsTiersUpdate(requestParameters: DiscountsApiDiscountsTiersUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsTiersUpdate(requestParameters.id, requestParameters.parent_lookup_discount, requestParameters.FlexiblePriceTierRequest, options).then((request) => request(this.axios, this.basePath));
@@ -18420,47 +12766,37 @@ export class DiscountsApi extends BaseAPI {
      * @param {DiscountsApiDiscountsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DiscountsApi
      */
     public discountsUpdate(requestParameters: DiscountsApiDiscountsUpdateRequest, options?: RawAxiosRequestConfig) {
         return DiscountsApiFp(this.configuration).discountsUpdate(requestParameters.id, requestParameters.V0DiscountRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
-/**
- * @export
- */
 export const DiscountsListIsRedeemedEnum = {
     No: 'no',
-    Yes: 'yes'
+    Yes: 'yes',
 } as const;
 export type DiscountsListIsRedeemedEnum = typeof DiscountsListIsRedeemedEnum[keyof typeof DiscountsListIsRedeemedEnum];
-/**
- * @export
- */
 export const DiscountsListPaymentTypeEnum = {
     CustomerSupport: 'customer-support',
     FinancialAssistance: 'financial-assistance',
     Legacy: 'legacy',
     Marketing: 'marketing',
     Sales: 'sales',
-    Staff: 'staff'
+    Staff: 'staff',
 } as const;
 export type DiscountsListPaymentTypeEnum = typeof DiscountsListPaymentTypeEnum[keyof typeof DiscountsListPaymentTypeEnum];
-/**
- * @export
- */
 export const DiscountsListRedemptionTypeEnum = {
     OneTime: 'one-time',
     OneTimePerUser: 'one-time-per-user',
-    Unlimited: 'unlimited'
+    ProgramChildPurchase: 'program-child-purchase',
+    Unlimited: 'unlimited',
 } as const;
 export type DiscountsListRedemptionTypeEnum = typeof DiscountsListRedemptionTypeEnum[keyof typeof DiscountsListRedemptionTypeEnum];
 
 
 /**
  * EnrollmentsApi - axios parameter creator
- * @export
  */
 export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -18483,7 +12819,6 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18514,9 +12849,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -18538,7 +12872,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('enrollmentsDestroy', 'id', id)
             const localVarPath = `/api/v1/enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18551,7 +12885,6 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18579,8 +12912,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18601,7 +12934,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('enrollmentsPartialUpdate', 'id', id)
             const localVarPath = `/api/v1/enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18613,9 +12946,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -18637,7 +12969,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('enrollmentsRetrieve', 'id', id)
             const localVarPath = `/api/v3/enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18649,8 +12981,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18673,7 +13005,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'CourseRunEnrollmentRequest' is not null or undefined
             assertParamExists('enrollmentsUpdate', 'CourseRunEnrollmentRequest', CourseRunEnrollmentRequest)
             const localVarPath = `/api/v1/enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18685,9 +13017,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -18720,9 +13051,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -18753,9 +13083,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -18777,7 +13106,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('userEnrollmentsDestroyV2', 'id', id)
             const localVarPath = `/api/v2/enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18790,7 +13119,6 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18810,7 +13138,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             // verify required parameter 'id' is not null or undefined
             assertParamExists('userEnrollmentsDestroyV3', 'id', id)
             const localVarPath = `/api/v3/enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18823,7 +13151,6 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18861,8 +13188,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['org_id'] = org_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18900,8 +13227,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['org_id'] = org_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -18916,7 +13243,6 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
 
 /**
  * EnrollmentsApi - functional programming interface
- * @export
  */
 export const EnrollmentsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = EnrollmentsApiAxiosParamCreator(configuration)
@@ -18928,9 +13254,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async apiEnrollmentsCreate(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiEnrollmentsCreate(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.apiEnrollmentsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.apiEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -18940,9 +13266,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsCreate(CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsCreate(CourseRunEnrollmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -18952,9 +13278,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -18963,9 +13289,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollment>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Update enrollment email preferences
@@ -18976,9 +13302,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsPartialUpdate(id: number, PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsPartialUpdate(id, PatchedUpdateCourseRunEnrollmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments - v3
@@ -18988,9 +13314,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentV3>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for user enrollments
@@ -19001,9 +13327,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async enrollmentsUpdate(id: number, CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsUpdate(id, CourseRunEnrollmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.enrollmentsUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Create a new user enrollment - API v2
@@ -19013,9 +13339,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async userEnrollmentsCreateV2(CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsCreateV2(CourseRunEnrollmentRequestV2Request, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Create a new user enrollment - API v3
@@ -19025,9 +13351,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async userEnrollmentsCreateV3(CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentV3>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsCreateV3(CourseRunEnrollmentV3Request, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV3']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV3']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Unenroll from a course - API v2
@@ -19037,9 +13363,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async userEnrollmentsDestroyV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV2(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Unenroll from a course - API v3
@@ -19049,9 +13375,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async userEnrollmentsDestroyV3(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV3(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV3']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV3']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
@@ -19062,9 +13388,9 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async userEnrollmentsListV2(exclude_b2b?: boolean, org_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollmentRequestV2>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV2(exclude_b2b, org_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
@@ -19075,16 +13401,15 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async userEnrollmentsListV3(exclude_b2b?: boolean, org_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollmentV3>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV3(exclude_b2b, org_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV3']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV3']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * EnrollmentsApi - factory interface
- * @export
  */
 export const EnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = EnrollmentsApiFp(configuration)
@@ -19209,198 +13534,127 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
 
 /**
  * Request parameters for enrollmentsCreate operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiEnrollmentsCreateRequest
  */
 export interface EnrollmentsApiEnrollmentsCreateRequest {
-    /**
-     * 
-     * @type {CourseRunEnrollmentRequest}
-     * @memberof EnrollmentsApiEnrollmentsCreate
-     */
     readonly CourseRunEnrollmentRequest: CourseRunEnrollmentRequest
 }
 
 /**
  * Request parameters for enrollmentsDestroy operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiEnrollmentsDestroyRequest
  */
 export interface EnrollmentsApiEnrollmentsDestroyRequest {
     /**
      * A unique integer value identifying this course run enrollment.
-     * @type {number}
-     * @memberof EnrollmentsApiEnrollmentsDestroy
      */
     readonly id: number
 }
 
 /**
  * Request parameters for enrollmentsPartialUpdate operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiEnrollmentsPartialUpdateRequest
  */
 export interface EnrollmentsApiEnrollmentsPartialUpdateRequest {
     /**
      * A unique integer value identifying this course run enrollment.
-     * @type {number}
-     * @memberof EnrollmentsApiEnrollmentsPartialUpdate
      */
     readonly id: number
 
-    /**
-     * 
-     * @type {PatchedUpdateCourseRunEnrollmentRequest}
-     * @memberof EnrollmentsApiEnrollmentsPartialUpdate
-     */
     readonly PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest
 }
 
 /**
  * Request parameters for enrollmentsRetrieve operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiEnrollmentsRetrieveRequest
  */
 export interface EnrollmentsApiEnrollmentsRetrieveRequest {
     /**
      * A unique integer value identifying this course run enrollment.
-     * @type {number}
-     * @memberof EnrollmentsApiEnrollmentsRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for enrollmentsUpdate operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiEnrollmentsUpdateRequest
  */
 export interface EnrollmentsApiEnrollmentsUpdateRequest {
     /**
      * A unique integer value identifying this course run enrollment.
-     * @type {number}
-     * @memberof EnrollmentsApiEnrollmentsUpdate
      */
     readonly id: number
 
-    /**
-     * 
-     * @type {CourseRunEnrollmentRequest}
-     * @memberof EnrollmentsApiEnrollmentsUpdate
-     */
     readonly CourseRunEnrollmentRequest: CourseRunEnrollmentRequest
 }
 
 /**
  * Request parameters for userEnrollmentsCreateV2 operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiUserEnrollmentsCreateV2Request
  */
 export interface EnrollmentsApiUserEnrollmentsCreateV2Request {
-    /**
-     * 
-     * @type {CourseRunEnrollmentRequestV2Request}
-     * @memberof EnrollmentsApiUserEnrollmentsCreateV2
-     */
     readonly CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request
 }
 
 /**
  * Request parameters for userEnrollmentsCreateV3 operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiUserEnrollmentsCreateV3Request
  */
 export interface EnrollmentsApiUserEnrollmentsCreateV3Request {
-    /**
-     * 
-     * @type {CourseRunEnrollmentV3Request}
-     * @memberof EnrollmentsApiUserEnrollmentsCreateV3
-     */
     readonly CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request
 }
 
 /**
  * Request parameters for userEnrollmentsDestroyV2 operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiUserEnrollmentsDestroyV2Request
  */
 export interface EnrollmentsApiUserEnrollmentsDestroyV2Request {
     /**
      * A unique integer value identifying this course run enrollment.
-     * @type {number}
-     * @memberof EnrollmentsApiUserEnrollmentsDestroyV2
      */
     readonly id: number
 }
 
 /**
  * Request parameters for userEnrollmentsDestroyV3 operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiUserEnrollmentsDestroyV3Request
  */
 export interface EnrollmentsApiUserEnrollmentsDestroyV3Request {
     /**
      * A unique integer value identifying this course run enrollment.
-     * @type {number}
-     * @memberof EnrollmentsApiUserEnrollmentsDestroyV3
      */
     readonly id: number
 }
 
 /**
  * Request parameters for userEnrollmentsListV2 operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiUserEnrollmentsListV2Request
  */
 export interface EnrollmentsApiUserEnrollmentsListV2Request {
     /**
      * Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
-     * @type {boolean}
-     * @memberof EnrollmentsApiUserEnrollmentsListV2
      */
     readonly exclude_b2b?: boolean
 
     /**
      * Filter by B2B organization ID
-     * @type {number}
-     * @memberof EnrollmentsApiUserEnrollmentsListV2
      */
     readonly org_id?: number
 }
 
 /**
  * Request parameters for userEnrollmentsListV3 operation in EnrollmentsApi.
- * @export
- * @interface EnrollmentsApiUserEnrollmentsListV3Request
  */
 export interface EnrollmentsApiUserEnrollmentsListV3Request {
     /**
      * Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
-     * @type {boolean}
-     * @memberof EnrollmentsApiUserEnrollmentsListV3
      */
     readonly exclude_b2b?: boolean
 
     /**
      * Filter by B2B organization ID
-     * @type {number}
-     * @memberof EnrollmentsApiUserEnrollmentsListV3
      */
     readonly org_id?: number
 }
 
 /**
  * EnrollmentsApi - object-oriented interface
- * @export
- * @class EnrollmentsApi
- * @extends {BaseAPI}
  */
 export class EnrollmentsApi extends BaseAPI {
     /**
      * View to handle direct POST requests to enroll in a course run.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public apiEnrollmentsCreate(options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).apiEnrollmentsCreate(options).then((request) => request(this.axios, this.basePath));
@@ -19411,7 +13665,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiEnrollmentsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public enrollmentsCreate(requestParameters: EnrollmentsApiEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsCreate(requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
@@ -19422,7 +13675,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiEnrollmentsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public enrollmentsDestroy(requestParameters: EnrollmentsApiEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -19432,7 +13684,6 @@ export class EnrollmentsApi extends BaseAPI {
      * API view set for user enrollments
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public enrollmentsList(options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsList(options).then((request) => request(this.axios, this.basePath));
@@ -19443,7 +13694,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public enrollmentsPartialUpdate(requestParameters: EnrollmentsApiEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedUpdateCourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
@@ -19454,7 +13704,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiEnrollmentsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public enrollmentsRetrieve(requestParameters: EnrollmentsApiEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -19465,7 +13714,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiEnrollmentsUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public enrollmentsUpdate(requestParameters: EnrollmentsApiEnrollmentsUpdateRequest, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).enrollmentsUpdate(requestParameters.id, requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
@@ -19476,7 +13724,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiUserEnrollmentsCreateV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public userEnrollmentsCreateV2(requestParameters: EnrollmentsApiUserEnrollmentsCreateV2Request, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsCreateV2(requestParameters.CourseRunEnrollmentRequestV2Request, options).then((request) => request(this.axios, this.basePath));
@@ -19487,7 +13734,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiUserEnrollmentsCreateV3Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public userEnrollmentsCreateV3(requestParameters: EnrollmentsApiUserEnrollmentsCreateV3Request = {}, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsCreateV3(requestParameters.CourseRunEnrollmentV3Request, options).then((request) => request(this.axios, this.basePath));
@@ -19498,7 +13744,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public userEnrollmentsDestroyV2(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV2Request, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsDestroyV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -19509,7 +13754,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiUserEnrollmentsDestroyV3Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public userEnrollmentsDestroyV3(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV3Request, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsDestroyV3(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -19520,7 +13764,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
@@ -19531,7 +13774,6 @@ export class EnrollmentsApi extends BaseAPI {
      * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof EnrollmentsApi
      */
     public userEnrollmentsListV3(requestParameters: EnrollmentsApiUserEnrollmentsListV3Request = {}, options?: RawAxiosRequestConfig) {
         return EnrollmentsApiFp(this.configuration).userEnrollmentsListV3(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
@@ -19542,7 +13784,6 @@ export class EnrollmentsApi extends BaseAPI {
 
 /**
  * OrdersApi - axios parameter creator
- * @export
  */
 export const OrdersApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -19574,8 +13815,8 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -19595,7 +13836,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             // verify required parameter 'id' is not null or undefined
             assertParamExists('ordersHistoryRetrieve', 'id', id)
             const localVarPath = `/api/v0/orders/history/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -19607,8 +13848,8 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -19628,7 +13869,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             // verify required parameter 'id' is not null or undefined
             assertParamExists('ordersReceiptRetrieve', 'id', id)
             const localVarPath = `/api/v0/orders/receipt/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -19640,8 +13881,8 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -19672,9 +13913,8 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -19696,7 +13936,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             // verify required parameter 'order_id' is not null or undefined
             assertParamExists('ordersStatusRetrieve', 'order_id', order_id)
             const localVarPath = `/api/v0/orders/status/{order_id}/`
-                .replace(`{${"order_id"}}`, encodeURIComponent(String(order_id)));
+                .replace('{order_id}', encodeURIComponent(String(order_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -19708,8 +13948,8 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -19724,7 +13964,6 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 /**
  * OrdersApi - functional programming interface
- * @export
  */
 export const OrdersApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = OrdersApiAxiosParamCreator(configuration)
@@ -19738,9 +13977,9 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          */
         async ordersHistoryList(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrderHistoryList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersHistoryList(limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrdersApi.ordersHistoryList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrdersApi.ordersHistoryList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a historical order for the current user.
@@ -19750,9 +13989,9 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          */
         async ordersHistoryRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderHistory>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersHistoryRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrdersApi.ordersHistoryRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrdersApi.ordersHistoryRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Viewset to retrieve an order so it can be viewed as a receipt.
@@ -19762,9 +14001,9 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          */
         async ordersReceiptRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Order>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersReceiptRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrdersApi.ordersReceiptRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrdersApi.ordersReceiptRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Submit a refund request for a fulfilled order. Only the order\'s purchaser may submit a request, and B2B contract orders are excluded.
@@ -19774,9 +14013,9 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          */
         async ordersRefundRequestsCreate(RefundRequestRequest: RefundRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefundRequest>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersRefundRequestsCreate(RefundRequestRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrdersApi.ordersRefundRequestsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrdersApi.ordersRefundRequestsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Pollable interface to determine status of a particular order.
@@ -19786,16 +14025,15 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          */
         async ordersStatusRetrieve(order_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderStatus>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.ordersStatusRetrieve(order_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrdersApi.ordersStatusRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrdersApi.ordersStatusRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * OrdersApi - factory interface
- * @export
  */
 export const OrdersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = OrdersApiFp(configuration)
@@ -19850,86 +14088,49 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 
 /**
  * Request parameters for ordersHistoryList operation in OrdersApi.
- * @export
- * @interface OrdersApiOrdersHistoryListRequest
  */
 export interface OrdersApiOrdersHistoryListRequest {
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof OrdersApiOrdersHistoryList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof OrdersApiOrdersHistoryList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for ordersHistoryRetrieve operation in OrdersApi.
- * @export
- * @interface OrdersApiOrdersHistoryRetrieveRequest
  */
 export interface OrdersApiOrdersHistoryRetrieveRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrdersApiOrdersHistoryRetrieve
-     */
     readonly id: number
 }
 
 /**
  * Request parameters for ordersReceiptRetrieve operation in OrdersApi.
- * @export
- * @interface OrdersApiOrdersReceiptRetrieveRequest
  */
 export interface OrdersApiOrdersReceiptRetrieveRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrdersApiOrdersReceiptRetrieve
-     */
     readonly id: number
 }
 
 /**
  * Request parameters for ordersRefundRequestsCreate operation in OrdersApi.
- * @export
- * @interface OrdersApiOrdersRefundRequestsCreateRequest
  */
 export interface OrdersApiOrdersRefundRequestsCreateRequest {
-    /**
-     * 
-     * @type {RefundRequestRequest}
-     * @memberof OrdersApiOrdersRefundRequestsCreate
-     */
     readonly RefundRequestRequest: RefundRequestRequest
 }
 
 /**
  * Request parameters for ordersStatusRetrieve operation in OrdersApi.
- * @export
- * @interface OrdersApiOrdersStatusRetrieveRequest
  */
 export interface OrdersApiOrdersStatusRetrieveRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrdersApiOrdersStatusRetrieve
-     */
     readonly order_id: string
 }
 
 /**
  * OrdersApi - object-oriented interface
- * @export
- * @class OrdersApi
- * @extends {BaseAPI}
  */
 export class OrdersApi extends BaseAPI {
     /**
@@ -19937,7 +14138,6 @@ export class OrdersApi extends BaseAPI {
      * @param {OrdersApiOrdersHistoryListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof OrdersApi
      */
     public ordersHistoryList(requestParameters: OrdersApiOrdersHistoryListRequest = {}, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersHistoryList(requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -19948,7 +14148,6 @@ export class OrdersApi extends BaseAPI {
      * @param {OrdersApiOrdersHistoryRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof OrdersApi
      */
     public ordersHistoryRetrieve(requestParameters: OrdersApiOrdersHistoryRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersHistoryRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -19959,7 +14158,6 @@ export class OrdersApi extends BaseAPI {
      * @param {OrdersApiOrdersReceiptRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof OrdersApi
      */
     public ordersReceiptRetrieve(requestParameters: OrdersApiOrdersReceiptRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersReceiptRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -19970,7 +14168,6 @@ export class OrdersApi extends BaseAPI {
      * @param {OrdersApiOrdersRefundRequestsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof OrdersApi
      */
     public ordersRefundRequestsCreate(requestParameters: OrdersApiOrdersRefundRequestsCreateRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersRefundRequestsCreate(requestParameters.RefundRequestRequest, options).then((request) => request(this.axios, this.basePath));
@@ -19981,7 +14178,6 @@ export class OrdersApi extends BaseAPI {
      * @param {OrdersApiOrdersStatusRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof OrdersApi
      */
     public ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(this.axios, this.basePath));
@@ -19992,7 +14188,6 @@ export class OrdersApi extends BaseAPI {
 
 /**
  * PagesApi - axios parameter creator
- * @export
  */
 export const PagesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -20025,8 +14220,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['type'] = type;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20048,7 +14243,7 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
             // verify required parameter 'id' is not null or undefined
             assertParamExists('pagesRetrieve', 'id', id)
             const localVarPath = `/api/v2/pages/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20064,8 +14259,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['revision_id'] = revision_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20094,8 +14289,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20129,8 +14324,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['readable_id'] = readable_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20164,8 +14359,8 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['readable_id'] = readable_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20180,7 +14375,6 @@ export const PagesApiAxiosParamCreator = function (configuration?: Configuration
 
 /**
  * PagesApi - functional programming interface
- * @export
  */
 export const PagesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = PagesApiAxiosParamCreator(configuration)
@@ -20195,9 +14389,9 @@ export const PagesApiFp = function(configuration?: Configuration) {
          */
         async pagesList(fields?: string, type?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pagesList(fields, type, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns details of a specific Wagtail page by ID
@@ -20209,9 +14403,9 @@ export const PagesApiFp = function(configuration?: Configuration) {
          */
         async pagesRetrieve(id: number, revision_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PagesRetrieve200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pagesRetrieve(id, revision_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns pages of type cms.CertificatePage
@@ -20221,9 +14415,9 @@ export const PagesApiFp = function(configuration?: Configuration) {
          */
         async pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CertificatePageList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCertificatepageRetrieve(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCertificatepageRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCertificatepageRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns pages of type cms.CoursePage
@@ -20234,9 +14428,9 @@ export const PagesApiFp = function(configuration?: Configuration) {
          */
         async pagesfieldstypecmsCoursepageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursepageRetrieve(readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursepageRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursepageRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns pages of type cms.ProgramPage
@@ -20247,16 +14441,15 @@ export const PagesApiFp = function(configuration?: Configuration) {
          */
         async pagesfieldstypecmsProgrampageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgrampageRetrieve(readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgrampageRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgrampageRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * PagesApi - factory interface
- * @export
  */
 export const PagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = PagesApiFp(configuration)
@@ -20315,79 +14508,56 @@ export const PagesApiFactory = function (configuration?: Configuration, basePath
 
 /**
  * Request parameters for pagesList operation in PagesApi.
- * @export
- * @interface PagesApiPagesListRequest
  */
 export interface PagesApiPagesListRequest {
     /**
      * Specify fields (e.g. &#x60;*&#x60;)
-     * @type {string}
-     * @memberof PagesApiPagesList
      */
     readonly fields?: string
 
     /**
      * Filter by Wagtail page type
-     * @type {string}
-     * @memberof PagesApiPagesList
      */
     readonly type?: string
 }
 
 /**
  * Request parameters for pagesRetrieve operation in PagesApi.
- * @export
- * @interface PagesApiPagesRetrieveRequest
  */
 export interface PagesApiPagesRetrieveRequest {
     /**
      * ID of the Wagtail page
-     * @type {number}
-     * @memberof PagesApiPagesRetrieve
      */
     readonly id: number
 
     /**
      * Optional certificate revision ID to retrieve a specific revision of the certificate page
-     * @type {number}
-     * @memberof PagesApiPagesRetrieve
      */
     readonly revision_id?: number
 }
 
 /**
  * Request parameters for pagesfieldstypecmsCoursepageRetrieve operation in PagesApi.
- * @export
- * @interface PagesApiPagesfieldstypecmsCoursepageRetrieveRequest
  */
 export interface PagesApiPagesfieldstypecmsCoursepageRetrieveRequest {
     /**
      * filter by course readable_id
-     * @type {string}
-     * @memberof PagesApiPagesfieldstypecmsCoursepageRetrieve
      */
     readonly readable_id?: string
 }
 
 /**
  * Request parameters for pagesfieldstypecmsProgrampageRetrieve operation in PagesApi.
- * @export
- * @interface PagesApiPagesfieldstypecmsProgrampageRetrieveRequest
  */
 export interface PagesApiPagesfieldstypecmsProgrampageRetrieveRequest {
     /**
      * filter by program readable_id
-     * @type {string}
-     * @memberof PagesApiPagesfieldstypecmsProgrampageRetrieve
      */
     readonly readable_id?: string
 }
 
 /**
  * PagesApi - object-oriented interface
- * @export
- * @class PagesApi
- * @extends {BaseAPI}
  */
 export class PagesApi extends BaseAPI {
     /**
@@ -20396,7 +14566,6 @@ export class PagesApi extends BaseAPI {
      * @param {PagesApiPagesListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PagesApi
      */
     public pagesList(requestParameters: PagesApiPagesListRequest = {}, options?: RawAxiosRequestConfig) {
         return PagesApiFp(this.configuration).pagesList(requestParameters.fields, requestParameters.type, options).then((request) => request(this.axios, this.basePath));
@@ -20408,7 +14577,6 @@ export class PagesApi extends BaseAPI {
      * @param {PagesApiPagesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PagesApi
      */
     public pagesRetrieve(requestParameters: PagesApiPagesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return PagesApiFp(this.configuration).pagesRetrieve(requestParameters.id, requestParameters.revision_id, options).then((request) => request(this.axios, this.basePath));
@@ -20419,7 +14587,6 @@ export class PagesApi extends BaseAPI {
      * @summary List all Certificate Pages
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PagesApi
      */
     public pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig) {
         return PagesApiFp(this.configuration).pagesfieldstypecmsCertificatepageRetrieve(options).then((request) => request(this.axios, this.basePath));
@@ -20431,7 +14598,6 @@ export class PagesApi extends BaseAPI {
      * @param {PagesApiPagesfieldstypecmsCoursepageRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PagesApi
      */
     public pagesfieldstypecmsCoursepageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursepageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
         return PagesApiFp(this.configuration).pagesfieldstypecmsCoursepageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
@@ -20443,7 +14609,6 @@ export class PagesApi extends BaseAPI {
      * @param {PagesApiPagesfieldstypecmsProgrampageRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PagesApi
      */
     public pagesfieldstypecmsProgrampageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgrampageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
         return PagesApiFp(this.configuration).pagesfieldstypecmsProgrampageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
@@ -20454,7 +14619,6 @@ export class PagesApi extends BaseAPI {
 
 /**
  * ProductsApi - axios parameter creator
- * @export
  */
 export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -20479,9 +14643,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -20503,7 +14666,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsAllDestroy', 'id', id)
             const localVarPath = `/api/v0/products/all/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20516,7 +14679,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20554,8 +14716,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20576,7 +14738,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsAllPartialUpdate', 'id', id)
             const localVarPath = `/api/v0/products/all/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20588,9 +14750,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -20612,7 +14773,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsAllRetrieve', 'id', id)
             const localVarPath = `/api/v0/products/all/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20624,8 +14785,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20648,7 +14809,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'ProductRequest' is not null or undefined
             assertParamExists('productsAllUpdate', 'ProductRequest', ProductRequest)
             const localVarPath = `/api/v0/products/all/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20660,9 +14821,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -20702,8 +14862,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['offset'] = offset;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20723,7 +14883,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsRetrieve', 'id', id)
             const localVarPath = `/api/v0/products/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20735,8 +14895,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20756,7 +14916,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsUserFlexiblePriceRetrieve', 'id', id)
             const localVarPath = `/api/v0/products/{id}/user_flexible_price/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -20768,8 +14928,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -20784,7 +14944,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
 /**
  * ProductsApi - functional programming interface
- * @export
  */
 export const ProductsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProductsApiAxiosParamCreator(configuration)
@@ -20797,9 +14956,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsAllCreate(ProductRequest: ProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllCreate(ProductRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsAllCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsAllCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
@@ -20809,9 +14968,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsAllDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsAllDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsAllDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
@@ -20822,9 +14981,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsAllList(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllList(limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsAllList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsAllList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
@@ -20835,9 +14994,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsAllPartialUpdate(id: number, PatchedProductRequest?: PatchedProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllPartialUpdate(id, PatchedProductRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsAllPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsAllPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
@@ -20847,9 +15006,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsAllRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsAllRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsAllRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * This doesn\'t filter unenrollable products out, and adds name search for courseware object readable id. It\'s really for the staff dashboard.
@@ -20860,9 +15019,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsAllUpdate(id: number, ProductRequest: ProductRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsAllUpdate(id, ProductRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsAllUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsAllUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List and view products within the system.
@@ -20873,9 +15032,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsList(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProductList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsList(limit, offset, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List and view products within the system.
@@ -20885,9 +15044,9 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a product with user-specific flexible price information
@@ -20897,16 +15056,15 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          */
         async productsUserFlexiblePriceRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductFlexiblePrice>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsUserFlexiblePriceRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProductsApi.productsUserFlexiblePriceRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsUserFlexiblePriceRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ProductsApi - factory interface
- * @export
  */
 export const ProductsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ProductsApiFp(configuration)
@@ -20997,163 +15155,107 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
 
 /**
  * Request parameters for productsAllCreate operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsAllCreateRequest
  */
 export interface ProductsApiProductsAllCreateRequest {
-    /**
-     * 
-     * @type {ProductRequest}
-     * @memberof ProductsApiProductsAllCreate
-     */
     readonly ProductRequest: ProductRequest
 }
 
 /**
  * Request parameters for productsAllDestroy operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsAllDestroyRequest
  */
 export interface ProductsApiProductsAllDestroyRequest {
     /**
      * A unique integer value identifying this product.
-     * @type {number}
-     * @memberof ProductsApiProductsAllDestroy
      */
     readonly id: number
 }
 
 /**
  * Request parameters for productsAllList operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsAllListRequest
  */
 export interface ProductsApiProductsAllListRequest {
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof ProductsApiProductsAllList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof ProductsApiProductsAllList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for productsAllPartialUpdate operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsAllPartialUpdateRequest
  */
 export interface ProductsApiProductsAllPartialUpdateRequest {
     /**
      * A unique integer value identifying this product.
-     * @type {number}
-     * @memberof ProductsApiProductsAllPartialUpdate
      */
     readonly id: number
 
-    /**
-     * 
-     * @type {PatchedProductRequest}
-     * @memberof ProductsApiProductsAllPartialUpdate
-     */
     readonly PatchedProductRequest?: PatchedProductRequest
 }
 
 /**
  * Request parameters for productsAllRetrieve operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsAllRetrieveRequest
  */
 export interface ProductsApiProductsAllRetrieveRequest {
     /**
      * A unique integer value identifying this product.
-     * @type {number}
-     * @memberof ProductsApiProductsAllRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for productsAllUpdate operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsAllUpdateRequest
  */
 export interface ProductsApiProductsAllUpdateRequest {
     /**
      * A unique integer value identifying this product.
-     * @type {number}
-     * @memberof ProductsApiProductsAllUpdate
      */
     readonly id: number
 
-    /**
-     * 
-     * @type {ProductRequest}
-     * @memberof ProductsApiProductsAllUpdate
-     */
     readonly ProductRequest: ProductRequest
 }
 
 /**
  * Request parameters for productsList operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsListRequest
  */
 export interface ProductsApiProductsListRequest {
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof ProductsApiProductsList
      */
     readonly limit?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof ProductsApiProductsList
      */
     readonly offset?: number
 }
 
 /**
  * Request parameters for productsRetrieve operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsRetrieveRequest
  */
 export interface ProductsApiProductsRetrieveRequest {
     /**
      * A unique integer value identifying this product.
-     * @type {number}
-     * @memberof ProductsApiProductsRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for productsUserFlexiblePriceRetrieve operation in ProductsApi.
- * @export
- * @interface ProductsApiProductsUserFlexiblePriceRetrieveRequest
  */
 export interface ProductsApiProductsUserFlexiblePriceRetrieveRequest {
     /**
      * A unique integer value identifying this product.
-     * @type {number}
-     * @memberof ProductsApiProductsUserFlexiblePriceRetrieve
      */
     readonly id: number
 }
 
 /**
  * ProductsApi - object-oriented interface
- * @export
- * @class ProductsApi
- * @extends {BaseAPI}
  */
 export class ProductsApi extends BaseAPI {
     /**
@@ -21161,7 +15263,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsAllCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsAllCreate(requestParameters: ProductsApiProductsAllCreateRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsAllCreate(requestParameters.ProductRequest, options).then((request) => request(this.axios, this.basePath));
@@ -21172,7 +15273,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsAllDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsAllDestroy(requestParameters: ProductsApiProductsAllDestroyRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsAllDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -21183,7 +15283,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsAllListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsAllList(requestParameters: ProductsApiProductsAllListRequest = {}, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsAllList(requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -21194,7 +15293,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsAllPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsAllPartialUpdate(requestParameters: ProductsApiProductsAllPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsAllPartialUpdate(requestParameters.id, requestParameters.PatchedProductRequest, options).then((request) => request(this.axios, this.basePath));
@@ -21205,7 +15303,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsAllRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsAllRetrieve(requestParameters: ProductsApiProductsAllRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsAllRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -21216,7 +15313,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsAllUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsAllUpdate(requestParameters: ProductsApiProductsAllUpdateRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsAllUpdate(requestParameters.id, requestParameters.ProductRequest, options).then((request) => request(this.axios, this.basePath));
@@ -21227,7 +15323,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsList(requestParameters: ProductsApiProductsListRequest = {}, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsList(requestParameters.limit, requestParameters.offset, options).then((request) => request(this.axios, this.basePath));
@@ -21238,7 +15333,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsRetrieve(requestParameters: ProductsApiProductsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -21249,7 +15343,6 @@ export class ProductsApi extends BaseAPI {
      * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductsApi
      */
     public productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -21260,7 +15353,6 @@ export class ProductsApi extends BaseAPI {
 
 /**
  * ProgramCertificatesApi - axios parameter creator
- * @export
  */
 export const ProgramCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -21274,7 +15366,7 @@ export const ProgramCertificatesApiAxiosParamCreator = function (configuration?:
             // verify required parameter 'uuid' is not null or undefined
             assertParamExists('programCertificatesRetrieve', 'uuid', uuid)
             const localVarPath = `/api/v2/program_certificates/{uuid}/`
-                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
+                .replace('{uuid}', encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21286,8 +15378,8 @@ export const ProgramCertificatesApiAxiosParamCreator = function (configuration?:
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21302,7 +15394,6 @@ export const ProgramCertificatesApiAxiosParamCreator = function (configuration?:
 
 /**
  * ProgramCertificatesApi - functional programming interface
- * @export
  */
 export const ProgramCertificatesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProgramCertificatesApiAxiosParamCreator(configuration)
@@ -21315,16 +15406,15 @@ export const ProgramCertificatesApiFp = function(configuration?: Configuration) 
          */
         async programCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCertificate>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programCertificatesRetrieve(uuid, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramCertificatesApi.programCertificatesRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramCertificatesApi.programCertificatesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ProgramCertificatesApi - factory interface
- * @export
  */
 export const ProgramCertificatesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ProgramCertificatesApiFp(configuration)
@@ -21343,23 +15433,13 @@ export const ProgramCertificatesApiFactory = function (configuration?: Configura
 
 /**
  * Request parameters for programCertificatesRetrieve operation in ProgramCertificatesApi.
- * @export
- * @interface ProgramCertificatesApiProgramCertificatesRetrieveRequest
  */
 export interface ProgramCertificatesApiProgramCertificatesRetrieveRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramCertificatesApiProgramCertificatesRetrieve
-     */
     readonly uuid: string
 }
 
 /**
  * ProgramCertificatesApi - object-oriented interface
- * @export
- * @class ProgramCertificatesApi
- * @extends {BaseAPI}
  */
 export class ProgramCertificatesApi extends BaseAPI {
     /**
@@ -21367,7 +15447,6 @@ export class ProgramCertificatesApi extends BaseAPI {
      * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramCertificatesApi
      */
     public programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramCertificatesApiFp(this.configuration).programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
@@ -21378,7 +15457,6 @@ export class ProgramCertificatesApi extends BaseAPI {
 
 /**
  * ProgramCollectionsApi - axios parameter creator
- * @export
  */
 export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -21410,8 +15488,8 @@ export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: 
                 localVarQueryParameter['page_size'] = page_size;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21431,7 +15509,7 @@ export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('programCollectionsRetrieve', 'id', id)
             const localVarPath = `/api/v2/program-collections/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21443,8 +15521,8 @@ export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21459,7 +15537,6 @@ export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: 
 
 /**
  * ProgramCollectionsApi - functional programming interface
- * @export
  */
 export const ProgramCollectionsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProgramCollectionsApiAxiosParamCreator(configuration)
@@ -21473,9 +15550,9 @@ export const ProgramCollectionsApiFp = function(configuration?: Configuration) {
          */
         async programCollectionsList(page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramCollectionList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programCollectionsList(page, page_size, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Readonly viewset for ProgramCollection objects.
@@ -21485,16 +15562,15 @@ export const ProgramCollectionsApiFp = function(configuration?: Configuration) {
          */
         async programCollectionsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCollection>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programCollectionsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ProgramCollectionsApi - factory interface
- * @export
  */
 export const ProgramCollectionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ProgramCollectionsApiFp(configuration)
@@ -21522,44 +15598,31 @@ export const ProgramCollectionsApiFactory = function (configuration?: Configurat
 
 /**
  * Request parameters for programCollectionsList operation in ProgramCollectionsApi.
- * @export
- * @interface ProgramCollectionsApiProgramCollectionsListRequest
  */
 export interface ProgramCollectionsApiProgramCollectionsListRequest {
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof ProgramCollectionsApiProgramCollectionsList
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof ProgramCollectionsApiProgramCollectionsList
      */
     readonly page_size?: number
 }
 
 /**
  * Request parameters for programCollectionsRetrieve operation in ProgramCollectionsApi.
- * @export
- * @interface ProgramCollectionsApiProgramCollectionsRetrieveRequest
  */
 export interface ProgramCollectionsApiProgramCollectionsRetrieveRequest {
     /**
      * A unique integer value identifying this Program Collection.
-     * @type {number}
-     * @memberof ProgramCollectionsApiProgramCollectionsRetrieve
      */
     readonly id: number
 }
 
 /**
  * ProgramCollectionsApi - object-oriented interface
- * @export
- * @class ProgramCollectionsApi
- * @extends {BaseAPI}
  */
 export class ProgramCollectionsApi extends BaseAPI {
     /**
@@ -21567,7 +15630,6 @@ export class ProgramCollectionsApi extends BaseAPI {
      * @param {ProgramCollectionsApiProgramCollectionsListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramCollectionsApi
      */
     public programCollectionsList(requestParameters: ProgramCollectionsApiProgramCollectionsListRequest = {}, options?: RawAxiosRequestConfig) {
         return ProgramCollectionsApiFp(this.configuration).programCollectionsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
@@ -21578,7 +15640,6 @@ export class ProgramCollectionsApi extends BaseAPI {
      * @param {ProgramCollectionsApiProgramCollectionsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramCollectionsApi
      */
     public programCollectionsRetrieve(requestParameters: ProgramCollectionsApiProgramCollectionsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramCollectionsApiFp(this.configuration).programCollectionsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -21589,7 +15650,6 @@ export class ProgramCollectionsApi extends BaseAPI {
 
 /**
  * ProgramEnrollmentsApi - axios parameter creator
- * @export
  */
 export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -21603,7 +15663,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('programEnrollmentsDestroy', 'id', id)
             const localVarPath = `/api/v1/program_enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21615,8 +15675,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21644,8 +15704,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21665,7 +15725,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('programEnrollmentsRetrieve', 'id', id)
             const localVarPath = `/api/v1/program_enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21677,8 +15737,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21698,7 +15758,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('v2ProgramEnrollmentsDestroy', 'id', id)
             const localVarPath = `/api/v2/program_enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21710,8 +15770,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21739,8 +15799,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21760,7 +15820,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'id' is not null or undefined
             assertParamExists('v2ProgramEnrollmentsRetrieve', 'id', id)
             const localVarPath = `/api/v2/program_enrollments/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21772,8 +15832,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21804,8 +15864,6 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -21828,7 +15886,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'program_id' is not null or undefined
             assertParamExists('v3ProgramEnrollmentsDestroy', 'program_id', program_id)
             const localVarPath = `/api/v3/program_enrollments/{program_id}/`
-                .replace(`{${"program_id"}}`, encodeURIComponent(String(program_id)));
+                .replace('{program_id}', encodeURIComponent(String(program_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21841,7 +15899,6 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21869,8 +15926,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21890,7 +15947,7 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             // verify required parameter 'program_id' is not null or undefined
             assertParamExists('v3ProgramEnrollmentsRetrieve', 'program_id', program_id)
             const localVarPath = `/api/v3/program_enrollments/{program_id}/`
-                .replace(`{${"program_id"}}`, encodeURIComponent(String(program_id)));
+                .replace('{program_id}', encodeURIComponent(String(program_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21902,8 +15959,8 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -21918,7 +15975,6 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
 
 /**
  * ProgramEnrollmentsApi - functional programming interface
- * @export
  */
 export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProgramEnrollmentsApiAxiosParamCreator(configuration)
@@ -21931,9 +15987,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async programEnrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProgramEnrollmentDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns a unified set of program and course enrollments for the current user.
@@ -21942,9 +15998,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async programEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserProgramEnrollmentDetail>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a specific program enrollment.
@@ -21954,9 +16010,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async programEnrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProgramEnrollmentDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
@@ -21966,9 +16022,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v2ProgramEnrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V2UserProgramEnrollmentDetail>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsDestroy(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Returns a unified set of program and course enrollments for the current user using v2 serializers.
@@ -21977,9 +16033,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V2UserProgramEnrollmentDetail>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieve a specific program enrollment using v2 serializers.
@@ -21989,9 +16045,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v2ProgramEnrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2UserProgramEnrollmentDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
@@ -22001,9 +16057,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
@@ -22013,9 +16069,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v3ProgramEnrollmentsDestroy(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsDestroy(program_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsDestroy']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * ViewSet for user program enrollments with v3 serializers.
@@ -22024,9 +16080,9 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V3UserProgramEnrollment>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * ViewSet for user program enrollments with v3 serializers.
@@ -22036,16 +16092,15 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
          */
         async v3ProgramEnrollmentsRetrieve(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V3UserProgramEnrollment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsRetrieve(program_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ProgramEnrollmentsApi - factory interface
- * @export
  */
 export const ProgramEnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ProgramEnrollmentsApiFp(configuration)
@@ -22142,107 +16197,70 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
 
 /**
  * Request parameters for programEnrollmentsDestroy operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest
  */
 export interface ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest {
     /**
      * Program enrollment ID
-     * @type {number}
-     * @memberof ProgramEnrollmentsApiProgramEnrollmentsDestroy
      */
     readonly id: number
 }
 
 /**
  * Request parameters for programEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest
  */
 export interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest {
     /**
      * Program enrollment ID
-     * @type {number}
-     * @memberof ProgramEnrollmentsApiProgramEnrollmentsRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for v2ProgramEnrollmentsDestroy operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest
  */
 export interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest {
     /**
      * Program ID
-     * @type {number}
-     * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsDestroy
      */
     readonly id: number
 }
 
 /**
  * Request parameters for v2ProgramEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest
  */
 export interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest {
     /**
      * Program ID
-     * @type {number}
-     * @memberof ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieve
      */
     readonly id: number
 }
 
 /**
  * Request parameters for v3ProgramEnrollmentsCreate operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest
  */
 export interface ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest {
-    /**
-     * 
-     * @type {V3ProgramEnrollmentRequestRequest}
-     * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsCreate
-     */
     readonly V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest
 }
 
 /**
  * Request parameters for v3ProgramEnrollmentsDestroy operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest
  */
 export interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest {
     /**
      * Program ID
-     * @type {number}
-     * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsDestroy
      */
     readonly program_id: number
 }
 
 /**
  * Request parameters for v3ProgramEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
- * @export
- * @interface ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest
  */
 export interface ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieve
-     */
     readonly program_id: number
 }
 
 /**
  * ProgramEnrollmentsApi - object-oriented interface
- * @export
- * @class ProgramEnrollmentsApi
- * @extends {BaseAPI}
  */
 export class ProgramEnrollmentsApi extends BaseAPI {
     /**
@@ -22250,7 +16268,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public programEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -22260,7 +16277,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * Returns a unified set of program and course enrollments for the current user.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public programEnrollmentsList(options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
@@ -22271,7 +16287,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -22282,7 +16297,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v2ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -22292,7 +16306,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * Returns a unified set of program and course enrollments for the current user using v2 serializers.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
@@ -22303,7 +16316,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -22314,7 +16326,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v3ProgramEnrollmentsCreate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(this.axios, this.basePath));
@@ -22325,7 +16336,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v3ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsDestroy(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
@@ -22335,7 +16345,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * ViewSet for user program enrollments with v3 serializers.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
@@ -22346,7 +16355,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramEnrollmentsApi
      */
     public v3ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsRetrieve(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
@@ -22357,7 +16365,6 @@ export class ProgramEnrollmentsApi extends BaseAPI {
 
 /**
  * ProgramsApi - axios parameter creator
- * @export
  */
 export const ProgramsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -22404,8 +16411,8 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['readable_id'] = readable_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -22473,8 +16480,8 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['readable_id'] = readable_id;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -22494,7 +16501,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('programsRetrieveV1', 'id', id)
             const localVarPath = `/api/v1/programs/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -22506,8 +16513,8 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -22527,7 +16534,7 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
             // verify required parameter 'id' is not null or undefined
             assertParamExists('programsRetrieveV2', 'id', id)
             const localVarPath = `/api/v2/programs/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -22539,8 +16546,8 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -22555,7 +16562,6 @@ export const ProgramsApiAxiosParamCreator = function (configuration?: Configurat
 
 /**
  * ProgramsApi - functional programming interface
- * @export
  */
 export const ProgramsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProgramsApiAxiosParamCreator(configuration)
@@ -22572,9 +16578,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsListV1(id?: number, live?: boolean, page?: number, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV1ProgramList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV1(id, live, page, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsListV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsListV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List Programs - v2
@@ -22591,9 +16597,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsListV2(contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramDetailList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(contract_id, id, live, org_id, page, page__live, page_size, readable_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsListV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsListV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Programs - v1
@@ -22603,9 +16609,9 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsRetrieveV1(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1Program>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV1(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsRetrieveV1']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsRetrieveV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API view set for Programs - v2
@@ -22615,16 +16621,15 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
          */
         async programsRetrieveV2(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV2(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * ProgramsApi - factory interface
- * @export
  */
 export const ProgramsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ProgramsApiFp(configuration)
@@ -22670,142 +16675,77 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
 
 /**
  * Request parameters for programsListV1 operation in ProgramsApi.
- * @export
- * @interface ProgramsApiProgramsListV1Request
  */
 export interface ProgramsApiProgramsListV1Request {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV1
-     */
     readonly id?: number
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ProgramsApiProgramsListV1
-     */
     readonly live?: boolean
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV1
      */
     readonly page?: number
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV1
      */
     readonly page_size?: number
 
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramsApiProgramsListV1
-     */
     readonly readable_id?: string
 }
 
 /**
  * Request parameters for programsListV2 operation in ProgramsApi.
- * @export
- * @interface ProgramsApiProgramsListV2Request
  */
 export interface ProgramsApiProgramsListV2Request {
-    /**
-     * 
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV2
-     */
     readonly contract_id?: number
 
     /**
      * Multiple values may be separated by commas.
-     * @type {Array<number>}
-     * @memberof ProgramsApiProgramsListV2
      */
     readonly id?: Array<number>
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ProgramsApiProgramsListV2
-     */
     readonly live?: boolean
 
-    /**
-     * 
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV2
-     */
     readonly org_id?: number
 
     /**
      * A page number within the paginated result set.
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV2
      */
     readonly page?: number
 
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ProgramsApiProgramsListV2
-     */
     readonly page__live?: boolean
 
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof ProgramsApiProgramsListV2
      */
     readonly page_size?: number
 
-    /**
-     * 
-     * @type {string}
-     * @memberof ProgramsApiProgramsListV2
-     */
     readonly readable_id?: string
 }
 
 /**
  * Request parameters for programsRetrieveV1 operation in ProgramsApi.
- * @export
- * @interface ProgramsApiProgramsRetrieveV1Request
  */
 export interface ProgramsApiProgramsRetrieveV1Request {
     /**
      * A unique integer value identifying this program.
-     * @type {number}
-     * @memberof ProgramsApiProgramsRetrieveV1
      */
     readonly id: number
 }
 
 /**
  * Request parameters for programsRetrieveV2 operation in ProgramsApi.
- * @export
- * @interface ProgramsApiProgramsRetrieveV2Request
  */
 export interface ProgramsApiProgramsRetrieveV2Request {
     /**
      * A unique integer value (pk) or readable_id string identifying this program.
-     * @type {string}
-     * @memberof ProgramsApiProgramsRetrieveV2
      */
     readonly id: string
 }
 
 /**
  * ProgramsApi - object-oriented interface
- * @export
- * @class ProgramsApi
- * @extends {BaseAPI}
  */
 export class ProgramsApi extends BaseAPI {
     /**
@@ -22813,7 +16753,6 @@ export class ProgramsApi extends BaseAPI {
      * @param {ProgramsApiProgramsListV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramsApi
      */
     public programsListV1(requestParameters: ProgramsApiProgramsListV1Request = {}, options?: RawAxiosRequestConfig) {
         return ProgramsApiFp(this.configuration).programsListV1(requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
@@ -22824,7 +16763,6 @@ export class ProgramsApi extends BaseAPI {
      * @param {ProgramsApiProgramsListV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramsApi
      */
     public programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig) {
         return ProgramsApiFp(this.configuration).programsListV2(requestParameters.contract_id, requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
@@ -22835,7 +16773,6 @@ export class ProgramsApi extends BaseAPI {
      * @param {ProgramsApiProgramsRetrieveV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramsApi
      */
     public programsRetrieveV1(requestParameters: ProgramsApiProgramsRetrieveV1Request, options?: RawAxiosRequestConfig) {
         return ProgramsApiFp(this.configuration).programsRetrieveV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -22846,7 +16783,6 @@ export class ProgramsApi extends BaseAPI {
      * @param {ProgramsApiProgramsRetrieveV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProgramsApi
      */
     public programsRetrieveV2(requestParameters: ProgramsApiProgramsRetrieveV2Request, options?: RawAxiosRequestConfig) {
         return ProgramsApiFp(this.configuration).programsRetrieveV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -22857,7 +16793,6 @@ export class ProgramsApi extends BaseAPI {
 
 /**
  * UserSearchApi - axios parameter creator
- * @export
  */
 export const UserSearchApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -22894,8 +16829,8 @@ export const UserSearchApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['search'] = search;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -22915,7 +16850,7 @@ export const UserSearchApiAxiosParamCreator = function (configuration?: Configur
             // verify required parameter 'id' is not null or undefined
             assertParamExists('userSearchRetrieve', 'id', id)
             const localVarPath = `/api/v0/user_search/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -22927,8 +16862,8 @@ export const UserSearchApiAxiosParamCreator = function (configuration?: Configur
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -22943,7 +16878,6 @@ export const UserSearchApiAxiosParamCreator = function (configuration?: Configur
 
 /**
  * UserSearchApi - functional programming interface
- * @export
  */
 export const UserSearchApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserSearchApiAxiosParamCreator(configuration)
@@ -22958,9 +16892,9 @@ export const UserSearchApiFp = function(configuration?: Configuration) {
          */
         async userSearchList(l?: number, o?: number, search?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedStaffDashboardUserList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userSearchList(l, o, search, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserSearchApi.userSearchList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserSearchApi.userSearchList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Provides an API for listing system users. This is for the staff dashboard.
@@ -22970,16 +16904,15 @@ export const UserSearchApiFp = function(configuration?: Configuration) {
          */
         async userSearchRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StaffDashboardUser>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userSearchRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserSearchApi.userSearchRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserSearchApi.userSearchRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * UserSearchApi - factory interface
- * @export
  */
 export const UserSearchApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = UserSearchApiFp(configuration)
@@ -23007,51 +16940,36 @@ export const UserSearchApiFactory = function (configuration?: Configuration, bas
 
 /**
  * Request parameters for userSearchList operation in UserSearchApi.
- * @export
- * @interface UserSearchApiUserSearchListRequest
  */
 export interface UserSearchApiUserSearchListRequest {
     /**
      * Number of results to return per page.
-     * @type {number}
-     * @memberof UserSearchApiUserSearchList
      */
     readonly l?: number
 
     /**
      * The initial index from which to return the results.
-     * @type {number}
-     * @memberof UserSearchApiUserSearchList
      */
     readonly o?: number
 
     /**
      * A search term.
-     * @type {string}
-     * @memberof UserSearchApiUserSearchList
      */
     readonly search?: string
 }
 
 /**
  * Request parameters for userSearchRetrieve operation in UserSearchApi.
- * @export
- * @interface UserSearchApiUserSearchRetrieveRequest
  */
 export interface UserSearchApiUserSearchRetrieveRequest {
     /**
      * A unique integer value identifying this user.
-     * @type {number}
-     * @memberof UserSearchApiUserSearchRetrieve
      */
     readonly id: number
 }
 
 /**
  * UserSearchApi - object-oriented interface
- * @export
- * @class UserSearchApi
- * @extends {BaseAPI}
  */
 export class UserSearchApi extends BaseAPI {
     /**
@@ -23059,7 +16977,6 @@ export class UserSearchApi extends BaseAPI {
      * @param {UserSearchApiUserSearchListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserSearchApi
      */
     public userSearchList(requestParameters: UserSearchApiUserSearchListRequest = {}, options?: RawAxiosRequestConfig) {
         return UserSearchApiFp(this.configuration).userSearchList(requestParameters.l, requestParameters.o, requestParameters.search, options).then((request) => request(this.axios, this.basePath));
@@ -23070,7 +16987,6 @@ export class UserSearchApi extends BaseAPI {
      * @param {UserSearchApiUserSearchRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserSearchApi
      */
     public userSearchRetrieve(requestParameters: UserSearchApiUserSearchRetrieveRequest, options?: RawAxiosRequestConfig) {
         return UserSearchApiFp(this.configuration).userSearchRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -23081,7 +16997,6 @@ export class UserSearchApi extends BaseAPI {
 
 /**
  * UserinfoApi - axios parameter creator
- * @export
  */
 export const UserinfoApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -23103,8 +17018,8 @@ export const UserinfoApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -23119,7 +17034,6 @@ export const UserinfoApiAxiosParamCreator = function (configuration?: Configurat
 
 /**
  * UserinfoApi - functional programming interface
- * @export
  */
 export const UserinfoApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserinfoApiAxiosParamCreator(configuration)
@@ -23131,16 +17045,15 @@ export const UserinfoApiFp = function(configuration?: Configuration) {
          */
         async userinfoRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userinfoRetrieve(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserinfoApi.userinfoRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserinfoApi.userinfoRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * UserinfoApi - factory interface
- * @export
  */
 export const UserinfoApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = UserinfoApiFp(configuration)
@@ -23158,16 +17071,12 @@ export const UserinfoApiFactory = function (configuration?: Configuration, baseP
 
 /**
  * UserinfoApi - object-oriented interface
- * @export
- * @class UserinfoApi
- * @extends {BaseAPI}
  */
 export class UserinfoApi extends BaseAPI {
     /**
      * Retrieve the current user\'s info only if they have an edx_username, otherwise return 409  This is to prevent issues with Open edX OAuth client that expect an edx_username to be present
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserinfoApi
      */
     public userinfoRetrieve(options?: RawAxiosRequestConfig) {
         return UserinfoApiFp(this.configuration).userinfoRetrieve(options).then((request) => request(this.axios, this.basePath));
@@ -23178,7 +17087,6 @@ export class UserinfoApi extends BaseAPI {
 
 /**
  * UsersApi - axios parameter creator
- * @export
  */
 export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -23201,9 +17109,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -23233,8 +17140,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -23263,9 +17170,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -23295,8 +17201,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -23316,7 +17222,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersRetrieve', 'id', id)
             const localVarPath = `/api/v0/users/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -23328,8 +17234,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -23344,7 +17250,6 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
 /**
  * UsersApi - functional programming interface
- * @export
  */
 export const UsersApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UsersApiAxiosParamCreator(configuration)
@@ -23357,9 +17262,9 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         async usersCurrentUserPartialUpdate(PatchedUserRequest?: PatchedUserRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersCurrentUserPartialUpdate(PatchedUserRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersApi.usersCurrentUserPartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.usersCurrentUserPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * User retrieve and update viewsets for the current user
@@ -23368,9 +17273,9 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         async usersCurrentUserRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersCurrentUserRetrieve(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersApi.usersCurrentUserRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.usersCurrentUserRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * User retrieve and update viewsets for the current user
@@ -23380,9 +17285,9 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         async usersMePartialUpdate(PatchedUserRequest?: PatchedUserRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersMePartialUpdate(PatchedUserRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersApi.usersMePartialUpdate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.usersMePartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * User retrieve and update viewsets for the current user
@@ -23391,9 +17296,9 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         async usersMeRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersMeRetrieve(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersApi.usersMeRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.usersMeRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * User retrieve viewsets
@@ -23403,16 +17308,15 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         async usersRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PublicUser>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersRetrieve(id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersApi.usersRetrieve']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.usersRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * UsersApi - factory interface
- * @export
  */
 export const UsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = UsersApiFp(configuration)
@@ -23465,51 +17369,30 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 
 /**
  * Request parameters for usersCurrentUserPartialUpdate operation in UsersApi.
- * @export
- * @interface UsersApiUsersCurrentUserPartialUpdateRequest
  */
 export interface UsersApiUsersCurrentUserPartialUpdateRequest {
-    /**
-     * 
-     * @type {PatchedUserRequest}
-     * @memberof UsersApiUsersCurrentUserPartialUpdate
-     */
     readonly PatchedUserRequest?: PatchedUserRequest
 }
 
 /**
  * Request parameters for usersMePartialUpdate operation in UsersApi.
- * @export
- * @interface UsersApiUsersMePartialUpdateRequest
  */
 export interface UsersApiUsersMePartialUpdateRequest {
-    /**
-     * 
-     * @type {PatchedUserRequest}
-     * @memberof UsersApiUsersMePartialUpdate
-     */
     readonly PatchedUserRequest?: PatchedUserRequest
 }
 
 /**
  * Request parameters for usersRetrieve operation in UsersApi.
- * @export
- * @interface UsersApiUsersRetrieveRequest
  */
 export interface UsersApiUsersRetrieveRequest {
     /**
      * A unique integer value identifying this user.
-     * @type {number}
-     * @memberof UsersApiUsersRetrieve
      */
     readonly id: number
 }
 
 /**
  * UsersApi - object-oriented interface
- * @export
- * @class UsersApi
- * @extends {BaseAPI}
  */
 export class UsersApi extends BaseAPI {
     /**
@@ -23517,7 +17400,6 @@ export class UsersApi extends BaseAPI {
      * @param {UsersApiUsersCurrentUserPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersApi
      */
     public usersCurrentUserPartialUpdate(requestParameters: UsersApiUsersCurrentUserPartialUpdateRequest = {}, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersCurrentUserPartialUpdate(requestParameters.PatchedUserRequest, options).then((request) => request(this.axios, this.basePath));
@@ -23527,7 +17409,6 @@ export class UsersApi extends BaseAPI {
      * User retrieve and update viewsets for the current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersApi
      */
     public usersCurrentUserRetrieve(options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersCurrentUserRetrieve(options).then((request) => request(this.axios, this.basePath));
@@ -23538,7 +17419,6 @@ export class UsersApi extends BaseAPI {
      * @param {UsersApiUsersMePartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersApi
      */
     public usersMePartialUpdate(requestParameters: UsersApiUsersMePartialUpdateRequest = {}, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersMePartialUpdate(requestParameters.PatchedUserRequest, options).then((request) => request(this.axios, this.basePath));
@@ -23548,7 +17428,6 @@ export class UsersApi extends BaseAPI {
      * User retrieve and update viewsets for the current user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersApi
      */
     public usersMeRetrieve(options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersMeRetrieve(options).then((request) => request(this.axios, this.basePath));
@@ -23559,7 +17438,6 @@ export class UsersApi extends BaseAPI {
      * @param {UsersApiUsersRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersApi
      */
     public usersRetrieve(requestParameters: UsersApiUsersRetrieveRequest, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
@@ -23570,7 +17448,6 @@ export class UsersApi extends BaseAPI {
 
 /**
  * VerifiableCourseCredentialApi - axios parameter creator
- * @export
  */
 export const VerifiableCourseCredentialApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -23584,7 +17461,7 @@ export const VerifiableCourseCredentialApiAxiosParamCreator = function (configur
             // verify required parameter 'credential_id' is not null or undefined
             assertParamExists('verifiableCourseCredentialDownloadList', 'credential_id', credential_id)
             const localVarPath = `/api/v2/verifiable_course_credential/{credential_id}/download/`
-                .replace(`{${"credential_id"}}`, encodeURIComponent(String(credential_id)));
+                .replace('{credential_id}', encodeURIComponent(String(credential_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -23597,7 +17474,6 @@ export const VerifiableCourseCredentialApiAxiosParamCreator = function (configur
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -23612,7 +17488,6 @@ export const VerifiableCourseCredentialApiAxiosParamCreator = function (configur
 
 /**
  * VerifiableCourseCredentialApi - functional programming interface
- * @export
  */
 export const VerifiableCourseCredentialApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VerifiableCourseCredentialApiAxiosParamCreator(configuration)
@@ -23625,16 +17500,15 @@ export const VerifiableCourseCredentialApiFp = function(configuration?: Configur
          */
         async verifiableCourseCredentialDownloadList(credential_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.verifiableCourseCredentialDownloadList(credential_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VerifiableCourseCredentialApi.verifiableCourseCredentialDownloadList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VerifiableCourseCredentialApi.verifiableCourseCredentialDownloadList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * VerifiableCourseCredentialApi - factory interface
- * @export
  */
 export const VerifiableCourseCredentialApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = VerifiableCourseCredentialApiFp(configuration)
@@ -23653,23 +17527,13 @@ export const VerifiableCourseCredentialApiFactory = function (configuration?: Co
 
 /**
  * Request parameters for verifiableCourseCredentialDownloadList operation in VerifiableCourseCredentialApi.
- * @export
- * @interface VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest
  */
 export interface VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadList
-     */
     readonly credential_id: string
 }
 
 /**
  * VerifiableCourseCredentialApi - object-oriented interface
- * @export
- * @class VerifiableCourseCredentialApi
- * @extends {BaseAPI}
  */
 export class VerifiableCourseCredentialApi extends BaseAPI {
     /**
@@ -23677,7 +17541,6 @@ export class VerifiableCourseCredentialApi extends BaseAPI {
      * @param {VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof VerifiableCourseCredentialApi
      */
     public verifiableCourseCredentialDownloadList(requestParameters: VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
         return VerifiableCourseCredentialApiFp(this.configuration).verifiableCourseCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
@@ -23688,7 +17551,6 @@ export class VerifiableCourseCredentialApi extends BaseAPI {
 
 /**
  * VerifiableProgramCredentialApi - axios parameter creator
- * @export
  */
 export const VerifiableProgramCredentialApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -23702,7 +17564,7 @@ export const VerifiableProgramCredentialApiAxiosParamCreator = function (configu
             // verify required parameter 'credential_id' is not null or undefined
             assertParamExists('verifiableProgramCredentialDownloadList', 'credential_id', credential_id)
             const localVarPath = `/api/v2/verifiable_program_credential/{credential_id}/download/`
-                .replace(`{${"credential_id"}}`, encodeURIComponent(String(credential_id)));
+                .replace('{credential_id}', encodeURIComponent(String(credential_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -23715,7 +17577,6 @@ export const VerifiableProgramCredentialApiAxiosParamCreator = function (configu
             const localVarQueryParameter = {} as any;
 
 
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -23730,7 +17591,6 @@ export const VerifiableProgramCredentialApiAxiosParamCreator = function (configu
 
 /**
  * VerifiableProgramCredentialApi - functional programming interface
- * @export
  */
 export const VerifiableProgramCredentialApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VerifiableProgramCredentialApiAxiosParamCreator(configuration)
@@ -23743,16 +17603,15 @@ export const VerifiableProgramCredentialApiFp = function(configuration?: Configu
          */
         async verifiableProgramCredentialDownloadList(credential_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.verifiableProgramCredentialDownloadList(credential_id, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VerifiableProgramCredentialApi.verifiableProgramCredentialDownloadList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VerifiableProgramCredentialApi.verifiableProgramCredentialDownloadList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * VerifiableProgramCredentialApi - factory interface
- * @export
  */
 export const VerifiableProgramCredentialApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = VerifiableProgramCredentialApiFp(configuration)
@@ -23771,23 +17630,13 @@ export const VerifiableProgramCredentialApiFactory = function (configuration?: C
 
 /**
  * Request parameters for verifiableProgramCredentialDownloadList operation in VerifiableProgramCredentialApi.
- * @export
- * @interface VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest
  */
 export interface VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadList
-     */
     readonly credential_id: string
 }
 
 /**
  * VerifiableProgramCredentialApi - object-oriented interface
- * @export
- * @class VerifiableProgramCredentialApi
- * @extends {BaseAPI}
  */
 export class VerifiableProgramCredentialApi extends BaseAPI {
     /**
@@ -23795,7 +17644,6 @@ export class VerifiableProgramCredentialApi extends BaseAPI {
      * @param {VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof VerifiableProgramCredentialApi
      */
     public verifiableProgramCredentialDownloadList(requestParameters: VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
         return VerifiableProgramCredentialApiFp(this.configuration).verifiableProgramCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
@@ -23806,7 +17654,6 @@ export class VerifiableProgramCredentialApi extends BaseAPI {
 
 /**
  * VerifiedProgramEnrollmentsApi - axios parameter creator
- * @export
  */
 export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
@@ -23821,7 +17668,7 @@ export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configur
             // verify required parameter 'courserun_id' is not null or undefined
             assertParamExists('verifiedProgramEnrollmentsCreate', 'courserun_id', courserun_id)
             const localVarPath = `/api/v2/verified_program_enrollments/{courserun_id}/`
-                .replace(`{${"courserun_id"}}`, encodeURIComponent(String(courserun_id)));
+                .replace('{courserun_id}', encodeURIComponent(String(courserun_id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -23833,9 +17680,8 @@ export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configur
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -23852,7 +17698,6 @@ export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configur
 
 /**
  * VerifiedProgramEnrollmentsApi - functional programming interface
- * @export
  */
 export const VerifiedProgramEnrollmentsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VerifiedProgramEnrollmentsApiAxiosParamCreator(configuration)
@@ -23866,16 +17711,15 @@ export const VerifiedProgramEnrollmentsApiFp = function(configuration?: Configur
          */
         async verifiedProgramEnrollmentsCreate(courserun_id: string, request_body?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedProgramEnrollmentsCreate(courserun_id, request_body, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['VerifiedProgramEnrollmentsApi.verifiedProgramEnrollmentsCreate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['VerifiedProgramEnrollmentsApi.verifiedProgramEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
  * VerifiedProgramEnrollmentsApi - factory interface
- * @export
  */
 export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = VerifiedProgramEnrollmentsApiFp(configuration)
@@ -23894,30 +17738,15 @@ export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Co
 
 /**
  * Request parameters for verifiedProgramEnrollmentsCreate operation in VerifiedProgramEnrollmentsApi.
- * @export
- * @interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest
  */
 export interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreate
-     */
     readonly courserun_id: string
 
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreate
-     */
     readonly request_body?: Array<string>
 }
 
 /**
  * VerifiedProgramEnrollmentsApi - object-oriented interface
- * @export
- * @class VerifiedProgramEnrollmentsApi
- * @extends {BaseAPI}
  */
 export class VerifiedProgramEnrollmentsApi extends BaseAPI {
     /**
@@ -23925,7 +17754,6 @@ export class VerifiedProgramEnrollmentsApi extends BaseAPI {
      * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof VerifiedProgramEnrollmentsApi
      */
     public verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
         return VerifiedProgramEnrollmentsApiFp(this.configuration).verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.request_body, options).then((request) => request(this.axios, this.basePath));
