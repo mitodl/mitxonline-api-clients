@@ -1620,6 +1620,34 @@ export interface DiscountRedemptionRequest {
     'redeemed_order': OrderRequest;
 }
 /**
+ * The prior purchase a discount credits.
+ */
+export interface DiscountSource {
+    'type': DiscountSourceTypeEnum;
+    'readable_id': string;
+    'title': string;
+}
+
+
+/**
+ * * `course` - course * `program` - program
+ */
+
+export const DiscountSourceTypeEnum = {
+    /**
+    * course
+    */
+    Course: 'course',
+    /**
+    * program
+    */
+    Program: 'program',
+} as const;
+
+export type DiscountSourceTypeEnum = typeof DiscountSourceTypeEnum[keyof typeof DiscountSourceTypeEnum];
+
+
+/**
  * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price * `paid-amount-off` - paid-amount-off
  */
 
@@ -3681,6 +3709,62 @@ export interface UserDiscountMeta {
 export interface UserDiscountMetaRequest {
     'discount': V0DiscountRequest;
     'user': UserRequest;
+}
+/**
+ * The discount checkout would apply to a product for this user.
+ */
+export interface UserPricingDiscount {
+    'id': number;
+    'discount_code': string;
+    'discount_type': DiscountTypeEnum;
+    /**
+     * What kind of discount won: `financial-assistance` is the learner\'s approved aid tier; the other values say how a discount was funded. Null on discounts created without one.  * `marketing` - marketing * `sales` - sales * `financial-assistance` - financial-assistance * `customer-support` - customer-support * `staff` - staff * `legacy` - legacy
+     */
+    'payment_type'?: UserPricingDiscountPaymentTypeEnum | null;
+    /**
+     * Dollars taken off `price` for this user. For paid-amount-off discounts this is the prior purchase\'s paid price, capped at `price`, never the stored amount.
+     */
+    'amount_off': string;
+    /**
+     * Set only for paid-amount-off discounts (`discount_type` is the discriminator): the prior purchase being credited.
+     */
+    'source': DiscountSource | null;
+}
+
+export const UserPricingDiscountPaymentTypeEnum = {
+    Marketing: 'marketing',
+    Sales: 'sales',
+    FinancialAssistance: 'financial-assistance',
+    CustomerSupport: 'customer-support',
+    Staff: 'staff',
+    Legacy: 'legacy',
+} as const;
+
+export type UserPricingDiscountPaymentTypeEnum = typeof UserPricingDiscountPaymentTypeEnum[keyof typeof UserPricingDiscountPaymentTypeEnum];
+
+/**
+ * A product priced for one user.
+ */
+export interface UserPricingProduct {
+    'id': number;
+    'price': string;
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     */
+    'is_active'?: boolean;
+    /**
+     * The learner\'s approved financial-assistance tier discount, or null: whether they are approved and at which tier, even when that tier is 0% or another discount wins. Read `user_price` for the price, not this field\'s `amount`.
+     */
+    'product_flexible_price': V0Discount | null;
+    /**
+     * What this user pays at checkout today.
+     */
+    'user_price': string;
+    /**
+     * The discount checkout applies to this product for this user, or null at list price.
+     */
+    'discount': UserPricingDiscount | null;
 }
 /**
  * Serializer for profile
@@ -16005,15 +16089,49 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * Retrieve a product with user-specific flexible price information
+         * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
          * @param {number} id A unique integer value identifying this product.
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         productsUserFlexiblePriceRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsUserFlexiblePriceRetrieve', 'id', id)
             const localVarPath = `/api/v0/products/{id}/user_flexible_price/`
+                .replace('{id}', encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsUserPricingRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsUserPricingRetrieve', 'id', id)
+            const localVarPath = `/api/v0/products/{id}/user_pricing/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16147,15 +16265,28 @@ export const ProductsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a product with user-specific flexible price information
+         * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
          * @param {number} id A unique integer value identifying this product.
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         async productsUserFlexiblePriceRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductFlexiblePrice>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsUserFlexiblePriceRetrieve(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsUserFlexiblePriceRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsUserPricingRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPricingProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsUserPricingRetrieve(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductsApi.productsUserPricingRetrieve']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -16240,13 +16371,23 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.productsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieve a product with user-specific flexible price information
+         * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
          * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProductFlexiblePrice> {
             return localVarFp.productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+         * @param {ProductsApiProductsUserPricingRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsUserPricingRetrieve(requestParameters: ProductsApiProductsUserPricingRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserPricingProduct> {
+            return localVarFp.productsUserPricingRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -16353,6 +16494,16 @@ export interface ProductsApiProductsUserFlexiblePriceRetrieveRequest {
 }
 
 /**
+ * Request parameters for productsUserPricingRetrieve operation in ProductsApi.
+ */
+export interface ProductsApiProductsUserPricingRetrieveRequest {
+    /**
+     * A unique integer value identifying this product.
+     */
+    readonly id: number
+}
+
+/**
  * ProductsApi - object-oriented interface
  */
 export class ProductsApi extends BaseAPI {
@@ -16437,13 +16588,24 @@ export class ProductsApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a product with user-specific flexible price information
+     * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
      * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
+     * @deprecated
      * @throws {RequiredError}
      */
     public productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+     * @param {ProductsApiProductsUserPricingRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public productsUserPricingRetrieve(requestParameters: ProductsApiProductsUserPricingRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsUserPricingRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
