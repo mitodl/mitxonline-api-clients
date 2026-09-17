@@ -654,16 +654,16 @@ export interface BulkAssignResult {
 export interface BulkDiscountRequest {
     /**
      * 
-     * @type {DiscountTypeEnum}
+     * @type {BulkGenerationDiscountTypeEnum}
      * @memberof BulkDiscountRequest
      */
-    'discount_type': DiscountTypeEnum;
+    'discount_type': BulkGenerationDiscountTypeEnum;
     /**
      * 
-     * @type {RedemptionTypeEnum}
+     * @type {BulkGenerationRedemptionTypeEnum}
      * @memberof BulkDiscountRequest
      */
-    'redemption_type'?: RedemptionTypeEnum;
+    'redemption_type'?: BulkGenerationRedemptionTypeEnum;
     /**
      * 
      * @type {PaymentTypeEnum}
@@ -719,6 +719,54 @@ export interface BulkDiscountRequest {
      */
     'codes'?: Array<string>;
 }
+
+
+/**
+ * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price
+ * @export
+ * @enum {string}
+ */
+
+export const BulkGenerationDiscountTypeEnum = {
+    /**
+    * percent-off
+    */
+    PercentOff: 'percent-off',
+    /**
+    * dollars-off
+    */
+    DollarsOff: 'dollars-off',
+    /**
+    * fixed-price
+    */
+    FixedPrice: 'fixed-price'
+} as const;
+
+export type BulkGenerationDiscountTypeEnum = typeof BulkGenerationDiscountTypeEnum[keyof typeof BulkGenerationDiscountTypeEnum];
+
+
+/**
+ * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
+ * @export
+ * @enum {string}
+ */
+
+export const BulkGenerationRedemptionTypeEnum = {
+    /**
+    * one-time
+    */
+    OneTime: 'one-time',
+    /**
+    * one-time-per-user
+    */
+    OneTimePerUser: 'one-time-per-user',
+    /**
+    * unlimited
+    */
+    Unlimited: 'unlimited'
+} as const;
+
+export type BulkGenerationRedemptionTypeEnum = typeof BulkGenerationRedemptionTypeEnum[keyof typeof BulkGenerationRedemptionTypeEnum];
 
 
 /**
@@ -1437,7 +1485,7 @@ export interface CoursePageItem {
      */
     'prerequisites': string | null;
     /**
-     * URL a relevant FAQ page or entry for the course/program.
+     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
      * @type {string}
      * @memberof CoursePageItem
      */
@@ -1484,6 +1532,12 @@ export interface CoursePageItem {
      * @memberof CoursePageItem
      */
     'faculty': Array<Faculty>;
+    /**
+     * 
+     * @type {Array<FAQItem>}
+     * @memberof CoursePageItem
+     */
+    'faqs': Array<FAQItem>;
     /**
      * 
      * @type {CertificatePage}
@@ -2613,6 +2667,118 @@ export interface CreateBasketWithProductsRequest {
     'discount_code'?: string | null;
 }
 /**
+ * Request body for provisioning an identity provider.
+ * @export
+ * @interface CreateIdentityProviderRequest
+ */
+export interface CreateIdentityProviderRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'alias': string;
+    /**
+     * 
+     * @type {IdentityProviderProtocolEnum}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'protocol': IdentityProviderProtocolEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'display_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'metadata_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'metadata_xml'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'discovery_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'client_id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'client_secret'?: string;
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'attribute_map'?: { [key: string]: string; };
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof CreateIdentityProviderRequest
+     */
+    'attribute_name_map'?: { [key: string]: string; };
+}
+
+
+/**
+ * Request body for provisioning a new organization.
+ * @export
+ * @interface CreateOrganizationRequest
+ */
+export interface CreateOrganizationRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrganizationRequest
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrganizationRequest
+     */
+    'org_key': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrganizationRequest
+     */
+    'org_key_prefix'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateOrganizationRequest
+     */
+    'domains'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrganizationRequest
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrganizationRequest
+     */
+    'redirect_url'?: string;
+}
+/**
  * Department model serializer
  * @export
  * @interface Department
@@ -2714,7 +2880,7 @@ export interface DetailError {
     'detail': string;
 }
 /**
- * 
+ * Serializes a discount.
  * @export
  * @interface Discount
  */
@@ -2895,7 +3061,54 @@ export interface DiscountRedemptionRequest {
     'redeemed_order': OrderRequest;
 }
 /**
- * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price
+ * The prior purchase a discount credits.
+ * @export
+ * @interface DiscountSource
+ */
+export interface DiscountSource {
+    /**
+     * 
+     * @type {DiscountSourceTypeEnum}
+     * @memberof DiscountSource
+     */
+    'type': DiscountSourceTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscountSource
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscountSource
+     */
+    'title': string;
+}
+
+
+/**
+ * * `course` - course * `program` - program
+ * @export
+ * @enum {string}
+ */
+
+export const DiscountSourceTypeEnum = {
+    /**
+    * course
+    */
+    Course: 'course',
+    /**
+    * program
+    */
+    Program: 'program'
+} as const;
+
+export type DiscountSourceTypeEnum = typeof DiscountSourceTypeEnum[keyof typeof DiscountSourceTypeEnum];
+
+
+/**
+ * * `percent-off` - percent-off * `dollars-off` - dollars-off * `fixed-price` - fixed-price * `paid-amount-off` - paid-amount-off
  * @export
  * @enum {string}
  */
@@ -2912,7 +3125,11 @@ export const DiscountTypeEnum = {
     /**
     * fixed-price
     */
-    FixedPrice: 'fixed-price'
+    FixedPrice: 'fixed-price',
+    /**
+    * paid-amount-off
+    */
+    PaidAmountOff: 'paid-amount-off'
 } as const;
 
 export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountTypeEnum];
@@ -3115,6 +3332,31 @@ export interface ExtendedLegalAddress {
      * @memberof ExtendedLegalAddress
      */
     'email': string;
+}
+/**
+ * Serializer for FAQ items shown on course/program pages.
+ * @export
+ * @interface FAQItem
+ */
+export interface FAQItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof FAQItem
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof FAQItem
+     */
+    'question': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FAQItem
+     */
+    'answer': string;
 }
 /**
  * Serializer for faculty details used in course pages.
@@ -3400,6 +3642,69 @@ export interface HowYoullLearn {
      */
     'text': string;
 }
+/**
+ * * `draft` - Draft * `testing` - Testing * `active` - Active * `disabled` - Disabled
+ * @export
+ * @enum {string}
+ */
+
+export const IdentityProviderLifecycleStateEnum = {
+    /**
+    * Draft
+    */
+    Draft: 'draft',
+    /**
+    * Testing
+    */
+    Testing: 'testing',
+    /**
+    * Active
+    */
+    Active: 'active',
+    /**
+    * Disabled
+    */
+    Disabled: 'disabled'
+} as const;
+
+export type IdentityProviderLifecycleStateEnum = typeof IdentityProviderLifecycleStateEnum[keyof typeof IdentityProviderLifecycleStateEnum];
+
+
+/**
+ * * `saml` - SAML * `oidc` - OIDC
+ * @export
+ * @enum {string}
+ */
+
+export const IdentityProviderProtocolEnum = {
+    /**
+    * SAML
+    */
+    Saml: 'saml',
+    /**
+    * OIDC
+    */
+    Oidc: 'oidc'
+} as const;
+
+export type IdentityProviderProtocolEnum = typeof IdentityProviderProtocolEnum[keyof typeof IdentityProviderProtocolEnum];
+
+
+/**
+ * Request body for moving an identity provider\'s lifecycle state.
+ * @export
+ * @interface IdentityProviderTransitionRequest
+ */
+export interface IdentityProviderTransitionRequest {
+    /**
+     * 
+     * @type {IdentityProviderLifecycleStateEnum}
+     * @memberof IdentityProviderTransitionRequest
+     */
+    'state': IdentityProviderLifecycleStateEnum;
+}
+
+
 /**
  * * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
  * @export
@@ -4238,6 +4543,46 @@ export type NullEnum = typeof NullEnum[keyof typeof NullEnum];
 
 
 /**
+ * * `requested` - Requested * `org_created` - Organization created * `idp_configured` - Identity provider configured * `idp_validated` - Identity provider validated * `contract_ready` - Contract ready * `live` - Live * `blocked` - Blocked
+ * @export
+ * @enum {string}
+ */
+
+export const OnboardingStateEnum = {
+    /**
+    * Requested
+    */
+    Requested: 'requested',
+    /**
+    * Organization created
+    */
+    OrgCreated: 'org_created',
+    /**
+    * Identity provider configured
+    */
+    IdpConfigured: 'idp_configured',
+    /**
+    * Identity provider validated
+    */
+    IdpValidated: 'idp_validated',
+    /**
+    * Contract ready
+    */
+    ContractReady: 'contract_ready',
+    /**
+    * Live
+    */
+    Live: 'live',
+    /**
+    * Blocked
+    */
+    Blocked: 'blocked'
+} as const;
+
+export type OnboardingStateEnum = typeof OnboardingStateEnum[keyof typeof OnboardingStateEnum];
+
+
+/**
  * 
  * @export
  * @interface Order
@@ -4565,6 +4910,81 @@ export interface OrderTransactions {
     'payment_method'?: string;
 }
 /**
+ * An identity provider we provisioned for an organization.  metadata_artifact is what Keycloak parsed out of the partner\'s metadata. Credentials are never written to it, so this is safe to serve.
+ * @export
+ * @interface OrganizationIdentityProvider
+ */
+export interface OrganizationIdentityProvider {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrganizationIdentityProvider
+     */
+    'id': number;
+    /**
+     * The Keycloak IdP alias. Realm-wide, not per-organization.
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'alias': string;
+    /**
+     * 
+     * @type {IdentityProviderProtocolEnum}
+     * @memberof OrganizationIdentityProvider
+     */
+    'protocol': IdentityProviderProtocolEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'display_name': string;
+    /**
+     * 
+     * @type {IdentityProviderLifecycleStateEnum}
+     * @memberof OrganizationIdentityProvider
+     */
+    'lifecycle_state': IdentityProviderLifecycleStateEnum;
+    /**
+     * Keycloak\'s internalId for the IdP instance.
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'internal_id': string;
+    /**
+     * The metadata URL, or the inline XML, the config was parsed from. Not blankable: refreshing an IdP re-reads this, so a row without one cannot be refreshed.
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'metadata_source': string;
+    /**
+     * The config map Keycloak parsed out of the metadata. Persisted so a partner\'s metadata endpoint going away can neither destroy config nor block a deploy.
+     * @type {any}
+     * @memberof OrganizationIdentityProvider
+     */
+    'metadata_artifact': any | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'metadata_fetched_at': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'created_on': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationIdentityProvider
+     */
+    'updated_on': string;
+}
+
+
+/**
  * Response shape for the org-manager check.
  * @export
  * @interface OrganizationManagerCheck
@@ -4577,6 +4997,33 @@ export interface OrganizationManagerCheck {
      */
     'is_manager': boolean;
 }
+/**
+ * Where an organization is in the onboarding sequence.
+ * @export
+ * @interface OrganizationOnboarding
+ */
+export interface OrganizationOnboarding {
+    /**
+     * 
+     * @type {OnboardingStateEnum}
+     * @memberof OrganizationOnboarding
+     */
+    'state'?: OnboardingStateEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationOnboarding
+     */
+    'state_changed_at': string;
+    /**
+     * Free-form operator notes; holds the reason when state is blocked.
+     * @type {string}
+     * @memberof OrganizationOnboarding
+     */
+    'notes'?: string;
+}
+
+
 /**
  * Serializer for the OrganizationPage model.
  * @export
@@ -5450,6 +5897,46 @@ export interface PaginatedV2ProgramDetailList {
     'results': Array<V2ProgramDetail>;
 }
 /**
+ * Request body for parsing IdP metadata without creating anything.  Exactly one of metadata_url or metadata_xml.
+ * @export
+ * @interface ParseMetadataRequest
+ */
+export interface ParseMetadataRequest {
+    /**
+     * 
+     * @type {IdentityProviderProtocolEnum}
+     * @memberof ParseMetadataRequest
+     */
+    'protocol': IdentityProviderProtocolEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ParseMetadataRequest
+     */
+    'metadata_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ParseMetadataRequest
+     */
+    'metadata_xml'?: string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface ParsedIdentityProviderConfig
+ */
+export interface ParsedIdentityProviderConfig {
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof ParsedIdentityProviderConfig
+     */
+    'config': { [key: string]: string; };
+}
+/**
  * 
  * @export
  * @interface PartnerSchool
@@ -5600,6 +6087,37 @@ export interface PatchedUpdateCourseRunEnrollmentRequest {
      * @memberof PatchedUpdateCourseRunEnrollmentRequest
      */
     'receive_emails'?: boolean;
+}
+/**
+ * Request body for updating an organization.  org_key is rejected rather than silently ignored. It is in every B2B courseware ID via create_contract_run_key, so a caller who thinks they changed it and did not is worse off than one who got an error.
+ * @export
+ * @interface PatchedUpdateOrganizationRequest
+ */
+export interface PatchedUpdateOrganizationRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedUpdateOrganizationRequest
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedUpdateOrganizationRequest
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedUpdateOrganizationRequest
+     */
+    'redirect_url'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof PatchedUpdateOrganizationRequest
+     */
+    'domains'?: Array<string>;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
@@ -6316,7 +6834,7 @@ export interface ProgramPageItem {
      */
     'prerequisites': string | null;
     /**
-     * URL a relevant FAQ page or entry for the course/program.
+     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
      * @type {string}
      * @memberof ProgramPageItem
      */
@@ -6365,6 +6883,12 @@ export interface ProgramPageItem {
     'faculty': Array<Faculty>;
     /**
      * 
+     * @type {Array<FAQItem>}
+     * @memberof ProgramPageItem
+     */
+    'faqs': Array<FAQItem>;
+    /**
+     * 
      * @type {CertificatePage}
      * @memberof ProgramPageItem
      */
@@ -6400,6 +6924,92 @@ export interface ProgramPageList {
      * @memberof ProgramPageList
      */
     'items': Array<ProgramPageItem>;
+}
+/**
+ * An organization as the provisioning API sees it.  `domains` and `redirect_url` live only in Keycloak, so they are populated from the representation the view fetched rather than from our database.
+ * @export
+ * @interface ProvisionedOrganization
+ */
+export interface ProvisionedOrganization {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProvisionedOrganization
+     */
+    'id': number;
+    /**
+     * The name of the organization
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'name': string;
+    /**
+     * The short key used for the organization (for edX).
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'org_key': string;
+    /**
+     * The prefix to append to the org key (defaults to UAI_).
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'org_key_prefix': string;
+    /**
+     * Any useful extra information about the organization
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'description': string;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'slug': string;
+    /**
+     * The UUID for the organization in the SSO provider.
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'sso_organization_id': string | null;
+    /**
+     * Return the organization\'s Keycloak domains, if they were fetched.
+     * @type {Array<string>}
+     * @memberof ProvisionedOrganization
+     */
+    'domains': Array<string> | null;
+    /**
+     * Return the organization\'s Keycloak redirect URL, if it was fetched.
+     * @type {string}
+     * @memberof ProvisionedOrganization
+     */
+    'redirect_url': string | null;
+    /**
+     * 
+     * @type {OrganizationOnboarding}
+     * @memberof ProvisionedOrganization
+     */
+    'onboarding': OrganizationOnboarding;
+    /**
+     * 
+     * @type {Array<OrganizationIdentityProvider>}
+     * @memberof ProvisionedOrganization
+     */
+    'identity_providers': Array<OrganizationIdentityProvider>;
+}
+/**
+ * 
+ * @export
+ * @interface ProvisioningDetail
+ */
+export interface ProvisioningDetail {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProvisioningDetail
+     */
+    'detail': string;
 }
 /**
  * Serializer for public user data
@@ -6476,7 +7086,7 @@ export type RedemptionStatusEnum = typeof RedemptionStatusEnum[keyof typeof Rede
 
 
 /**
- * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited
+ * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase
  * @export
  * @enum {string}
  */
@@ -6493,7 +7103,11 @@ export const RedemptionTypeEnum = {
     /**
     * unlimited
     */
-    Unlimited: 'unlimited'
+    Unlimited: 'unlimited',
+    /**
+    * program-child-purchase
+    */
+    ProgramChildPurchase: 'program-child-purchase'
 } as const;
 
 export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof RedemptionTypeEnum];
@@ -6616,7 +7230,7 @@ export interface RefundRequestRequest {
     'consent_given'?: boolean;
 }
 /**
- * * `completed` - Completed * `requested` - Requested * `denied` - Denied * `eligible` - Eligible * `window_closed` - Window Closed * `ineligible` - Ineligible
+ * * `completed` - Completed * `requested` - Requested * `denied` - Denied * `eligible` - Eligible * `review_required` - Review Required * `window_closed` - Window Closed * `ineligible` - Ineligible
  * @export
  * @enum {string}
  */
@@ -6638,6 +7252,10 @@ export const RefundStatusEnum = {
     * Eligible
     */
     Eligible: 'eligible',
+    /**
+    * Review Required
+    */
+    ReviewRequired: 'review_required',
     /**
     * Window Closed
     */
@@ -6725,6 +7343,27 @@ export interface ServiceDetailError {
      */
     'detail': string;
 }
+/**
+ * Request body for recording an organization\'s onboarding state.
+ * @export
+ * @interface SetOnboardingStateRequest
+ */
+export interface SetOnboardingStateRequest {
+    /**
+     * 
+     * @type {OnboardingStateEnum}
+     * @memberof SetOnboardingStateRequest
+     */
+    'state': OnboardingStateEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SetOnboardingStateRequest
+     */
+    'notes'?: string;
+}
+
+
 /**
  * Serializer for signatory items used in certificate pages.
  * @export
@@ -7171,6 +7810,247 @@ export interface UserDiscountMetaRequest {
      */
     'user': UserRequest;
 }
+/**
+ * The discount checkout would apply to a product for this user.
+ * @export
+ * @interface UserPricingDiscount
+ */
+export interface UserPricingDiscount {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserPricingDiscount
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingDiscount
+     */
+    'discount_code': string;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof UserPricingDiscount
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof UserPricingDiscount
+     */
+    'payment_type'?: PaymentTypeEnum | null;
+    /**
+     * Dollars taken off `price` for this user. For paid-amount-off discounts this is the prior purchase\'s paid price, capped at `price`, never the stored amount.
+     * @type {string}
+     * @memberof UserPricingDiscount
+     */
+    'amount_off': string;
+    /**
+     * 
+     * @type {UserPricingDiscountSource}
+     * @memberof UserPricingDiscount
+     */
+    'source': UserPricingDiscountSource | null;
+}
+
+
+/**
+ * Set only for paid-amount-off discounts (`discount_type` is the discriminator): the prior purchase being credited.
+ * @export
+ * @interface UserPricingDiscountSource
+ */
+export interface UserPricingDiscountSource {
+    /**
+     * 
+     * @type {DiscountSourceTypeEnum}
+     * @memberof UserPricingDiscountSource
+     */
+    'type': DiscountSourceTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingDiscountSource
+     */
+    'readable_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingDiscountSource
+     */
+    'title': string;
+}
+
+
+/**
+ * A product priced for one user.
+ * @export
+ * @interface UserPricingProduct
+ */
+export interface UserPricingProduct {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserPricingProduct
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingProduct
+     */
+    'price': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingProduct
+     */
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     * @type {boolean}
+     * @memberof UserPricingProduct
+     */
+    'is_active'?: boolean;
+    /**
+     * 
+     * @type {UserPricingProductProductFlexiblePrice}
+     * @memberof UserPricingProduct
+     */
+    'product_flexible_price': UserPricingProductProductFlexiblePrice | null;
+    /**
+     * What this user pays at checkout today.
+     * @type {string}
+     * @memberof UserPricingProduct
+     */
+    'user_price': string;
+    /**
+     * 
+     * @type {UserPricingProductDiscount}
+     * @memberof UserPricingProduct
+     */
+    'discount': UserPricingProductDiscount | null;
+}
+/**
+ * The discount checkout applies to this product for this user, or null at list price.
+ * @export
+ * @interface UserPricingProductDiscount
+ */
+export interface UserPricingProductDiscount {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserPricingProductDiscount
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingProductDiscount
+     */
+    'discount_code': string;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof UserPricingProductDiscount
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof UserPricingProductDiscount
+     */
+    'payment_type'?: PaymentTypeEnum;
+    /**
+     * Dollars taken off `price` for this user. For paid-amount-off discounts this is the prior purchase\'s paid price, capped at `price`, never the stored amount.
+     * @type {string}
+     * @memberof UserPricingProductDiscount
+     */
+    'amount_off': string;
+    /**
+     * 
+     * @type {UserPricingDiscountSource}
+     * @memberof UserPricingProductDiscount
+     */
+    'source': UserPricingDiscountSource | null;
+}
+
+
+/**
+ * The learner\'s approved financial-assistance tier discount, or null: whether they are approved and at which tier, even when that tier is 0% or another discount wins. Read `user_price` for the price, not this field\'s `amount`.
+ * @export
+ * @interface UserPricingProductProductFlexiblePrice
+ */
+export interface UserPricingProductProductFlexiblePrice {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'amount': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'automatic'?: boolean;
+    /**
+     * 
+     * @type {DiscountTypeEnum}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'discount_type': DiscountTypeEnum;
+    /**
+     * 
+     * @type {RedemptionTypeEnum}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'redemption_type': RedemptionTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'max_redemptions'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'discount_code': string;
+    /**
+     * 
+     * @type {PaymentTypeEnum}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'payment_type'?: PaymentTypeEnum;
+    /**
+     * Returns True if the discount has been redeemed
+     * @type {boolean}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'is_redeemed': boolean;
+    /**
+     * If set, this discount code will not be redeemable before this date.
+     * @type {string}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'activation_date'?: string | null;
+    /**
+     * If set, this discount code will not be redeemable after this date.
+     * @type {string}
+     * @memberof UserPricingProductProductFlexiblePrice
+     */
+    'expiration_date'?: string | null;
+}
+
+
 /**
  * Serializer for profile
  * @export
@@ -10911,6 +11791,411 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
+         * @param {CreateOrganizationRequest} CreateOrganizationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsCreate: async (CreateOrganizationRequest: CreateOrganizationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'CreateOrganizationRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsCreate', 'CreateOrganizationRequest', CreateOrganizationRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CreateOrganizationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Provision an identity provider and link it to the organization.  The IdP lands in `draft`, which is disabled in Keycloak. Nobody can reach it until it is transitioned to `testing`.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {CreateIdentityProviderRequest} CreateIdentityProviderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersCreate: async (parent_lookup_organization__org_key: string, CreateIdentityProviderRequest: CreateIdentityProviderRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'CreateIdentityProviderRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersCreate', 'CreateIdentityProviderRequest', CreateIdentityProviderRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/`
+                .replace(`{${"parent_lookup_organization__org_key"}}`, encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CreateIdentityProviderRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Unlink and delete an identity provider.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersDestroy: async (alias: string, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'alias' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersDestroy', 'alias', alias)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersDestroy', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/{alias}/`
+                .replace(`{${"alias"}}`, encodeURIComponent(String(alias)))
+                .replace(`{${"parent_lookup_organization__org_key"}}`, encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List the organization\'s identity providers.  Resolve the parent first so an unknown org_key is a 404 rather than an empty list. A mistyped key otherwise reads as \"this organization has no identity providers\", which is the wrong answer to act on.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersList: async (parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersList', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/`
+                .replace(`{${"parent_lookup_organization__org_key"}}`, encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Re-fetch the partner\'s metadata and store what came back.  On failure the stored artifact is left untouched, which is the whole reason it is stored.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate: async (alias: string, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'alias' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate', 'alias', alias)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/{alias}/refresh-metadata/`
+                .replace(`{${"alias"}}`, encodeURIComponent(String(alias)))
+                .replace(`{${"parent_lookup_organization__org_key"}}`, encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Return a single identity provider.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersRetrieve: async (alias: string, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'alias' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersRetrieve', 'alias', alias)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersRetrieve', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/{alias}/`
+                .replace(`{${"alias"}}`, encodeURIComponent(String(alias)))
+                .replace(`{${"parent_lookup_organization__org_key"}}`, encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Move the identity provider\'s lifecycle state.  The only mover, and it writes Keycloak\'s enabled flag in the same operation so the two cannot drift. draft -> active is rejected: an IdP goes live only after somebody has logged in through it.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {IdentityProviderTransitionRequest} IdentityProviderTransitionRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersTransitionCreate: async (alias: string, parent_lookup_organization__org_key: string, IdentityProviderTransitionRequest: IdentityProviderTransitionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'alias' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersTransitionCreate', 'alias', alias)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersTransitionCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'IdentityProviderTransitionRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersTransitionCreate', 'IdentityProviderTransitionRequest', IdentityProviderTransitionRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/{alias}/transition/`
+                .replace(`{${"alias"}}`, encodeURIComponent(String(alias)))
+                .replace(`{${"parent_lookup_organization__org_key"}}`, encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(IdentityProviderTransitionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
+         * @param {string} org_key 
+         * @param {SetOnboardingStateRequest} SetOnboardingStateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsOnboardingCreate: async (org_key: string, SetOnboardingStateRequest: SetOnboardingStateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsOnboardingCreate', 'org_key', org_key)
+            // verify required parameter 'SetOnboardingStateRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsOnboardingCreate', 'SetOnboardingStateRequest', SetOnboardingStateRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{org_key}/onboarding/`
+                .replace(`{${"org_key"}}`, encodeURIComponent(String(org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(SetOnboardingStateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update an organization in both systems. org_key cannot change.
+         * @param {string} org_key 
+         * @param {PatchedUpdateOrganizationRequest} [PatchedUpdateOrganizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsPartialUpdate: async (org_key: string, PatchedUpdateOrganizationRequest?: PatchedUpdateOrganizationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsPartialUpdate', 'org_key', org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{org_key}/`
+                .replace(`{${"org_key"}}`, encodeURIComponent(String(org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateOrganizationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Return an organization, including what Keycloak currently holds.
+         * @param {string} org_key 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsRetrieve: async (org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsRetrieve', 'org_key', org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{org_key}/`
+                .replace(`{${"org_key"}}`, encodeURIComponent(String(org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Return the config map Keycloak parses out of the given metadata.
+         * @param {ParseMetadataRequest} ParseMetadataRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningParseMetadataCreate: async (ParseMetadataRequest: ParseMetadataRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ParseMetadataRequest' is not null or undefined
+            assertParamExists('b2bProvisioningParseMetadataCreate', 'ParseMetadataRequest', ParseMetadataRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/parse-metadata/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ParseMetadataRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
          * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
          * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
@@ -11236,6 +12521,146 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
+         * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
+         * @param {CreateOrganizationRequest} CreateOrganizationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsCreate(CreateOrganizationRequest: CreateOrganizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedOrganization>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsCreate(CreateOrganizationRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Provision an identity provider and link it to the organization.  The IdP lands in `draft`, which is disabled in Keycloak. Nobody can reach it until it is transitioned to `testing`.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {CreateIdentityProviderRequest} CreateIdentityProviderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersCreate(parent_lookup_organization__org_key: string, CreateIdentityProviderRequest: CreateIdentityProviderRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProvider>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersCreate(parent_lookup_organization__org_key, CreateIdentityProviderRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Unlink and delete an identity provider.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersDestroy(alias: string, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersDestroy(alias, parent_lookup_organization__org_key, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersDestroy']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * List the organization\'s identity providers.  Resolve the parent first so an unknown org_key is a 404 rather than an empty list. A mistyped key otherwise reads as \"this organization has no identity providers\", which is the wrong answer to act on.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersList(parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentityProvider>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersList(parent_lookup_organization__org_key, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Re-fetch the partner\'s metadata and store what came back.  On failure the stored artifact is left untouched, which is the whole reason it is stored.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(alias: string, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProvider>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(alias, parent_lookup_organization__org_key, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Return a single identity provider.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersRetrieve(alias: string, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProvider>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersRetrieve(alias, parent_lookup_organization__org_key, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Move the identity provider\'s lifecycle state.  The only mover, and it writes Keycloak\'s enabled flag in the same operation so the two cannot drift. draft -> active is rejected: an IdP goes live only after somebody has logged in through it.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {IdentityProviderTransitionRequest} IdentityProviderTransitionRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(alias: string, parent_lookup_organization__org_key: string, IdentityProviderTransitionRequest: IdentityProviderTransitionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProvider>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(alias, parent_lookup_organization__org_key, IdentityProviderTransitionRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersTransitionCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
+         * @param {string} org_key 
+         * @param {SetOnboardingStateRequest} SetOnboardingStateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsOnboardingCreate(org_key: string, SetOnboardingStateRequest: SetOnboardingStateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationOnboarding>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsOnboardingCreate(org_key, SetOnboardingStateRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsOnboardingCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Update an organization in both systems. org_key cannot change.
+         * @param {string} org_key 
+         * @param {PatchedUpdateOrganizationRequest} [PatchedUpdateOrganizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsPartialUpdate(org_key: string, PatchedUpdateOrganizationRequest?: PatchedUpdateOrganizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedOrganization>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsPartialUpdate(org_key, PatchedUpdateOrganizationRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsPartialUpdate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Return an organization, including what Keycloak currently holds.
+         * @param {string} org_key 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsRetrieve(org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedOrganization>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsRetrieve(org_key, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Return the config map Keycloak parses out of the given metadata.
+         * @param {ParseMetadataRequest} ParseMetadataRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningParseMetadataCreate(ParseMetadataRequest: ParseMetadataRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParsedIdentityProviderConfig>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningParseMetadataCreate(ParseMetadataRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['B2bApi.b2bProvisioningParseMetadataCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
          * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
          * @param {string} sso_organization_id The organization\&#39;s Keycloak UUID (OrganizationPage.sso_organization_id).
          * @param {string} user_global_id The user\&#39;s Keycloak subject (User.global_id).
@@ -11435,6 +12860,105 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationPage> {
             return localVarFp.b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
+         * @param {B2bApiB2bProvisioningOrganizationsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedOrganization> {
+            return localVarFp.b2bProvisioningOrganizationsCreate(requestParameters.CreateOrganizationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Provision an identity provider and link it to the organization.  The IdP lands in `draft`, which is disabled in Keycloak. Nobody can reach it until it is transitioned to `testing`.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersCreate(requestParameters.parent_lookup_organization__org_key, requestParameters.CreateIdentityProviderRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Unlink and delete an identity provider.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersDestroy(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersDestroy(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List the organization\'s identity providers.  Resolve the parent first so an unknown org_key is a 404 rather than an empty list. A mistyped key otherwise reads as \"this organization has no identity providers\", which is the wrong answer to act on.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersList(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<OrganizationIdentityProvider>> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersList(requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Re-fetch the partner\'s metadata and store what came back.  On failure the stored artifact is left untouched, which is the whole reason it is stored.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return a single identity provider.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Move the identity provider\'s lifecycle state.  The only mover, and it writes Keycloak\'s enabled flag in the same operation so the two cannot drift. draft -> active is rejected: an IdP goes live only after somebody has logged in through it.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, requestParameters.IdentityProviderTransitionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
+         * @param {B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsOnboardingCreate(requestParameters: B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationOnboarding> {
+            return localVarFp.b2bProvisioningOrganizationsOnboardingCreate(requestParameters.org_key, requestParameters.SetOnboardingStateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update an organization in both systems. org_key cannot change.
+         * @param {B2bApiB2bProvisioningOrganizationsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedOrganization> {
+            return localVarFp.b2bProvisioningOrganizationsPartialUpdate(requestParameters.org_key, requestParameters.PatchedUpdateOrganizationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return an organization, including what Keycloak currently holds.
+         * @param {B2bApiB2bProvisioningOrganizationsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedOrganization> {
+            return localVarFp.b2bProvisioningOrganizationsRetrieve(requestParameters.org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return the config map Keycloak parses out of the given metadata.
+         * @param {B2bApiB2bProvisioningParseMetadataCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningParseMetadataCreate(requestParameters: B2bApiB2bProvisioningParseMetadataCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ParsedIdentityProviderConfig> {
+            return localVarFp.b2bProvisioningParseMetadataCreate(requestParameters.ParseMetadataRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Check whether a user is a manager of an organization. Service-to-service only; requires the `b2b:manager-check` scope.
@@ -11939,6 +13463,216 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
 }
 
 /**
+ * Request parameters for b2bProvisioningOrganizationsCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsCreateRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsCreateRequest {
+    /**
+     * 
+     * @type {CreateOrganizationRequest}
+     * @memberof B2bApiB2bProvisioningOrganizationsCreate
+     */
+    readonly CreateOrganizationRequest: CreateOrganizationRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsIdentityProvidersCreateRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersCreateRequest {
+    /**
+     * The organization\&#39;s org key.
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersCreate
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    /**
+     * 
+     * @type {CreateIdentityProviderRequest}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersCreate
+     */
+    readonly CreateIdentityProviderRequest: CreateIdentityProviderRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersDestroy operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroy
+     */
+    readonly alias: string
+
+    /**
+     * The organization\&#39;s org key.
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroy
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersList operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest {
+    /**
+     * The organization\&#39;s org key.
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersList
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreateRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate
+     */
+    readonly alias: string
+
+    /**
+     * The organization\&#39;s org key.
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersRetrieve operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieve
+     */
+    readonly alias: string
+
+    /**
+     * The organization\&#39;s org key.
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieve
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersTransitionCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreate
+     */
+    readonly alias: string
+
+    /**
+     * The organization\&#39;s org key.
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreate
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    /**
+     * 
+     * @type {IdentityProviderTransitionRequest}
+     * @memberof B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreate
+     */
+    readonly IdentityProviderTransitionRequest: IdentityProviderTransitionRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsOnboardingCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsOnboardingCreate
+     */
+    readonly org_key: string
+
+    /**
+     * 
+     * @type {SetOnboardingStateRequest}
+     * @memberof B2bApiB2bProvisioningOrganizationsOnboardingCreate
+     */
+    readonly SetOnboardingStateRequest: SetOnboardingStateRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsPartialUpdate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsPartialUpdateRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsPartialUpdateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsPartialUpdate
+     */
+    readonly org_key: string
+
+    /**
+     * 
+     * @type {PatchedUpdateOrganizationRequest}
+     * @memberof B2bApiB2bProvisioningOrganizationsPartialUpdate
+     */
+    readonly PatchedUpdateOrganizationRequest?: PatchedUpdateOrganizationRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsRetrieve operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningOrganizationsRetrieveRequest
+ */
+export interface B2bApiB2bProvisioningOrganizationsRetrieveRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof B2bApiB2bProvisioningOrganizationsRetrieve
+     */
+    readonly org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningParseMetadataCreate operation in B2bApi.
+ * @export
+ * @interface B2bApiB2bProvisioningParseMetadataCreateRequest
+ */
+export interface B2bApiB2bProvisioningParseMetadataCreateRequest {
+    /**
+     * 
+     * @type {ParseMetadataRequest}
+     * @memberof B2bApiB2bProvisioningParseMetadataCreate
+     */
+    readonly ParseMetadataRequest: ParseMetadataRequest
+}
+
+/**
  * Request parameters for b2bServiceOrganizationManagerCheck operation in B2bApi.
  * @export
  * @interface B2bApiB2bServiceOrganizationManagerCheckRequest
@@ -12182,6 +13916,127 @@ export class B2bApi extends BaseAPI {
      */
     public b2bOrganizationsRetrieve(requestParameters: B2bApiB2bOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
+     * @param {B2bApiB2bProvisioningOrganizationsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsCreate(requestParameters.CreateOrganizationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Provision an identity provider and link it to the organization.  The IdP lands in `draft`, which is disabled in Keycloak. Nobody can reach it until it is transitioned to `testing`.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersCreate(requestParameters.parent_lookup_organization__org_key, requestParameters.CreateIdentityProviderRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Unlink and delete an identity provider.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersDestroy(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersDestroy(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List the organization\'s identity providers.  Resolve the parent first so an unknown org_key is a 404 rather than an empty list. A mistyped key otherwise reads as \"this organization has no identity providers\", which is the wrong answer to act on.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersList(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersList(requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Re-fetch the partner\'s metadata and store what came back.  On failure the stored artifact is left untouched, which is the whole reason it is stored.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return a single identity provider.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Move the identity provider\'s lifecycle state.  The only mover, and it writes Keycloak\'s enabled flag in the same operation so the two cannot drift. draft -> active is rejected: an IdP goes live only after somebody has logged in through it.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, requestParameters.IdentityProviderTransitionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
+     * @param {B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsOnboardingCreate(requestParameters: B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsOnboardingCreate(requestParameters.org_key, requestParameters.SetOnboardingStateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update an organization in both systems. org_key cannot change.
+     * @param {B2bApiB2bProvisioningOrganizationsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsPartialUpdate(requestParameters.org_key, requestParameters.PatchedUpdateOrganizationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return an organization, including what Keycloak currently holds.
+     * @param {B2bApiB2bProvisioningOrganizationsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningOrganizationsRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsRetrieve(requestParameters.org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return the config map Keycloak parses out of the given metadata.
+     * @param {B2bApiB2bProvisioningParseMetadataCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof B2bApi
+     */
+    public b2bProvisioningParseMetadataCreate(requestParameters: B2bApiB2bProvisioningParseMetadataCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningParseMetadataCreate(requestParameters.ParseMetadataRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -15657,7 +17512,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
          * @param {number} [offset] The initial index from which to return the results.
          * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
          * @param {string} [q] q
-         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16698,7 +18553,7 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          * @param {number} [offset] The initial index from which to return the results.
          * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
          * @param {string} [q] q
-         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17532,8 +19387,8 @@ export interface DiscountsApiDiscountsListRequest {
     readonly q?: string
 
     /**
-     * * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited
-     * @type {'one-time' | 'one-time-per-user' | 'unlimited'}
+     * * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
+     * @type {'one-time' | 'one-time-per-user' | 'program-child-purchase' | 'unlimited'}
      * @memberof DiscountsApiDiscountsList
      */
     readonly redemption_type?: DiscountsListRedemptionTypeEnum
@@ -18453,6 +20308,7 @@ export type DiscountsListPaymentTypeEnum = typeof DiscountsListPaymentTypeEnum[k
 export const DiscountsListRedemptionTypeEnum = {
     OneTime: 'one-time',
     OneTimePerUser: 'one-time-per-user',
+    ProgramChildPurchase: 'program-child-purchase',
     Unlimited: 'unlimited'
 } as const;
 export type DiscountsListRedemptionTypeEnum = typeof DiscountsListRedemptionTypeEnum[keyof typeof DiscountsListRedemptionTypeEnum];
@@ -20747,15 +22603,49 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * Retrieve a product with user-specific flexible price information
+         * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
          * @param {number} id A unique integer value identifying this product.
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         productsUserFlexiblePriceRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('productsUserFlexiblePriceRetrieve', 'id', id)
             const localVarPath = `/api/v0/products/{id}/user_flexible_price/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsUserPricingRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsUserPricingRetrieve', 'id', id)
+            const localVarPath = `/api/v0/products/{id}/user_pricing/`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20890,15 +22780,28 @@ export const ProductsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Retrieve a product with user-specific flexible price information
+         * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
          * @param {number} id A unique integer value identifying this product.
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         async productsUserFlexiblePriceRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductFlexiblePrice>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.productsUserFlexiblePriceRetrieve(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProductsApi.productsUserFlexiblePriceRetrieve']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+         * @param {number} id A unique integer value identifying this product.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsUserPricingRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPricingProduct>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsUserPricingRetrieve(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProductsApi.productsUserPricingRetrieve']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -20984,13 +22887,23 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.productsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieve a product with user-specific flexible price information
+         * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
          * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
+         * @deprecated
          * @throws {RequiredError}
          */
         productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProductFlexiblePrice> {
             return localVarFp.productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+         * @param {ProductsApiProductsUserPricingRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsUserPricingRetrieve(requestParameters: ProductsApiProductsUserPricingRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserPricingProduct> {
+            return localVarFp.productsUserPricingRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -21150,6 +23063,20 @@ export interface ProductsApiProductsUserFlexiblePriceRetrieveRequest {
 }
 
 /**
+ * Request parameters for productsUserPricingRetrieve operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsUserPricingRetrieveRequest
+ */
+export interface ProductsApiProductsUserPricingRetrieveRequest {
+    /**
+     * A unique integer value identifying this product.
+     * @type {number}
+     * @memberof ProductsApiProductsUserPricingRetrieve
+     */
+    readonly id: number
+}
+
+/**
  * ProductsApi - object-oriented interface
  * @export
  * @class ProductsApi
@@ -21245,14 +23172,26 @@ export class ProductsApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a product with user-specific flexible price information
+     * Retrieve a product with user-specific flexible price information. Use `user_pricing` instead.
      * @param {ProductsApiProductsUserFlexiblePriceRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
+     * @deprecated
      * @throws {RequiredError}
      * @memberof ProductsApi
      */
     public productsUserFlexiblePriceRetrieve(requestParameters: ProductsApiProductsUserFlexiblePriceRetrieveRequest, options?: RawAxiosRequestConfig) {
         return ProductsApiFp(this.configuration).productsUserFlexiblePriceRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * The price this user pays for this product, computed the way checkout computes it (financial assistance, user-tied and automatic discounts, including paid-amount-off credit for a qualifying prior purchase). The response also carries product_flexible_price exactly as the deprecated user_flexible_price endpoint returns it, so a caller moves over field for field. Anonymous requests are a 403; an unknown or no-longer-purchasable product is a 404.
+     * @param {ProductsApiProductsUserPricingRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsUserPricingRetrieve(requestParameters: ProductsApiProductsUserPricingRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsUserPricingRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
