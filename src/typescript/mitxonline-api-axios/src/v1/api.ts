@@ -1563,6 +1563,9 @@ export interface Discount {
     'amount': string;
     'automatic'?: boolean;
     'discount_type': DiscountTypeEnum;
+    /**
+     * \'internal\' discounts are attached by application code that has verified the learner\'s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase * `internal` - internal
+     */
     'redemption_type': RedemptionTypeEnum;
     'max_redemptions'?: number | null;
     'discount_code': string;
@@ -2377,6 +2380,9 @@ export interface Nested {
     'amount': string;
     'automatic'?: boolean;
     'discount_type': DiscountTypeEnum;
+    /**
+     * \'internal\' discounts are attached by application code that has verified the learner\'s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase * `internal` - internal
+     */
     'redemption_type': RedemptionTypeEnum;
     'payment_type'?: NestedPaymentTypeEnum | null;
     'max_redemptions'?: number | null;
@@ -2391,7 +2397,7 @@ export interface Nested {
     'expiration_date'?: string | null;
     'is_bulk'?: boolean;
     /**
-     * Discount is only for creating verified course run enrollments for a program.
+     * Deprecated and unused; superseded by redemption_type \'internal\'.
      */
     'is_program_discount'?: boolean | null;
     /**
@@ -2917,6 +2923,9 @@ export interface PatchedV0DiscountRequest {
     'amount'?: string;
     'automatic'?: boolean;
     'discount_type'?: DiscountTypeEnum;
+    /**
+     * \'internal\' discounts are attached by application code that has verified the learner\'s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase * `internal` - internal
+     */
     'redemption_type'?: RedemptionTypeEnum;
     'max_redemptions'?: number | null;
     'discount_code'?: string;
@@ -3294,7 +3303,7 @@ export type RedemptionStatusEnum = typeof RedemptionStatusEnum[keyof typeof Rede
 
 
 /**
- * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase
+ * * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase * `internal` - internal
  */
 
 export const RedemptionTypeEnum = {
@@ -3314,6 +3323,10 @@ export const RedemptionTypeEnum = {
     * program-child-purchase
     */
     ProgramChildPurchase: 'program-child-purchase',
+    /**
+    * internal
+    */
+    Internal: 'internal',
 } as const;
 
 export type RedemptionTypeEnum = typeof RedemptionTypeEnum[keyof typeof RedemptionTypeEnum];
@@ -3913,6 +3926,9 @@ export interface V0Discount {
     'amount': string;
     'automatic'?: boolean;
     'discount_type': DiscountTypeEnum;
+    /**
+     * \'internal\' discounts are attached by application code that has verified the learner\'s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase * `internal` - internal
+     */
     'redemption_type': RedemptionTypeEnum;
     'max_redemptions'?: number | null;
     'discount_code': string;
@@ -3949,6 +3965,9 @@ export interface V0DiscountRequest {
     'amount': string;
     'automatic'?: boolean;
     'discount_type': DiscountTypeEnum;
+    /**
+     * \'internal\' discounts are attached by application code that has verified the learner\'s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * `one-time` - one-time * `one-time-per-user` - one-time-per-user * `unlimited` - unlimited * `program-child-purchase` - program-child-purchase * `internal` - internal
+     */
     'redemption_type': RedemptionTypeEnum;
     'max_redemptions'?: number | null;
     'discount_code': string;
@@ -11508,7 +11527,7 @@ export const DiscountsApiAxiosParamCreator = function (configuration?: Configura
          * @param {number} [offset] The initial index from which to return the results.
          * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
          * @param {string} [q] q
-         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] \&#39;internal\&#39; discounts are attached by application code that has verified the learner\&#39;s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase * &#x60;internal&#x60; - internal
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12534,7 +12553,7 @@ export const DiscountsApiFp = function(configuration?: Configuration) {
          * @param {number} [offset] The initial index from which to return the results.
          * @param {DiscountsListPaymentTypeEnum} [payment_type] * &#x60;marketing&#x60; - marketing * &#x60;sales&#x60; - sales * &#x60;financial-assistance&#x60; - financial-assistance * &#x60;customer-support&#x60; - customer-support * &#x60;staff&#x60; - staff * &#x60;legacy&#x60; - legacy
          * @param {string} [q] q
-         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
+         * @param {DiscountsListRedemptionTypeEnum} [redemption_type] \&#39;internal\&#39; discounts are attached by application code that has verified the learner\&#39;s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase * &#x60;internal&#x60; - internal
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13282,7 +13301,7 @@ export interface DiscountsApiDiscountsListRequest {
     readonly q?: string
 
     /**
-     * * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase
+     * \&#39;internal\&#39; discounts are attached by application code that has verified the learner\&#39;s eligibility (e.g. verified program enrollment). Learners cannot redeem them and pricing does not re-check the product.  * &#x60;one-time&#x60; - one-time * &#x60;one-time-per-user&#x60; - one-time-per-user * &#x60;unlimited&#x60; - unlimited * &#x60;program-child-purchase&#x60; - program-child-purchase * &#x60;internal&#x60; - internal
      */
     readonly redemption_type?: DiscountsListRedemptionTypeEnum
 }
@@ -13969,6 +13988,7 @@ export const DiscountsListPaymentTypeEnum = {
 } as const;
 export type DiscountsListPaymentTypeEnum = typeof DiscountsListPaymentTypeEnum[keyof typeof DiscountsListPaymentTypeEnum];
 export const DiscountsListRedemptionTypeEnum = {
+    Internal: 'internal',
     OneTime: 'one-time',
     OneTimePerUser: 'one-time-per-user',
     ProgramChildPurchase: 'program-child-purchase',
