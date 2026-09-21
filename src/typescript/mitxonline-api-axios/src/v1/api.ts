@@ -764,7 +764,7 @@ export interface CoursePageItem {
      */
     'prerequisites': string | null;
     /**
-     * URL a relevant FAQ page or entry for the course/program.
+     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
      */
     'faq_url': string | null;
     /**
@@ -789,6 +789,7 @@ export interface CoursePageItem {
      */
     'faculty_section_title': string | null;
     'faculty': Array<Faculty>;
+    'faqs': Array<FAQItem>;
     'certificate_page': CertificatePage | null;
     'course_details': V2Course;
     'topic_list': Array<Topic>;
@@ -1804,6 +1805,14 @@ export interface ExtendedLegalAddress {
      * Get email from the linked user object
      */
     'email': string;
+}
+/**
+ * Serializer for FAQ items shown on course/program pages.
+ */
+export interface FAQItem {
+    'id': number;
+    'question': string;
+    'answer': string;
 }
 /**
  * Serializer for faculty details used in course pages.
@@ -3185,7 +3194,7 @@ export interface ProgramPageItem {
      */
     'prerequisites': string | null;
     /**
-     * URL a relevant FAQ page or entry for the course/program.
+     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
      */
     'faq_url': string | null;
     /**
@@ -3210,6 +3219,7 @@ export interface ProgramPageItem {
      */
     'faculty_section_title': string | null;
     'faculty': Array<Faculty>;
+    'faqs': Array<FAQItem>;
     'certificate_page': CertificatePage;
     'program_details': V2Program;
     'how_youll_learn': Array<HowYoullLearn>;
