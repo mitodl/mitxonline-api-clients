@@ -802,6 +802,12 @@ export interface CoursePageItem {
      */
     'ingest_content_files_for_ai': boolean | null;
     'how_youll_learn': Array<HowYoullLearn>;
+    /**
+     * 
+     * @type {Array<TestimonialItem>}
+     * @memberof CoursePageItem
+     */
+    'testimonials': Array<TestimonialItem>;
 }
 /**
  * Serializer for a list of course pages, including metadata and items.
@@ -3223,6 +3229,12 @@ export interface ProgramPageItem {
     'certificate_page': CertificatePage;
     'program_details': V2Program;
     'how_youll_learn': Array<HowYoullLearn>;
+    /**
+     * 
+     * @type {Array<TestimonialItem>}
+     * @memberof ProgramPageItem
+     */
+    'testimonials': Array<TestimonialItem>;
 }
 /**
  * Serializer for a list of program pages, including metadata and items.
@@ -19050,5 +19062,40 @@ export class VerifiedProgramEnrollmentsApi extends BaseAPI {
     }
 }
 
-
-
+/**
+ * 
+ * @export
+ * @interface TestimonialItem
+ */
+export interface TestimonialItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof TestimonialItem
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TestimonialItem
+     */
+    'quote': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TestimonialItem
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TestimonialItem
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TestimonialItem
+     */
+    'image_src': string | null;
+}
