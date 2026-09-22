@@ -29,6 +29,7 @@ Name | Type | Description | Notes
 **faculty_section_title** | **string** | The title text to display in the faculty cards section of the product page. | [default to undefined]
 **faculty** | [**Array&lt;Faculty&gt;**](Faculty.md) |  | [default to undefined]
 **faqs** | [**Array&lt;FAQItem&gt;**](FAQItem.md) |  | [default to undefined]
+**testimonials** | [**Array&lt;TestimonialItem&gt;**](TestimonialItem.md) |  | [default to undefined]
 **certificate_page** | [**CertificatePage**](CertificatePage.md) |  | [default to undefined]
 **program_details** | [**V2Program**](V2Program.md) |  | [default to undefined]
 **how_youll_learn** | [**Array&lt;HowYoullLearn&gt;**](HowYoullLearn.md) |  | [default to undefined]
@@ -62,6 +63,7 @@ const instance: ProgramPageItem = {
     faculty_section_title,
     faculty,
     faqs,
+    testimonials,
     certificate_page,
     program_details,
     how_youll_learn,
