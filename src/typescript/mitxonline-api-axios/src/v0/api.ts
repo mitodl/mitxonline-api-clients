@@ -790,6 +790,7 @@ export interface CoursePageItem {
     'faculty_section_title': string | null;
     'faculty': Array<Faculty>;
     'faqs': Array<FAQItem>;
+    'testimonials': Array<TestimonialItem>;
     'certificate_page': CertificatePage | null;
     'course_details': V2Course;
     'topic_list': Array<Topic>;
@@ -3220,6 +3221,7 @@ export interface ProgramPageItem {
     'faculty_section_title': string | null;
     'faculty': Array<Faculty>;
     'faqs': Array<FAQItem>;
+    'testimonials': Array<TestimonialItem>;
     'certificate_page': CertificatePage;
     'program_details': V2Program;
     'how_youll_learn': Array<HowYoullLearn>;
@@ -3657,6 +3659,16 @@ export const SupportedVariantVariantIndustryEnum = {
 
 export type SupportedVariantVariantIndustryEnum = typeof SupportedVariantVariantIndustryEnum[keyof typeof SupportedVariantVariantIndustryEnum];
 
+/**
+ * Serializer for testimonial items shown on course/program pages.
+ */
+export interface TestimonialItem {
+    'id': number;
+    'quote': string;
+    'name': string;
+    'title': string;
+    'image_src': string | null;
+}
 /**
  * Serializer for topics used in course pages.
  */
