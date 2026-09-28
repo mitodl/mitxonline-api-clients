@@ -24,6 +24,44 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
+ * * `organization_created` - Organization created * `organization_updated` - Organization updated * `onboarding_changed` - Onboarding state changed * `identity_provider_created` - Identity provider created * `identity_provider_transitioned` - Identity provider state changed * `identity_provider_metadata_refreshed` - Identity provider metadata refreshed * `identity_provider_deleted` - Identity provider deleted
+ */
+
+export const ActionEnum = {
+    /**
+    * Organization created
+    */
+    OrganizationCreated: 'organization_created',
+    /**
+    * Organization updated
+    */
+    OrganizationUpdated: 'organization_updated',
+    /**
+    * Onboarding state changed
+    */
+    OnboardingChanged: 'onboarding_changed',
+    /**
+    * Identity provider created
+    */
+    IdentityProviderCreated: 'identity_provider_created',
+    /**
+    * Identity provider state changed
+    */
+    IdentityProviderTransitioned: 'identity_provider_transitioned',
+    /**
+    * Identity provider metadata refreshed
+    */
+    IdentityProviderMetadataRefreshed: 'identity_provider_metadata_refreshed',
+    /**
+    * Identity provider deleted
+    */
+    IdentityProviderDeleted: 'identity_provider_deleted',
+} as const;
+
+export type ActionEnum = typeof ActionEnum[keyof typeof ActionEnum];
+
+
+/**
  * Serializer for the assign_code request body.
  */
 export interface AssignRevokeCodeRequestRequest {
@@ -49,13 +87,17 @@ export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof Availability
 
 
 /**
- * Serializer for the B2B enrollment request body.  Accepts an optional program_id so the user can be enrolled in the appropriate program alongside the course run enrollment.
+ * Serializer for the B2B enrollment request body.  Accepts an optional program_id so the user can be enrolled in the appropriate program alongside the course run enrollment. Accepts an optional contract_slug so it can identify which contract the user is working in, so the enrollments can be linked back to the right contract.
  */
 export interface B2BEnrollRequestRequest {
     /**
      * The readable_id of the program to enroll the user in.
      */
     'program_id'?: string;
+    /**
+     * The slug for the contract the user is in.
+     */
+    'contract_slug'?: string;
 }
 /**
  * Simplified serializer for the ContractPage model.
@@ -571,6 +613,22 @@ export type CompanySizeEnum = typeof CompanySizeEnum[keyof typeof CompanySizeEnu
 
 
 /**
+ * Request body for adding courseware to a contract.  A course run already in another contract is left there and reported as skipped; there is no option to move it.
+ */
+export interface ContractCoursewareRequest {
+    /**
+     * Readable ID of a program, course or course run.
+     */
+    'courseware_id': string;
+}
+/**
+ * How many enrollment codes a contract needs and has.
+ */
+export interface ContractEnrollmentCodeSetup {
+    'expected': number;
+    'existing': number;
+}
+/**
  * Serializer for the ContractPage model.
  */
 export interface ContractPage {
@@ -614,6 +672,65 @@ export interface ContractPage {
 export interface ContractPageVariantRunBadRequest {
     'detail': string;
 }
+/**
+ * A program in a contract, in the contract\'s order.
+ */
+export interface ContractProgram {
+    'readable_id': string;
+    'title': string;
+    'sort_order': number | null;
+}
+/**
+ * The edX clone status of one contract run.
+ */
+export interface ContractRunSetup {
+    'courseware_id': string;
+    'clone_status': ContractRunSetupCloneStatusEnum | null;
+    'clone_attempts': number;
+    'clone_error': string;
+}
+
+export const ContractRunSetupCloneStatusEnum = {
+    Pending: 'pending',
+    Cloning: 'cloning',
+    Cloned: 'cloned',
+    Failed: 'failed',
+} as const;
+
+export type ContractRunSetupCloneStatusEnum = typeof ContractRunSetupCloneStatusEnum[keyof typeof ContractRunSetupCloneStatusEnum];
+
+/**
+ * How far a contract\'s setup has got.
+ */
+export interface ContractSetupStatus {
+    'status': ContractSetupStatusEnum;
+    'runs': Array<ContractRunSetup>;
+    'enrollment_codes': ContractEnrollmentCodeSetup;
+}
+
+
+/**
+ * * `in_progress` - In progress * `complete` - Complete * `failed` - Failed
+ */
+
+export const ContractSetupStatusEnum = {
+    /**
+    * In progress
+    */
+    InProgress: 'in_progress',
+    /**
+    * Complete
+    */
+    Complete: 'complete',
+    /**
+    * Failed
+    */
+    Failed: 'failed',
+} as const;
+
+export type ContractSetupStatusEnum = typeof ContractSetupStatusEnum[keyof typeof ContractSetupStatusEnum];
+
+
 /**
  * Serializer for pycountry countries, with states for US/CA
  */
@@ -828,6 +945,32 @@ export interface CourseRunCertificate {
      */
     'link': string;
 }
+/**
+ * * `pending` - Pending * `cloning` - Cloning * `cloned` - Cloned * `failed` - Failed
+ */
+
+export const CourseRunCloneStatusEnum = {
+    /**
+    * Pending
+    */
+    Pending: 'pending',
+    /**
+    * Cloning
+    */
+    Cloning: 'cloning',
+    /**
+    * Cloned
+    */
+    Cloned: 'cloned',
+    /**
+    * Failed
+    */
+    Failed: 'failed',
+} as const;
+
+export type CourseRunCloneStatusEnum = typeof CourseRunCloneStatusEnum[keyof typeof CourseRunCloneStatusEnum];
+
+
 /**
  * CourseRunEnrollment model serializer
  */
@@ -1468,6 +1611,14 @@ export interface CourseWithCourseRunsSerializerV2 {
     'courseruns': Array<CourseRunV2>;
 }
 /**
+ * What adding courseware to a contract did.
+ */
+export interface CoursewareAddition {
+    'runs_added': number;
+    'courses_without_source_run': number;
+    'skipped_reason': string;
+}
+/**
  * Serializer for the result from create_b2b_enrollment.  There\'s always a result, and it should be one of the B2B messages that are defined in main.constants. The other fields appear or not depending on the result type.
  */
 export interface CreateB2BEnrollment {
@@ -1493,6 +1644,45 @@ export interface CreateBasketWithProductsRequest {
     'checkout'?: boolean;
     'discount_code'?: string | null;
 }
+/**
+ * Request body for creating a contract.  membership_type is required even though the model has a default, as it is for b2b_contract create: how learners join a contract is chosen, not defaulted.
+ */
+export interface CreateContractRequest {
+    /**
+     * The name of the contract.
+     */
+    'name': string;
+    /**
+     * The method to use to manage membership in the contract.  * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
+     */
+    'membership_type': MembershipTypeEnum;
+    /**
+     * Any useful extra information about the contract.
+     */
+    'description'?: string;
+    /**
+     * A welcome message for learners.
+     */
+    'welcome_message'?: string;
+    /**
+     * The start date of the contract.
+     */
+    'contract_start'?: string | null;
+    /**
+     * The end date of the contract.
+     */
+    'contract_end'?: string | null;
+    /**
+     * The maximum number of learners allowed under this contract. (Set to zero or leave blank for unlimited.)
+     */
+    'max_learners'?: number | null;
+    /**
+     * The fixed price for enrollment under this contract. (Set to zero or leave blank for free.)
+     */
+    'enrollment_fixed_price'?: string | null;
+}
+
+
 /**
  * Request body for provisioning an identity provider.
  */
@@ -1520,6 +1710,24 @@ export interface CreateOrganizationRequest {
     'domains'?: Array<string>;
     'description'?: string;
     'redirect_url'?: string;
+}
+export interface DataConsentFieldErrors {
+    /**
+     * Errors for the \'consented\' field, e.g. if missing or not a boolean.
+     */
+    'consented'?: Array<string>;
+}
+/**
+ * Records whether a user has consented to data sharing for a contract
+ */
+export interface DataConsentRequest {
+    'consented': boolean;
+}
+/**
+ * Default DRF is_valid(raise_exception=True) error shape for DataConsentSerializer.
+ */
+export interface DataConsentValidationError {
+    'errors': DataConsentFieldErrors;
 }
 /**
  * Department model serializer
@@ -1791,6 +1999,16 @@ export type ErrorEnum = typeof ErrorEnum[keyof typeof ErrorEnum];
 
 
 /**
+ * An unused enrollment code taken out of a contract.
+ */
+export interface ExpiredEnrollmentCode {
+    'code': string;
+    /**
+     * False when the code still applies to products outside the contract.
+     */
+    'deleted': boolean;
+}
+/**
  * Serializer class that includes email address as part of the legal address
  */
 export interface ExtendedLegalAddress {
@@ -1986,6 +2204,23 @@ export const IdentityProviderProtocolEnum = {
 export type IdentityProviderProtocolEnum = typeof IdentityProviderProtocolEnum[keyof typeof IdentityProviderProtocolEnum];
 
 
+/**
+ * Our side of an IdP integration: what the partner configures their IdP with.  redirect_uri is the SAML assertion consumer service (ACS) URL for a SAML IdP, and the OAuth redirect URI for an OIDC one.
+ */
+export interface IdentityProviderServiceProvider {
+    /**
+     * The SAML SP entity ID. Null for OIDC.
+     */
+    'entity_id': string | null;
+    /**
+     * The SAML ACS URL, or the OIDC redirect URI.
+     */
+    'redirect_uri': string;
+    /**
+     * The SAML SP metadata descriptor. Null for OIDC.
+     */
+    'metadata_url': string | null;
+}
 /**
  * Request body for moving an identity provider\'s lifecycle state.
  */
@@ -2383,6 +2618,28 @@ export const ManagerEnrollmentCodeEmailStatusEnum = {
 
 export type ManagerEnrollmentCodeEmailStatusEnum = typeof ManagerEnrollmentCodeEmailStatusEnum[keyof typeof ManagerEnrollmentCodeEmailStatusEnum];
 
+/**
+ * * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
+ */
+
+export const MembershipTypeEnum = {
+    /**
+    * Managed
+    */
+    Managed: 'managed',
+    /**
+    * Enrollment Code
+    */
+    Code: 'code',
+    /**
+    * Auto Enrollment
+    */
+    Auto: 'auto',
+} as const;
+
+export type MembershipTypeEnum = typeof MembershipTypeEnum[keyof typeof MembershipTypeEnum];
+
+
 export interface Nested {
     'id': number;
     'created_on': string;
@@ -2589,6 +2846,7 @@ export interface OrganizationIdentityProvider {
      */
     'metadata_artifact': any | null;
     'metadata_fetched_at': string | null;
+    'service_provider': IdentityProviderServiceProvider;
     'created_on': string;
     'updated_on': string;
 }
@@ -2643,6 +2901,20 @@ export interface OrganizationPage {
     'sso_organization_id': string | null;
     'contracts': Array<ContractPage>;
 }
+/**
+ * One recorded provisioning change.
+ */
+export interface OrganizationProvisioningAudit {
+    'id': number;
+    'action': ActionEnum;
+    'identity_provider_alias': string;
+    'actor': ProvisioningAuditActor | null;
+    'data_before': any | null;
+    'data_after': any | null;
+    'created_on': string;
+}
+
+
 /**
  * Serializer for overrides used in certificate pages.
  */
@@ -2790,11 +3062,29 @@ export interface PaginatedOrganizationPageList {
     'previous'?: string | null;
     'results': Array<OrganizationPage>;
 }
+export interface PaginatedOrganizationProvisioningAuditList {
+    'count': number;
+    'next'?: string | null;
+    'previous'?: string | null;
+    'results': Array<OrganizationProvisioningAudit>;
+}
 export interface PaginatedProductList {
     'count': number;
     'next'?: string | null;
     'previous'?: string | null;
     'results': Array<Product>;
+}
+export interface PaginatedProvisionedContractList {
+    'count': number;
+    'next'?: string | null;
+    'previous'?: string | null;
+    'results': Array<ProvisionedContract>;
+}
+export interface PaginatedProvisionedOrganizationList {
+    'count': number;
+    'next'?: string | null;
+    'previous'?: string | null;
+    'results': Array<ProvisionedOrganization>;
 }
 export interface PaginatedStaffDashboardUserList {
     'count': number;
@@ -2892,6 +3182,49 @@ export interface PatchedProductRequest {
      */
     'is_active'?: boolean;
 }
+/**
+ * Request body for updating a contract.  Enrollment codes are not changed here. The view queues the code check afterwards for a contract that uses codes.
+ */
+export interface PatchedUpdateContractRequest {
+    /**
+     * The name of the contract.
+     */
+    'name'?: string;
+    /**
+     * The method to use to manage membership in the contract.  * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
+     */
+    'membership_type'?: MembershipTypeEnum;
+    /**
+     * Any useful extra information about the contract.
+     */
+    'description'?: string;
+    /**
+     * A welcome message for learners.
+     */
+    'welcome_message'?: string;
+    /**
+     * The start date of the contract.
+     */
+    'contract_start'?: string | null;
+    /**
+     * The end date of the contract.
+     */
+    'contract_end'?: string | null;
+    /**
+     * The maximum number of learners allowed under this contract. (Set to zero or leave blank for unlimited.)
+     */
+    'max_learners'?: number | null;
+    /**
+     * The fixed price for enrollment under this contract. (Set to zero or leave blank for free.)
+     */
+    'enrollment_fixed_price'?: string | null;
+    /**
+     * Whether this contract is active or not. Date rules still apply.
+     */
+    'active'?: boolean;
+}
+
+
 export interface PatchedUpdateCourseRunEnrollmentRequest {
     /**
      * Whether to receive course emails
@@ -3234,6 +3567,59 @@ export interface ProgramPageList {
     'items': Array<ProgramPageItem>;
 }
 /**
+ * A contract as the staff contract API sees it.
+ */
+export interface ProvisionedContract {
+    'id': number;
+    /**
+     * The name of the contract.
+     */
+    'name': string;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     */
+    'slug': string;
+    /**
+     * The organization that owns this contract.
+     */
+    'organization': number;
+    /**
+     * The method to use to manage membership in the contract.  * `managed` - Managed * `code` - Enrollment Code * `auto` - Auto Enrollment
+     */
+    'membership_type': MembershipTypeEnum;
+    /**
+     * Any useful extra information about the contract.
+     */
+    'description': string;
+    /**
+     * A welcome message for learners.
+     */
+    'welcome_message': string;
+    /**
+     * The start date of the contract.
+     */
+    'contract_start': string | null;
+    /**
+     * The end date of the contract.
+     */
+    'contract_end': string | null;
+    /**
+     * Whether this contract is active or not. Date rules still apply.
+     */
+    'active': boolean;
+    /**
+     * The maximum number of learners allowed under this contract. (Set to zero or leave blank for unlimited.)
+     */
+    'max_learners': number | null;
+    /**
+     * The fixed price for enrollment under this contract. (Set to zero or leave blank for free.)
+     */
+    'enrollment_fixed_price': string | null;
+    'programs': Array<ContractProgram>;
+}
+
+
+/**
  * An organization as the provisioning API sees it.  `domains` and `redirect_url` live only in Keycloak, so they are populated from the representation the view fetched rather than from our database.
  */
 export interface ProvisionedOrganization {
@@ -3272,6 +3658,14 @@ export interface ProvisionedOrganization {
     'redirect_url': string | null;
     'onboarding': OrganizationOnboarding;
     'identity_providers': Array<OrganizationIdentityProvider>;
+}
+/**
+ * The staff user who made a provisioning change.
+ */
+export interface ProvisioningAuditActor {
+    'id': number;
+    'username': string;
+    'email': string;
 }
 export interface ProvisioningDetail {
     'detail': string;
@@ -3479,7 +3873,30 @@ export type RefundStatusEnum = typeof RefundStatusEnum[keyof typeof RefundStatus
 
 
 /**
- * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
+ * Request body for removing courseware from a contract.
+ */
+export interface RemoveContractCoursewareRequest {
+    /**
+     * Readable ID of a program, course or course run.
+     */
+    'courseware_id': string;
+    /**
+     * For a program, also remove its courses\' runs from the contract.
+     */
+    'remove_program_runs'?: boolean;
+}
+/**
+ * A contract run that was removed from a contract.
+ */
+export interface RemovedContractRun {
+    'courseware_id': string;
+    /**
+     * False when the run stays linked because learners are enrolled.
+     */
+    'unlinked': boolean;
+}
+/**
+ * * `b2b-disallowed` - b2b-disallowed * `b2b-error-already-enrolled` - b2b-error-already-enrolled * `b2b-error-ambiguous-contract` - b2b-error-ambiguous-contract * `b2b-error-no-contract` - b2b-error-no-contract * `b2b-error-no-matching-contract` - b2b-error-no-matching-contract * `b2b-error-no-product` - b2b-error-no-product * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-error-invalid-enrollment-code` - b2b-error-invalid-enrollment-code * `b2b-error-requires-checkout` - b2b-error-requires-checkout * `b2b-error-not-enrollable` - b2b-error-not-enrollable * `b2b-enroll-success` - b2b-enroll-success
  */
 
 export const ResultEnum = {
@@ -3492,9 +3909,17 @@ export const ResultEnum = {
     */
     B2bErrorAlreadyEnrolled: 'b2b-error-already-enrolled',
     /**
+    * b2b-error-ambiguous-contract
+    */
+    B2bErrorAmbiguousContract: 'b2b-error-ambiguous-contract',
+    /**
     * b2b-error-no-contract
     */
     B2bErrorNoContract: 'b2b-error-no-contract',
+    /**
+    * b2b-error-no-matching-contract
+    */
+    B2bErrorNoMatchingContract: 'b2b-error-no-matching-contract',
     /**
     * b2b-error-no-product
     */
@@ -5803,6 +6228,44 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * View for recording data consent for a user on a contract.
+         * @param {number} contract_id 
+         * @param {DataConsentRequest} DataConsentRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bDataConsentCreate: async (contract_id: number, DataConsentRequest: DataConsentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contract_id' is not null or undefined
+            assertParamExists('b2bDataConsentCreate', 'contract_id', contract_id)
+            // verify required parameter 'DataConsentRequest' is not null or undefined
+            assertParamExists('b2bDataConsentCreate', 'DataConsentRequest', DataConsentRequest)
+            const localVarPath = `/api/v0/b2b/data_consent/{contract_id}/`
+                .replace('{contract_id}', encodeURIComponent(String(contract_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(DataConsentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Create an enrollment for the given course run.
          * @param {string} readable_id 
          * @param {B2BEnrollRequestRequest} [B2BEnrollRequestRequest] 
@@ -6475,6 +6938,448 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Assign free enrollment codes to people and email each their code.  The same assignment as the manager dashboard\'s bulk assign.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {Array<AssignRevokeCodeRequestRequest>} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCodesAssignCreate: async (id: number, parent_lookup_organization__org_key: string, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesAssignCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesAssignCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'AssignRevokeCodeRequestRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesAssignCreate', 'AssignRevokeCodeRequestRequest', AssignRevokeCodeRequestRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/codes/assign/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(AssignRevokeCodeRequestRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Take the contract\'s unused enrollment codes out of it.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCodesExpireCreate: async (id: number, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesExpireCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesExpireCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/codes/expire/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List the contract\'s enrollment codes, with each one\'s latest assignment.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCodesList: async (id: number, parent_lookup_organization__org_key: string, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesList', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCodesList', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/codes/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Add a program, course or course run to the contract.  Contract runs and their products exist when this returns. Their edX clones are queued, and so is the enrollment code check for a contract that uses codes. Repeating the call does not create another run.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {ContractCoursewareRequest} ContractCoursewareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCoursewareCreate: async (id: number, parent_lookup_organization__org_key: string, ContractCoursewareRequest: ContractCoursewareRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCoursewareCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCoursewareCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'ContractCoursewareRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCoursewareCreate', 'ContractCoursewareRequest', ContractCoursewareRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/courseware/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ContractCoursewareRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Remove a program, course or course run from the contract.  Runs are closed to new enrollments. A run with enrolled learners stays linked so they keep their course.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {RemoveContractCoursewareRequest} RemoveContractCoursewareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCoursewareRemoveCreate: async (id: number, parent_lookup_organization__org_key: string, RemoveContractCoursewareRequest: RemoveContractCoursewareRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCoursewareRemoveCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCoursewareRemoveCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'RemoveContractCoursewareRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCoursewareRemoveCreate', 'RemoveContractCoursewareRequest', RemoveContractCoursewareRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/courseware/remove/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(RemoveContractCoursewareRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create a contract, with its default variant set.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {CreateContractRequest} CreateContractRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCreate: async (parent_lookup_organization__org_key: string, CreateContractRequest: CreateContractRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'CreateContractRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsCreate', 'CreateContractRequest', CreateContractRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/`
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CreateContractRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List the organization\'s contracts.  An unknown org_key is a 404, not an empty list.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsList: async (parent_lookup_organization__org_key: string, page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsList', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/`
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (page_size !== undefined) {
+                localVarQueryParameter['page_size'] = page_size;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {PatchedUpdateContractRequest} [PatchedUpdateContractRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsPartialUpdate: async (id: number, parent_lookup_organization__org_key: string, PatchedUpdateContractRequest?: PatchedUpdateContractRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsPartialUpdate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateContractRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Return a contract.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsRetrieve: async (id: number, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsRetrieve', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Re-queue failed edX clones and the enrollment code check.  Returns setup status as it stands after queueing.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsRetrySetupCreate: async (id: number, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsRetrySetupCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsRetrySetupCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/retry-setup/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Report the edX clones and enrollment codes still outstanding.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsSetupStatusRetrieve: async (id: number, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsSetupStatusRetrieve', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsSetupStatusRetrieve', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/setup-status/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
          * @param {CreateOrganizationRequest} CreateOrganizationRequest 
          * @param {*} [options] Override http request option.
@@ -6502,6 +7407,49 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(CreateOrganizationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Return the organization\'s provisioning changes, newest first.  The review trail for partner SSO config now that changes are API calls rather than reviewed Pulumi PRs.
+         * @param {string} org_key 
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsEventsList: async (org_key: string, l?: number, o?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsEventsList', 'org_key', org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{org_key}/events/`
+                .replace('{org_key}', encodeURIComponent(String(org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (l !== undefined) {
+                localVarQueryParameter['l'] = l;
+            }
+
+            if (o !== undefined) {
+                localVarQueryParameter['o'] = o;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6726,6 +7674,55 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(IdentityProviderTransitionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List organizations, without asking Keycloak about each one.  domains and redirect_url live only in Keycloak, so they are null here; retrieve an organization to see them. One admin call per row would make the list as slow as the realm is large.
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
+         * @param {B2bProvisioningOrganizationsListOnboardingStateEnum} [onboarding_state] * &#x60;requested&#x60; - Requested * &#x60;org_created&#x60; - Organization created * &#x60;idp_configured&#x60; - Identity provider configured * &#x60;idp_validated&#x60; - Identity provider validated * &#x60;contract_ready&#x60; - Contract ready * &#x60;live&#x60; - Live * &#x60;blocked&#x60; - Blocked
+         * @param {string} [q] Search by name or org key, case-insensitively.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsList: async (l?: number, o?: number, onboarding_state?: B2bProvisioningOrganizationsListOnboardingStateEnum, q?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (l !== undefined) {
+                localVarQueryParameter['l'] = l;
+            }
+
+            if (o !== undefined) {
+                localVarQueryParameter['o'] = o;
+            }
+
+            if (onboarding_state !== undefined) {
+                localVarQueryParameter['onboarding_state'] = onboarding_state;
+            }
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6974,6 +7971,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * View for recording data consent for a user on a contract.
+         * @param {number} contract_id 
+         * @param {DataConsentRequest} DataConsentRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bDataConsentCreate(contract_id: number, DataConsentRequest: DataConsentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bDataConsentCreate(contract_id, DataConsentRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bDataConsentCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Create an enrollment for the given course run.
          * @param {string} readable_id 
          * @param {B2BEnrollRequestRequest} [B2BEnrollRequestRequest] 
@@ -7198,6 +8208,156 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Assign free enrollment codes to people and email each their code.  The same assignment as the manager dashboard\'s bulk assign.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {Array<AssignRevokeCodeRequestRequest>} AssignRevokeCodeRequestRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsCodesAssignCreate(id: number, parent_lookup_organization__org_key: string, AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BulkAssignResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsCodesAssignCreate(id, parent_lookup_organization__org_key, AssignRevokeCodeRequestRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsCodesAssignCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Take the contract\'s unused enrollment codes out of it.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsCodesExpireCreate(id: number, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExpiredEnrollmentCode>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsCodesExpireCreate(id, parent_lookup_organization__org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsCodesExpireCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * List the contract\'s enrollment codes, with each one\'s latest assignment.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsCodesList(id: number, parent_lookup_organization__org_key: string, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedManagerEnrollmentCodeList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsCodesList(id, parent_lookup_organization__org_key, page, page_size, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsCodesList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Add a program, course or course run to the contract.  Contract runs and their products exist when this returns. Their edX clones are queued, and so is the enrollment code check for a contract that uses codes. Repeating the call does not create another run.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {ContractCoursewareRequest} ContractCoursewareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsCoursewareCreate(id: number, parent_lookup_organization__org_key: string, ContractCoursewareRequest: ContractCoursewareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursewareAddition>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsCoursewareCreate(id, parent_lookup_organization__org_key, ContractCoursewareRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsCoursewareCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Remove a program, course or course run from the contract.  Runs are closed to new enrollments. A run with enrolled learners stays linked so they keep their course.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {RemoveContractCoursewareRequest} RemoveContractCoursewareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsCoursewareRemoveCreate(id: number, parent_lookup_organization__org_key: string, RemoveContractCoursewareRequest: RemoveContractCoursewareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RemovedContractRun>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsCoursewareRemoveCreate(id, parent_lookup_organization__org_key, RemoveContractCoursewareRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsCoursewareRemoveCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create a contract, with its default variant set.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {CreateContractRequest} CreateContractRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsCreate(parent_lookup_organization__org_key: string, CreateContractRequest: CreateContractRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedContract>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsCreate(parent_lookup_organization__org_key, CreateContractRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * List the organization\'s contracts.  An unknown org_key is a 404, not an empty list.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {number} [page] A page number within the paginated result set.
+         * @param {number} [page_size] Number of results to return per page.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsList(parent_lookup_organization__org_key: string, page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProvisionedContractList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsList(parent_lookup_organization__org_key, page, page_size, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {PatchedUpdateContractRequest} [PatchedUpdateContractRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsPartialUpdate(id: number, parent_lookup_organization__org_key: string, PatchedUpdateContractRequest?: PatchedUpdateContractRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedContract>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsPartialUpdate(id, parent_lookup_organization__org_key, PatchedUpdateContractRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Return a contract.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsRetrieve(id: number, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedContract>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsRetrieve(id, parent_lookup_organization__org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Re-queue failed edX clones and the enrollment code check.  Returns setup status as it stands after queueing.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsRetrySetupCreate(id: number, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContractSetupStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsRetrySetupCreate(id, parent_lookup_organization__org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsRetrySetupCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Report the edX clones and enrollment codes still outstanding.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsSetupStatusRetrieve(id: number, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContractSetupStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsSetupStatusRetrieve(id, parent_lookup_organization__org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsSetupStatusRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
          * @param {CreateOrganizationRequest} CreateOrganizationRequest 
          * @param {*} [options] Override http request option.
@@ -7207,6 +8367,20 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsCreate(CreateOrganizationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Return the organization\'s provisioning changes, newest first.  The review trail for partner SSO config now that changes are API calls rather than reviewed Pulumi PRs.
+         * @param {string} org_key 
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsEventsList(org_key: string, l?: number, o?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedOrganizationProvisioningAuditList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsEventsList(org_key, l, o, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsEventsList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -7285,6 +8459,21 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(alias, parent_lookup_organization__org_key, IdentityProviderTransitionRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersTransitionCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * List organizations, without asking Keycloak about each one.  domains and redirect_url live only in Keycloak, so they are null here; retrieve an organization to see them. One admin call per row would make the list as slow as the realm is large.
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
+         * @param {B2bProvisioningOrganizationsListOnboardingStateEnum} [onboarding_state] * &#x60;requested&#x60; - Requested * &#x60;org_created&#x60; - Organization created * &#x60;idp_configured&#x60; - Identity provider configured * &#x60;idp_validated&#x60; - Identity provider validated * &#x60;contract_ready&#x60; - Contract ready * &#x60;live&#x60; - Live * &#x60;blocked&#x60; - Blocked
+         * @param {string} [q] Search by name or org key, case-insensitively.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsList(l?: number, o?: number, onboarding_state?: B2bProvisioningOrganizationsListOnboardingStateEnum, q?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedProvisionedOrganizationList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsList(l, o, onboarding_state, q, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -7393,6 +8582,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bContractsRetrieve(requestParameters: B2bApiB2bContractsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractPage> {
             return localVarFp.b2bContractsRetrieve(requestParameters.contract_slug, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * View for recording data consent for a user on a contract.
+         * @param {B2bApiB2bDataConsentCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bDataConsentCreate(requestParameters: B2bApiB2bDataConsentCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.b2bDataConsentCreate(requestParameters.contract_id, requestParameters.DataConsentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Create an enrollment for the given course run.
@@ -7538,6 +8736,105 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bOrganizationsRetrieve(requestParameters.organization_slug, options).then((request) => request(axios, basePath));
         },
         /**
+         * Assign free enrollment codes to people and email each their code.  The same assignment as the manager dashboard\'s bulk assign.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsCodesAssignCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<BulkAssignResult> {
+            return localVarFp.b2bProvisioningOrganizationsContractsCodesAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Take the contract\'s unused enrollment codes out of it.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsCodesExpireCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCodesExpireCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCodesExpireCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ExpiredEnrollmentCode>> {
+            return localVarFp.b2bProvisioningOrganizationsContractsCodesExpireCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List the contract\'s enrollment codes, with each one\'s latest assignment.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsCodesListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCodesList(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedManagerEnrollmentCodeList> {
+            return localVarFp.b2bProvisioningOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Add a program, course or course run to the contract.  Contract runs and their products exist when this returns. Their edX clones are queued, and so is the enrollment code check for a contract that uses codes. Repeating the call does not create another run.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsCoursewareCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCoursewareCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCoursewareCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CoursewareAddition> {
+            return localVarFp.b2bProvisioningOrganizationsContractsCoursewareCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.ContractCoursewareRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Remove a program, course or course run from the contract.  Runs are closed to new enrollments. A run with enrolled learners stays linked so they keep their course.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsCoursewareRemoveCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCoursewareRemoveCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCoursewareRemoveCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<RemovedContractRun>> {
+            return localVarFp.b2bProvisioningOrganizationsContractsCoursewareRemoveCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.RemoveContractCoursewareRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create a contract, with its default variant set.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedContract> {
+            return localVarFp.b2bProvisioningOrganizationsContractsCreate(requestParameters.parent_lookup_organization__org_key, requestParameters.CreateContractRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List the organization\'s contracts.  An unknown org_key is a 404, not an empty list.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsList(requestParameters: B2bApiB2bProvisioningOrganizationsContractsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProvisionedContractList> {
+            return localVarFp.b2bProvisioningOrganizationsContractsList(requestParameters.parent_lookup_organization__org_key, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedContract> {
+            return localVarFp.b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.PatchedUpdateContractRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return a contract.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsContractsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedContract> {
+            return localVarFp.b2bProvisioningOrganizationsContractsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Re-queue failed edX clones and the enrollment code check.  Returns setup status as it stands after queueing.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsRetrySetupCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsRetrySetupCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsRetrySetupCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractSetupStatus> {
+            return localVarFp.b2bProvisioningOrganizationsContractsRetrySetupCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Report the edX clones and enrollment codes still outstanding.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsSetupStatusRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractSetupStatus> {
+            return localVarFp.b2bProvisioningOrganizationsContractsSetupStatusRetrieve(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
          * @param {B2bApiB2bProvisioningOrganizationsCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -7545,6 +8842,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bProvisioningOrganizationsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedOrganization> {
             return localVarFp.b2bProvisioningOrganizationsCreate(requestParameters.CreateOrganizationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return the organization\'s provisioning changes, newest first.  The review trail for partner SSO config now that changes are API calls rather than reviewed Pulumi PRs.
+         * @param {B2bApiB2bProvisioningOrganizationsEventsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsEventsList(requestParameters: B2bApiB2bProvisioningOrganizationsEventsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedOrganizationProvisioningAuditList> {
+            return localVarFp.b2bProvisioningOrganizationsEventsList(requestParameters.org_key, requestParameters.l, requestParameters.o, options).then((request) => request(axios, basePath));
         },
         /**
          * Provision an identity provider and link it to the organization.  The IdP lands in `draft`, which is disabled in Keycloak. Nobody can reach it until it is transitioned to `testing`.
@@ -7599,6 +8905,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
             return localVarFp.b2bProvisioningOrganizationsIdentityProvidersTransitionCreate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, requestParameters.IdentityProviderTransitionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List organizations, without asking Keycloak about each one.  domains and redirect_url live only in Keycloak, so they are null here; retrieve an organization to see them. One admin call per row would make the list as slow as the realm is large.
+         * @param {B2bApiB2bProvisioningOrganizationsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsList(requestParameters: B2bApiB2bProvisioningOrganizationsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProvisionedOrganizationList> {
+            return localVarFp.b2bProvisioningOrganizationsList(requestParameters.l, requestParameters.o, requestParameters.onboarding_state, requestParameters.q, options).then((request) => request(axios, basePath));
         },
         /**
          * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
@@ -7672,6 +8987,15 @@ export interface B2bApiB2bContractsAllVariantRunsListRequest {
  */
 export interface B2bApiB2bContractsRetrieveRequest {
     readonly contract_slug: string
+}
+
+/**
+ * Request parameters for b2bDataConsentCreate operation in B2bApi.
+ */
+export interface B2bApiB2bDataConsentCreateRequest {
+    readonly contract_id: number
+
+    readonly DataConsentRequest: DataConsentRequest
 }
 
 /**
@@ -7969,10 +9293,212 @@ export interface B2bApiB2bOrganizationsRetrieveRequest {
 }
 
 /**
+ * Request parameters for b2bProvisioningOrganizationsContractsCodesAssignCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsCodesAssignCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly AssignRevokeCodeRequestRequest: Array<AssignRevokeCodeRequestRequest>
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsCodesExpireCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsCodesExpireCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsCodesList operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsCodesListRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    /**
+     * A page number within the paginated result set.
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     */
+    readonly page_size?: number
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsCoursewareCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsCoursewareCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly ContractCoursewareRequest: ContractCoursewareRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsCoursewareRemoveCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsCoursewareRemoveCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly RemoveContractCoursewareRequest: RemoveContractCoursewareRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsCreateRequest {
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly CreateContractRequest: CreateContractRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsList operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsListRequest {
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    /**
+     * A page number within the paginated result set.
+     */
+    readonly page?: number
+
+    /**
+     * Number of results to return per page.
+     */
+    readonly page_size?: number
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsPartialUpdate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly PatchedUpdateContractRequest?: PatchedUpdateContractRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsRetrieve operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsRetrieveRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsRetrySetupCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsRetrySetupCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsSetupStatusRetrieve operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
  * Request parameters for b2bProvisioningOrganizationsCreate operation in B2bApi.
  */
 export interface B2bApiB2bProvisioningOrganizationsCreateRequest {
     readonly CreateOrganizationRequest: CreateOrganizationRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsEventsList operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsEventsListRequest {
+    readonly org_key: string
+
+    /**
+     * Number of results to return per page.
+     */
+    readonly l?: number
+
+    /**
+     * The initial index from which to return the results.
+     */
+    readonly o?: number
 }
 
 /**
@@ -8045,6 +9571,31 @@ export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersTransitionCr
     readonly parent_lookup_organization__org_key: string
 
     readonly IdentityProviderTransitionRequest: IdentityProviderTransitionRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsList operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsListRequest {
+    /**
+     * Number of results to return per page.
+     */
+    readonly l?: number
+
+    /**
+     * The initial index from which to return the results.
+     */
+    readonly o?: number
+
+    /**
+     * * &#x60;requested&#x60; - Requested * &#x60;org_created&#x60; - Organization created * &#x60;idp_configured&#x60; - Identity provider configured * &#x60;idp_validated&#x60; - Identity provider validated * &#x60;contract_ready&#x60; - Contract ready * &#x60;live&#x60; - Live * &#x60;blocked&#x60; - Blocked
+     */
+    readonly onboarding_state?: B2bProvisioningOrganizationsListOnboardingStateEnum
+
+    /**
+     * Search by name or org key, case-insensitively.
+     */
+    readonly q?: string
 }
 
 /**
@@ -8135,6 +9686,16 @@ export class B2bApi extends BaseAPI {
      */
     public b2bContractsRetrieve(requestParameters: B2bApiB2bContractsRetrieveRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bContractsRetrieve(requestParameters.contract_slug, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * View for recording data consent for a user on a contract.
+     * @param {B2bApiB2bDataConsentCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bDataConsentCreate(requestParameters: B2bApiB2bDataConsentCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bDataConsentCreate(requestParameters.contract_id, requestParameters.DataConsentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8297,6 +9858,116 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
+     * Assign free enrollment codes to people and email each their code.  The same assignment as the manager dashboard\'s bulk assign.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsCodesAssignCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsCodesAssignCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCodesAssignCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsCodesAssignCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.AssignRevokeCodeRequestRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Take the contract\'s unused enrollment codes out of it.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsCodesExpireCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsCodesExpireCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCodesExpireCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsCodesExpireCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List the contract\'s enrollment codes, with each one\'s latest assignment.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsCodesListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsCodesList(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCodesListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsCodesList(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Add a program, course or course run to the contract.  Contract runs and their products exist when this returns. Their edX clones are queued, and so is the enrollment code check for a contract that uses codes. Repeating the call does not create another run.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsCoursewareCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsCoursewareCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCoursewareCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsCoursewareCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.ContractCoursewareRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Remove a program, course or course run from the contract.  Runs are closed to new enrollments. A run with enrolled learners stays linked so they keep their course.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsCoursewareRemoveCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsCoursewareRemoveCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCoursewareRemoveCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsCoursewareRemoveCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.RemoveContractCoursewareRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a contract, with its default variant set.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsCreate(requestParameters.parent_lookup_organization__org_key, requestParameters.CreateContractRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List the organization\'s contracts.  An unknown org_key is a 404, not an empty list.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsList(requestParameters: B2bApiB2bProvisioningOrganizationsContractsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsList(requestParameters.parent_lookup_organization__org_key, requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.PatchedUpdateContractRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return a contract.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsContractsRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsRetrieve(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Re-queue failed edX clones and the enrollment code check.  Returns setup status as it stands after queueing.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsRetrySetupCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsRetrySetupCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsRetrySetupCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsRetrySetupCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Report the edX clones and enrollment codes still outstanding.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsSetupStatusRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsSetupStatusRetrieve(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
      * @param {B2bApiB2bProvisioningOrganizationsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -8304,6 +9975,16 @@ export class B2bApi extends BaseAPI {
      */
     public b2bProvisioningOrganizationsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsCreateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bProvisioningOrganizationsCreate(requestParameters.CreateOrganizationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return the organization\'s provisioning changes, newest first.  The review trail for partner SSO config now that changes are API calls rather than reviewed Pulumi PRs.
+     * @param {B2bApiB2bProvisioningOrganizationsEventsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsEventsList(requestParameters: B2bApiB2bProvisioningOrganizationsEventsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsEventsList(requestParameters.org_key, requestParameters.l, requestParameters.o, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8367,6 +10048,16 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
+     * List organizations, without asking Keycloak about each one.  domains and redirect_url live only in Keycloak, so they are null here; retrieve an organization to see them. One admin call per row would make the list as slow as the realm is large.
+     * @param {B2bApiB2bProvisioningOrganizationsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsList(requestParameters: B2bApiB2bProvisioningOrganizationsListRequest = {}, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsList(requestParameters.l, requestParameters.o, requestParameters.onboarding_state, requestParameters.q, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
      * @param {B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -8423,6 +10114,16 @@ export const B2bManagerOrganizationsContractsCodesListStatusEnum = {
     Redeemed: 'redeemed',
 } as const;
 export type B2bManagerOrganizationsContractsCodesListStatusEnum = typeof B2bManagerOrganizationsContractsCodesListStatusEnum[keyof typeof B2bManagerOrganizationsContractsCodesListStatusEnum];
+export const B2bProvisioningOrganizationsListOnboardingStateEnum = {
+    Blocked: 'blocked',
+    ContractReady: 'contract_ready',
+    IdpConfigured: 'idp_configured',
+    IdpValidated: 'idp_validated',
+    Live: 'live',
+    OrgCreated: 'org_created',
+    Requested: 'requested',
+} as const;
+export type B2bProvisioningOrganizationsListOnboardingStateEnum = typeof B2bProvisioningOrganizationsListOnboardingStateEnum[keyof typeof B2bProvisioningOrganizationsListOnboardingStateEnum];
 
 
 /**
