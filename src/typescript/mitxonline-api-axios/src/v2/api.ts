@@ -4145,7 +4145,7 @@ export interface User {
     'updated_on': string;
     'grants': Array<string>;
     'is_active'?: boolean;
-    'b2b_organizations': Array<OrganizationPage>;
+    'b2b_organizations': Array<UserOrganizationPage>;
     /**
      * The SSO ID (usually a Keycloak UUID) for the user.
      */
@@ -4154,6 +4154,51 @@ export interface User {
      * Get the profile fields missing for an export compliance check
      */
     'compliance_missing_fields': Array<string>;
+}
+/**
+ * A contract the requesting user belongs to, with the user\'s data sharing consent for it.
+ */
+export interface UserContractPage {
+    'id': number;
+    /**
+     * The name of the contract.
+     */
+    'name': string;
+    /**
+     * Any useful extra information about the contract.
+     */
+    'description': string;
+    'membership_type': string;
+    /**
+     * The organization that owns this contract.
+     */
+    'organization': number;
+    /**
+     * The start date of the contract.
+     */
+    'contract_start': string | null;
+    /**
+     * The end date of the contract.
+     */
+    'contract_end': string | null;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     */
+    'slug': string;
+    /**
+     * A welcome message for learners.
+     */
+    'welcome_message': string;
+    /**
+     * Additional welcome message content for learners.
+     */
+    'welcome_message_extra': string;
+    'programs': Array<number>;
+    'variant_options': Array<SupportedVariant>;
+    /**
+     * Whether the user consented to share their learner data with the organization: null if never asked, true if consented, false if declined or withdrawn.
+     */
+    'consented_to_data_sharing': boolean | null;
 }
 /**
  * Serializes UserDiscount but only allows depth = 1
@@ -4169,6 +4214,33 @@ export interface UserDiscountMeta {
 export interface UserDiscountMetaRequest {
     'discount': V0DiscountRequest;
     'user': UserRequest;
+}
+/**
+ * An organization the requesting user belongs to, with the user\'s active contracts in it.
+ */
+export interface UserOrganizationPage {
+    'id': number;
+    /**
+     * The name of the organization
+     */
+    'name': string;
+    /**
+     * Any useful extra information about the organization
+     */
+    'description': string;
+    /**
+     * The organization\'s logo. Will be displayed in the app in various places.
+     */
+    'logo': string;
+    /**
+     * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
+     */
+    'slug': string;
+    /**
+     * The UUID for the organization in the SSO provider.
+     */
+    'sso_organization_id': string | null;
+    'contracts': Array<UserContractPage>;
 }
 /**
  * The discount checkout would apply to a product for this user.
