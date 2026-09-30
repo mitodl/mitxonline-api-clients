@@ -3633,7 +3633,7 @@ export interface ProvisionedOrganization {
      */
     'org_key': string;
     /**
-     * The prefix to append to the org key (defaults to UAI_).
+     * Prepended to the org key in courseware IDs, e.g. UAI_. Blank means no prefix.
      */
     'org_key_prefix': string;
     /**
