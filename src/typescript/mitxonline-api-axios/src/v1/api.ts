@@ -223,7 +223,7 @@ export interface BaseCourseRun {
      */
     'language_label': string;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: BaseCourseRunVariantIndustryEnum;
     /**
@@ -284,6 +284,7 @@ export const BaseCourseRunVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -1130,7 +1131,7 @@ export interface CourseRunV2 {
      */
     'language_label': string;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: CourseRunV2VariantIndustryEnum;
     /**
@@ -1194,6 +1195,7 @@ export const CourseRunV2VariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -1293,7 +1295,7 @@ export interface CourseRunWithCourseV3 {
      */
     'language_label': string;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: CourseRunWithCourseV3VariantIndustryEnum;
     /**
@@ -1358,6 +1360,7 @@ export const CourseRunWithCourseV3VariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -1428,7 +1431,7 @@ export interface CourseRunWithCourseV3Request {
      */
     'is_primary_language'?: boolean;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: CourseRunWithCourseV3RequestVariantIndustryEnum;
     /**
@@ -1488,6 +1491,7 @@ export const CourseRunWithCourseV3RequestVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -4054,7 +4058,7 @@ export interface SupportedVariant {
      */
     'variant_length': SupportedVariantVariantLengthEnum;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry': SupportedVariantVariantIndustryEnum;
     'active': boolean;
@@ -4079,6 +4083,7 @@ export const SupportedVariantVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -4593,7 +4598,7 @@ export interface V1BaseCourseRun {
      */
     'language_label': string;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: V1BaseCourseRunVariantIndustryEnum;
     /**
@@ -4656,6 +4661,7 @@ export const V1BaseCourseRunVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -4755,7 +4761,7 @@ export interface V1CourseRunWithCourse {
      */
     'language_label': string;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: V1CourseRunWithCourseVariantIndustryEnum;
     /**
@@ -4822,6 +4828,7 @@ export const V1CourseRunWithCourseVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -4892,7 +4899,7 @@ export interface V1CourseRunWithCourseRequest {
      */
     'is_primary_language'?: boolean;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: V1CourseRunWithCourseRequestVariantIndustryEnum;
     /**
@@ -4952,6 +4959,7 @@ export const V1CourseRunWithCourseRequestVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -5224,7 +5232,7 @@ export interface V2CourseRunWithCourse {
      */
     'language_label': string;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: V2CourseRunWithCourseVariantIndustryEnum;
     /**
@@ -5289,6 +5297,7 @@ export const V2CourseRunWithCourseVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -5359,7 +5368,7 @@ export interface V2CourseRunWithCourseRequest {
      */
     'is_primary_language'?: boolean;
     /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry'?: V2CourseRunWithCourseRequestVariantIndustryEnum;
     /**
@@ -5420,6 +5429,7 @@ export const V2CourseRunWithCourseRequestVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
     Empty: '',
 } as const;
 
@@ -5762,7 +5772,7 @@ export interface V3UserProgramEnrollment {
     'enrollment_mode'?: string;
 }
 /**
- * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare
+ * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
  */
 
 export const VariantIndustryEnum = {
@@ -5778,6 +5788,10 @@ export const VariantIndustryEnum = {
     * Healthcare
     */
     Hc: 'HC',
+    /**
+    * Manufacturing
+    */
+    M: 'M',
 } as const;
 
 export type VariantIndustryEnum = typeof VariantIndustryEnum[keyof typeof VariantIndustryEnum];
@@ -12019,7 +12033,7 @@ export const CoursesApiAxiosParamCreator = function (configuration?: Configurati
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
          * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
-         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare * &#x60;M&#x60; - Manufacturing
          * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
@@ -12276,7 +12290,7 @@ export const CoursesApiFp = function(configuration?: Configuration) {
          * @param {number} [contract_id] Only show courses belonging to this B2B contract
          * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
          * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
-         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare * &#x60;M&#x60; - Manufacturing
          * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
          * @param {Array<number>} [id] Multiple values may be separated by commas.
          * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
@@ -12456,7 +12470,7 @@ export interface CoursesApiApiV2CoursesListRequest {
     readonly courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum
 
     /**
-     * Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare
+     * Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare * &#x60;M&#x60; - Manufacturing
      */
     readonly courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum
 
@@ -12662,6 +12676,7 @@ export const ApiV2CoursesListCourserunsVariantIndustryEnum = {
     E: 'E',
     F: 'F',
     Hc: 'HC',
+    M: 'M',
 } as const;
 export type ApiV2CoursesListCourserunsVariantIndustryEnum = typeof ApiV2CoursesListCourserunsVariantIndustryEnum[keyof typeof ApiV2CoursesListCourserunsVariantIndustryEnum];
 export const ApiV2CoursesListCourserunsVariantLengthEnum = {
