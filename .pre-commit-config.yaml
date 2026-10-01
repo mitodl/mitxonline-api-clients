@@ -1,10 +1,6 @@
 ---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-ci:
-  skip:
-    # Because these are local hooks it seems like they won't easily run in pre-commit CI
-    - eslint
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -65,7 +61,8 @@ repos:
       - id: eslint
         name: eslint
         description: "Lint JS/TS files and apply automatic fixes"
-        entry: npx eslint --fix
+        # The root has no package.json; resolve the locked package ESLint, never download one.
+        entry: npx --no-install --prefix src/typescript/mitxonline-api-axios eslint --config src/typescript/mitxonline-api-axios/eslint.config.mjs --fix
         language: node
         types_or: [javascript, jsx, ts, tsx]
         args: []

@@ -2,6 +2,21 @@
 
 This repo contains the API clients for [MITx Online](https://github.com/mitodl/mitxonline).
 
+## Development
+
+Code checks run with [prek](https://prek.j178.dev/), which reads `.pre-commit-config.yaml`. The `prek` check runs the same hooks on pull requests, and [autofix.ci](https://autofix.ci/) pushes a commit with any fixes they make.
+
+From the repository root:
+
+```sh
+(cd src/typescript/mitxonline-api-axios && corepack enable && yarn install --immutable)
+export PATH="$PWD/src/typescript/mitxonline-api-axios/node_modules/.bin:$PATH"
+prek install -f
+prek run --all-files
+```
+
+`prek install -f` replaces an existing pre-commit git hook.
+
 ## Usage
 
 To generate clients locally for testing, run `./scripts/local-generate.sh`. Optionally, provide `BRANCH_NAME` and `GENERATOR_VERSION` env vars.

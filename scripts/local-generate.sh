@@ -44,7 +44,7 @@ docker run --rm \
 
 rm -rf $OPEN_CLONE_DIR
 
-echo "✅ Done! 
+echo "✅ Done!
  - API client generated from branch: $BRANCH_NAME
  - used OpenAPI Generator version: $GENERATOR_VERSION
 "
