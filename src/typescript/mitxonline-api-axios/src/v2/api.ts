@@ -937,6 +937,10 @@ export interface CoursePageItem {
    * If true, allow the AI chatbots to ingest the course\'s content files.
    */
   ingest_content_files_for_ai: boolean | null
+  /**
+   * If true, Learn should show the course outline (modules) on the product page. Turn this off for courses whose module titles aren\'t written for a pre-purchase audience.
+   */
+  show_course_outline: boolean
   how_youll_learn: Array<HowYoullLearn>
 }
 /**
@@ -1156,6 +1160,10 @@ export interface CourseRunV2 {
   products: Array<BaseProduct>
   approved_flexible_price_exists: boolean
   b2b_contract?: number | null
+  /**
+   * Indicates if the course run is B2B only
+   */
+  b2b_only?: boolean
 }
 
 export const CourseRunV2LanguageEnum = {
@@ -5274,6 +5282,10 @@ export interface V2CourseRunWithCourse {
   products: Array<BaseProduct>
   approved_flexible_price_exists: boolean
   b2b_contract?: number | null
+  /**
+   * Indicates if the course run is B2B only
+   */
+  b2b_only?: boolean
   course: V2Course
 }
 
@@ -5410,6 +5422,10 @@ export interface V2CourseRunWithCourseRequest {
    */
   variant_length?: V2CourseRunWithCourseRequestVariantLengthEnum
   b2b_contract?: number | null
+  /**
+   * Indicates if the course run is B2B only
+   */
+  b2b_only?: boolean
 }
 
 export const V2CourseRunWithCourseRequestLanguageEnum = {
