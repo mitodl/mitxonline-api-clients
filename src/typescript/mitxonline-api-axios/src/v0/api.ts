@@ -920,6 +920,10 @@ export interface CoursePageItem {
      * If true, allow the AI chatbots to ingest the course\'s content files.
      */
     'ingest_content_files_for_ai': boolean | null;
+    /**
+     * If true, Learn should show the course outline (modules) on the product page. Turn this off for courses whose module titles aren\'t written for a pre-purchase audience.
+     */
+    'show_course_outline': boolean;
     'how_youll_learn': Array<HowYoullLearn>;
 }
 /**
@@ -16185,8 +16189,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
          * @param {number} [org_id] Filter by B2B organization ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16224,8 +16228,8 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
          * @param {number} [org_id] Filter by B2B organization ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16404,8 +16408,8 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
          * @param {number} [org_id] Filter by B2B organization ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16417,8 +16421,8 @@ export const EnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
          * @param {number} [org_id] Filter by B2B organization ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16536,7 +16540,7 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.userEnrollmentsDestroyV3(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
          * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16545,7 +16549,7 @@ export const EnrollmentsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(axios, basePath));
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
          * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16646,7 +16650,7 @@ export interface EnrollmentsApiUserEnrollmentsDestroyV3Request {
  */
 export interface EnrollmentsApiUserEnrollmentsListV2Request {
     /**
-     * Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+     * Exclude B2B enrollments (enrollments made through a B2B contract)
      */
     readonly exclude_b2b?: boolean
 
@@ -16661,7 +16665,7 @@ export interface EnrollmentsApiUserEnrollmentsListV2Request {
  */
 export interface EnrollmentsApiUserEnrollmentsListV3Request {
     /**
-     * Exclude B2B enrollments (enrollments linked to course runs with B2B contracts)
+     * Exclude B2B enrollments (enrollments made through a B2B contract)
      */
     readonly exclude_b2b?: boolean
 
@@ -16784,7 +16788,7 @@ export class EnrollmentsApi extends BaseAPI {
     }
 
     /**
-     * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+     * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
      * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -16794,7 +16798,7 @@ export class EnrollmentsApi extends BaseAPI {
     }
 
     /**
-     * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments linked to course runs with B2B contracts. Use ?org_id=<id> to filter enrollments by specific B2B organization.
+     * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
      * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
