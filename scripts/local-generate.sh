@@ -4,7 +4,8 @@
 # Usage: ./local-generate.sh
 # Optionally, provide the branch name and generator version via environment variables:
 #   BRANCH_NAME (default: 'release')
-#   GENERATOR_VERSION (default: 'v7.2.0')
+#   GENERATOR_VERSION (default: the version that generated the committed client,
+#     so local and branch clients match the last release)
 #
 set -eo pipefail
 shopt -u nullglob
@@ -19,7 +20,19 @@ fi
 OPEN_CLONE_DIR=$(mktemp -d)
 OPEN_REPO="https://github.com/mitodl/mitxonline.git"
 
-GENERATOR_VERSION="${GENERATOR_VERSION:-v7.2.0}"
+# Read the version from origin/main rather than the working tree: the
+# generator rewrites this file on every run, and older branches still record
+# whatever version they were generated with.
+REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
+RELEASED_VERSION_PATH="src/typescript/mitxonline-api-axios/src/v2/.openapi-generator/VERSION"
+if [ -z "${GENERATOR_VERSION:-}" ]; then
+	if ! git -C "$REPO_ROOT" fetch -q origin main ||
+		! RELEASED_VERSION="$(git -C "$REPO_ROOT" show "origin/main:$RELEASED_VERSION_PATH")"; then
+		echo "Error: could not read $RELEASED_VERSION_PATH from origin/main; set GENERATOR_VERSION explicitly"
+		exit 1
+	fi
+	GENERATOR_VERSION="v$(echo "$RELEASED_VERSION" | tr -d '[:space:]')"
+fi
 GENERATOR_IMAGE=openapitools/openapi-generator-cli:${GENERATOR_VERSION}
 
 pushd $OPEN_CLONE_DIR
