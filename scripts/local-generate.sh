@@ -20,14 +20,18 @@ fi
 OPEN_CLONE_DIR=$(mktemp -d)
 OPEN_REPO="https://github.com/mitodl/mitxonline.git"
 
+# Read the version from origin/main rather than the working tree: the
+# generator rewrites this file on every run, and older branches still record
+# whatever version they were generated with.
 REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
-RELEASED_VERSION_FILE="$REPO_ROOT/src/typescript/mitxonline-api-axios/src/v2/.openapi-generator/VERSION"
+RELEASED_VERSION_PATH="src/typescript/mitxonline-api-axios/src/v2/.openapi-generator/VERSION"
 if [ -z "${GENERATOR_VERSION:-}" ]; then
-	if [ ! -f "$RELEASED_VERSION_FILE" ]; then
-		echo "Error: $RELEASED_VERSION_FILE not found; set GENERATOR_VERSION explicitly"
+	if ! git -C "$REPO_ROOT" fetch -q origin main ||
+		! RELEASED_VERSION="$(git -C "$REPO_ROOT" show "origin/main:$RELEASED_VERSION_PATH")"; then
+		echo "Error: could not read $RELEASED_VERSION_PATH from origin/main; set GENERATOR_VERSION explicitly"
 		exit 1
 	fi
-	GENERATOR_VERSION="v$(tr -d '[:space:]' <"$RELEASED_VERSION_FILE")"
+	GENERATOR_VERSION="v$(echo "$RELEASED_VERSION" | tr -d '[:space:]')"
 fi
 GENERATOR_IMAGE=openapitools/openapi-generator-cli:${GENERATOR_VERSION}
 
