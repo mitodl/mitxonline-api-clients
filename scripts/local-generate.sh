@@ -4,7 +4,8 @@
 # Usage: ./local-generate.sh
 # Optionally, provide the branch name and generator version via environment variables:
 #   BRANCH_NAME (default: 'release')
-#   GENERATOR_VERSION (default: 'v7.2.0')
+#   GENERATOR_VERSION (default: the version that generated the committed client,
+#     so local and branch clients match the last release)
 #
 set -eo pipefail
 shopt -u nullglob
@@ -19,7 +20,15 @@ fi
 OPEN_CLONE_DIR=$(mktemp -d)
 OPEN_REPO="https://github.com/mitodl/mitxonline.git"
 
-GENERATOR_VERSION="${GENERATOR_VERSION:-v7.2.0}"
+REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
+RELEASED_VERSION_FILE="$REPO_ROOT/src/typescript/mitxonline-api-axios/src/v2/.openapi-generator/VERSION"
+if [ -z "${GENERATOR_VERSION:-}" ]; then
+	if [ ! -f "$RELEASED_VERSION_FILE" ]; then
+		echo "Error: $RELEASED_VERSION_FILE not found; set GENERATOR_VERSION explicitly"
+		exit 1
+	fi
+	GENERATOR_VERSION="v$(tr -d '[:space:]' <"$RELEASED_VERSION_FILE")"
+fi
 GENERATOR_IMAGE=openapitools/openapi-generator-cli:${GENERATOR_VERSION}
 
 pushd $OPEN_CLONE_DIR

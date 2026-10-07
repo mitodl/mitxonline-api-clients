@@ -19,7 +19,7 @@ prek run --all-files
 
 ## Usage
 
-To generate clients locally for testing, run `./scripts/local-generate.sh`. Optionally, provide `BRANCH_NAME` and `GENERATOR_VERSION` env vars.
+To generate clients locally for testing, run `./scripts/local-generate.sh`. Optionally, provide `BRANCH_NAME` and `GENERATOR_VERSION` env vars. `GENERATOR_VERSION` defaults to the version recorded in the committed client (`src/typescript/mitxonline-api-axios/src/v2/.openapi-generator/VERSION`), which is the version the release pipeline last used.
 
 ### Branch Clients (Local Development)
 
