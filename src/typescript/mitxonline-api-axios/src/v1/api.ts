@@ -24,7 +24,7 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * * `organization_created` - Organization created * `organization_updated` - Organization updated * `onboarding_changed` - Onboarding state changed * `identity_provider_created` - Identity provider created * `identity_provider_transitioned` - Identity provider state changed * `identity_provider_metadata_refreshed` - Identity provider metadata refreshed * `identity_provider_deleted` - Identity provider deleted
+ * * `organization_created` - Organization created * `organization_updated` - Organization updated * `onboarding_changed` - Onboarding state changed * `identity_provider_created` - Identity provider created * `identity_provider_updated` - Identity provider updated * `identity_provider_transitioned` - Identity provider state changed * `identity_provider_metadata_refreshed` - Identity provider metadata refreshed * `identity_provider_deleted` - Identity provider deleted * `contract_variant_added` - Contract variant set added * `contract_variant_updated` - Contract variant set changed
  */
 
 export const ActionEnum = {
@@ -45,6 +45,10 @@ export const ActionEnum = {
     */
     IdentityProviderCreated: 'identity_provider_created',
     /**
+    * Identity provider updated
+    */
+    IdentityProviderUpdated: 'identity_provider_updated',
+    /**
     * Identity provider state changed
     */
     IdentityProviderTransitioned: 'identity_provider_transitioned',
@@ -56,6 +60,14 @@ export const ActionEnum = {
     * Identity provider deleted
     */
     IdentityProviderDeleted: 'identity_provider_deleted',
+    /**
+    * Contract variant set added
+    */
+    ContractVariantAdded: 'contract_variant_added',
+    /**
+    * Contract variant set changed
+    */
+    ContractVariantUpdated: 'contract_variant_updated',
 } as const;
 
 export type ActionEnum = typeof ActionEnum[keyof typeof ActionEnum];
@@ -227,9 +239,17 @@ export interface BaseCourseRun {
      */
     'variant_industry'?: BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
 }
 
@@ -733,6 +753,37 @@ export type ContractSetupStatusEnum = typeof ContractSetupStatusEnum[keyof typeo
 
 
 /**
+ * One of the contract\'s courses that a variant set matches.
+ */
+export interface ContractVariantCourse {
+    'course_id': number;
+    'readable_id': string;
+    'title': string;
+    /**
+     * Whether the course has a source run for this variant to clone.
+     */
+    'has_source_run': boolean;
+    /**
+     * The contract\'s run for this variant, if it has one.
+     */
+    'contract_run'?: string | null;
+}
+/**
+ * One of a contract\'s variant sets, with the contract\'s courses it matches.  A listed course with a source run and no contract run gets a run for this set when its courseware is next added to the contract, if the set is active.
+ */
+export interface ContractVariantSet {
+    'id': number;
+    'language': string;
+    'variant_length': string;
+    'variant_industry': string;
+    'variant_length_label': string;
+    'variant_industry_label': string;
+    'default_variant': boolean;
+    'active': boolean;
+    'b2b_only': boolean;
+    'courses': Array<ContractVariantCourse>;
+}
+/**
  * Serializer for pycountry countries, with states for US/CA
  */
 export interface Country {
@@ -1139,9 +1190,17 @@ export interface CourseRunV2 {
      */
     'variant_industry'?: CourseRunV2VariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: CourseRunV2VariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
@@ -1307,9 +1366,17 @@ export interface CourseRunWithCourseV3 {
      */
     'variant_industry'?: CourseRunWithCourseV3VariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: CourseRunWithCourseV3VariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'upgrade_product_id': number | null;
     'upgrade_product_price': string | null;
@@ -1694,6 +1761,48 @@ export interface CreateContractRequest {
     'enrollment_fixed_price'?: string | null;
 }
 
+
+/**
+ * Request body for adding a variant set to a contract.  The set is never the default: every contract already has one.
+ */
+export interface CreateContractVariantSetRequest {
+    /**
+     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
+     */
+    'language': LanguageEnum;
+    /**
+     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
+     */
+    'variant_length'?: CreateContractVariantSetRequestVariantLengthEnum;
+    /**
+     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
+     */
+    'variant_industry'?: CreateContractVariantSetRequestVariantIndustryEnum;
+    'b2b_only'?: boolean;
+}
+
+export const CreateContractVariantSetRequestVariantLengthEnum = {
+    /**
+    * * &#x60;&#x60; - Full
+* &#x60;S&#x60; - Short
+    */
+    S: 'S',
+    /**
+    * 
+    */
+    Empty: '',
+} as const;
+
+export type CreateContractVariantSetRequestVariantLengthEnum = typeof CreateContractVariantSetRequestVariantLengthEnum[keyof typeof CreateContractVariantSetRequestVariantLengthEnum];
+export const CreateContractVariantSetRequestVariantIndustryEnum = {
+    E: 'E',
+    F: 'F',
+    Hc: 'HC',
+    M: 'M',
+    Empty: '',
+} as const;
+
+export type CreateContractVariantSetRequestVariantIndustryEnum = typeof CreateContractVariantSetRequestVariantIndustryEnum[keyof typeof CreateContractVariantSetRequestVariantIndustryEnum];
 
 /**
  * Request body for provisioning an identity provider.
@@ -3237,11 +3346,31 @@ export interface PatchedUpdateContractRequest {
 }
 
 
+/**
+ * Request body for changing a contract\'s variant set.
+ */
+export interface PatchedUpdateContractVariantSetRequest {
+    'active'?: boolean;
+    'b2b_only'?: boolean;
+}
 export interface PatchedUpdateCourseRunEnrollmentRequest {
     /**
      * Whether to receive course emails
      */
     'receive_emails'?: boolean;
+}
+/**
+ * Request body for updating an identity provider.  The protocol comes from the instance, through the context, because which fields make sense depends on it: a client secret on a SAML IdP would be written into its Keycloak config and never read.  alias and protocol are rejected rather than ignored. Keycloak refuses an alias change outright, and changing the protocol is a different identity provider, not an edit to this one.
+ */
+export interface PatchedUpdateIdentityProviderRequest {
+    'display_name'?: string;
+    'metadata_url'?: string;
+    'metadata_xml'?: string;
+    'discovery_url'?: string;
+    'client_id'?: string;
+    'client_secret'?: string;
+    'attribute_map'?: { [key: string]: string; };
+    'attribute_name_map'?: { [key: string]: string; };
 }
 /**
  * Request body for updating an organization.  org_key is rejected rather than silently ignored. It is in every B2B courseware ID via create_contract_run_key, so a caller who thinks they changed it and did not is worse off than one who got an error.
@@ -4069,6 +4198,14 @@ export interface SupportedVariant {
      * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry': SupportedVariantVariantIndustryEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
+    /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
     'active': boolean;
     'b2b_only': boolean;
     'default_variant': boolean;
@@ -4610,9 +4747,17 @@ export interface V1BaseCourseRun {
      */
     'variant_industry'?: V1BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V1BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<ProductFlexibilePrice>;
     'approved_flexible_price_exists': boolean;
@@ -4773,9 +4918,17 @@ export interface V1CourseRunWithCourse {
      */
     'variant_industry'?: V1CourseRunWithCourseVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V1CourseRunWithCourseVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     /**
      * List of products associated with this course run
@@ -5244,9 +5397,17 @@ export interface V2CourseRunWithCourse {
      */
     'variant_industry'?: V2CourseRunWithCourseVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V2CourseRunWithCourseVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
@@ -7482,6 +7643,129 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {CreateContractVariantSetRequest} CreateContractVariantSetRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsCreate: async (id: number, parent_lookup_organization__org_key: string, CreateContractVariantSetRequest: CreateContractVariantSetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'CreateContractVariantSetRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsCreate', 'CreateContractVariantSetRequest', CreateContractVariantSetRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/variants/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(CreateContractVariantSetRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List the contract\'s variant sets, default first.  Each set lists the contract\'s courses that support it, whether each has a source run for it, and the contract\'s run for it if there is one.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsList: async (id: number, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsList', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsList', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/variants/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Turn a variant set on or off, or change its b2b_only flag.  Turning a set off stops new runs being created for it and drops its runs from the contract\'s course list. Its existing runs and their enrollments are left alone. The default set can\'t be turned off or made B2B-only.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {number} variant_id The variant set\&#39;s ID.
+         * @param {PatchedUpdateContractVariantSetRequest} [PatchedUpdateContractVariantSetRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsPartialUpdate: async (id: number, parent_lookup_organization__org_key: string, variant_id: number, PatchedUpdateContractVariantSetRequest?: PatchedUpdateContractVariantSetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsPartialUpdate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsPartialUpdate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'variant_id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsPartialUpdate', 'variant_id', variant_id)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/variants/{variant_id}/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)))
+                .replace('{variant_id}', encodeURIComponent(String(variant_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateContractVariantSetRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
          * @param {CreateOrganizationRequest} CreateOrganizationRequest 
          * @param {*} [options] Override http request option.
@@ -7597,7 +7881,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Unlink and delete an identity provider.
+         * Unlink and delete an identity provider.  Destructive beyond this API: Keycloak deletes every user\'s federated identity link to the provider along with it, so everyone who has signed in through it re-links on their next login. Prefer PATCH.
          * @param {string} alias 
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {*} [options] Override http request option.
@@ -7660,6 +7944,46 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update an identity provider in place.  Without this, rotating a partner\'s OIDC client secret or fixing a mapper means deleting the IdP and creating it again, and Keycloak\'s delete takes every user\'s federated identity link with it.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {PatchedUpdateIdentityProviderRequest} [PatchedUpdateIdentityProviderRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersPartialUpdate: async (alias: string, parent_lookup_organization__org_key: string, PatchedUpdateIdentityProviderRequest?: PatchedUpdateIdentityProviderRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'alias' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersPartialUpdate', 'alias', alias)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsIdentityProvidersPartialUpdate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/identity-providers/{alias}/`
+                .replace('{alias}', encodeURIComponent(String(alias)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateIdentityProviderRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -8460,6 +8784,48 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {CreateContractVariantSetRequest} CreateContractVariantSetRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsVariantsCreate(id: number, parent_lookup_organization__org_key: string, CreateContractVariantSetRequest: CreateContractVariantSetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContractVariantSet>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsVariantsCreate(id, parent_lookup_organization__org_key, CreateContractVariantSetRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsVariantsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * List the contract\'s variant sets, default first.  Each set lists the contract\'s courses that support it, whether each has a source run for it, and the contract\'s run for it if there is one.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsVariantsList(id: number, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ContractVariantSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsVariantsList(id, parent_lookup_organization__org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsVariantsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Turn a variant set on or off, or change its b2b_only flag.  Turning a set off stops new runs being created for it and drops its runs from the contract\'s course list. Its existing runs and their enrollments are left alone. The default set can\'t be turned off or made B2B-only.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {number} variant_id The variant set\&#39;s ID.
+         * @param {PatchedUpdateContractVariantSetRequest} [PatchedUpdateContractVariantSetRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsVariantsPartialUpdate(id: number, parent_lookup_organization__org_key: string, variant_id: number, PatchedUpdateContractVariantSetRequest?: PatchedUpdateContractVariantSetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContractVariantSet>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsVariantsPartialUpdate(id, parent_lookup_organization__org_key, variant_id, PatchedUpdateContractVariantSetRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsVariantsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
          * @param {CreateOrganizationRequest} CreateOrganizationRequest 
          * @param {*} [options] Override http request option.
@@ -8499,7 +8865,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Unlink and delete an identity provider.
+         * Unlink and delete an identity provider.  Destructive beyond this API: Keycloak deletes every user\'s federated identity link to the provider along with it, so everyone who has signed in through it re-links on their next login. Prefer PATCH.
          * @param {string} alias 
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {*} [options] Override http request option.
@@ -8521,6 +8887,20 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersList(parent_lookup_organization__org_key, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Update an identity provider in place.  Without this, rotating a partner\'s OIDC client secret or fixing a mapper means deleting the IdP and creating it again, and Keycloak\'s delete takes every user\'s federated identity link with it.
+         * @param {string} alias 
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {PatchedUpdateIdentityProviderRequest} [PatchedUpdateIdentityProviderRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsIdentityProvidersPartialUpdate(alias: string, parent_lookup_organization__org_key: string, PatchedUpdateIdentityProviderRequest?: PatchedUpdateIdentityProviderRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProvider>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersPartialUpdate(alias, parent_lookup_organization__org_key, PatchedUpdateIdentityProviderRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersPartialUpdate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -8937,6 +9317,33 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bProvisioningOrganizationsContractsSetupStatusRetrieve(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
         },
         /**
+         * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractVariantSet> {
+            return localVarFp.b2bProvisioningOrganizationsContractsVariantsCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.CreateContractVariantSetRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List the contract\'s variant sets, default first.  Each set lists the contract\'s courses that support it, whether each has a source run for it, and the contract\'s run for it if there is one.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsListRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsList(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<ContractVariantSet>> {
+            return localVarFp.b2bProvisioningOrganizationsContractsVariantsList(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Turn a variant set on or off, or change its b2b_only flag.  Turning a set off stops new runs being created for it and drops its runs from the contract\'s course list. Its existing runs and their enrollments are left alone. The default set can\'t be turned off or made B2B-only.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractVariantSet> {
+            return localVarFp.b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.variant_id, requestParameters.PatchedUpdateContractVariantSetRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
          * @param {B2bApiB2bProvisioningOrganizationsCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -8964,7 +9371,7 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bProvisioningOrganizationsIdentityProvidersCreate(requestParameters.parent_lookup_organization__org_key, requestParameters.CreateIdentityProviderRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * Unlink and delete an identity provider.
+         * Unlink and delete an identity provider.  Destructive beyond this API: Keycloak deletes every user\'s federated identity link to the provider along with it, so everyone who has signed in through it re-links on their next login. Prefer PATCH.
          * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8980,6 +9387,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bProvisioningOrganizationsIdentityProvidersList(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<OrganizationIdentityProvider>> {
             return localVarFp.b2bProvisioningOrganizationsIdentityProvidersList(requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update an identity provider in place.  Without this, rotating a partner\'s OIDC client secret or fixing a mapper means deleting the IdP and creating it again, and Keycloak\'s delete takes every user\'s federated identity link with it.
+         * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsIdentityProvidersPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
+            return localVarFp.b2bProvisioningOrganizationsIdentityProvidersPartialUpdate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, requestParameters.PatchedUpdateIdentityProviderRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Re-fetch the partner\'s metadata and store what came back.  On failure the stored artifact is left untouched, which is the whole reason it is stored.
@@ -9580,6 +9996,60 @@ export interface B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveR
 }
 
 /**
+ * Request parameters for b2bProvisioningOrganizationsContractsVariantsCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly CreateContractVariantSetRequest: CreateContractVariantSetRequest
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsVariantsList operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsVariantsListRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsContractsVariantsPartialUpdate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    /**
+     * The variant set\&#39;s ID.
+     */
+    readonly variant_id: number
+
+    readonly PatchedUpdateContractVariantSetRequest?: PatchedUpdateContractVariantSetRequest
+}
+
+/**
  * Request parameters for b2bProvisioningOrganizationsCreate operation in B2bApi.
  */
 export interface B2bApiB2bProvisioningOrganizationsCreateRequest {
@@ -9635,6 +10105,20 @@ export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest 
      * The organization\&#39;s org key.
      */
     readonly parent_lookup_organization__org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsIdentityProvidersPartialUpdate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsIdentityProvidersPartialUpdateRequest {
+    readonly alias: string
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly PatchedUpdateIdentityProviderRequest?: PatchedUpdateIdentityProviderRequest
 }
 
 /**
@@ -10070,6 +10554,36 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
+     * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsVariantsCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsVariantsCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.CreateContractVariantSetRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List the contract\'s variant sets, default first.  Each set lists the contract\'s courses that support it, whether each has a source run for it, and the contract\'s run for it if there is one.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsListRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsVariantsList(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsListRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsVariantsList(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Turn a variant set on or off, or change its b2b_only flag.  Turning a set off stops new runs being created for it and drops its runs from the contract\'s course list. Its existing runs and their enrollments are left alone. The default set can\'t be turned off or made B2B-only.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.variant_id, requestParameters.PatchedUpdateContractVariantSetRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
      * @param {B2bApiB2bProvisioningOrganizationsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -10100,7 +10614,7 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
-     * Unlink and delete an identity provider.
+     * Unlink and delete an identity provider.  Destructive beyond this API: Keycloak deletes every user\'s federated identity link to the provider along with it, so everyone who has signed in through it re-links on their next login. Prefer PATCH.
      * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -10117,6 +10631,16 @@ export class B2bApi extends BaseAPI {
      */
     public b2bProvisioningOrganizationsIdentityProvidersList(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersListRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersList(requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update an identity provider in place.  Without this, rotating a partner\'s OIDC client secret or fixing a mapper means deleting the IdP and creating it again, and Keycloak\'s delete takes every user\'s federated identity link with it.
+     * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsIdentityProvidersPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsIdentityProvidersPartialUpdate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, requestParameters.PatchedUpdateIdentityProviderRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
