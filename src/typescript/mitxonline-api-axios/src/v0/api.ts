@@ -81,24 +81,6 @@ export interface AssignRevokeCodeRequestRequest {
     'name'?: string;
 }
 /**
- * * `anytime` - anytime * `dated` - dated
- */
-
-export const AvailabilityEnum = {
-    /**
-    * anytime
-    */
-    Anytime: 'anytime',
-    /**
-    * dated
-    */
-    Dated: 'dated',
-} as const;
-
-export type AvailabilityEnum = typeof AvailabilityEnum[keyof typeof AvailabilityEnum];
-
-
-/**
  * Serializer for the B2B enrollment request body.  Accepts an optional program_id so the user can be enrolled in the appropriate program alongside the course run enrollment. Accepts an optional contract_slug so it can identify which contract the user is working in, so the enrollments can be linked back to the right contract.
  */
 export interface B2BEnrollRequestRequest {
@@ -239,9 +221,17 @@ export interface BaseCourseRun {
      */
     'variant_industry'?: BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
 }
 
@@ -314,41 +304,6 @@ export const BaseCourseRunVariantLengthEnum = {
 } as const;
 
 export type BaseCourseRunVariantLengthEnum = typeof BaseCourseRunVariantLengthEnum[keyof typeof BaseCourseRunVariantLengthEnum];
-
-/**
- * Simple serializer for Product without related purchasable objects
- */
-export interface BaseProduct {
-    'id': number;
-    'price': string;
-    'description': string;
-    /**
-     * Controls visibility of the product in the app.
-     */
-    'is_active'?: boolean;
-}
-/**
- * Basic program model serializer
- */
-export interface BaseProgram {
-    'title': string;
-    'readable_id': string;
-    'id': number;
-    'type': string;
-    /**
-     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
-     */
-    'display_mode': BaseProgramDisplayModeEnum | null;
-}
-
-export const BaseProgramDisplayModeEnum = {
-    /**
-    * * &#x60;course&#x60; - course
-    */
-    Course: 'course',
-} as const;
-
-export type BaseProgramDisplayModeEnum = typeof BaseProgramDisplayModeEnum[keyof typeof BaseProgramDisplayModeEnum];
 
 /**
  * Basket model serializer
@@ -500,37 +455,6 @@ export const BulkGenerationRedemptionTypeEnum = {
 export type BulkGenerationRedemptionTypeEnum = typeof BulkGenerationRedemptionTypeEnum[keyof typeof BulkGenerationRedemptionTypeEnum];
 
 
-/**
- * Serializer for certificate pages, including overrides and signatory items.
- */
-export interface CertificatePage {
-    'id': number;
-    'meta': PageMeta;
-    'title': string;
-    'product_name': string;
-    'CEUs': string;
-    'overrides': Array<Override>;
-    'signatory_items': Array<SignatoryItem>;
-}
-/**
- * Serializer for a list of certificate pages.
- */
-export interface CertificatePageList {
-    'meta': PageListMeta;
-    'items': Array<CertificatePage>;
-}
-/**
- * Extends the CertificatePageSerializer to work with a model object.
- */
-export interface CertificatePageModel {
-    'id': number;
-    'meta': PageMetaModel;
-    'title': string;
-    'product_name': string;
-    'CEUs': string;
-    'overrides': Array<Override>;
-    'signatory_items': Array<SignatoryItem>;
-}
 /**
  * Serializer for starting a user email change
  */
@@ -768,6 +692,8 @@ export interface ContractVariantSet {
     'language': string;
     'variant_length': string;
     'variant_industry': string;
+    'variant_length_label': string;
+    'variant_industry_label': string;
     'default_variant': boolean;
     'active': boolean;
     'b2b_only': boolean;
@@ -789,207 +715,6 @@ export interface Country {
      * Get a list of states/provinces if USA or Canada
      */
     'states': Array<{ [key: string]: any; }>;
-}
-/**
- * Course model serializer
- */
-export interface Course {
-    'id': number;
-    'title': string;
-    'readable_id': string;
-    /**
-     * Get next run id
-     */
-    'next_run_id': number | null;
-    'departments': Array<Department>;
-    'page': CoursePage;
-    'programs': Program | null;
-}
-export interface CourseOutlineBadRequestResponse {
-    'detail': string;
-}
-/**
- * A single module within a course outline.
- */
-export interface CourseOutlineModule {
-    'id': string;
-    'title': string;
-    'effort_time': number;
-    'effort_activities': number;
-    'counts': CourseOutlineModuleCounts;
-}
-/**
- * Activity counts within a course outline module.
- */
-export interface CourseOutlineModuleCounts {
-    'videos': number;
-    'readings': number;
-    'problems': number;
-    'assignments': number;
-    'app_items': number;
-}
-/**
- * Course outline data fetched from Open edX.
- */
-export interface CourseOutlineResponse {
-    'course_id': string;
-    'generated_at': string;
-    'modules': Array<CourseOutlineModule>;
-}
-export interface CourseOutlineServerErrorResponse {
-    'detail': string;
-}
-export interface CourseOutlineUpstreamErrorResponse {
-    'detail': string;
-}
-/**
- * Course page model serializer
- */
-export interface CoursePage {
-    'feature_image_src': string | null;
-    'page_url': string;
-    /**
-     * Get cleaned description text.
-     */
-    'description': string;
-    'live': boolean;
-    /**
-     * Get cleaned length text.
-     */
-    'length': string;
-    /**
-     * Get cleaned effort text.
-     */
-    'effort': string | null;
-    'financial_assistance_form_url': string;
-    /**
-     * Get the current price of the course product.
-     */
-    'current_price': number | null;
-    /**
-     * Get instructor information
-     */
-    'instructors': Array<any>;
-}
-/**
- * Serializer for individual course page items, including all relevant fields.
- */
-export interface CoursePageItem {
-    'id': number;
-    'meta': PageMeta;
-    /**
-     * The page title as you\'d like it to be seen by the public
-     */
-    'title': string;
-    /**
-     * The description shown on the home page and product page.
-     */
-    'description': string;
-    /**
-     * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
-     */
-    'length': string;
-    /**
-     * A short description indicating how much effort is required (e.g. 1-3 hours per week).
-     */
-    'effort': string | null;
-    /**
-     * The minimum number of hours per week required to complete the course.
-     */
-    'min_weekly_hours': string;
-    /**
-     * The maximum number of hours per week required to complete the course.
-     */
-    'max_weekly_hours': string;
-    /**
-     * The minimum number of weeks required to complete the course/program.
-     */
-    'min_weeks': number | null;
-    /**
-     * The maximum number of weeks required to complete the course/program.
-     */
-    'max_weeks': number | null;
-    'price': Array<PriceItem>;
-    /**
-     * Specify the minimum product price. This is used by MIT Learn.
-     */
-    'min_price': string;
-    /**
-     * Specify the maximum product price. This is used by MIT Learn.
-     */
-    'max_price': string;
-    /**
-     * A short description indicating prerequisites of this course/program.
-     */
-    'prerequisites': string | null;
-    /**
-     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
-     */
-    'faq_url': string | null;
-    /**
-     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
-     */
-    'hubspot_form_id': string;
-    /**
-     * Details about this course/program.
-     */
-    'about': string | null;
-    /**
-     * *Required for Verifiable Credential generation. What you will learn from this course.
-     */
-    'what_you_learn': string | null;
-    'feature_image': FeatureImage;
-    /**
-     * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
-     */
-    'video_url': string | null;
-    /**
-     * The title text to display in the faculty cards section of the product page.
-     */
-    'faculty_section_title': string | null;
-    'faculty': Array<Faculty>;
-    'faqs': Array<FAQItem>;
-    'testimonials': Array<TestimonialItem>;
-    'certificate_page': CertificatePage | null;
-    'course_details': V2Course;
-    'topic_list': Array<Topic>;
-    /**
-     * If true, Learn should include this in its catalog.
-     */
-    'include_in_learn_catalog': boolean | null;
-    /**
-     * If true, allow the AI chatbots to ingest the course\'s content files.
-     */
-    'ingest_content_files_for_ai': boolean | null;
-    /**
-     * If true, Learn should show the course outline (modules) on the product page. Turn this off for courses whose module titles aren\'t written for a pre-purchase audience.
-     */
-    'show_course_outline': boolean;
-    'how_youll_learn': Array<HowYoullLearn>;
-}
-/**
- * Serializer for a list of course pages, including metadata and items.
- */
-export interface CoursePageList {
-    'meta': PageListMeta;
-    'items': Array<CoursePageItem>;
-}
-/**
- * Course model serializer
- */
-export interface CourseRequest {
-    'title': string;
-    'readable_id': string;
-}
-/**
- * CourseRunCertificate model serializer
- */
-export interface CourseRunCertificate {
-    'uuid': string;
-    /**
-     * Get the link at which this certificate will be served Format: /certificate/<uuid>/ Example: /certificate/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     */
-    'link': string;
 }
 /**
  * * `pending` - Pending * `cloning` - Cloning * `cloned` - Cloned * `failed` - Failed
@@ -1017,652 +742,6 @@ export const CourseRunCloneStatusEnum = {
 export type CourseRunCloneStatusEnum = typeof CourseRunCloneStatusEnum[keyof typeof CourseRunCloneStatusEnum];
 
 
-/**
- * CourseRunEnrollment model serializer
- */
-export interface CourseRunEnrollment {
-    'id': number;
-    'edx_emails_subscription'?: boolean;
-    'certificate': CourseRunCertificate | null;
-    'enrollment_mode': EnrollmentModeEnum;
-    'grades': Array<CourseRunGrade>;
-    'approved_flexible_price_exists': boolean;
-    'run': V1CourseRunWithCourse;
-}
-
-
-/**
- * CourseRunEnrollment model serializer
- */
-export interface CourseRunEnrollmentRequest {
-    'edx_emails_subscription'?: boolean;
-    'run_id': number;
-}
-/**
- * CourseRunEnrollment model serializer
- */
-export interface CourseRunEnrollmentRequestV2 {
-    'id': number;
-    'edx_emails_subscription'?: boolean;
-    'certificate': CourseRunCertificate | null;
-    'enrollment_mode': EnrollmentModeEnum;
-    'grades': Array<CourseRunGrade>;
-    'approved_flexible_price_exists': boolean;
-    'run': V2CourseRunWithCourse;
-    'b2b_organization_id': number | null;
-    'b2b_contract_id': number | null;
-}
-
-
-/**
- * CourseRunEnrollment model serializer
- */
-export interface CourseRunEnrollmentRequestV2Request {
-    'edx_emails_subscription'?: boolean;
-    'run_id': number;
-}
-/**
- * CourseRunEnrollment model serializer
- */
-export interface CourseRunEnrollmentV3 {
-    'id': number;
-    'edx_emails_subscription'?: boolean;
-    'certificate': V3CourseRunCertificate | null;
-    'enrollment_mode': EnrollmentModeEnum;
-    'grades': Array<CourseRunGrade>;
-    'run': CourseRunWithCourseV3;
-    'b2b_organization_id': number | null;
-    'b2b_contract_id': number | null;
-}
-
-
-/**
- * CourseRunEnrollment model serializer
- */
-export interface CourseRunEnrollmentV3Request {
-    'edx_emails_subscription'?: boolean;
-}
-/**
- * CourseRunGrade serializer
- */
-export interface CourseRunGrade {
-    'grade': number;
-    'letter_grade': string | null;
-    'passed': boolean;
-    'set_by_admin': boolean;
-    /**
-     * Returns the grade field value as a number out of 100 (or Decimal(0) if the value is None)
-     */
-    'grade_percent': number;
-}
-/**
- * CourseRun model serializer
- */
-export interface CourseRunV2 {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    /**
-     * Get the courseware URL
-     */
-    'courseware_url': string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    /**
-     * Check if the course run is upgradable
-     */
-    'is_upgradable': boolean;
-    /**
-     * Check if the course run is enrollable
-     */
-    'is_enrollable': boolean;
-    /**
-     * Check if the course run is archived
-     */
-    'is_archived': boolean;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'id': number;
-    'live'?: boolean;
-    /**
-     * Get the course number
-     */
-    'course_number': string;
-    /**
-     * Get the enrollment modes for the course run
-     */
-    'enrollment_modes': Array<{ [key: string]: any; }>;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: CourseRunV2LanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Return the label for the language, using the override if necessary
-     */
-    'language_label': string;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: CourseRunV2VariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: CourseRunV2VariantLengthEnum;
-    'course_id': number;
-    'products': Array<BaseProduct>;
-    'approved_flexible_price_exists': boolean;
-    'b2b_contract'?: number | null;
-    /**
-     * Indicates if the course run is B2B only
-     */
-    'b2b_only'?: boolean;
-}
-
-export const CourseRunV2LanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type CourseRunV2LanguageEnum = typeof CourseRunV2LanguageEnum[keyof typeof CourseRunV2LanguageEnum];
-export const CourseRunV2VariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type CourseRunV2VariantIndustryEnum = typeof CourseRunV2VariantIndustryEnum[keyof typeof CourseRunV2VariantIndustryEnum];
-export const CourseRunV2VariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type CourseRunV2VariantLengthEnum = typeof CourseRunV2VariantLengthEnum[keyof typeof CourseRunV2VariantLengthEnum];
-
-/**
- * CourseRun serializer
- */
-export interface CourseRunWithCourseV3 {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    /**
-     * Get the courseware URL
-     */
-    'courseware_url': string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    /**
-     * Check if the course run is upgradable
-     */
-    'is_upgradable': boolean;
-    /**
-     * Check if the course run is enrollable
-     */
-    'is_enrollable': boolean;
-    /**
-     * Check if the course run is archived
-     */
-    'is_archived': boolean;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'id': number;
-    'live'?: boolean;
-    /**
-     * Get the course number
-     */
-    'course_number': string;
-    /**
-     * Get the enrollment modes for the course run
-     */
-    'enrollment_modes': Array<{ [key: string]: any; }>;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: CourseRunWithCourseV3LanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Return the label for the language, using the override if necessary
-     */
-    'language_label': string;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: CourseRunWithCourseV3VariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: CourseRunWithCourseV3VariantLengthEnum;
-    'course_id': number;
-    'upgrade_product_id': number | null;
-    'upgrade_product_price': string | null;
-    'upgrade_product_is_active': boolean | null;
-    'course': CourseV3;
-}
-
-export const CourseRunWithCourseV3LanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type CourseRunWithCourseV3LanguageEnum = typeof CourseRunWithCourseV3LanguageEnum[keyof typeof CourseRunWithCourseV3LanguageEnum];
-export const CourseRunWithCourseV3VariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type CourseRunWithCourseV3VariantIndustryEnum = typeof CourseRunWithCourseV3VariantIndustryEnum[keyof typeof CourseRunWithCourseV3VariantIndustryEnum];
-export const CourseRunWithCourseV3VariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type CourseRunWithCourseV3VariantLengthEnum = typeof CourseRunWithCourseV3VariantLengthEnum[keyof typeof CourseRunWithCourseV3VariantLengthEnum];
-
-/**
- * CourseRun serializer
- */
-export interface CourseRunWithCourseV3Request {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'live'?: boolean;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: CourseRunWithCourseV3RequestLanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: CourseRunWithCourseV3RequestVariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: CourseRunWithCourseV3RequestVariantLengthEnum;
-}
-
-export const CourseRunWithCourseV3RequestLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type CourseRunWithCourseV3RequestLanguageEnum = typeof CourseRunWithCourseV3RequestLanguageEnum[keyof typeof CourseRunWithCourseV3RequestLanguageEnum];
-export const CourseRunWithCourseV3RequestVariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type CourseRunWithCourseV3RequestVariantIndustryEnum = typeof CourseRunWithCourseV3RequestVariantIndustryEnum[keyof typeof CourseRunWithCourseV3RequestVariantIndustryEnum];
-export const CourseRunWithCourseV3RequestVariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type CourseRunWithCourseV3RequestVariantLengthEnum = typeof CourseRunWithCourseV3RequestVariantLengthEnum[keyof typeof CourseRunWithCourseV3RequestVariantLengthEnum];
-
-/**
- * Course serializer
- */
-export interface CourseV3 {
-    'id': number;
-    'title': string;
-    'readable_id': string;
-    /**
-     * Returns the type of object this is serializing.
-     */
-    'type': string;
-    /**
-     * Return true if the course should be included in the Learn catalog.  This is controlled in the CoursePage for the course, and will default to False if there isn\'t one.
-     */
-    'include_in_learn_catalog': boolean;
-}
-/**
- * Course serializer
- */
-export interface CourseV3Request {
-    'title': string;
-    'readable_id': string;
-}
-export interface CourseVariantRunBadRequest {
-    'detail': string;
-}
-/**
- * Serializer for the course variant run API.
- */
-export interface CourseVariantRunsResponse {
-    'id': number;
-    'courseruns': Array<BaseCourseRun>;
-}
-/**
- * Course model serializer - also serializes child course runs
- */
-export interface CourseWithCourseRunsSerializerV2 {
-    'id': number;
-    'title': string;
-    'readable_id': string;
-    /**
-     * Get next run id
-     */
-    'next_run_id': number | null;
-    'departments': Array<Department>;
-    'page': CoursePage | null;
-    'programs': Array<BaseProgram>;
-    /**
-     * List topics of a course
-     */
-    'topics': Array<{ [key: string]: any; }>;
-    /**
-     * Return the certificate type.
-     */
-    'certificate_type': string;
-    /**
-     * Return if there is a certificate available for the course.
-     */
-    'certificate_available': boolean;
-    /**
-     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
-     */
-    'required_prerequisites': boolean;
-    /**
-     * Get the duration of the course from the course page CMS.
-     */
-    'duration': string;
-    /**
-     * Get the min weeks of the course from the CMS page.
-     */
-    'min_weeks': number | null;
-    /**
-     * Get the max weeks of the course from the CMS page.
-     */
-    'max_weeks': number | null;
-    /**
-     * Get the min price of the product from the CMS page.
-     */
-    'min_price': number | null;
-    /**
-     * Get the max price of the product from the CMS page.
-     */
-    'max_price': number | null;
-    /**
-     * Get the time commitment of the course from the course page CMS.
-     */
-    'time_commitment': string | null;
-    /**
-     * Get course availability
-     */
-    'availability': string;
-    /**
-     * Get the min weekly hours of the course from the course page CMS.
-     */
-    'min_weekly_hours': string | null;
-    /**
-     * Get the max weekly hours of the course from the course page CMS.
-     */
-    'max_weekly_hours': string | null;
-    'include_in_learn_catalog': boolean;
-    'ingest_content_files_for_ai': boolean;
-    'possible_variant_sets': Array<SupportedVariant>;
-    'courseruns': Array<CourseRunV2>;
-}
 /**
  * What adding courseware to a contract did.
  */
@@ -1825,36 +904,6 @@ export interface DataConsentValidationError {
     'errors': DataConsentFieldErrors;
 }
 /**
- * Department model serializer
- */
-export interface Department {
-    'name': string;
-}
-/**
- * Department model serializer
- */
-export interface DepartmentRequest {
-    'name': string;
-}
-/**
- * CourseRun model serializer that includes the number of courses and programs associated with each departments
- */
-export interface DepartmentWithCount {
-    'name': string;
-    'courses': number;
-    'programs': number;
-}
-/**
- * Department model serializer that includes the number of courses and programs associated with each
- */
-export interface DepartmentWithCoursesAndPrograms {
-    'id': number;
-    'name': string;
-    'slug': string;
-    'course_ids': Array<number>;
-    'program_ids': Array<number>;
-}
-/**
  * Serializer for generic detail error responses (404, etc.).
  */
 export interface DetailError {
@@ -1982,20 +1031,6 @@ export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountType
 
 
 /**
- * * `course` - course
- */
-
-export const DisplayModeEnum = {
-    /**
-    * course
-    */
-    Course: 'course',
-} as const;
-
-export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnum];
-
-
-/**
  * * `delivered` - delivered * `accepted` - accepted * `opened` - opened * `clicked` - clicked * `failed` - failed * `pending` - pending
  */
 
@@ -2027,32 +1062,6 @@ export const EmailStatusEnum = {
 } as const;
 
 export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnum];
-
-
-/**
- * Enrollment mode serializer.
- */
-export interface EnrollmentMode {
-    'mode_slug'?: string;
-    'mode_display_name'?: string;
-    'requires_payment'?: boolean;
-}
-/**
- * * `audit` - audit * `verified` - verified
- */
-
-export const EnrollmentModeEnum = {
-    /**
-    * audit
-    */
-    Audit: 'audit',
-    /**
-    * verified
-    */
-    Verified: 'verified',
-} as const;
-
-export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof EnrollmentModeEnum];
 
 
 /**
@@ -2121,32 +1130,99 @@ export interface ExtendedLegalAddress {
     'email': string;
 }
 /**
- * Serializer for FAQ items shown on course/program pages.
+ * Serializer for Financial Assistance Requests
  */
-export interface FAQItem {
+export interface FlexiblePriceAdmin {
     'id': number;
-    'question': string;
-    'answer': string;
+    'user': User;
+    'status'?: FlexiblePriceAdminStatusEnum;
+    'country_of_income'?: string | null;
+    'date_exchange_rate'?: string | null;
+    'date_documents_sent'?: string | null;
+    'justification'?: string | null;
+    'country_of_residence'?: string;
+    'courseware': BaseCourse;
+    'discount': Discount;
+    'applicable_discounts': Discount;
+    'income': FlexiblePriceIncome;
 }
+
+
 /**
- * Serializer for faculty details used in course pages.
+ * Serializer for Financial Assistance Requests
  */
-export interface Faculty {
-    'id': number;
-    'instructor_name': string;
-    'instructor_title': string;
-    'instructor_bio_short': string;
-    'instructor_bio_long': string;
-    'feature_image_src': string | null;
+export interface FlexiblePriceAdminRequest {
+    'status'?: FlexiblePriceAdminStatusEnum;
+    'country_of_income'?: string | null;
+    'date_exchange_rate'?: string | null;
+    'date_documents_sent'?: string | null;
+    'justification'?: string | null;
+    'country_of_residence'?: string;
 }
+
+
 /**
- * Serializer for feature images used in course pages.
+ * * `approved` - approved * `auto-approved` - auto-approved * `created` - created * `pending-manual-approval` - pending-manual-approval * `denied` - denied * `reset` - reset
  */
-export interface FeatureImage {
+
+export const FlexiblePriceAdminStatusEnum = {
+    /**
+    * approved
+    */
+    Approved: 'approved',
+    /**
+    * auto-approved
+    */
+    AutoApproved: 'auto-approved',
+    /**
+    * created
+    */
+    Created: 'created',
+    /**
+    * pending-manual-approval
+    */
+    PendingManualApproval: 'pending-manual-approval',
+    /**
+    * denied
+    */
+    Denied: 'denied',
+    /**
+    * reset
+    */
+    Reset: 'reset',
+} as const;
+
+export type FlexiblePriceAdminStatusEnum = typeof FlexiblePriceAdminStatusEnum[keyof typeof FlexiblePriceAdminStatusEnum];
+
+
+/**
+ * Serializer for coursewares in flexible price requests
+ */
+export interface FlexiblePriceCoursewareAdmin {
+    /**
+     * Returns serialized courseware id.
+     */
+    'id': string;
+    /**
+     * Returns serialized courseware title.
+     */
     'title': string;
-    'image_url': string;
-    'height': number;
-    'width': number;
+    /**
+     * Returns serialized courseware readable id.
+     */
+    'readable_id': string;
+    /**
+     * Returns serialized courseware type.
+     */
+    'type': string;
+}
+/**
+ * Financial Assistance Requests income serializer
+ */
+export interface FlexiblePriceIncome {
+    'income_usd'?: number | null;
+    'original_income'?: number | null;
+    'original_currency'?: string | null;
 }
 export interface FlexiblePriceTier {
     'id': number;
@@ -2246,15 +1322,6 @@ export const HighestEducationEnum = {
 export type HighestEducationEnum = typeof HighestEducationEnum[keyof typeof HighestEducationEnum];
 
 
-/**
- * Serializer for the How You\'ll Learn generated property
- */
-export interface HowYoullLearn {
-    'key': string;
-    'icon': string;
-    'title': string;
-    'text': string;
-}
 /**
  * * `draft` - Draft * `testing` - Testing * `active` - Active * `disabled` - Disabled
  */
@@ -2502,36 +1569,6 @@ export const LanguageEnum = {
 export type LanguageEnum = typeof LanguageEnum[keyof typeof LanguageEnum];
 
 
-export interface LearnerProgramRecordShare {
-    'share_uuid': string;
-    'created_on': string;
-    'updated_on': string;
-    'is_active'?: boolean;
-    'user': number;
-    'program': number;
-    'partner_school'?: number | null;
-}
-/**
- * Gathers the various data needed to display the learner\'s program record. Pass the program you want the record for and attach the learner via context object.
- */
-export interface LearnerRecord {
-    /**
-     * User information including name, email, and username
-     */
-    'user': { [key: string]: string; };
-    /**
-     * Program details including title, readable_id, courses, and requirements
-     */
-    'program': { [key: string]: { [key: string]: any; }; };
-    /**
-     * Active program record shares for this user
-     */
-    'sharing': Array<LearnerProgramRecordShare>;
-    /**
-     * List of partner schools
-     */
-    'partner_schools': Array<PartnerSchool>;
-}
 /**
  * Serializer for legal address
  */
@@ -2779,28 +1816,6 @@ export const NestedPaymentTypeEnum = {
 
 export type NestedPaymentTypeEnum = typeof NestedPaymentTypeEnum[keyof typeof NestedPaymentTypeEnum];
 
-/**
- * * `operator` - operator * `course` - course * `program` - program
- */
-
-export const NodeTypeEnum = {
-    /**
-    * operator
-    */
-    Operator: 'operator',
-    /**
-    * course
-    */
-    Course: 'course',
-    /**
-    * program
-    */
-    Program: 'program',
-} as const;
-
-export type NodeTypeEnum = typeof NodeTypeEnum[keyof typeof NodeTypeEnum];
-
-
 
 export const NullEnum = {
 } as const;
@@ -3010,104 +2025,11 @@ export interface OrganizationProvisioningAudit {
 }
 
 
-/**
- * Serializer for overrides used in certificate pages.
- */
-export interface Override {
-    'type': string;
-    'value': OverrideValue;
-    'id': string;
-}
-/**
- * Serializer for override values used in certificate pages.
- */
-export interface OverrideValue {
-    'readable_id': string;
-    'CEUs': string;
-}
-/**
- * Serializer for individual Wagtail pages.
- */
-export interface Page {
-    'id': number;
-    'title': string;
-    'meta': PageMeta;
-}
-/**
- * Serializer for a list of Wagtail pages.
- */
-export interface PageList {
-    'meta': PageListMeta;
-    'items': Array<Page>;
-}
-/**
- * Serializer for metadata of a list of Wagtail pages.
- */
-export interface PageListMeta {
-    'total_count': number;
-}
-/**
- * Serializer for page metadata used in various Wagtail pages.
- */
-export interface PageMeta {
-    'type': string;
-    'detail_url': string;
-    'html_url': string;
-    'slug': string;
-    'show_in_menus': boolean;
-    'seo_title': string;
-    'search_description': string;
-    'first_published_at': string | null;
-    'alias_of': string | null;
-    'locale': string;
-    'live': boolean;
-    'last_published_at': string | null;
-}
-/**
- * Extends the PageMetaSerializer to work with a Page object
- */
-export interface PageMetaModel {
-    /**
-     * Get the page type, in a more simple manner than Wagtail.  The Wagtail version of this is PageTypeField, and it tries to modify the context, which we neither need nor is in the correct format for it.
-     */
-    'type': string;
-    /**
-     * Get the detail URL, which should be the API call for this page.  The Wagtail version of this is DetailUrlField and it also tries to make changes to the context that we don\'t need.
-     */
-    'detail_url': string;
-    /**
-     * Return PageHtmlUrlField. This is wrapped for OpenAPI schema generation.
-     */
-    'html_url': string;
-    'slug': string;
-    'show_in_menus': boolean;
-    'seo_title': string;
-    'search_description': string;
-    'first_published_at': string | null;
-    'alias_of': string | null;
-    /**
-     * Return PageLocaleField. This is wrapped for OpenAPI schema generation.
-     */
-    'locale': string;
-    'live': boolean;
-    'last_published_at': string | null;
-}
-/**
- * @type PagesRetrieve200Response
- */
-export type PagesRetrieve200Response = CertificatePage | CoursePageItem | Page | ProgramPageItem;
-
 export interface PaginatedBaseContractPageList {
     'count': number;
     'next'?: string | null;
     'previous'?: string | null;
     'results': Array<BaseContractPage>;
-}
-export interface PaginatedCourseWithCourseRunsSerializerV2List {
-    'count': number;
-    'next'?: string | null;
-    'previous'?: string | null;
-    'results': Array<CourseWithCourseRunsSerializerV2>;
 }
 export interface PaginatedDiscountProductList {
     'count': number;
@@ -3120,6 +2042,12 @@ export interface PaginatedDiscountRedemptionList {
     'next'?: string | null;
     'previous'?: string | null;
     'results': Array<DiscountRedemption>;
+}
+export interface PaginatedFlexiblePriceAdminList {
+    'count': number;
+    'next'?: string | null;
+    'previous'?: string | null;
+    'results': Array<FlexiblePriceAdmin>;
 }
 export interface PaginatedFlexiblePriceTierList {
     'count': number;
@@ -3199,30 +2127,6 @@ export interface PaginatedV0DiscountList {
     'previous'?: string | null;
     'results': Array<V0Discount>;
 }
-export interface PaginatedV1CourseWithCourseRunsList {
-    'count': number;
-    'next'?: string | null;
-    'previous'?: string | null;
-    'results': Array<V1CourseWithCourseRuns>;
-}
-export interface PaginatedV1ProgramList {
-    'count': number;
-    'next'?: string | null;
-    'previous'?: string | null;
-    'results': Array<V1Program>;
-}
-export interface PaginatedV2ProgramCollectionList {
-    'count': number;
-    'next'?: string | null;
-    'previous'?: string | null;
-    'results': Array<V2ProgramCollection>;
-}
-export interface PaginatedV2ProgramDetailList {
-    'count': number;
-    'next'?: string | null;
-    'previous'?: string | null;
-    'results': Array<V2ProgramDetail>;
-}
 /**
  * Request body for parsing IdP metadata without creating anything.  Exactly one of metadata_url or metadata_xml.
  */
@@ -3235,13 +2139,6 @@ export interface ParseMetadataRequest {
 
 export interface ParsedIdentityProviderConfig {
     'config': { [key: string]: string; };
-}
-export interface PartnerSchool {
-    'id': number;
-    'name': string;
-}
-export interface PartnerSchoolRequest {
-    'name': string;
 }
 /**
  * Serializer for confirming a user email change
@@ -3261,6 +2158,19 @@ export interface PatchedDiscountRedemptionRequest {
     'redeemed_discount'?: V0DiscountRequest;
     'redeemed_order'?: OrderRequest;
 }
+/**
+ * Serializer for Financial Assistance Requests
+ */
+export interface PatchedFlexiblePriceAdminRequest {
+    'status'?: FlexiblePriceAdminStatusEnum;
+    'country_of_income'?: string | null;
+    'date_exchange_rate'?: string | null;
+    'date_documents_sent'?: string | null;
+    'justification'?: string | null;
+    'country_of_residence'?: string;
+}
+
+
 export interface PatchedFlexiblePriceTierRequest {
     'discount'?: number;
     'current'?: boolean;
@@ -3326,12 +2236,6 @@ export interface PatchedUpdateContractRequest {
 export interface PatchedUpdateContractVariantSetRequest {
     'active'?: boolean;
     'b2b_only'?: boolean;
-}
-export interface PatchedUpdateCourseRunEnrollmentRequest {
-    /**
-     * Whether to receive course emails
-     */
-    'receive_emails'?: boolean;
 }
 /**
  * Request body for updating an identity provider.  The protocol comes from the instance, through the context, because which fields make sense depends on it: a client secret on a SAML IdP would be written into its Keycloak config and never read.  alias and protocol are rejected rather than ignored. Keycloak refuses an alias change outright, and changing the protocol is a different identity provider, not an edit to this one.
@@ -3444,14 +2348,6 @@ export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnu
 
 
 /**
- * Serializer for price items used in course pages.
- */
-export interface PriceItem {
-    'type': string;
-    'value': { [key: string]: any; };
-    'id': string;
-}
-/**
  * Serializes a product, including the purchasable object.
  */
 export interface Product {
@@ -3463,30 +2359,6 @@ export interface Product {
      */
     'is_active'?: boolean;
     'purchasable_object': ProductPurchasableObject;
-}
-/**
- * Simple serializer for Product without related purchasable objects
- */
-export interface ProductFlexibilePrice {
-    'id': number;
-    'price': string;
-    'description': string;
-    /**
-     * Controls visibility of the product in the app.
-     */
-    'is_active'?: boolean;
-    'product_flexible_price': Discount | null;
-}
-/**
- * Simple serializer for Product without related purchasable objects
- */
-export interface ProductFlexibilePriceRequest {
-    'price': string;
-    'description': string;
-    /**
-     * Controls visibility of the product in the app.
-     */
-    'is_active'?: boolean;
 }
 /**
  * Simple serializer for Product without related purchasable objects
@@ -3545,141 +2417,6 @@ export interface ProductRequest {
      * Controls visibility of the product in the app.
      */
     'is_active'?: boolean;
-}
-export interface Program {
-    'id': number;
-    'title': string;
-    'readable_id': string;
-}
-/**
- * ProgramCertificate model serializer
- */
-export interface ProgramCertificate {
-    'uuid': string;
-    /**
-     * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     */
-    'link': string;
-}
-/**
- * Program page model serializer
- */
-export interface ProgramPage {
-    'feature_image_src': string | null;
-    'page_url': string;
-    'financial_assistance_form_url': string;
-    /**
-     * The description shown on the home page and product page.
-     */
-    'description': string;
-    'live': boolean;
-    /**
-     * If true, Learn should include this in its catalog.
-     */
-    'include_in_learn_catalog'?: boolean | null;
-    /**
-     * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
-     */
-    'length'?: string;
-    /**
-     * A short description indicating how much effort is required (e.g. 1-3 hours per week).
-     */
-    'effort'?: string | null;
-    /**
-     * Get the price text from the program page.
-     */
-    'price': string;
-    'list_price': string;
-}
-/**
- * Serializer for individual program page items, including all relevant fields.
- */
-export interface ProgramPageItem {
-    'id': number;
-    'meta': PageMeta;
-    /**
-     * The page title as you\'d like it to be seen by the public
-     */
-    'title': string;
-    /**
-     * The description shown on the home page and product page.
-     */
-    'description': string;
-    /**
-     * A short description indicating how long it takes to complete (e.g. \'4 weeks\').
-     */
-    'length': string;
-    /**
-     * A short description indicating how much effort is required (e.g. 1-3 hours per week).
-     */
-    'effort': string | null;
-    /**
-     * The minimum number of hours per week required to complete the course.
-     */
-    'min_weekly_hours': string;
-    /**
-     * The maximum number of hours per week required to complete the course.
-     */
-    'max_weekly_hours': string;
-    /**
-     * The minimum number of weeks required to complete the course/program.
-     */
-    'min_weeks': number | null;
-    /**
-     * The maximum number of weeks required to complete the course/program.
-     */
-    'max_weeks': number | null;
-    'price': Array<PriceItem>;
-    /**
-     * Specify the minimum product price. This is used by MIT Learn.
-     */
-    'min_price': string;
-    /**
-     * Specify the maximum product price. This is used by MIT Learn.
-     */
-    'max_price': string;
-    /**
-     * A short description indicating prerequisites of this course/program.
-     */
-    'prerequisites': string | null;
-    /**
-     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
-     */
-    'faq_url': string | null;
-    /**
-     * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
-     */
-    'hubspot_form_id': string;
-    /**
-     * Details about this course/program.
-     */
-    'about': string | null;
-    /**
-     * *Required for Verifiable Credential generation. What you will learn from this course.
-     */
-    'what_you_learn': string | null;
-    'feature_image': FeatureImage;
-    /**
-     * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
-     */
-    'video_url': string | null;
-    /**
-     * The title text to display in the faculty cards section of the product page.
-     */
-    'faculty_section_title': string | null;
-    'faculty': Array<Faculty>;
-    'faqs': Array<FAQItem>;
-    'testimonials': Array<TestimonialItem>;
-    'certificate_page': CertificatePage;
-    'program_details': V2Program;
-    'how_youll_learn': Array<HowYoullLearn>;
-}
-/**
- * Serializer for a list of program pages, including metadata and items.
- */
-export interface ProgramPageList {
-    'meta': PageListMeta;
-    'items': Array<ProgramPageItem>;
 }
 /**
  * A contract as the staff contract API sees it.
@@ -4086,17 +2823,6 @@ export interface SetOnboardingStateRequest {
 
 
 /**
- * Serializer for signatory items used in certificate pages.
- */
-export interface SignatoryItem {
-    'name': string;
-    'title_1': string;
-    'title_2': string;
-    'title_3': string;
-    'organization': string;
-    'signature_image': string;
-}
-/**
  * Serializer for data we care about in the staff dashboard
  */
 export interface StaffDashboardUser {
@@ -4172,6 +2898,14 @@ export interface SupportedVariant {
      * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry': SupportedVariantVariantIndustryEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
+    /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
     'active': boolean;
     'b2b_only': boolean;
     'default_variant': boolean;
@@ -4200,23 +2934,6 @@ export const SupportedVariantVariantIndustryEnum = {
 
 export type SupportedVariantVariantIndustryEnum = typeof SupportedVariantVariantIndustryEnum[keyof typeof SupportedVariantVariantIndustryEnum];
 
-/**
- * Serializer for testimonial items shown on course/program pages.
- */
-export interface TestimonialItem {
-    'id': number;
-    'quote': string;
-    'name': string;
-    'title': string;
-    'image_src': string | null;
-}
-/**
- * Serializer for topics used in course pages.
- */
-export interface Topic {
-    'name': string;
-    'parent'?: string;
-}
 /**
  * Serializes a line item from a transaction.
  */
@@ -4536,11 +3253,6 @@ export const UserProfileRequestHighestEducationEnum = {
 
 export type UserProfileRequestHighestEducationEnum = typeof UserProfileRequestHighestEducationEnum[keyof typeof UserProfileRequestHighestEducationEnum];
 
-export interface UserProgramEnrollmentDetail {
-    'program': V1Program;
-    'enrollments': Array<CourseRunEnrollment>;
-    'certificate': V1ProgramCertificate | null;
-}
 /**
  * Serializer for users
  */
@@ -4629,1268 +3341,6 @@ export const V0DiscountRequestPaymentTypeEnum = {
 export type V0DiscountRequestPaymentTypeEnum = typeof V0DiscountRequestPaymentTypeEnum[keyof typeof V0DiscountRequestPaymentTypeEnum];
 
 /**
- * CourseRun model serializer
- */
-export interface V1BaseCourseRun {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    /**
-     * Get the courseware URL
-     */
-    'courseware_url': string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    /**
-     * Check if the course run is upgradable
-     */
-    'is_upgradable': boolean;
-    /**
-     * Check if the course run is enrollable
-     */
-    'is_enrollable': boolean;
-    /**
-     * Check if the course run is archived
-     */
-    'is_archived': boolean;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'id': number;
-    'live'?: boolean;
-    /**
-     * Get the course number
-     */
-    'course_number': string;
-    /**
-     * Get the enrollment modes for the course run
-     */
-    'enrollment_modes': Array<{ [key: string]: any; }>;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: V1BaseCourseRunLanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Return the label for the language, using the override if necessary
-     */
-    'language_label': string;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: V1BaseCourseRunVariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: V1BaseCourseRunVariantLengthEnum;
-    'course_id': number;
-    'products': Array<ProductFlexibilePrice>;
-    'approved_flexible_price_exists': boolean;
-}
-
-export const V1BaseCourseRunLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type V1BaseCourseRunLanguageEnum = typeof V1BaseCourseRunLanguageEnum[keyof typeof V1BaseCourseRunLanguageEnum];
-export const V1BaseCourseRunVariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type V1BaseCourseRunVariantIndustryEnum = typeof V1BaseCourseRunVariantIndustryEnum[keyof typeof V1BaseCourseRunVariantIndustryEnum];
-export const V1BaseCourseRunVariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V1BaseCourseRunVariantLengthEnum = typeof V1BaseCourseRunVariantLengthEnum[keyof typeof V1BaseCourseRunVariantLengthEnum];
-
-/**
- * CourseRun model serializer - also serializes the parent Course.
- */
-export interface V1CourseRunWithCourse {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    /**
-     * Get the courseware URL
-     */
-    'courseware_url': string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    /**
-     * Check if the course run is upgradable
-     */
-    'is_upgradable': boolean;
-    /**
-     * Check if the course run is enrollable
-     */
-    'is_enrollable': boolean;
-    /**
-     * Check if the course run is archived
-     */
-    'is_archived': boolean;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'id': number;
-    'live'?: boolean;
-    /**
-     * Get the course number
-     */
-    'course_number': string;
-    /**
-     * Get the enrollment modes for the course run
-     */
-    'enrollment_modes': Array<{ [key: string]: any; }>;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: V1CourseRunWithCourseLanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Return the label for the language, using the override if necessary
-     */
-    'language_label': string;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: V1CourseRunWithCourseVariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: V1CourseRunWithCourseVariantLengthEnum;
-    'course_id': number;
-    /**
-     * List of products associated with this course run
-     */
-    'products': Array<ProductFlexibilePrice>;
-    'approved_flexible_price_exists': boolean;
-    'course': Course;
-}
-
-export const V1CourseRunWithCourseLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type V1CourseRunWithCourseLanguageEnum = typeof V1CourseRunWithCourseLanguageEnum[keyof typeof V1CourseRunWithCourseLanguageEnum];
-export const V1CourseRunWithCourseVariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type V1CourseRunWithCourseVariantIndustryEnum = typeof V1CourseRunWithCourseVariantIndustryEnum[keyof typeof V1CourseRunWithCourseVariantIndustryEnum];
-export const V1CourseRunWithCourseVariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V1CourseRunWithCourseVariantLengthEnum = typeof V1CourseRunWithCourseVariantLengthEnum[keyof typeof V1CourseRunWithCourseVariantLengthEnum];
-
-/**
- * CourseRun model serializer - also serializes the parent Course.
- */
-export interface V1CourseRunWithCourseRequest {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'live'?: boolean;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: V1CourseRunWithCourseRequestLanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: V1CourseRunWithCourseRequestVariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: V1CourseRunWithCourseRequestVariantLengthEnum;
-}
-
-export const V1CourseRunWithCourseRequestLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type V1CourseRunWithCourseRequestLanguageEnum = typeof V1CourseRunWithCourseRequestLanguageEnum[keyof typeof V1CourseRunWithCourseRequestLanguageEnum];
-export const V1CourseRunWithCourseRequestVariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type V1CourseRunWithCourseRequestVariantIndustryEnum = typeof V1CourseRunWithCourseRequestVariantIndustryEnum[keyof typeof V1CourseRunWithCourseRequestVariantIndustryEnum];
-export const V1CourseRunWithCourseRequestVariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V1CourseRunWithCourseRequestVariantLengthEnum = typeof V1CourseRunWithCourseRequestVariantLengthEnum[keyof typeof V1CourseRunWithCourseRequestVariantLengthEnum];
-
-/**
- * Course model serializer - also serializes child course runs
- */
-export interface V1CourseWithCourseRuns {
-    'id': number;
-    'title': string;
-    'readable_id': string;
-    /**
-     * Get next run id
-     */
-    'next_run_id': number | null;
-    'departments': Array<Department>;
-    'page': CoursePage;
-    'programs': Program | null;
-    'courseruns': Array<V1BaseCourseRun>;
-}
-/**
- * Program model serializer
- */
-export interface V1Program {
-    'title': string;
-    'readable_id': string;
-    'id': number;
-    'courses': V1CourseWithCourseRuns;
-    'requirements': V1ProgramRequirements;
-    'req_tree': Array<V1ProgramRequirement>;
-    'page': ProgramPage;
-    'program_type'?: string | null;
-    'departments': Array<Department>;
-    'live'?: boolean;
-    'enrollment_modes': Array<EnrollmentMode>;
-}
-/**
- * ProgramCertificate model serializer
- */
-export interface V1ProgramCertificate {
-    'uuid': string;
-    /**
-     * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     */
-    'link': string;
-}
-/**
- * Serializer for a ProgramRequirement
- */
-export interface V1ProgramRequirement {
-    'id'?: number | null;
-    'data': V1ProgramRequirementData;
-    'children'?: Array<V1ProgramRequirement>;
-}
-/**
- * Serializer for ProgramRequirement data
- */
-export interface V1ProgramRequirementData {
-    'node_type': NodeTypeEnum;
-    'course'?: string | null;
-    'required_program'?: string | null;
-    'program'?: string;
-    'title'?: string | null;
-    'operator'?: string | null;
-    'operator_value'?: string | null;
-    'elective_flag'?: boolean | null;
-}
-
-
-export interface V1ProgramRequirements {
-    /**
-     * List of required course IDs
-     */
-    'required'?: Array<V1ProgramRequirementsRequiredInner>;
-    /**
-     * List of elective course IDs
-     */
-    'electives'?: Array<V1ProgramRequirementsRequiredInner>;
-}
-/**
- * @type V1ProgramRequirementsRequiredInner
- */
-export type V1ProgramRequirementsRequiredInner = number;
-
-/**
- * Course model serializer
- */
-export interface V2Course {
-    'id': number;
-    'title': string;
-    'readable_id': string;
-    /**
-     * Get next run id
-     */
-    'next_run_id': number | null;
-    'departments': Array<Department>;
-    'page': CoursePage | null;
-    'programs': Array<BaseProgram>;
-    /**
-     * List topics of a course
-     */
-    'topics': Array<{ [key: string]: any; }>;
-    /**
-     * Return the certificate type.
-     */
-    'certificate_type': string;
-    /**
-     * Return if there is a certificate available for the course.
-     */
-    'certificate_available': boolean;
-    /**
-     * Check if the prerequisites field is populated in the course page CMS. Returns:     bool: True when the prerequisites field is populated in the course page CMS.  False otherwise.
-     */
-    'required_prerequisites': boolean;
-    /**
-     * Get the duration of the course from the course page CMS.
-     */
-    'duration': string;
-    /**
-     * Get the min weeks of the course from the CMS page.
-     */
-    'min_weeks': number | null;
-    /**
-     * Get the max weeks of the course from the CMS page.
-     */
-    'max_weeks': number | null;
-    /**
-     * Get the min price of the product from the CMS page.
-     */
-    'min_price': number | null;
-    /**
-     * Get the max price of the product from the CMS page.
-     */
-    'max_price': number | null;
-    /**
-     * Get the time commitment of the course from the course page CMS.
-     */
-    'time_commitment': string | null;
-    /**
-     * Get course availability
-     */
-    'availability': string;
-    /**
-     * Get the min weekly hours of the course from the course page CMS.
-     */
-    'min_weekly_hours': string | null;
-    /**
-     * Get the max weekly hours of the course from the course page CMS.
-     */
-    'max_weekly_hours': string | null;
-    'include_in_learn_catalog': boolean;
-    'ingest_content_files_for_ai': boolean;
-    'possible_variant_sets': Array<SupportedVariant>;
-}
-/**
- * Course model serializer
- */
-export interface V2CourseRequest {
-    'title': string;
-    'readable_id': string;
-}
-/**
- * Serializer for course certificates.
- */
-export interface V2CourseRunCertificate {
-    'user': PublicUser;
-    'uuid': string;
-    /**
-     * Indicates whether or not the certificate is revoked
-     */
-    'is_revoked': boolean;
-    'issue_date': string;
-    'certificate_page': CertificatePageModel;
-    'verifiable_credential_json': any;
-    'course_run': V2CourseRunWithCourse;
-    'certificate_page_revision': number | null;
-}
-/**
- * CourseRun model serializer - also serializes the parent Course.
- */
-export interface V2CourseRunWithCourse {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    /**
-     * Get the courseware URL
-     */
-    'courseware_url': string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    /**
-     * Check if the course run is upgradable
-     */
-    'is_upgradable': boolean;
-    /**
-     * Check if the course run is enrollable
-     */
-    'is_enrollable': boolean;
-    /**
-     * Check if the course run is archived
-     */
-    'is_archived': boolean;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'id': number;
-    'live'?: boolean;
-    /**
-     * Get the course number
-     */
-    'course_number': string;
-    /**
-     * Get the enrollment modes for the course run
-     */
-    'enrollment_modes': Array<{ [key: string]: any; }>;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: V2CourseRunWithCourseLanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Return the label for the language, using the override if necessary
-     */
-    'language_label': string;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: V2CourseRunWithCourseVariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: V2CourseRunWithCourseVariantLengthEnum;
-    'course_id': number;
-    'products': Array<BaseProduct>;
-    'approved_flexible_price_exists': boolean;
-    'b2b_contract'?: number | null;
-    /**
-     * Indicates if the course run is B2B only
-     */
-    'b2b_only'?: boolean;
-    'course': V2Course;
-}
-
-export const V2CourseRunWithCourseLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type V2CourseRunWithCourseLanguageEnum = typeof V2CourseRunWithCourseLanguageEnum[keyof typeof V2CourseRunWithCourseLanguageEnum];
-export const V2CourseRunWithCourseVariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type V2CourseRunWithCourseVariantIndustryEnum = typeof V2CourseRunWithCourseVariantIndustryEnum[keyof typeof V2CourseRunWithCourseVariantIndustryEnum];
-export const V2CourseRunWithCourseVariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V2CourseRunWithCourseVariantLengthEnum = typeof V2CourseRunWithCourseVariantLengthEnum[keyof typeof V2CourseRunWithCourseVariantLengthEnum];
-
-/**
- * CourseRun model serializer - also serializes the parent Course.
- */
-export interface V2CourseRunWithCourseRequest {
-    /**
-     * The title of the course. This value is synced automatically with edX studio.
-     */
-    'title': string;
-    /**
-     * The day the course begins. This value is synced automatically with edX studio.
-     */
-    'start_date'?: string | null;
-    /**
-     * The last day the course is active. This value is synced automatically with edX studio.
-     */
-    'end_date'?: string | null;
-    /**
-     * The first day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_start'?: string | null;
-    /**
-     * The last day students can enroll. This value is synced automatically with edX studio.
-     */
-    'enrollment_end'?: string | null;
-    /**
-     * The date beyond which the learner should not see link to this course run on their dashboard.
-     */
-    'expiration_date'?: string | null;
-    'courseware_id': string;
-    /**
-     * The day certificates should be available to users. This value is synced automatically with edX studio.
-     */
-    'certificate_available_date'?: string | null;
-    /**
-     * The date beyond which the learner can not enroll in paid course mode.
-     */
-    'upgrade_deadline'?: string | null;
-    'is_self_paced'?: boolean;
-    /**
-     * A string that identifies the set of runs that this run belongs to (example: \'R2\')
-     */
-    'run_tag': string;
-    'live'?: boolean;
-    /**
-     * ISO 639-1 language code for this run (e.g. \'en\', \'zh\', \'fr\'). Leave blank for unspecified.  * `af_ZA` - af_ZA * `ar` - ar * `az` - az * `bo` - bo * `da` - da * `de` - de * `de_DE` - de_DE * `el` - el * `es_419` - es_419 * `es_ES` - es_ES * `en` - en * `fa` - fa * `fr` - fr * `fr_CA` - fr_CA * `he` - he * `hi` - hi * `hu` - hu * `id` - id * `it_IT` - it_IT * `ja` - ja * `ka` - ka * `kk` - kk * `ko` - ko * `lv` - lv * `nl` - nl * `pl` - pl * `pt_BR` - pt_BR * `pt_PT` - pt_PT * `ro` - ro * `ru` - ru * `sq` - sq * `sv` - sv * `sw` - sw * `te` - te * `th` - th * `tr_TR` - tr_TR * `uk` - uk * `uz` - uz * `vi` - vi * `zh_CN` - zh_CN * `zh_HANS` - zh_HANS * `zh_HK` - zh_HK
-     */
-    'language'?: V2CourseRunWithCourseRequestLanguageEnum;
-    /**
-     * Designates this run as the primary-language version for its run-tag group. The primary run is used as the canonical run when grouping language variants. If no run in a group is marked primary, the oldest run by creation date is treated as primary.
-     */
-    'is_primary_language'?: boolean;
-    /**
-     * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
-     */
-    'variant_industry'?: V2CourseRunWithCourseRequestVariantIndustryEnum;
-    /**
-     * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
-     */
-    'variant_length'?: V2CourseRunWithCourseRequestVariantLengthEnum;
-    'b2b_contract'?: number | null;
-    /**
-     * Indicates if the course run is B2B only
-     */
-    'b2b_only'?: boolean;
-}
-
-export const V2CourseRunWithCourseRequestLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    En: 'en',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-    Empty: '',
-} as const;
-
-export type V2CourseRunWithCourseRequestLanguageEnum = typeof V2CourseRunWithCourseRequestLanguageEnum[keyof typeof V2CourseRunWithCourseRequestLanguageEnum];
-export const V2CourseRunWithCourseRequestVariantIndustryEnum = {
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-    Empty: '',
-} as const;
-
-export type V2CourseRunWithCourseRequestVariantIndustryEnum = typeof V2CourseRunWithCourseRequestVariantIndustryEnum[keyof typeof V2CourseRunWithCourseRequestVariantIndustryEnum];
-export const V2CourseRunWithCourseRequestVariantLengthEnum = {
-    /**
-    * * &#x60;&#x60; - Full
-* &#x60;S&#x60; - Short
-    */
-    S: 'S',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V2CourseRunWithCourseRequestVariantLengthEnum = typeof V2CourseRunWithCourseRequestVariantLengthEnum[keyof typeof V2CourseRunWithCourseRequestVariantLengthEnum];
-
-/**
- * Program Model Serializer v2
- */
-export interface V2Program {
-    'title': string;
-    'readable_id': string;
-    'id': number;
-    'courses': Array<number>;
-    'collections': Array<number>;
-    'programs': Array<BaseProgram> | null;
-    'requirements': V2ProgramRequirements;
-    'req_tree': Array<V2ProgramRequirement>;
-    'page': ProgramPage | null;
-    'program_type'?: string | null;
-    'certificate_type': string;
-    'certificate_available': boolean;
-    'departments': Array<Department>;
-    'live'?: boolean;
-    /**
-     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
-     */
-    'display_mode'?: V2ProgramDisplayModeEnum | null;
-    'topics': Array<V2ProgramTopicsInner>;
-    'availability'?: AvailabilityEnum;
-    /**
-     * Get the start date of the program by finding the first available run.
-     */
-    'start_date': string | null;
-    'end_date'?: string | null;
-    'enrollment_start'?: string | null;
-    'enrollment_end'?: string | null;
-    /**
-     * Check if the prerequisites field is populated in the program page CMS.
-     */
-    'required_prerequisites': boolean;
-    /**
-     * Get the length/duration field from the program page CMS.
-     */
-    'duration': string | null;
-    /**
-     * Get the min weeks of the program from the CMS page.
-     */
-    'min_weeks': number | null;
-    /**
-     * Get the max weeks of the program from the CMS page.
-     */
-    'max_weeks': number | null;
-    /**
-     * Get the min price of the product from the CMS page.
-     */
-    'min_price': number | null;
-    /**
-     * Get the max price of the product from the CMS page.
-     */
-    'max_price': number | null;
-    /**
-     * Get the effort/time_commitment field from the program page CMS.
-     */
-    'time_commitment': string | null;
-    /**
-     * Get the min weekly hours of the program from the program page CMS.
-     */
-    'min_weekly_hours': string | null;
-    /**
-     * Get the max weekly hours of the program from the program page CMS.
-     */
-    'max_weekly_hours': string | null;
-    'enrollment_modes': Array<EnrollmentMode>;
-}
-
-export const V2ProgramDisplayModeEnum = {
-    /**
-    * * &#x60;course&#x60; - course
-    */
-    Course: 'course',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V2ProgramDisplayModeEnum = typeof V2ProgramDisplayModeEnum[keyof typeof V2ProgramDisplayModeEnum];
-
-/**
- * Serializer for course certificates.
- */
-export interface V2ProgramCertificate {
-    'user': PublicUser;
-    'uuid': string;
-    /**
-     * Indicates whether or not the certificate is revoked
-     */
-    'is_revoked': boolean;
-    'issue_date': string;
-    'certificate_page': CertificatePageModel;
-    'verifiable_credential_json': any;
-    'program': V2Program;
-    'certificate_page_revision': number | null;
-}
-/**
- * Serializer for ProgramCollection
- */
-export interface V2ProgramCollection {
-    'id': number;
-    'title': string;
-    'description': string;
-    'programs': Array<V2ProgramCollectionProgramsInner>;
-    'created_on': string;
-    'updated_on': string;
-}
-export interface V2ProgramCollectionProgramsInner {
-    'id'?: number;
-    'title'?: string;
-    'order'?: number;
-}
-/**
- * Extended Program serializer that includes products. Used by the programs API.
- */
-export interface V2ProgramDetail {
-    'title': string;
-    'readable_id': string;
-    'id': number;
-    'courses': Array<number>;
-    'collections': Array<number>;
-    'programs': Array<BaseProgram> | null;
-    'requirements': V2ProgramRequirements;
-    'req_tree': Array<V2ProgramRequirement>;
-    'page': ProgramPage | null;
-    'program_type'?: string | null;
-    'certificate_type': string;
-    'certificate_available': boolean;
-    'departments': Array<Department>;
-    'live'?: boolean;
-    /**
-     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
-     */
-    'display_mode'?: V2ProgramDetailDisplayModeEnum | null;
-    'topics': Array<V2ProgramTopicsInner>;
-    'availability'?: AvailabilityEnum;
-    /**
-     * Get the start date of the program by finding the first available run.
-     */
-    'start_date': string | null;
-    'end_date'?: string | null;
-    'enrollment_start'?: string | null;
-    'enrollment_end'?: string | null;
-    /**
-     * Check if the prerequisites field is populated in the program page CMS.
-     */
-    'required_prerequisites': boolean;
-    /**
-     * Get the length/duration field from the program page CMS.
-     */
-    'duration': string | null;
-    /**
-     * Get the min weeks of the program from the CMS page.
-     */
-    'min_weeks': number | null;
-    /**
-     * Get the max weeks of the program from the CMS page.
-     */
-    'max_weeks': number | null;
-    /**
-     * Get the min price of the product from the CMS page.
-     */
-    'min_price': number | null;
-    /**
-     * Get the max price of the product from the CMS page.
-     */
-    'max_price': number | null;
-    /**
-     * Get the effort/time_commitment field from the program page CMS.
-     */
-    'time_commitment': string | null;
-    /**
-     * Get the min weekly hours of the program from the program page CMS.
-     */
-    'min_weekly_hours': string | null;
-    /**
-     * Get the max weekly hours of the program from the program page CMS.
-     */
-    'max_weekly_hours': string | null;
-    'enrollment_modes': Array<EnrollmentMode>;
-    'products': Array<BaseProduct>;
-}
-
-export const V2ProgramDetailDisplayModeEnum = {
-    /**
-    * * &#x60;course&#x60; - course
-    */
-    Course: 'course',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V2ProgramDetailDisplayModeEnum = typeof V2ProgramDetailDisplayModeEnum[keyof typeof V2ProgramDetailDisplayModeEnum];
-
-/**
- * Serializer for a ProgramRequirement
- */
-export interface V2ProgramRequirement {
-    'id'?: number | null;
-    'data': V2ProgramRequirementData;
-    'children'?: Array<V2ProgramRequirement>;
-}
-/**
- * Serializer for ProgramRequirement data
- */
-export interface V2ProgramRequirementData {
-    'node_type': NodeTypeEnum;
-    'course'?: number | null;
-    'program'?: number | null;
-    'required_program'?: number | null;
-    'title'?: string | null;
-    'operator'?: string | null;
-    'operator_value'?: string | null;
-    'elective_flag'?: boolean | null;
-}
-
-
-export interface V2ProgramRequirements {
-    'courses'?: V2ProgramRequirementsCourses;
-    'programs'?: V2ProgramRequirementsPrograms;
-}
-export interface V2ProgramRequirementsCourses {
-    /**
-     * List of required courses with id and readable_id
-     */
-    'required'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
-    /**
-     * List of elective courses with id and readable_id
-     */
-    'electives'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
-}
-export interface V2ProgramRequirementsCoursesRequiredInner {
-    'id'?: number;
-    'readable_id'?: string;
-}
-export interface V2ProgramRequirementsPrograms {
-    /**
-     * List of required programs with id and readable_id
-     */
-    'required'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
-    /**
-     * List of elective programs with id and readable_id
-     */
-    'electives'?: Array<V2ProgramRequirementsCoursesRequiredInner>;
-}
-export interface V2ProgramTopicsInner {
-    'name'?: string;
-}
-/**
- * Serializer for user program enrollments with associated course enrollments.  This aggregates a program, its course enrollments for the user, and any program certificate that has been earned.
- */
-export interface V2UserProgramEnrollmentDetail {
-    'program': V2Program;
-    'enrollments': Array<CourseRunEnrollmentRequestV2>;
-    'certificate': ProgramCertificate | null;
-}
-/**
- * CourseRunCertificate model serializer
- */
-export interface V3CourseRunCertificate {
-    'uuid': string;
-    /**
-     * Get the link at which this certificate will be served Format: /certificate/<uuid>/ Example: /certificate/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     */
-    'link': string;
-}
-/**
- * ProgramCertificate model serializer
- */
-export interface V3ProgramCertificate {
-    'uuid': string;
-    /**
-     * Get the link at which this certificate will be served Format: /certificate/program/<uuid>/ Example: /certificate/program/93ebd74e-5f88-4b47-bb09-30a6d575328f/
-     */
-    'link': string;
-}
-/**
- * Serializer for creating a program enrollment. Accepts a program_id and validates it corresponds to a live program.
- */
-export interface V3ProgramEnrollmentRequestRequest {
-    'program_id': number;
-}
-/**
- * Program Model Serializer v2
- */
-export interface V3SimpleProgram {
-    'title': string;
-    'readable_id': string;
-    'id': number;
-    'program_type'?: string | null;
-    'live'?: boolean;
-    /**
-     * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
-     */
-    'display_mode'?: V3SimpleProgramDisplayModeEnum | null;
-}
-
-export const V3SimpleProgramDisplayModeEnum = {
-    /**
-    * * &#x60;course&#x60; - course
-    */
-    Course: 'course',
-    /**
-    * 
-    */
-    Empty: '',
-} as const;
-
-export type V3SimpleProgramDisplayModeEnum = typeof V3SimpleProgramDisplayModeEnum[keyof typeof V3SimpleProgramDisplayModeEnum];
-
-/**
- * Serializer for user program enrollments.
- */
-export interface V3UserProgramEnrollment {
-    'program': V3SimpleProgram;
-    'certificate': V3ProgramCertificate | null;
-    'enrollment_mode'?: string;
-}
-/**
  * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
  */
 
@@ -5966,331 +3416,6 @@ export const YearsExperienceEnum = {
 } as const;
 
 export type YearsExperienceEnum = typeof YearsExperienceEnum[keyof typeof YearsExperienceEnum];
-
-
-
-/**
- * ApiApi - axios parameter creator
- */
-export const ApiApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiRecordsProgramRevokeCreate: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiRecordsProgramRevokeCreate', 'id', id)
-            const localVarPath = `/api/records/program/{id}/revoke/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Sets up a sharing link for the learner\'s record. Returns back the entire learner record.
-         * @param {number} id 
-         * @param {PartnerSchoolRequest} PartnerSchoolRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiRecordsProgramShareCreate: async (id: number, PartnerSchoolRequest: PartnerSchoolRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiRecordsProgramShareCreate', 'id', id)
-            // verify required parameter 'PartnerSchoolRequest' is not null or undefined
-            assertParamExists('apiRecordsProgramShareCreate', 'PartnerSchoolRequest', PartnerSchoolRequest)
-            const localVarPath = `/api/records/program/{id}/share/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(PartnerSchoolRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get learner record using program ID
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        learnerRecordRetrieveById: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('learnerRecordRetrieveById', 'id', id)
-            const localVarPath = `/api/records/program/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get learner record using share UUID
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        learnerRecordRetrieveByUuid: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'uuid' is not null or undefined
-            assertParamExists('learnerRecordRetrieveByUuid', 'uuid', uuid)
-            const localVarPath = `/api/records/shared/{uuid}/`
-                .replace('{uuid}', encodeURIComponent(String(uuid)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ApiApi - functional programming interface
- */
-export const ApiApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ApiApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiRecordsProgramRevokeCreate(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiRecordsProgramRevokeCreate(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiRecordsProgramRevokeCreate']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Sets up a sharing link for the learner\'s record. Returns back the entire learner record.
-         * @param {number} id 
-         * @param {PartnerSchoolRequest} PartnerSchoolRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiRecordsProgramShareCreate(id: number, PartnerSchoolRequest: PartnerSchoolRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiRecordsProgramShareCreate(id, PartnerSchoolRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ApiApi.apiRecordsProgramShareCreate']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Get learner record using program ID
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async learnerRecordRetrieveById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.learnerRecordRetrieveById(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ApiApi.learnerRecordRetrieveById']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Get learner record using share UUID
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async learnerRecordRetrieveByUuid(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LearnerRecord>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.learnerRecordRetrieveByUuid(uuid, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ApiApi.learnerRecordRetrieveByUuid']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ApiApi - factory interface
- */
-export const ApiApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ApiApiFp(configuration)
-    return {
-        /**
-         * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
-         * @param {ApiApiApiRecordsProgramRevokeCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiRecordsProgramRevokeCreate(requestParameters: ApiApiApiRecordsProgramRevokeCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<LearnerRecord> {
-            return localVarFp.apiRecordsProgramRevokeCreate(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Sets up a sharing link for the learner\'s record. Returns back the entire learner record.
-         * @param {ApiApiApiRecordsProgramShareCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiRecordsProgramShareCreate(requestParameters: ApiApiApiRecordsProgramShareCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<LearnerRecord> {
-            return localVarFp.apiRecordsProgramShareCreate(requestParameters.id, requestParameters.PartnerSchoolRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Get learner record using program ID
-         * @param {ApiApiLearnerRecordRetrieveByIdRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        learnerRecordRetrieveById(requestParameters: ApiApiLearnerRecordRetrieveByIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<LearnerRecord> {
-            return localVarFp.learnerRecordRetrieveById(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Get learner record using share UUID
-         * @param {ApiApiLearnerRecordRetrieveByUuidRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        learnerRecordRetrieveByUuid(requestParameters: ApiApiLearnerRecordRetrieveByUuidRequest, options?: RawAxiosRequestConfig): AxiosPromise<LearnerRecord> {
-            return localVarFp.learnerRecordRetrieveByUuid(requestParameters.uuid, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for apiRecordsProgramRevokeCreate operation in ApiApi.
- */
-export interface ApiApiApiRecordsProgramRevokeCreateRequest {
-    readonly id: number
-}
-
-/**
- * Request parameters for apiRecordsProgramShareCreate operation in ApiApi.
- */
-export interface ApiApiApiRecordsProgramShareCreateRequest {
-    readonly id: number
-
-    readonly PartnerSchoolRequest: PartnerSchoolRequest
-}
-
-/**
- * Request parameters for learnerRecordRetrieveById operation in ApiApi.
- */
-export interface ApiApiLearnerRecordRetrieveByIdRequest {
-    readonly id: number
-}
-
-/**
- * Request parameters for learnerRecordRetrieveByUuid operation in ApiApi.
- */
-export interface ApiApiLearnerRecordRetrieveByUuidRequest {
-    readonly uuid: string
-}
-
-/**
- * ApiApi - object-oriented interface
- */
-export class ApiApi extends BaseAPI {
-    /**
-     * Disables sharing links for the learner\'s record. This only applies to the anonymous ones; shares sent to partner schools are always allowed once they are sent.
-     * @param {ApiApiApiRecordsProgramRevokeCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiRecordsProgramRevokeCreate(requestParameters: ApiApiApiRecordsProgramRevokeCreateRequest, options?: RawAxiosRequestConfig) {
-        return ApiApiFp(this.configuration).apiRecordsProgramRevokeCreate(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Sets up a sharing link for the learner\'s record. Returns back the entire learner record.
-     * @param {ApiApiApiRecordsProgramShareCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiRecordsProgramShareCreate(requestParameters: ApiApiApiRecordsProgramShareCreateRequest, options?: RawAxiosRequestConfig) {
-        return ApiApiFp(this.configuration).apiRecordsProgramShareCreate(requestParameters.id, requestParameters.PartnerSchoolRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Get learner record using program ID
-     * @param {ApiApiLearnerRecordRetrieveByIdRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public learnerRecordRetrieveById(requestParameters: ApiApiLearnerRecordRetrieveByIdRequest, options?: RawAxiosRequestConfig) {
-        return ApiApiFp(this.configuration).learnerRecordRetrieveById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Get learner record using share UUID
-     * @param {ApiApiLearnerRecordRetrieveByUuidRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public learnerRecordRetrieveByUuid(requestParameters: ApiApiLearnerRecordRetrieveByUuidRequest, options?: RawAxiosRequestConfig) {
-        return ApiApiFp(this.configuration).learnerRecordRetrieveByUuid(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
-    }
-}
 
 
 
@@ -12118,1352 +9243,6 @@ export class CountriesApi extends BaseAPI {
 
 
 /**
- * CourseCertificatesApi - axios parameter creator
- */
-export const CourseCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Viewset to read a single course certificate
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseCertificatesRetrieve: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'uuid' is not null or undefined
-            assertParamExists('courseCertificatesRetrieve', 'uuid', uuid)
-            const localVarPath = `/api/v2/course_certificates/{uuid}/`
-                .replace('{uuid}', encodeURIComponent(String(uuid)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * CourseCertificatesApi - functional programming interface
- */
-export const CourseCertificatesApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CourseCertificatesApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Viewset to read a single course certificate
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async courseCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2CourseRunCertificate>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseCertificatesRetrieve(uuid, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CourseCertificatesApi.courseCertificatesRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * CourseCertificatesApi - factory interface
- */
-export const CourseCertificatesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CourseCertificatesApiFp(configuration)
-    return {
-        /**
-         * Viewset to read a single course certificate
-         * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2CourseRunCertificate> {
-            return localVarFp.courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for courseCertificatesRetrieve operation in CourseCertificatesApi.
- */
-export interface CourseCertificatesApiCourseCertificatesRetrieveRequest {
-    readonly uuid: string
-}
-
-/**
- * CourseCertificatesApi - object-oriented interface
- */
-export class CourseCertificatesApi extends BaseAPI {
-    /**
-     * Viewset to read a single course certificate
-     * @param {CourseCertificatesApiCourseCertificatesRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public courseCertificatesRetrieve(requestParameters: CourseCertificatesApiCourseCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return CourseCertificatesApiFp(this.configuration).courseCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * CourseRunsApi - axios parameter creator
- */
-export const CourseRunsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * API view set for CourseRuns
-         * @param {number} [id] 
-         * @param {boolean} [live] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseRunsList: async (id?: number, live?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/course_runs/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (live !== undefined) {
-                localVarQueryParameter['live'] = live;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * API view set for CourseRuns
-         * @param {number} id A unique integer value identifying this course run.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseRunsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('courseRunsRetrieve', 'id', id)
-            const localVarPath = `/api/v1/course_runs/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * CourseRunsApi - functional programming interface
- */
-export const CourseRunsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CourseRunsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * API view set for CourseRuns
-         * @param {number} [id] 
-         * @param {boolean} [live] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async courseRunsList(id?: number, live?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V1CourseRunWithCourse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsList(id, live, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * API view set for CourseRuns
-         * @param {number} id A unique integer value identifying this course run.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async courseRunsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1CourseRunWithCourse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsRetrieve(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * CourseRunsApi - factory interface
- */
-export const CourseRunsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CourseRunsApiFp(configuration)
-    return {
-        /**
-         * API view set for CourseRuns
-         * @param {CourseRunsApiCourseRunsListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseRunsList(requestParameters: CourseRunsApiCourseRunsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<V1CourseRunWithCourse>> {
-            return localVarFp.courseRunsList(requestParameters.id, requestParameters.live, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API view set for CourseRuns
-         * @param {CourseRunsApiCourseRunsRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseRunsRetrieve(requestParameters: CourseRunsApiCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V1CourseRunWithCourse> {
-            return localVarFp.courseRunsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for courseRunsList operation in CourseRunsApi.
- */
-export interface CourseRunsApiCourseRunsListRequest {
-    readonly id?: number
-
-    readonly live?: boolean
-}
-
-/**
- * Request parameters for courseRunsRetrieve operation in CourseRunsApi.
- */
-export interface CourseRunsApiCourseRunsRetrieveRequest {
-    /**
-     * A unique integer value identifying this course run.
-     */
-    readonly id: number
-}
-
-/**
- * CourseRunsApi - object-oriented interface
- */
-export class CourseRunsApi extends BaseAPI {
-    /**
-     * API view set for CourseRuns
-     * @param {CourseRunsApiCourseRunsListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public courseRunsList(requestParameters: CourseRunsApiCourseRunsListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CourseRunsApiFp(this.configuration).courseRunsList(requestParameters.id, requestParameters.live, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * API view set for CourseRuns
-     * @param {CourseRunsApiCourseRunsRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public courseRunsRetrieve(requestParameters: CourseRunsApiCourseRunsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return CourseRunsApiFp(this.configuration).courseRunsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * CoursesApi - axios parameter creator
- */
-export const CoursesApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * List all courses - API v1
-         * @param {boolean} [courserun_is_enrollable] 
-         * @param {number} [id] 
-         * @param {boolean} [live] 
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {boolean} [page__live] 
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV1CoursesList: async (courserun_is_enrollable?: boolean, id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/courses/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (courserun_is_enrollable !== undefined) {
-                localVarQueryParameter['courserun_is_enrollable'] = courserun_is_enrollable;
-            }
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (live !== undefined) {
-                localVarQueryParameter['live'] = live;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (page__live !== undefined) {
-                localVarQueryParameter['page__live'] = page__live;
-            }
-
-            if (page_size !== undefined) {
-                localVarQueryParameter['page_size'] = page_size;
-            }
-
-            if (readable_id !== undefined) {
-                localVarQueryParameter['readable_id'] = readable_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a specific course - API v1
-         * @param {number} id A unique integer value identifying this course.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV1CoursesRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiV1CoursesRetrieve', 'id', id)
-            const localVarPath = `/api/v1/courses/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * List all courses - API v2
-         * @param {number} [contract_id] Only show courses belonging to this B2B contract
-         * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
-         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare * &#x60;M&#x60; - Manufacturing
-         * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
-         * @param {Array<number>} [id] Multiple values may be separated by commas.
-         * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
-         * @param {boolean} [live] 
-         * @param {number} [org_id] Only show courses belonging to this B2B/UAI organization
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {boolean} [page__live] 
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV2CoursesList: async (contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/courses/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (contract_id !== undefined) {
-                localVarQueryParameter['contract_id'] = contract_id;
-            }
-
-            if (courserun_is_enrollable !== undefined) {
-                localVarQueryParameter['courserun_is_enrollable'] = courserun_is_enrollable;
-            }
-
-            if (courseruns__language !== undefined) {
-                localVarQueryParameter['courseruns__language'] = courseruns__language;
-            }
-
-            if (courseruns__variant_industry !== undefined) {
-                localVarQueryParameter['courseruns__variant_industry'] = courseruns__variant_industry;
-            }
-
-            if (courseruns__variant_length !== undefined) {
-                localVarQueryParameter['courseruns__variant_length'] = courseruns__variant_length;
-            }
-
-            if (id) {
-                localVarQueryParameter['id'] = id.join(COLLECTION_FORMATS.csv);
-            }
-
-            if (include_approved_financial_aid !== undefined) {
-                localVarQueryParameter['include_approved_financial_aid'] = include_approved_financial_aid;
-            }
-
-            if (live !== undefined) {
-                localVarQueryParameter['live'] = live;
-            }
-
-            if (org_id !== undefined) {
-                localVarQueryParameter['org_id'] = org_id;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (page__live !== undefined) {
-                localVarQueryParameter['page__live'] = page__live;
-            }
-
-            if (page_size !== undefined) {
-                localVarQueryParameter['page_size'] = page_size;
-            }
-
-            if (readable_id !== undefined) {
-                localVarQueryParameter['readable_id'] = readable_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a specific course - API v2
-         * @param {string} id A unique integer value (pk) or readable_id string identifying this course.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV2CoursesRetrieve: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiV2CoursesRetrieve', 'id', id)
-            const localVarPath = `/api/v2/courses/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Fetch course outline data for the given course key from Open edX.
-         * @param {string} course_id Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseOutlineRetrieveV3: async (course_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'course_id' is not null or undefined
-            assertParamExists('courseOutlineRetrieveV3', 'course_id', course_id)
-            const localVarPath = `/api/v3/courses/{course_id}/ol_openedx_outline/`
-                .replace('{course_id}', encodeURIComponent(String(course_id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Fetch variant runs for a course(s) matching the specified filters.
-         * @param {number} contract Contract to filter by
-         * @param {Array<number>} course_id Course ID(s) to use
-         * @param {string} [industry] Industry focus to retrieve
-         * @param {string} [language] Language to retrieve
-         * @param {string} [length] Language to retrieve
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseVariantRunsV3: async (contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'contract' is not null or undefined
-            assertParamExists('courseVariantRunsV3', 'contract', contract)
-            // verify required parameter 'course_id' is not null or undefined
-            assertParamExists('courseVariantRunsV3', 'course_id', course_id)
-            const localVarPath = `/api/v3/courses/variant_runs/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (contract !== undefined) {
-                localVarQueryParameter['contract'] = contract;
-            }
-
-            if (course_id) {
-                localVarQueryParameter['course_id'] = course_id;
-            }
-
-            if (industry !== undefined) {
-                localVarQueryParameter['industry'] = industry;
-            }
-
-            if (language !== undefined) {
-                localVarQueryParameter['language'] = language;
-            }
-
-            if (length !== undefined) {
-                localVarQueryParameter['length'] = length;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * CoursesApi - functional programming interface
- */
-export const CoursesApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CoursesApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * List all courses - API v1
-         * @param {boolean} [courserun_is_enrollable] 
-         * @param {number} [id] 
-         * @param {boolean} [live] 
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {boolean} [page__live] 
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiV1CoursesList(courserun_is_enrollable?: boolean, id?: number, live?: boolean, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV1CourseWithCourseRunsList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1CoursesList(courserun_is_enrollable, id, live, page, page__live, page_size, readable_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV1CoursesList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Retrieve a specific course - API v1
-         * @param {number} id A unique integer value identifying this course.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiV1CoursesRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1CourseWithCourseRuns>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1CoursesRetrieve(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV1CoursesRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * List all courses - API v2
-         * @param {number} [contract_id] Only show courses belonging to this B2B contract
-         * @param {boolean} [courserun_is_enrollable] Course Run Is Enrollable
-         * @param {ApiV2CoursesListCourserunsLanguageEnum} [courseruns__language] ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
-         * @param {ApiV2CoursesListCourserunsVariantIndustryEnum} [courseruns__variant_industry] Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare * &#x60;M&#x60; - Manufacturing
-         * @param {ApiV2CoursesListCourserunsVariantLengthEnum} [courseruns__variant_length] Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
-         * @param {Array<number>} [id] Multiple values may be separated by commas.
-         * @param {boolean} [include_approved_financial_aid] Include approved financial assistance information
-         * @param {boolean} [live] 
-         * @param {number} [org_id] Only show courses belonging to this B2B/UAI organization
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {boolean} [page__live] 
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiV2CoursesList(contract_id?: number, courserun_is_enrollable?: boolean, courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum, courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum, courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum, id?: Array<number>, include_approved_financial_aid?: boolean, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesList(contract_id, courserun_is_enrollable, courseruns__language, courseruns__variant_industry, courseruns__variant_length, id, include_approved_financial_aid, live, org_id, page, page__live, page_size, readable_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV2CoursesList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Retrieve a specific course - API v2
-         * @param {string} id A unique integer value (pk) or readable_id string identifying this course.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiV2CoursesRetrieve(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseWithCourseRunsSerializerV2>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV2CoursesRetrieve(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CoursesApi.apiV2CoursesRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Fetch course outline data for the given course key from Open edX.
-         * @param {string} course_id Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async courseOutlineRetrieveV3(course_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseOutlineResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseOutlineRetrieveV3(course_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CoursesApi.courseOutlineRetrieveV3']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Fetch variant runs for a course(s) matching the specified filters.
-         * @param {number} contract Contract to filter by
-         * @param {Array<number>} course_id Course ID(s) to use
-         * @param {string} [industry] Industry focus to retrieve
-         * @param {string} [language] Language to retrieve
-         * @param {string} [length] Language to retrieve
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async courseVariantRunsV3(contract: number, course_id: Array<number>, industry?: string, language?: string, length?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseVariantRunsResponse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.courseVariantRunsV3(contract, course_id, industry, language, length, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CoursesApi.courseVariantRunsV3']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * CoursesApi - factory interface
- */
-export const CoursesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CoursesApiFp(configuration)
-    return {
-        /**
-         * List all courses - API v1
-         * @param {CoursesApiApiV1CoursesListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV1CoursesList(requestParameters: CoursesApiApiV1CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV1CourseWithCourseRunsList> {
-            return localVarFp.apiV1CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve a specific course - API v1
-         * @param {CoursesApiApiV1CoursesRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV1CoursesRetrieve(requestParameters: CoursesApiApiV1CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V1CourseWithCourseRuns> {
-            return localVarFp.apiV1CoursesRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * List all courses - API v2
-         * @param {CoursesApiApiV2CoursesListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedCourseWithCourseRunsSerializerV2List> {
-            return localVarFp.apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve a specific course - API v2
-         * @param {CoursesApiApiV2CoursesRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseWithCourseRunsSerializerV2> {
-            return localVarFp.apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Fetch course outline data for the given course key from Open edX.
-         * @param {CoursesApiCourseOutlineRetrieveV3Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig): AxiosPromise<CourseOutlineResponse> {
-            return localVarFp.courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Fetch variant runs for a course(s) matching the specified filters.
-         * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseVariantRunsResponse>> {
-            return localVarFp.courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for apiV1CoursesList operation in CoursesApi.
- */
-export interface CoursesApiApiV1CoursesListRequest {
-    readonly courserun_is_enrollable?: boolean
-
-    readonly id?: number
-
-    readonly live?: boolean
-
-    /**
-     * A page number within the paginated result set.
-     */
-    readonly page?: number
-
-    readonly page__live?: boolean
-
-    /**
-     * Number of results to return per page.
-     */
-    readonly page_size?: number
-
-    readonly readable_id?: string
-}
-
-/**
- * Request parameters for apiV1CoursesRetrieve operation in CoursesApi.
- */
-export interface CoursesApiApiV1CoursesRetrieveRequest {
-    /**
-     * A unique integer value identifying this course.
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for apiV2CoursesList operation in CoursesApi.
- */
-export interface CoursesApiApiV2CoursesListRequest {
-    /**
-     * Only show courses belonging to this B2B contract
-     */
-    readonly contract_id?: number
-
-    /**
-     * Course Run Is Enrollable
-     */
-    readonly courserun_is_enrollable?: boolean
-
-    /**
-     * ISO 639-1 language code for this run (e.g. \&#39;en\&#39;, \&#39;zh\&#39;, \&#39;fr\&#39;). Leave blank for unspecified.  * &#x60;af_ZA&#x60; - af_ZA * &#x60;ar&#x60; - ar * &#x60;az&#x60; - az * &#x60;bo&#x60; - bo * &#x60;da&#x60; - da * &#x60;de&#x60; - de * &#x60;de_DE&#x60; - de_DE * &#x60;el&#x60; - el * &#x60;es_419&#x60; - es_419 * &#x60;es_ES&#x60; - es_ES * &#x60;en&#x60; - en * &#x60;fa&#x60; - fa * &#x60;fr&#x60; - fr * &#x60;fr_CA&#x60; - fr_CA * &#x60;he&#x60; - he * &#x60;hi&#x60; - hi * &#x60;hu&#x60; - hu * &#x60;id&#x60; - id * &#x60;it_IT&#x60; - it_IT * &#x60;ja&#x60; - ja * &#x60;ka&#x60; - ka * &#x60;kk&#x60; - kk * &#x60;ko&#x60; - ko * &#x60;lv&#x60; - lv * &#x60;nl&#x60; - nl * &#x60;pl&#x60; - pl * &#x60;pt_BR&#x60; - pt_BR * &#x60;pt_PT&#x60; - pt_PT * &#x60;ro&#x60; - ro * &#x60;ru&#x60; - ru * &#x60;sq&#x60; - sq * &#x60;sv&#x60; - sv * &#x60;sw&#x60; - sw * &#x60;te&#x60; - te * &#x60;th&#x60; - th * &#x60;tr_TR&#x60; - tr_TR * &#x60;uk&#x60; - uk * &#x60;uz&#x60; - uz * &#x60;vi&#x60; - vi * &#x60;zh_CN&#x60; - zh_CN * &#x60;zh_HANS&#x60; - zh_HANS * &#x60;zh_HK&#x60; - zh_HK
-     */
-    readonly courseruns__language?: ApiV2CoursesListCourserunsLanguageEnum
-
-    /**
-     * Variant: Describes the industry the run is adapted for.  * &#x60;&#x60; - Original * &#x60;E&#x60; - Energy * &#x60;F&#x60; - Finance * &#x60;HC&#x60; - Healthcare * &#x60;M&#x60; - Manufacturing
-     */
-    readonly courseruns__variant_industry?: ApiV2CoursesListCourserunsVariantIndustryEnum
-
-    /**
-     * Variant: Describes the length of the run (short/long).  * &#x60;&#x60; - Full * &#x60;S&#x60; - Short
-     */
-    readonly courseruns__variant_length?: ApiV2CoursesListCourserunsVariantLengthEnum
-
-    /**
-     * Multiple values may be separated by commas.
-     */
-    readonly id?: Array<number>
-
-    /**
-     * Include approved financial assistance information
-     */
-    readonly include_approved_financial_aid?: boolean
-
-    readonly live?: boolean
-
-    /**
-     * Only show courses belonging to this B2B/UAI organization
-     */
-    readonly org_id?: number
-
-    /**
-     * A page number within the paginated result set.
-     */
-    readonly page?: number
-
-    readonly page__live?: boolean
-
-    /**
-     * Number of results to return per page.
-     */
-    readonly page_size?: number
-
-    readonly readable_id?: string
-}
-
-/**
- * Request parameters for apiV2CoursesRetrieve operation in CoursesApi.
- */
-export interface CoursesApiApiV2CoursesRetrieveRequest {
-    /**
-     * A unique integer value (pk) or readable_id string identifying this course.
-     */
-    readonly id: string
-}
-
-/**
- * Request parameters for courseOutlineRetrieveV3 operation in CoursesApi.
- */
-export interface CoursesApiCourseOutlineRetrieveV3Request {
-    /**
-     * Open edX course key (URL-encoded recommended), e.g. course-v1%3AOpenedX%2BDemoX%2BDemoCourse
-     */
-    readonly course_id: string
-}
-
-/**
- * Request parameters for courseVariantRunsV3 operation in CoursesApi.
- */
-export interface CoursesApiCourseVariantRunsV3Request {
-    /**
-     * Contract to filter by
-     */
-    readonly contract: number
-
-    /**
-     * Course ID(s) to use
-     */
-    readonly course_id: Array<number>
-
-    /**
-     * Industry focus to retrieve
-     */
-    readonly industry?: string
-
-    /**
-     * Language to retrieve
-     */
-    readonly language?: string
-
-    /**
-     * Language to retrieve
-     */
-    readonly length?: string
-}
-
-/**
- * CoursesApi - object-oriented interface
- */
-export class CoursesApi extends BaseAPI {
-    /**
-     * List all courses - API v1
-     * @param {CoursesApiApiV1CoursesListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiV1CoursesList(requestParameters: CoursesApiApiV1CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV1CoursesList(requestParameters.courserun_is_enrollable, requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve a specific course - API v1
-     * @param {CoursesApiApiV1CoursesRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiV1CoursesRetrieve(requestParameters: CoursesApiApiV1CoursesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV1CoursesRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * List all courses - API v2
-     * @param {CoursesApiApiV2CoursesListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiV2CoursesList(requestParameters: CoursesApiApiV2CoursesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV2CoursesList(requestParameters.contract_id, requestParameters.courserun_is_enrollable, requestParameters.courseruns__language, requestParameters.courseruns__variant_industry, requestParameters.courseruns__variant_length, requestParameters.id, requestParameters.include_approved_financial_aid, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve a specific course - API v2
-     * @param {CoursesApiApiV2CoursesRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiV2CoursesRetrieve(requestParameters: CoursesApiApiV2CoursesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).apiV2CoursesRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Fetch course outline data for the given course key from Open edX.
-     * @param {CoursesApiCourseOutlineRetrieveV3Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public courseOutlineRetrieveV3(requestParameters: CoursesApiCourseOutlineRetrieveV3Request, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).courseOutlineRetrieveV3(requestParameters.course_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Fetch variant runs for a course(s) matching the specified filters.
-     * @param {CoursesApiCourseVariantRunsV3Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public courseVariantRunsV3(requestParameters: CoursesApiCourseVariantRunsV3Request, options?: RawAxiosRequestConfig) {
-        return CoursesApiFp(this.configuration).courseVariantRunsV3(requestParameters.contract, requestParameters.course_id, requestParameters.industry, requestParameters.language, requestParameters.length, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-export const ApiV2CoursesListCourserunsLanguageEnum = {
-    AfZa: 'af_ZA',
-    Ar: 'ar',
-    Az: 'az',
-    Bo: 'bo',
-    Da: 'da',
-    De: 'de',
-    DeDe: 'de_DE',
-    El: 'el',
-    En: 'en',
-    Es419: 'es_419',
-    EsEs: 'es_ES',
-    Fa: 'fa',
-    Fr: 'fr',
-    FrCa: 'fr_CA',
-    He: 'he',
-    Hi: 'hi',
-    Hu: 'hu',
-    Id: 'id',
-    ItIt: 'it_IT',
-    Ja: 'ja',
-    Ka: 'ka',
-    Kk: 'kk',
-    Ko: 'ko',
-    Lv: 'lv',
-    Nl: 'nl',
-    Pl: 'pl',
-    PtBr: 'pt_BR',
-    PtPt: 'pt_PT',
-    Ro: 'ro',
-    Ru: 'ru',
-    Sq: 'sq',
-    Sv: 'sv',
-    Sw: 'sw',
-    Te: 'te',
-    Th: 'th',
-    TrTr: 'tr_TR',
-    Uk: 'uk',
-    Uz: 'uz',
-    Vi: 'vi',
-    ZhCn: 'zh_CN',
-    ZhHans: 'zh_HANS',
-    ZhHk: 'zh_HK',
-} as const;
-export type ApiV2CoursesListCourserunsLanguageEnum = typeof ApiV2CoursesListCourserunsLanguageEnum[keyof typeof ApiV2CoursesListCourserunsLanguageEnum];
-export const ApiV2CoursesListCourserunsVariantIndustryEnum = {
-    Empty: '',
-    E: 'E',
-    F: 'F',
-    Hc: 'HC',
-    M: 'M',
-} as const;
-export type ApiV2CoursesListCourserunsVariantIndustryEnum = typeof ApiV2CoursesListCourserunsVariantIndustryEnum[keyof typeof ApiV2CoursesListCourserunsVariantIndustryEnum];
-export const ApiV2CoursesListCourserunsVariantLengthEnum = {
-    Empty: '',
-    S: 'S',
-} as const;
-export type ApiV2CoursesListCourserunsVariantLengthEnum = typeof ApiV2CoursesListCourserunsVariantLengthEnum[keyof typeof ApiV2CoursesListCourserunsVariantLengthEnum];
-
-
-/**
- * DepartmentsApi - axios parameter creator
- */
-export const DepartmentsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * List departments - v1
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsListV1: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/departments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * List departments - v2
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsListV2: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/departments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get department details - v1
-         * @param {number} id A unique integer value identifying this department.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsRetrieveV1: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('departmentsRetrieveV1', 'id', id)
-            const localVarPath = `/api/v1/departments/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get department details - v2
-         * @param {number} id A unique integer value identifying this department.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsRetrieveV2: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('departmentsRetrieveV2', 'id', id)
-            const localVarPath = `/api/v2/departments/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * DepartmentsApi - functional programming interface
- */
-export const DepartmentsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = DepartmentsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * List departments - v1
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async departmentsListV1(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DepartmentWithCount>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsListV1(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsListV1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * List departments - v2
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async departmentsListV2(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DepartmentWithCoursesAndPrograms>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsListV2(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsListV2']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Get department details - v1
-         * @param {number} id A unique integer value identifying this department.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async departmentsRetrieveV1(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DepartmentWithCount>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsRetrieveV1(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Get department details - v2
-         * @param {number} id A unique integer value identifying this department.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async departmentsRetrieveV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DepartmentWithCoursesAndPrograms>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.departmentsRetrieveV2(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DepartmentsApi.departmentsRetrieveV2']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * DepartmentsApi - factory interface
- */
-export const DepartmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = DepartmentsApiFp(configuration)
-    return {
-        /**
-         * List departments - v1
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsListV1(options?: RawAxiosRequestConfig): AxiosPromise<Array<DepartmentWithCount>> {
-            return localVarFp.departmentsListV1(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * List departments - v2
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsListV2(options?: RawAxiosRequestConfig): AxiosPromise<Array<DepartmentWithCoursesAndPrograms>> {
-            return localVarFp.departmentsListV2(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Get department details - v1
-         * @param {DepartmentsApiDepartmentsRetrieveV1Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsRetrieveV1(requestParameters: DepartmentsApiDepartmentsRetrieveV1Request, options?: RawAxiosRequestConfig): AxiosPromise<DepartmentWithCount> {
-            return localVarFp.departmentsRetrieveV1(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Get department details - v2
-         * @param {DepartmentsApiDepartmentsRetrieveV2Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        departmentsRetrieveV2(requestParameters: DepartmentsApiDepartmentsRetrieveV2Request, options?: RawAxiosRequestConfig): AxiosPromise<DepartmentWithCoursesAndPrograms> {
-            return localVarFp.departmentsRetrieveV2(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for departmentsRetrieveV1 operation in DepartmentsApi.
- */
-export interface DepartmentsApiDepartmentsRetrieveV1Request {
-    /**
-     * A unique integer value identifying this department.
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for departmentsRetrieveV2 operation in DepartmentsApi.
- */
-export interface DepartmentsApiDepartmentsRetrieveV2Request {
-    /**
-     * A unique integer value identifying this department.
-     */
-    readonly id: number
-}
-
-/**
- * DepartmentsApi - object-oriented interface
- */
-export class DepartmentsApi extends BaseAPI {
-    /**
-     * List departments - v1
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public departmentsListV1(options?: RawAxiosRequestConfig) {
-        return DepartmentsApiFp(this.configuration).departmentsListV1(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * List departments - v2
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public departmentsListV2(options?: RawAxiosRequestConfig) {
-        return DepartmentsApiFp(this.configuration).departmentsListV2(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Get department details - v1
-     * @param {DepartmentsApiDepartmentsRetrieveV1Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public departmentsRetrieveV1(requestParameters: DepartmentsApiDepartmentsRetrieveV1Request, options?: RawAxiosRequestConfig) {
-        return DepartmentsApiFp(this.configuration).departmentsRetrieveV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Get department details - v2
-     * @param {DepartmentsApiDepartmentsRetrieveV2Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public departmentsRetrieveV2(requestParameters: DepartmentsApiDepartmentsRetrieveV2Request, options?: RawAxiosRequestConfig) {
-        return DepartmentsApiFp(this.configuration).departmentsRetrieveV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
  * DiscountsApi - axios parameter creator
  */
 export const DiscountsApiAxiosParamCreator = function (configuration?: Configuration) {
@@ -16290,48 +12069,18 @@ export type DiscountsListRedemptionTypeEnum = typeof DiscountsListRedemptionType
 
 
 /**
- * EnrollmentsApi - axios parameter creator
+ * FlexiblePricingApi - axios parameter creator
  */
-export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const FlexiblePricingApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * View to handle direct POST requests to enroll in a course run.
+         * 
+         * @param {FlexiblePriceAdminRequest} [FlexiblePriceAdminRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiEnrollmentsCreate: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * API view set for user enrollments
-         * @param {CourseRunEnrollmentRequest} CourseRunEnrollmentRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        enrollmentsCreate: async (CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'CourseRunEnrollmentRequest' is not null or undefined
-            assertParamExists('enrollmentsCreate', 'CourseRunEnrollmentRequest', CourseRunEnrollmentRequest)
-            const localVarPath = `/api/v1/enrollments/`;
+        flexiblePricingApplicationsAdminCreate: async (FlexiblePriceAdminRequest?: FlexiblePriceAdminRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/flexible_pricing/applications_admin/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16349,7 +12098,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(CourseRunEnrollmentRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(FlexiblePriceAdminRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16357,15 +12106,15 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * API view set for user enrollments
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        flexiblePricingApplicationsAdminDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('enrollmentsDestroy', 'id', id)
-            const localVarPath = `/api/v1/enrollments/{id}/`
+            assertParamExists('flexiblePricingApplicationsAdminDestroy', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/applications_admin/{id}/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16389,12 +12138,14 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * API view set for user enrollments
+         * 
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/enrollments/`;
+        flexiblePricingApplicationsAdminList: async (l?: number, o?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/flexible_pricing/applications_admin/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16405,6 +12156,14 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (l !== undefined) {
+                localVarQueryParameter['l'] = l;
+            }
+
+            if (o !== undefined) {
+                localVarQueryParameter['o'] = o;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16418,16 +12177,16 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Update enrollment email preferences
-         * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {PatchedUpdateCourseRunEnrollmentRequest} [PatchedUpdateCourseRunEnrollmentRequest] 
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
+         * @param {PatchedFlexiblePriceAdminRequest} [PatchedFlexiblePriceAdminRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsPartialUpdate: async (id: number, PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        flexiblePricingApplicationsAdminPartialUpdate: async (id: number, PatchedFlexiblePriceAdminRequest?: PatchedFlexiblePriceAdminRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('enrollmentsPartialUpdate', 'id', id)
-            const localVarPath = `/api/v1/enrollments/{id}/`
+            assertParamExists('flexiblePricingApplicationsAdminPartialUpdate', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/applications_admin/{id}/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16446,7 +12205,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateCourseRunEnrollmentRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedFlexiblePriceAdminRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16454,15 +12213,15 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * API view set for user enrollments - v3
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        flexiblePricingApplicationsAdminRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('enrollmentsRetrieve', 'id', id)
-            const localVarPath = `/api/v3/enrollments/{id}/`
+            assertParamExists('flexiblePricingApplicationsAdminRetrieve', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/applications_admin/{id}/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16487,18 +12246,16 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * API view set for user enrollments
-         * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {CourseRunEnrollmentRequest} CourseRunEnrollmentRequest 
+         * Update the flexible pricing status
+         * @param {number} id A unique integer value identifying this flexible price.
+         * @param {FlexiblePriceAdminRequest} [FlexiblePriceAdminRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsUpdate: async (id: number, CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        flexiblePricingApplicationsAdminUpdate: async (id: number, FlexiblePriceAdminRequest?: FlexiblePriceAdminRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('enrollmentsUpdate', 'id', id)
-            // verify required parameter 'CourseRunEnrollmentRequest' is not null or undefined
-            assertParamExists('enrollmentsUpdate', 'CourseRunEnrollmentRequest', CourseRunEnrollmentRequest)
-            const localVarPath = `/api/v1/enrollments/{id}/`
+            assertParamExists('flexiblePricingApplicationsAdminUpdate', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/applications_admin/{id}/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16517,7 +12274,7 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(CourseRunEnrollmentRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(FlexiblePriceAdminRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16525,15 +12282,12 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Create a new user enrollment - API v2
-         * @param {CourseRunEnrollmentRequestV2Request} CourseRunEnrollmentRequestV2Request 
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsCreateV2: async (CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'CourseRunEnrollmentRequestV2Request' is not null or undefined
-            assertParamExists('userEnrollmentsCreateV2', 'CourseRunEnrollmentRequestV2Request', CourseRunEnrollmentRequestV2Request)
-            const localVarPath = `/api/v2/enrollments/`;
+        flexiblePricingCoursewaresCreate: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/flexible_pricing/coursewares/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16545,13 +12299,11 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(CourseRunEnrollmentRequestV2Request, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16559,47 +12311,15 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Create a new user enrollment - API v3
-         * @param {CourseRunEnrollmentV3Request} [CourseRunEnrollmentV3Request] 
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsCreateV3: async (CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v3/enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(CourseRunEnrollmentV3Request, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Unenroll from a course - API v2
-         * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userEnrollmentsDestroyV2: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        flexiblePricingCoursewaresDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('userEnrollmentsDestroyV2', 'id', id)
-            const localVarPath = `/api/v2/enrollments/{id}/`
+            assertParamExists('flexiblePricingCoursewaresDestroy', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/coursewares/{id}/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16623,15 +12343,44 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Unenroll from a course - API v3
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsDestroyV3: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        flexiblePricingCoursewaresList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v0/flexible_pricing/coursewares/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        flexiblePricingCoursewaresPartialUpdate: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('userEnrollmentsDestroyV3', 'id', id)
-            const localVarPath = `/api/v3/enrollments/{id}/`
+            assertParamExists('flexiblePricingCoursewaresPartialUpdate', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/coursewares/{id}/`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16640,47 +12389,9 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
-         * @param {number} [org_id] Filter by B2B organization ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userEnrollmentsListV2: async (exclude_b2b?: boolean, org_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (exclude_b2b !== undefined) {
-                localVarQueryParameter['exclude_b2b'] = exclude_b2b;
-            }
-
-            if (org_id !== undefined) {
-                localVarQueryParameter['org_id'] = org_id;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16694,14 +12405,16 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
-         * @param {number} [org_id] Filter by B2B organization ID
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsListV3: async (exclude_b2b?: boolean, org_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v3/enrollments/`;
+        flexiblePricingCoursewaresRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('flexiblePricingCoursewaresRetrieve', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/coursewares/{id}/`
+                .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16713,13 +12426,38 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (exclude_b2b !== undefined) {
-                localVarQueryParameter['exclude_b2b'] = exclude_b2b;
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        flexiblePricingCoursewaresUpdate: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('flexiblePricingCoursewaresUpdate', 'id', id)
+            const localVarPath = `/api/v0/flexible_pricing/coursewares/{id}/`
+                .replace('{id}', encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
             }
 
-            if (org_id !== undefined) {
-                localVarQueryParameter['org_id'] = org_id;
-            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16736,541 +12474,500 @@ export const EnrollmentsApiAxiosParamCreator = function (configuration?: Configu
 };
 
 /**
- * EnrollmentsApi - functional programming interface
+ * FlexiblePricingApi - functional programming interface
  */
-export const EnrollmentsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = EnrollmentsApiAxiosParamCreator(configuration)
+export const FlexiblePricingApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = FlexiblePricingApiAxiosParamCreator(configuration)
     return {
         /**
-         * View to handle direct POST requests to enroll in a course run.
+         * 
+         * @param {FlexiblePriceAdminRequest} [FlexiblePriceAdminRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiEnrollmentsCreate(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiEnrollmentsCreate(options);
+        async flexiblePricingApplicationsAdminCreate(FlexiblePriceAdminRequest?: FlexiblePriceAdminRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingApplicationsAdminCreate(FlexiblePriceAdminRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.apiEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingApplicationsAdminCreate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API view set for user enrollments
-         * @param {CourseRunEnrollmentRequest} CourseRunEnrollmentRequest 
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsCreate(CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsCreate(CourseRunEnrollmentRequest, options);
+        async flexiblePricingApplicationsAdminDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingApplicationsAdminDestroy(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsCreate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingApplicationsAdminDestroy']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API view set for user enrollments
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * 
+         * @param {number} [l] Number of results to return per page.
+         * @param {number} [o] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsDestroy(id, options);
+        async flexiblePricingApplicationsAdminList(l?: number, o?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedFlexiblePriceAdminList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingApplicationsAdminList(l, o, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingApplicationsAdminList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API view set for user enrollments
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
+         * @param {PatchedFlexiblePriceAdminRequest} [PatchedFlexiblePriceAdminRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollment>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsList(options);
+        async flexiblePricingApplicationsAdminPartialUpdate(id: number, PatchedFlexiblePriceAdminRequest?: PatchedFlexiblePriceAdminRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingApplicationsAdminPartialUpdate(id, PatchedFlexiblePriceAdminRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsList']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingApplicationsAdminPartialUpdate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Update enrollment email preferences
-         * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {PatchedUpdateCourseRunEnrollmentRequest} [PatchedUpdateCourseRunEnrollmentRequest] 
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsPartialUpdate(id: number, PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsPartialUpdate(id, PatchedUpdateCourseRunEnrollmentRequest, options);
+        async flexiblePricingApplicationsAdminRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingApplicationsAdminRetrieve(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingApplicationsAdminRetrieve']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API view set for user enrollments - v3
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * Update the flexible pricing status
+         * @param {number} id A unique integer value identifying this flexible price.
+         * @param {FlexiblePriceAdminRequest} [FlexiblePriceAdminRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentV3>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsRetrieve(id, options);
+        async flexiblePricingApplicationsAdminUpdate(id: number, FlexiblePriceAdminRequest?: FlexiblePriceAdminRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingApplicationsAdminUpdate(id, FlexiblePriceAdminRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingApplicationsAdminUpdate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API view set for user enrollments
-         * @param {number} id A unique integer value identifying this course run enrollment.
-         * @param {CourseRunEnrollmentRequest} CourseRunEnrollmentRequest 
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrollmentsUpdate(id: number, CourseRunEnrollmentRequest: CourseRunEnrollmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.enrollmentsUpdate(id, CourseRunEnrollmentRequest, options);
+        async flexiblePricingCoursewaresCreate(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceCoursewareAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingCoursewaresCreate(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.enrollmentsUpdate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingCoursewaresCreate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a new user enrollment - API v2
-         * @param {CourseRunEnrollmentRequestV2Request} CourseRunEnrollmentRequestV2Request 
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEnrollmentsCreateV2(CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsCreateV2(CourseRunEnrollmentRequestV2Request, options);
+        async flexiblePricingCoursewaresDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingCoursewaresDestroy(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV2']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingCoursewaresDestroy']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a new user enrollment - API v3
-         * @param {CourseRunEnrollmentV3Request} [CourseRunEnrollmentV3Request] 
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEnrollmentsCreateV3(CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentV3>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsCreateV3(CourseRunEnrollmentV3Request, options);
+        async flexiblePricingCoursewaresList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FlexiblePriceCoursewareAdmin>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingCoursewaresList(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsCreateV3']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingCoursewaresList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Unenroll from a course - API v2
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEnrollmentsDestroyV2(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV2(id, options);
+        async flexiblePricingCoursewaresPartialUpdate(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceCoursewareAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingCoursewaresPartialUpdate(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV2']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingCoursewaresPartialUpdate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Unenroll from a course - API v3
-         * @param {number} id A unique integer value identifying this course run enrollment.
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEnrollmentsDestroyV3(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsDestroyV3(id, options);
+        async flexiblePricingCoursewaresRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceCoursewareAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingCoursewaresRetrieve(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsDestroyV3']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingCoursewaresRetrieve']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
-         * @param {number} [org_id] Filter by B2B organization ID
+         * 
+         * @param {number} id A unique integer value identifying this flexible price.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEnrollmentsListV2(exclude_b2b?: boolean, org_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollmentRequestV2>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV2(exclude_b2b, org_id, options);
+        async flexiblePricingCoursewaresUpdate(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FlexiblePriceCoursewareAdmin>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.flexiblePricingCoursewaresUpdate(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV2']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {boolean} [exclude_b2b] Exclude B2B enrollments (enrollments made through a B2B contract)
-         * @param {number} [org_id] Filter by B2B organization ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async userEnrollmentsListV3(exclude_b2b?: boolean, org_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CourseRunEnrollmentV3>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userEnrollmentsListV3(exclude_b2b, org_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EnrollmentsApi.userEnrollmentsListV3']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['FlexiblePricingApi.flexiblePricingCoursewaresUpdate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * EnrollmentsApi - factory interface
+ * FlexiblePricingApi - factory interface
  */
-export const EnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = EnrollmentsApiFp(configuration)
+export const FlexiblePricingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = FlexiblePricingApiFp(configuration)
     return {
         /**
-         * View to handle direct POST requests to enroll in a course run.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiEnrollmentsCreate(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiEnrollmentsCreate(options).then((request) => request(axios, basePath));
+        flexiblePricingApplicationsAdminCreate(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminCreateRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceAdmin> {
+            return localVarFp.flexiblePricingApplicationsAdminCreate(requestParameters.FlexiblePriceAdminRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * API view set for user enrollments
-         * @param {EnrollmentsApiEnrollmentsCreateRequest} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminDestroyRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsCreate(requestParameters: EnrollmentsApiEnrollmentsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollment> {
-            return localVarFp.enrollmentsCreate(requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
+        flexiblePricingApplicationsAdminDestroy(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.flexiblePricingApplicationsAdminDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * API view set for user enrollments
-         * @param {EnrollmentsApiEnrollmentsDestroyRequest} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsDestroy(requestParameters: EnrollmentsApiEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.enrollmentsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
+        flexiblePricingApplicationsAdminList(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedFlexiblePriceAdminList> {
+            return localVarFp.flexiblePricingApplicationsAdminList(requestParameters.l, requestParameters.o, options).then((request) => request(axios, basePath));
         },
         /**
-         * API view set for user enrollments
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminPartialUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseRunEnrollment>> {
-            return localVarFp.enrollmentsList(options).then((request) => request(axios, basePath));
+        flexiblePricingApplicationsAdminPartialUpdate(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceAdmin> {
+            return localVarFp.flexiblePricingApplicationsAdminPartialUpdate(requestParameters.id, requestParameters.PatchedFlexiblePriceAdminRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * Update enrollment email preferences
-         * @param {EnrollmentsApiEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsPartialUpdate(requestParameters: EnrollmentsApiEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollment> {
-            return localVarFp.enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedUpdateCourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
+        flexiblePricingApplicationsAdminRetrieve(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceAdmin> {
+            return localVarFp.flexiblePricingApplicationsAdminRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * API view set for user enrollments - v3
-         * @param {EnrollmentsApiEnrollmentsRetrieveRequest} requestParameters Request parameters.
+         * Update the flexible pricing status
+         * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsRetrieve(requestParameters: EnrollmentsApiEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentV3> {
-            return localVarFp.enrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
+        flexiblePricingApplicationsAdminUpdate(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceAdmin> {
+            return localVarFp.flexiblePricingApplicationsAdminUpdate(requestParameters.id, requestParameters.FlexiblePriceAdminRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * API view set for user enrollments
-         * @param {EnrollmentsApiEnrollmentsUpdateRequest} requestParameters Request parameters.
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrollmentsUpdate(requestParameters: EnrollmentsApiEnrollmentsUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollment> {
-            return localVarFp.enrollmentsUpdate(requestParameters.id, requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(axios, basePath));
+        flexiblePricingCoursewaresCreate(options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceCoursewareAdmin> {
+            return localVarFp.flexiblePricingCoursewaresCreate(options).then((request) => request(axios, basePath));
         },
         /**
-         * Create a new user enrollment - API v2
-         * @param {EnrollmentsApiUserEnrollmentsCreateV2Request} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingCoursewaresDestroyRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsCreateV2(requestParameters: EnrollmentsApiUserEnrollmentsCreateV2Request, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentRequestV2> {
-            return localVarFp.userEnrollmentsCreateV2(requestParameters.CourseRunEnrollmentRequestV2Request, options).then((request) => request(axios, basePath));
+        flexiblePricingCoursewaresDestroy(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.flexiblePricingCoursewaresDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * Create a new user enrollment - API v3
-         * @param {EnrollmentsApiUserEnrollmentsCreateV3Request} requestParameters Request parameters.
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsCreateV3(requestParameters: EnrollmentsApiUserEnrollmentsCreateV3Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentV3> {
-            return localVarFp.userEnrollmentsCreateV3(requestParameters.CourseRunEnrollmentV3Request, options).then((request) => request(axios, basePath));
+        flexiblePricingCoursewaresList(options?: RawAxiosRequestConfig): AxiosPromise<Array<FlexiblePriceCoursewareAdmin>> {
+            return localVarFp.flexiblePricingCoursewaresList(options).then((request) => request(axios, basePath));
         },
         /**
-         * Unenroll from a course - API v2
-         * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingCoursewaresPartialUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsDestroyV2(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV2Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.userEnrollmentsDestroyV2(requestParameters.id, options).then((request) => request(axios, basePath));
+        flexiblePricingCoursewaresPartialUpdate(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceCoursewareAdmin> {
+            return localVarFp.flexiblePricingCoursewaresPartialUpdate(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * Unenroll from a course - API v3
-         * @param {EnrollmentsApiUserEnrollmentsDestroyV3Request} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingCoursewaresRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsDestroyV3(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV3Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.userEnrollmentsDestroyV3(requestParameters.id, options).then((request) => request(axios, basePath));
+        flexiblePricingCoursewaresRetrieve(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceCoursewareAdmin> {
+            return localVarFp.flexiblePricingCoursewaresRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
-         * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
+         * 
+         * @param {FlexiblePricingApiFlexiblePricingCoursewaresUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseRunEnrollmentRequestV2>> {
-            return localVarFp.userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-         * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userEnrollmentsListV3(requestParameters: EnrollmentsApiUserEnrollmentsListV3Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<Array<CourseRunEnrollmentV3>> {
-            return localVarFp.userEnrollmentsListV3(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(axios, basePath));
+        flexiblePricingCoursewaresUpdate(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<FlexiblePriceCoursewareAdmin> {
+            return localVarFp.flexiblePricingCoursewaresUpdate(requestParameters.id, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * Request parameters for enrollmentsCreate operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingApplicationsAdminCreate operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiEnrollmentsCreateRequest {
-    readonly CourseRunEnrollmentRequest: CourseRunEnrollmentRequest
+export interface FlexiblePricingApiFlexiblePricingApplicationsAdminCreateRequest {
+    readonly FlexiblePriceAdminRequest?: FlexiblePriceAdminRequest
 }
 
 /**
- * Request parameters for enrollmentsDestroy operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingApplicationsAdminDestroy operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiEnrollmentsDestroyRequest {
+export interface FlexiblePricingApiFlexiblePricingApplicationsAdminDestroyRequest {
     /**
-     * A unique integer value identifying this course run enrollment.
+     * A unique integer value identifying this flexible price.
      */
     readonly id: number
 }
 
 /**
- * Request parameters for enrollmentsPartialUpdate operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingApplicationsAdminList operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiEnrollmentsPartialUpdateRequest {
+export interface FlexiblePricingApiFlexiblePricingApplicationsAdminListRequest {
     /**
-     * A unique integer value identifying this course run enrollment.
+     * Number of results to return per page.
+     */
+    readonly l?: number
+
+    /**
+     * The initial index from which to return the results.
+     */
+    readonly o?: number
+}
+
+/**
+ * Request parameters for flexiblePricingApplicationsAdminPartialUpdate operation in FlexiblePricingApi.
+ */
+export interface FlexiblePricingApiFlexiblePricingApplicationsAdminPartialUpdateRequest {
+    /**
+     * A unique integer value identifying this flexible price.
      */
     readonly id: number
 
-    readonly PatchedUpdateCourseRunEnrollmentRequest?: PatchedUpdateCourseRunEnrollmentRequest
+    readonly PatchedFlexiblePriceAdminRequest?: PatchedFlexiblePriceAdminRequest
 }
 
 /**
- * Request parameters for enrollmentsRetrieve operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingApplicationsAdminRetrieve operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiEnrollmentsRetrieveRequest {
+export interface FlexiblePricingApiFlexiblePricingApplicationsAdminRetrieveRequest {
     /**
-     * A unique integer value identifying this course run enrollment.
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for enrollmentsUpdate operation in EnrollmentsApi.
- */
-export interface EnrollmentsApiEnrollmentsUpdateRequest {
-    /**
-     * A unique integer value identifying this course run enrollment.
-     */
-    readonly id: number
-
-    readonly CourseRunEnrollmentRequest: CourseRunEnrollmentRequest
-}
-
-/**
- * Request parameters for userEnrollmentsCreateV2 operation in EnrollmentsApi.
- */
-export interface EnrollmentsApiUserEnrollmentsCreateV2Request {
-    readonly CourseRunEnrollmentRequestV2Request: CourseRunEnrollmentRequestV2Request
-}
-
-/**
- * Request parameters for userEnrollmentsCreateV3 operation in EnrollmentsApi.
- */
-export interface EnrollmentsApiUserEnrollmentsCreateV3Request {
-    readonly CourseRunEnrollmentV3Request?: CourseRunEnrollmentV3Request
-}
-
-/**
- * Request parameters for userEnrollmentsDestroyV2 operation in EnrollmentsApi.
- */
-export interface EnrollmentsApiUserEnrollmentsDestroyV2Request {
-    /**
-     * A unique integer value identifying this course run enrollment.
+     * A unique integer value identifying this flexible price.
      */
     readonly id: number
 }
 
 /**
- * Request parameters for userEnrollmentsDestroyV3 operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingApplicationsAdminUpdate operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiUserEnrollmentsDestroyV3Request {
+export interface FlexiblePricingApiFlexiblePricingApplicationsAdminUpdateRequest {
     /**
-     * A unique integer value identifying this course run enrollment.
+     * A unique integer value identifying this flexible price.
+     */
+    readonly id: number
+
+    readonly FlexiblePriceAdminRequest?: FlexiblePriceAdminRequest
+}
+
+/**
+ * Request parameters for flexiblePricingCoursewaresDestroy operation in FlexiblePricingApi.
+ */
+export interface FlexiblePricingApiFlexiblePricingCoursewaresDestroyRequest {
+    /**
+     * A unique integer value identifying this flexible price.
      */
     readonly id: number
 }
 
 /**
- * Request parameters for userEnrollmentsListV2 operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingCoursewaresPartialUpdate operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiUserEnrollmentsListV2Request {
+export interface FlexiblePricingApiFlexiblePricingCoursewaresPartialUpdateRequest {
     /**
-     * Exclude B2B enrollments (enrollments made through a B2B contract)
+     * A unique integer value identifying this flexible price.
      */
-    readonly exclude_b2b?: boolean
-
-    /**
-     * Filter by B2B organization ID
-     */
-    readonly org_id?: number
+    readonly id: number
 }
 
 /**
- * Request parameters for userEnrollmentsListV3 operation in EnrollmentsApi.
+ * Request parameters for flexiblePricingCoursewaresRetrieve operation in FlexiblePricingApi.
  */
-export interface EnrollmentsApiUserEnrollmentsListV3Request {
+export interface FlexiblePricingApiFlexiblePricingCoursewaresRetrieveRequest {
     /**
-     * Exclude B2B enrollments (enrollments made through a B2B contract)
+     * A unique integer value identifying this flexible price.
      */
-    readonly exclude_b2b?: boolean
-
-    /**
-     * Filter by B2B organization ID
-     */
-    readonly org_id?: number
+    readonly id: number
 }
 
 /**
- * EnrollmentsApi - object-oriented interface
+ * Request parameters for flexiblePricingCoursewaresUpdate operation in FlexiblePricingApi.
  */
-export class EnrollmentsApi extends BaseAPI {
+export interface FlexiblePricingApiFlexiblePricingCoursewaresUpdateRequest {
     /**
-     * View to handle direct POST requests to enroll in a course run.
+     * A unique integer value identifying this flexible price.
+     */
+    readonly id: number
+}
+
+/**
+ * FlexiblePricingApi - object-oriented interface
+ */
+export class FlexiblePricingApi extends BaseAPI {
+    /**
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiEnrollmentsCreate(options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).apiEnrollmentsCreate(options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingApplicationsAdminCreate(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminCreateRequest = {}, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingApplicationsAdminCreate(requestParameters.FlexiblePriceAdminRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * API view set for user enrollments
-     * @param {EnrollmentsApiEnrollmentsCreateRequest} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public enrollmentsCreate(requestParameters: EnrollmentsApiEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsCreate(requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingApplicationsAdminDestroy(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminDestroyRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingApplicationsAdminDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * API view set for user enrollments
-     * @param {EnrollmentsApiEnrollmentsDestroyRequest} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminListRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public enrollmentsDestroy(requestParameters: EnrollmentsApiEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingApplicationsAdminList(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminListRequest = {}, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingApplicationsAdminList(requestParameters.l, requestParameters.o, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * API view set for user enrollments
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public enrollmentsList(options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsList(options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingApplicationsAdminPartialUpdate(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingApplicationsAdminPartialUpdate(requestParameters.id, requestParameters.PatchedFlexiblePriceAdminRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Update enrollment email preferences
-     * @param {EnrollmentsApiEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public enrollmentsPartialUpdate(requestParameters: EnrollmentsApiEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsPartialUpdate(requestParameters.id, requestParameters.PatchedUpdateCourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingApplicationsAdminRetrieve(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingApplicationsAdminRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * API view set for user enrollments - v3
-     * @param {EnrollmentsApiEnrollmentsRetrieveRequest} requestParameters Request parameters.
+     * Update the flexible pricing status
+     * @param {FlexiblePricingApiFlexiblePricingApplicationsAdminUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public enrollmentsRetrieve(requestParameters: EnrollmentsApiEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingApplicationsAdminUpdate(requestParameters: FlexiblePricingApiFlexiblePricingApplicationsAdminUpdateRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingApplicationsAdminUpdate(requestParameters.id, requestParameters.FlexiblePriceAdminRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * API view set for user enrollments
-     * @param {EnrollmentsApiEnrollmentsUpdateRequest} requestParameters Request parameters.
+     * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public enrollmentsUpdate(requestParameters: EnrollmentsApiEnrollmentsUpdateRequest, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).enrollmentsUpdate(requestParameters.id, requestParameters.CourseRunEnrollmentRequest, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingCoursewaresCreate(options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingCoursewaresCreate(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Create a new user enrollment - API v2
-     * @param {EnrollmentsApiUserEnrollmentsCreateV2Request} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingCoursewaresDestroyRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userEnrollmentsCreateV2(requestParameters: EnrollmentsApiUserEnrollmentsCreateV2Request, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).userEnrollmentsCreateV2(requestParameters.CourseRunEnrollmentRequestV2Request, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingCoursewaresDestroy(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresDestroyRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingCoursewaresDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Create a new user enrollment - API v3
-     * @param {EnrollmentsApiUserEnrollmentsCreateV3Request} requestParameters Request parameters.
+     * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userEnrollmentsCreateV3(requestParameters: EnrollmentsApiUserEnrollmentsCreateV3Request = {}, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).userEnrollmentsCreateV3(requestParameters.CourseRunEnrollmentV3Request, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingCoursewaresList(options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingCoursewaresList(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Unenroll from a course - API v2
-     * @param {EnrollmentsApiUserEnrollmentsDestroyV2Request} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingCoursewaresPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userEnrollmentsDestroyV2(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV2Request, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).userEnrollmentsDestroyV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingCoursewaresPartialUpdate(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingCoursewaresPartialUpdate(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Unenroll from a course - API v3
-     * @param {EnrollmentsApiUserEnrollmentsDestroyV3Request} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingCoursewaresRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userEnrollmentsDestroyV3(requestParameters: EnrollmentsApiUserEnrollmentsDestroyV3Request, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).userEnrollmentsDestroyV3(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingCoursewaresRetrieve(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresRetrieveRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingCoursewaresRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * List user enrollments with B2B organization and contract information - API v2. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-     * @param {EnrollmentsApiUserEnrollmentsListV2Request} requestParameters Request parameters.
+     * 
+     * @param {FlexiblePricingApiFlexiblePricingCoursewaresUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userEnrollmentsListV2(requestParameters: EnrollmentsApiUserEnrollmentsListV2Request = {}, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).userEnrollmentsListV2(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * List user enrollments with B2B organization and contract information - API v3. Use ?exclude_b2b=true to filter out enrollments made through a B2B contract. Use ?org_id=<id> to filter enrollments by specific B2B organization.
-     * @param {EnrollmentsApiUserEnrollmentsListV3Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public userEnrollmentsListV3(requestParameters: EnrollmentsApiUserEnrollmentsListV3Request = {}, options?: RawAxiosRequestConfig) {
-        return EnrollmentsApiFp(this.configuration).userEnrollmentsListV3(requestParameters.exclude_b2b, requestParameters.org_id, options).then((request) => request(this.axios, this.basePath));
+    public flexiblePricingCoursewaresUpdate(requestParameters: FlexiblePricingApiFlexiblePricingCoursewaresUpdateRequest, options?: RawAxiosRequestConfig) {
+        return FlexiblePricingApiFp(this.configuration).flexiblePricingCoursewaresUpdate(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -17675,437 +13372,6 @@ export class OrdersApi extends BaseAPI {
      */
     public ordersStatusRetrieve(requestParameters: OrdersApiOrdersStatusRetrieveRequest, options?: RawAxiosRequestConfig) {
         return OrdersApiFp(this.configuration).ordersStatusRetrieve(requestParameters.order_id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * PagesApi - axios parameter creator
- */
-export const PagesApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Returns pages of all types
-         * @summary List all Wagtail Pages
-         * @param {string} [fields] Specify fields (e.g. &#x60;*&#x60;)
-         * @param {string} [type] Filter by Wagtail page type
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesList: async (fields?: string, type?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (fields !== undefined) {
-                localVarQueryParameter['fields'] = fields;
-            }
-
-            if (type !== undefined) {
-                localVarQueryParameter['type'] = type;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns details of a specific Wagtail page by ID
-         * @summary Get Wagtail Page Details
-         * @param {number} id ID of the Wagtail page
-         * @param {number} [revision_id] Optional certificate revision ID to retrieve a specific revision of the certificate page
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesRetrieve: async (id: number, revision_id?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('pagesRetrieve', 'id', id)
-            const localVarPath = `/api/v2/pages/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (revision_id !== undefined) {
-                localVarQueryParameter['revision_id'] = revision_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns pages of type cms.CertificatePage
-         * @summary List all Certificate Pages
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesfieldstypecmsCertificatepageRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/?fields=*&type=cms.certificatepage`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns pages of type cms.CoursePage
-         * @summary List all Course Pages
-         * @param {string} [readable_id] filter by course readable_id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesfieldstypecmsCoursepageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/?fields=*&type=cms.coursepage`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (readable_id !== undefined) {
-                localVarQueryParameter['readable_id'] = readable_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns pages of type cms.ProgramPage
-         * @summary List all Program Pages
-         * @param {string} [readable_id] filter by program readable_id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesfieldstypecmsProgrampageRetrieve: async (readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/pages/?fields=*&type=cms.programpage`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (readable_id !== undefined) {
-                localVarQueryParameter['readable_id'] = readable_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * PagesApi - functional programming interface
- */
-export const PagesApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = PagesApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Returns pages of all types
-         * @summary List all Wagtail Pages
-         * @param {string} [fields] Specify fields (e.g. &#x60;*&#x60;)
-         * @param {string} [type] Filter by Wagtail page type
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async pagesList(fields?: string, type?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesList(fields, type, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Returns details of a specific Wagtail page by ID
-         * @summary Get Wagtail Page Details
-         * @param {number} id ID of the Wagtail page
-         * @param {number} [revision_id] Optional certificate revision ID to retrieve a specific revision of the certificate page
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async pagesRetrieve(id: number, revision_id?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PagesRetrieve200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesRetrieve(id, revision_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Returns pages of type cms.CertificatePage
-         * @summary List all Certificate Pages
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CertificatePageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCertificatepageRetrieve(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCertificatepageRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Returns pages of type cms.CoursePage
-         * @summary List all Course Pages
-         * @param {string} [readable_id] filter by course readable_id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async pagesfieldstypecmsCoursepageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoursePageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsCoursepageRetrieve(readable_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesfieldstypecmsCoursepageRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Returns pages of type cms.ProgramPage
-         * @summary List all Program Pages
-         * @param {string} [readable_id] filter by program readable_id
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async pagesfieldstypecmsProgrampageRetrieve(readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProgramPageList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pagesfieldstypecmsProgrampageRetrieve(readable_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PagesApi.pagesfieldstypecmsProgrampageRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * PagesApi - factory interface
- */
-export const PagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = PagesApiFp(configuration)
-    return {
-        /**
-         * Returns pages of all types
-         * @summary List all Wagtail Pages
-         * @param {PagesApiPagesListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesList(requestParameters: PagesApiPagesListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PageList> {
-            return localVarFp.pagesList(requestParameters.fields, requestParameters.type, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns details of a specific Wagtail page by ID
-         * @summary Get Wagtail Page Details
-         * @param {PagesApiPagesRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesRetrieve(requestParameters: PagesApiPagesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<PagesRetrieve200Response> {
-            return localVarFp.pagesRetrieve(requestParameters.id, requestParameters.revision_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns pages of type cms.CertificatePage
-         * @summary List all Certificate Pages
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<CertificatePageList> {
-            return localVarFp.pagesfieldstypecmsCertificatepageRetrieve(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns pages of type cms.CoursePage
-         * @summary List all Course Pages
-         * @param {PagesApiPagesfieldstypecmsCoursepageRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesfieldstypecmsCoursepageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursepageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<CoursePageList> {
-            return localVarFp.pagesfieldstypecmsCoursepageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns pages of type cms.ProgramPage
-         * @summary List all Program Pages
-         * @param {PagesApiPagesfieldstypecmsProgrampageRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        pagesfieldstypecmsProgrampageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgrampageRetrieveRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ProgramPageList> {
-            return localVarFp.pagesfieldstypecmsProgrampageRetrieve(requestParameters.readable_id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for pagesList operation in PagesApi.
- */
-export interface PagesApiPagesListRequest {
-    /**
-     * Specify fields (e.g. &#x60;*&#x60;)
-     */
-    readonly fields?: string
-
-    /**
-     * Filter by Wagtail page type
-     */
-    readonly type?: string
-}
-
-/**
- * Request parameters for pagesRetrieve operation in PagesApi.
- */
-export interface PagesApiPagesRetrieveRequest {
-    /**
-     * ID of the Wagtail page
-     */
-    readonly id: number
-
-    /**
-     * Optional certificate revision ID to retrieve a specific revision of the certificate page
-     */
-    readonly revision_id?: number
-}
-
-/**
- * Request parameters for pagesfieldstypecmsCoursepageRetrieve operation in PagesApi.
- */
-export interface PagesApiPagesfieldstypecmsCoursepageRetrieveRequest {
-    /**
-     * filter by course readable_id
-     */
-    readonly readable_id?: string
-}
-
-/**
- * Request parameters for pagesfieldstypecmsProgrampageRetrieve operation in PagesApi.
- */
-export interface PagesApiPagesfieldstypecmsProgrampageRetrieveRequest {
-    /**
-     * filter by program readable_id
-     */
-    readonly readable_id?: string
-}
-
-/**
- * PagesApi - object-oriented interface
- */
-export class PagesApi extends BaseAPI {
-    /**
-     * Returns pages of all types
-     * @summary List all Wagtail Pages
-     * @param {PagesApiPagesListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public pagesList(requestParameters: PagesApiPagesListRequest = {}, options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesList(requestParameters.fields, requestParameters.type, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns details of a specific Wagtail page by ID
-     * @summary Get Wagtail Page Details
-     * @param {PagesApiPagesRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public pagesRetrieve(requestParameters: PagesApiPagesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesRetrieve(requestParameters.id, requestParameters.revision_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns pages of type cms.CertificatePage
-     * @summary List all Certificate Pages
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public pagesfieldstypecmsCertificatepageRetrieve(options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsCertificatepageRetrieve(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns pages of type cms.CoursePage
-     * @summary List all Course Pages
-     * @param {PagesApiPagesfieldstypecmsCoursepageRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public pagesfieldstypecmsCoursepageRetrieve(requestParameters: PagesApiPagesfieldstypecmsCoursepageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsCoursepageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns pages of type cms.ProgramPage
-     * @summary List all Program Pages
-     * @param {PagesApiPagesfieldstypecmsProgrampageRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public pagesfieldstypecmsProgrampageRetrieve(requestParameters: PagesApiPagesfieldstypecmsProgrampageRetrieveRequest = {}, options?: RawAxiosRequestConfig) {
-        return PagesApiFp(this.configuration).pagesfieldstypecmsProgrampageRetrieve(requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -18924,1446 +14190,6 @@ export class ProductsApi extends BaseAPI {
 
 
 /**
- * ProgramCertificatesApi - axios parameter creator
- */
-export const ProgramCertificatesApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Viewset to read a single course certificate
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programCertificatesRetrieve: async (uuid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'uuid' is not null or undefined
-            assertParamExists('programCertificatesRetrieve', 'uuid', uuid)
-            const localVarPath = `/api/v2/program_certificates/{uuid}/`
-                .replace('{uuid}', encodeURIComponent(String(uuid)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ProgramCertificatesApi - functional programming interface
- */
-export const ProgramCertificatesApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ProgramCertificatesApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Viewset to read a single course certificate
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programCertificatesRetrieve(uuid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCertificate>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programCertificatesRetrieve(uuid, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramCertificatesApi.programCertificatesRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ProgramCertificatesApi - factory interface
- */
-export const ProgramCertificatesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ProgramCertificatesApiFp(configuration)
-    return {
-        /**
-         * Viewset to read a single course certificate
-         * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramCertificate> {
-            return localVarFp.programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for programCertificatesRetrieve operation in ProgramCertificatesApi.
- */
-export interface ProgramCertificatesApiProgramCertificatesRetrieveRequest {
-    readonly uuid: string
-}
-
-/**
- * ProgramCertificatesApi - object-oriented interface
- */
-export class ProgramCertificatesApi extends BaseAPI {
-    /**
-     * Viewset to read a single course certificate
-     * @param {ProgramCertificatesApiProgramCertificatesRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programCertificatesRetrieve(requestParameters: ProgramCertificatesApiProgramCertificatesRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramCertificatesApiFp(this.configuration).programCertificatesRetrieve(requestParameters.uuid, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * ProgramCollectionsApi - axios parameter creator
- */
-export const ProgramCollectionsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Readonly viewset for ProgramCollection objects.
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programCollectionsList: async (page?: number, page_size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/program-collections/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (page_size !== undefined) {
-                localVarQueryParameter['page_size'] = page_size;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Readonly viewset for ProgramCollection objects.
-         * @param {number} id A unique integer value identifying this Program Collection.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programCollectionsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('programCollectionsRetrieve', 'id', id)
-            const localVarPath = `/api/v2/program-collections/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ProgramCollectionsApi - functional programming interface
- */
-export const ProgramCollectionsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ProgramCollectionsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Readonly viewset for ProgramCollection objects.
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programCollectionsList(page?: number, page_size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramCollectionList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programCollectionsList(page, page_size, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Readonly viewset for ProgramCollection objects.
-         * @param {number} id A unique integer value identifying this Program Collection.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programCollectionsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramCollection>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programCollectionsRetrieve(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramCollectionsApi.programCollectionsRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ProgramCollectionsApi - factory interface
- */
-export const ProgramCollectionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ProgramCollectionsApiFp(configuration)
-    return {
-        /**
-         * Readonly viewset for ProgramCollection objects.
-         * @param {ProgramCollectionsApiProgramCollectionsListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programCollectionsList(requestParameters: ProgramCollectionsApiProgramCollectionsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramCollectionList> {
-            return localVarFp.programCollectionsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Readonly viewset for ProgramCollection objects.
-         * @param {ProgramCollectionsApiProgramCollectionsRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programCollectionsRetrieve(requestParameters: ProgramCollectionsApiProgramCollectionsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramCollection> {
-            return localVarFp.programCollectionsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for programCollectionsList operation in ProgramCollectionsApi.
- */
-export interface ProgramCollectionsApiProgramCollectionsListRequest {
-    /**
-     * A page number within the paginated result set.
-     */
-    readonly page?: number
-
-    /**
-     * Number of results to return per page.
-     */
-    readonly page_size?: number
-}
-
-/**
- * Request parameters for programCollectionsRetrieve operation in ProgramCollectionsApi.
- */
-export interface ProgramCollectionsApiProgramCollectionsRetrieveRequest {
-    /**
-     * A unique integer value identifying this Program Collection.
-     */
-    readonly id: number
-}
-
-/**
- * ProgramCollectionsApi - object-oriented interface
- */
-export class ProgramCollectionsApi extends BaseAPI {
-    /**
-     * Readonly viewset for ProgramCollection objects.
-     * @param {ProgramCollectionsApiProgramCollectionsListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programCollectionsList(requestParameters: ProgramCollectionsApiProgramCollectionsListRequest = {}, options?: RawAxiosRequestConfig) {
-        return ProgramCollectionsApiFp(this.configuration).programCollectionsList(requestParameters.page, requestParameters.page_size, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Readonly viewset for ProgramCollection objects.
-     * @param {ProgramCollectionsApiProgramCollectionsRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programCollectionsRetrieve(requestParameters: ProgramCollectionsApiProgramCollectionsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramCollectionsApiFp(this.configuration).programCollectionsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * ProgramEnrollmentsApi - axios parameter creator
- */
-export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {number} id Program enrollment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programEnrollmentsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('programEnrollmentsDestroy', 'id', id)
-            const localVarPath = `/api/v1/program_enrollments/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns a unified set of program and course enrollments for the current user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programEnrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/program_enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a specific program enrollment.
-         * @param {number} id Program enrollment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programEnrollmentsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('programEnrollmentsRetrieve', 'id', id)
-            const localVarPath = `/api/v1/program_enrollments/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {number} id Program ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v2ProgramEnrollmentsDestroy: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('v2ProgramEnrollmentsDestroy', 'id', id)
-            const localVarPath = `/api/v2/program_enrollments/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns a unified set of program and course enrollments for the current user using v2 serializers.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v2ProgramEnrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/program_enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a specific program enrollment using v2 serializers.
-         * @param {number} id Program ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v2ProgramEnrollmentsRetrieve: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('v2ProgramEnrollmentsRetrieve', 'id', id)
-            const localVarPath = `/api/v2/program_enrollments/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
-         * @param {V3ProgramEnrollmentRequestRequest} V3ProgramEnrollmentRequestRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsCreate: async (V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'V3ProgramEnrollmentRequestRequest' is not null or undefined
-            assertParamExists('v3ProgramEnrollmentsCreate', 'V3ProgramEnrollmentRequestRequest', V3ProgramEnrollmentRequestRequest)
-            const localVarPath = `/api/v3/program_enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(V3ProgramEnrollmentRequestRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
-         * @param {number} program_id Program ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsDestroy: async (program_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'program_id' is not null or undefined
-            assertParamExists('v3ProgramEnrollmentsDestroy', 'program_id', program_id)
-            const localVarPath = `/api/v3/program_enrollments/{program_id}/`
-                .replace('{program_id}', encodeURIComponent(String(program_id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * ViewSet for user program enrollments with v3 serializers.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v3/program_enrollments/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * ViewSet for user program enrollments with v3 serializers.
-         * @param {number} program_id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsRetrieve: async (program_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'program_id' is not null or undefined
-            assertParamExists('v3ProgramEnrollmentsRetrieve', 'program_id', program_id)
-            const localVarPath = `/api/v3/program_enrollments/{program_id}/`
-                .replace('{program_id}', encodeURIComponent(String(program_id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ProgramEnrollmentsApi - functional programming interface
- */
-export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ProgramEnrollmentsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {number} id Program enrollment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programEnrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProgramEnrollmentDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsDestroy(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Returns a unified set of program and course enrollments for the current user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserProgramEnrollmentDetail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsList(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Retrieve a specific program enrollment.
-         * @param {number} id Program enrollment ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programEnrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProgramEnrollmentDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programEnrollmentsRetrieve(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.programEnrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {number} id Program ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v2ProgramEnrollmentsDestroy(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V2UserProgramEnrollmentDetail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsDestroy(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Returns a unified set of program and course enrollments for the current user using v2 serializers.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V2UserProgramEnrollmentDetail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsList(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Retrieve a specific program enrollment using v2 serializers.
-         * @param {number} id Program ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v2ProgramEnrollmentsRetrieve(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2UserProgramEnrollmentDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v2ProgramEnrollmentsRetrieve(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v2ProgramEnrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
-         * @param {V3ProgramEnrollmentRequestRequest} V3ProgramEnrollmentRequestRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsCreate(V3ProgramEnrollmentRequestRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
-         * @param {number} program_id Program ID
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v3ProgramEnrollmentsDestroy(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsDestroy(program_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsDestroy']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * ViewSet for user program enrollments with v3 serializers.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<V3UserProgramEnrollment>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsList(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * ViewSet for user program enrollments with v3 serializers.
-         * @param {number} program_id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async v3ProgramEnrollmentsRetrieve(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V3UserProgramEnrollment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsRetrieve(program_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsRetrieve']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ProgramEnrollmentsApi - factory interface
- */
-export const ProgramEnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ProgramEnrollmentsApiFp(configuration)
-    return {
-        /**
-         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserProgramEnrollmentDetail> {
-            return localVarFp.programEnrollmentsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns a unified set of program and course enrollments for the current user.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programEnrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<UserProgramEnrollmentDetail>> {
-            return localVarFp.programEnrollmentsList(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve a specific program enrollment.
-         * @param {ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserProgramEnrollmentDetail> {
-            return localVarFp.programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-         * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v2ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<V2UserProgramEnrollmentDetail>> {
-            return localVarFp.v2ProgramEnrollmentsDestroy(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns a unified set of program and course enrollments for the current user using v2 serializers.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<V2UserProgramEnrollmentDetail>> {
-            return localVarFp.v2ProgramEnrollmentsList(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve a specific program enrollment using v2 serializers.
-         * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V2UserProgramEnrollmentDetail> {
-            return localVarFp.v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
-         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsCreate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
-         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.v3ProgramEnrollmentsDestroy(requestParameters.program_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * ViewSet for user program enrollments with v3 serializers.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<V3UserProgramEnrollment>> {
-            return localVarFp.v3ProgramEnrollmentsList(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * ViewSet for user program enrollments with v3 serializers.
-         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        v3ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<V3UserProgramEnrollment> {
-            return localVarFp.v3ProgramEnrollmentsRetrieve(requestParameters.program_id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for programEnrollmentsDestroy operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest {
-    /**
-     * Program enrollment ID
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for programEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest {
-    /**
-     * Program enrollment ID
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for v2ProgramEnrollmentsDestroy operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest {
-    /**
-     * Program ID
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for v2ProgramEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest {
-    /**
-     * Program ID
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for v3ProgramEnrollmentsCreate operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest {
-    readonly V3ProgramEnrollmentRequestRequest: V3ProgramEnrollmentRequestRequest
-}
-
-/**
- * Request parameters for v3ProgramEnrollmentsDestroy operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest {
-    /**
-     * Program ID
-     */
-    readonly program_id: number
-}
-
-/**
- * Request parameters for v3ProgramEnrollmentsRetrieve operation in ProgramEnrollmentsApi.
- */
-export interface ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest {
-    readonly program_id: number
-}
-
-/**
- * ProgramEnrollmentsApi - object-oriented interface
- */
-export class ProgramEnrollmentsApi extends BaseAPI {
-    /**
-     * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-     * @param {ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns a unified set of program and course enrollments for the current user.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programEnrollmentsList(options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve a specific program enrollment.
-     * @param {ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).programEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Unenroll the user from this program. This is simpler than the corresponding function for CourseRunEnrollments; edX doesn\'t really know what programs are so there\'s nothing to process there.
-     * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v2ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsDestroy(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns a unified set of program and course enrollments for the current user using v2 serializers.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v2ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve a specific program enrollment using v2 serializers.
-     * @param {ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v2ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV2ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v2ProgramEnrollmentsRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Create a program enrollment for the authenticated user.  Returns 200 if the user already has an active enrollment, 201 if a new enrollment was created or an inactive one was reactivated.
-     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v3ProgramEnrollmentsCreate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsCreate(requestParameters.V3ProgramEnrollmentRequestRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Unenroll the user from this program.  Returns 204 No Content. Idempotent - returns 204 even if not currently enrolled. Returns 404 if the program does not exist.
-     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v3ProgramEnrollmentsDestroy(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsDestroy(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * ViewSet for user program enrollments with v3 serializers.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * ViewSet for user program enrollments with v3 serializers.
-     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public v3ProgramEnrollmentsRetrieve(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest, options?: RawAxiosRequestConfig) {
-        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsRetrieve(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * ProgramsApi - axios parameter creator
- */
-export const ProgramsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * List Programs - v1
-         * @param {number} [id] 
-         * @param {boolean} [live] 
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsListV1: async (id?: number, live?: boolean, page?: number, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/programs/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-            if (live !== undefined) {
-                localVarQueryParameter['live'] = live;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (page_size !== undefined) {
-                localVarQueryParameter['page_size'] = page_size;
-            }
-
-            if (readable_id !== undefined) {
-                localVarQueryParameter['readable_id'] = readable_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * List Programs - v2
-         * @param {number} [contract_id] 
-         * @param {Array<number>} [id] Multiple values may be separated by commas.
-         * @param {boolean} [live] 
-         * @param {number} [org_id] 
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {boolean} [page__live] 
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsListV2: async (contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/programs/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (contract_id !== undefined) {
-                localVarQueryParameter['contract_id'] = contract_id;
-            }
-
-            if (id) {
-                localVarQueryParameter['id'] = id.join(COLLECTION_FORMATS.csv);
-            }
-
-            if (live !== undefined) {
-                localVarQueryParameter['live'] = live;
-            }
-
-            if (org_id !== undefined) {
-                localVarQueryParameter['org_id'] = org_id;
-            }
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (page__live !== undefined) {
-                localVarQueryParameter['page__live'] = page__live;
-            }
-
-            if (page_size !== undefined) {
-                localVarQueryParameter['page_size'] = page_size;
-            }
-
-            if (readable_id !== undefined) {
-                localVarQueryParameter['readable_id'] = readable_id;
-            }
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * API view set for Programs - v1
-         * @param {number} id A unique integer value identifying this program.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsRetrieveV1: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('programsRetrieveV1', 'id', id)
-            const localVarPath = `/api/v1/programs/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * API view set for Programs - v2
-         * @param {string} id A unique integer value (pk) or readable_id string identifying this program.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsRetrieveV2: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('programsRetrieveV2', 'id', id)
-            const localVarPath = `/api/v2/programs/{id}/`
-                .replace('{id}', encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ProgramsApi - functional programming interface
- */
-export const ProgramsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ProgramsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * List Programs - v1
-         * @param {number} [id] 
-         * @param {boolean} [live] 
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programsListV1(id?: number, live?: boolean, page?: number, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV1ProgramList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV1(id, live, page, page_size, readable_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsListV1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * List Programs - v2
-         * @param {number} [contract_id] 
-         * @param {Array<number>} [id] Multiple values may be separated by commas.
-         * @param {boolean} [live] 
-         * @param {number} [org_id] 
-         * @param {number} [page] A page number within the paginated result set.
-         * @param {boolean} [page__live] 
-         * @param {number} [page_size] Number of results to return per page.
-         * @param {string} [readable_id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programsListV2(contract_id?: number, id?: Array<number>, live?: boolean, org_id?: number, page?: number, page__live?: boolean, page_size?: number, readable_id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedV2ProgramDetailList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programsListV2(contract_id, id, live, org_id, page, page__live, page_size, readable_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsListV2']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * API view set for Programs - v1
-         * @param {number} id A unique integer value identifying this program.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programsRetrieveV1(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V1Program>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV1(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsRetrieveV1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * API view set for Programs - v2
-         * @param {string} id A unique integer value (pk) or readable_id string identifying this program.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async programsRetrieveV2(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V2ProgramDetail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.programsRetrieveV2(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsRetrieveV2']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ProgramsApi - factory interface
- */
-export const ProgramsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ProgramsApiFp(configuration)
-    return {
-        /**
-         * List Programs - v1
-         * @param {ProgramsApiProgramsListV1Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsListV1(requestParameters: ProgramsApiProgramsListV1Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV1ProgramList> {
-            return localVarFp.programsListV1(requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * List Programs - v2
-         * @param {ProgramsApiProgramsListV2Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedV2ProgramDetailList> {
-            return localVarFp.programsListV2(requestParameters.contract_id, requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API view set for Programs - v1
-         * @param {ProgramsApiProgramsRetrieveV1Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsRetrieveV1(requestParameters: ProgramsApiProgramsRetrieveV1Request, options?: RawAxiosRequestConfig): AxiosPromise<V1Program> {
-            return localVarFp.programsRetrieveV1(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API view set for Programs - v2
-         * @param {ProgramsApiProgramsRetrieveV2Request} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        programsRetrieveV2(requestParameters: ProgramsApiProgramsRetrieveV2Request, options?: RawAxiosRequestConfig): AxiosPromise<V2ProgramDetail> {
-            return localVarFp.programsRetrieveV2(requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for programsListV1 operation in ProgramsApi.
- */
-export interface ProgramsApiProgramsListV1Request {
-    readonly id?: number
-
-    readonly live?: boolean
-
-    /**
-     * A page number within the paginated result set.
-     */
-    readonly page?: number
-
-    /**
-     * Number of results to return per page.
-     */
-    readonly page_size?: number
-
-    readonly readable_id?: string
-}
-
-/**
- * Request parameters for programsListV2 operation in ProgramsApi.
- */
-export interface ProgramsApiProgramsListV2Request {
-    readonly contract_id?: number
-
-    /**
-     * Multiple values may be separated by commas.
-     */
-    readonly id?: Array<number>
-
-    readonly live?: boolean
-
-    readonly org_id?: number
-
-    /**
-     * A page number within the paginated result set.
-     */
-    readonly page?: number
-
-    readonly page__live?: boolean
-
-    /**
-     * Number of results to return per page.
-     */
-    readonly page_size?: number
-
-    readonly readable_id?: string
-}
-
-/**
- * Request parameters for programsRetrieveV1 operation in ProgramsApi.
- */
-export interface ProgramsApiProgramsRetrieveV1Request {
-    /**
-     * A unique integer value identifying this program.
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for programsRetrieveV2 operation in ProgramsApi.
- */
-export interface ProgramsApiProgramsRetrieveV2Request {
-    /**
-     * A unique integer value (pk) or readable_id string identifying this program.
-     */
-    readonly id: string
-}
-
-/**
- * ProgramsApi - object-oriented interface
- */
-export class ProgramsApi extends BaseAPI {
-    /**
-     * List Programs - v1
-     * @param {ProgramsApiProgramsListV1Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programsListV1(requestParameters: ProgramsApiProgramsListV1Request = {}, options?: RawAxiosRequestConfig) {
-        return ProgramsApiFp(this.configuration).programsListV1(requestParameters.id, requestParameters.live, requestParameters.page, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * List Programs - v2
-     * @param {ProgramsApiProgramsListV2Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programsListV2(requestParameters: ProgramsApiProgramsListV2Request = {}, options?: RawAxiosRequestConfig) {
-        return ProgramsApiFp(this.configuration).programsListV2(requestParameters.contract_id, requestParameters.id, requestParameters.live, requestParameters.org_id, requestParameters.page, requestParameters.page__live, requestParameters.page_size, requestParameters.readable_id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * API view set for Programs - v1
-     * @param {ProgramsApiProgramsRetrieveV1Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programsRetrieveV1(requestParameters: ProgramsApiProgramsRetrieveV1Request, options?: RawAxiosRequestConfig) {
-        return ProgramsApiFp(this.configuration).programsRetrieveV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * API view set for Programs - v2
-     * @param {ProgramsApiProgramsRetrieveV2Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public programsRetrieveV2(requestParameters: ProgramsApiProgramsRetrieveV2Request, options?: RawAxiosRequestConfig) {
-        return ProgramsApiFp(this.configuration).programsRetrieveV2(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
  * UserSearchApi - axios parameter creator
  */
 export const UserSearchApiAxiosParamCreator = function (configuration?: Configuration) {
@@ -21013,322 +14839,6 @@ export class UsersApi extends BaseAPI {
      */
     public usersRetrieve(requestParameters: UsersApiUsersRetrieveRequest, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersRetrieve(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * VerifiableCourseCredentialApi - axios parameter creator
- */
-export const VerifiableCourseCredentialApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Returns the json for the verifiable credential with the given ID
-         * @param {string} credential_id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        verifiableCourseCredentialDownloadList: async (credential_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'credential_id' is not null or undefined
-            assertParamExists('verifiableCourseCredentialDownloadList', 'credential_id', credential_id)
-            const localVarPath = `/api/v2/verifiable_course_credential/{credential_id}/download/`
-                .replace('{credential_id}', encodeURIComponent(String(credential_id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * VerifiableCourseCredentialApi - functional programming interface
- */
-export const VerifiableCourseCredentialApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = VerifiableCourseCredentialApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Returns the json for the verifiable credential with the given ID
-         * @param {string} credential_id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async verifiableCourseCredentialDownloadList(credential_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiableCourseCredentialDownloadList(credential_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VerifiableCourseCredentialApi.verifiableCourseCredentialDownloadList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * VerifiableCourseCredentialApi - factory interface
- */
-export const VerifiableCourseCredentialApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = VerifiableCourseCredentialApiFp(configuration)
-    return {
-        /**
-         * Returns the json for the verifiable credential with the given ID
-         * @param {VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        verifiableCourseCredentialDownloadList(requestParameters: VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.verifiableCourseCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for verifiableCourseCredentialDownloadList operation in VerifiableCourseCredentialApi.
- */
-export interface VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest {
-    readonly credential_id: string
-}
-
-/**
- * VerifiableCourseCredentialApi - object-oriented interface
- */
-export class VerifiableCourseCredentialApi extends BaseAPI {
-    /**
-     * Returns the json for the verifiable credential with the given ID
-     * @param {VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public verifiableCourseCredentialDownloadList(requestParameters: VerifiableCourseCredentialApiVerifiableCourseCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
-        return VerifiableCourseCredentialApiFp(this.configuration).verifiableCourseCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * VerifiableProgramCredentialApi - axios parameter creator
- */
-export const VerifiableProgramCredentialApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Returns the json for the verifiable credential with the given ID
-         * @param {string} credential_id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        verifiableProgramCredentialDownloadList: async (credential_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'credential_id' is not null or undefined
-            assertParamExists('verifiableProgramCredentialDownloadList', 'credential_id', credential_id)
-            const localVarPath = `/api/v2/verifiable_program_credential/{credential_id}/download/`
-                .replace('{credential_id}', encodeURIComponent(String(credential_id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * VerifiableProgramCredentialApi - functional programming interface
- */
-export const VerifiableProgramCredentialApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = VerifiableProgramCredentialApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Returns the json for the verifiable credential with the given ID
-         * @param {string} credential_id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async verifiableProgramCredentialDownloadList(credential_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiableProgramCredentialDownloadList(credential_id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VerifiableProgramCredentialApi.verifiableProgramCredentialDownloadList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * VerifiableProgramCredentialApi - factory interface
- */
-export const VerifiableProgramCredentialApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = VerifiableProgramCredentialApiFp(configuration)
-    return {
-        /**
-         * Returns the json for the verifiable credential with the given ID
-         * @param {VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        verifiableProgramCredentialDownloadList(requestParameters: VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.verifiableProgramCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for verifiableProgramCredentialDownloadList operation in VerifiableProgramCredentialApi.
- */
-export interface VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest {
-    readonly credential_id: string
-}
-
-/**
- * VerifiableProgramCredentialApi - object-oriented interface
- */
-export class VerifiableProgramCredentialApi extends BaseAPI {
-    /**
-     * Returns the json for the verifiable credential with the given ID
-     * @param {VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public verifiableProgramCredentialDownloadList(requestParameters: VerifiableProgramCredentialApiVerifiableProgramCredentialDownloadListRequest, options?: RawAxiosRequestConfig) {
-        return VerifiableProgramCredentialApiFp(this.configuration).verifiableProgramCredentialDownloadList(requestParameters.credential_id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * VerifiedProgramEnrollmentsApi - axios parameter creator
- */
-export const VerifiedProgramEnrollmentsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
-         * @param {string} courserun_id 
-         * @param {Array<string>} [request_body] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        verifiedProgramEnrollmentsCreate: async (courserun_id: string, request_body?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'courserun_id' is not null or undefined
-            assertParamExists('verifiedProgramEnrollmentsCreate', 'courserun_id', courserun_id)
-            const localVarPath = `/api/v2/verified_program_enrollments/{courserun_id}/`
-                .replace('{courserun_id}', encodeURIComponent(String(courserun_id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(request_body, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * VerifiedProgramEnrollmentsApi - functional programming interface
- */
-export const VerifiedProgramEnrollmentsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = VerifiedProgramEnrollmentsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
-         * @param {string} courserun_id 
-         * @param {Array<string>} [request_body] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async verifiedProgramEnrollmentsCreate(courserun_id: string, request_body?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseRunEnrollmentRequestV2>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedProgramEnrollmentsCreate(courserun_id, request_body, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VerifiedProgramEnrollmentsApi.verifiedProgramEnrollmentsCreate']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * VerifiedProgramEnrollmentsApi - factory interface
- */
-export const VerifiedProgramEnrollmentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = VerifiedProgramEnrollmentsApiFp(configuration)
-    return {
-        /**
-         * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
-         * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<CourseRunEnrollmentRequestV2> {
-            return localVarFp.verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.request_body, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for verifiedProgramEnrollmentsCreate operation in VerifiedProgramEnrollmentsApi.
- */
-export interface VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest {
-    readonly courserun_id: string
-
-    readonly request_body?: Array<string>
-}
-
-/**
- * VerifiedProgramEnrollmentsApi - object-oriented interface
- */
-export class VerifiedProgramEnrollmentsApi extends BaseAPI {
-    /**
-     * Create a program-related course enrollment for the learner.  Some special handling is needed for program-related course run enrollments when the learner has an enrollment in the program. The learner should get a course run enrollment that matches their program enrollment at no additional charge.
-     * @param {VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public verifiedProgramEnrollmentsCreate(requestParameters: VerifiedProgramEnrollmentsApiVerifiedProgramEnrollmentsCreateRequest, options?: RawAxiosRequestConfig) {
-        return VerifiedProgramEnrollmentsApiFp(this.configuration).verifiedProgramEnrollmentsCreate(requestParameters.courserun_id, requestParameters.request_body, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
