@@ -34,6 +34,11 @@
       "import": "./dist/esm/v2/index.js",
       "require": "./dist/cjs/v2/index.js",
       "default": "./dist/esm/v2/index.js"
+    },
+    "./v3": {
+      "import": "./dist/esm/v3/index.js",
+      "require": "./dist/cjs/v3/index.js",
+      "default": "./dist/esm/v3/index.js"
     }
   },
   "license": "BSD-3",
