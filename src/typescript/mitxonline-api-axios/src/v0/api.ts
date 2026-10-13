@@ -4208,6 +4208,7 @@ export interface TestimonialItem {
     'quote': string;
     'name': string;
     'title': string;
+    'date_published': string;
     'image_src': string | null;
 }
 /**
