@@ -239,9 +239,17 @@ export interface BaseCourseRun {
      */
     'variant_industry'?: BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
 }
 
@@ -768,6 +776,8 @@ export interface ContractVariantSet {
     'language': string;
     'variant_length': string;
     'variant_industry': string;
+    'variant_length_label': string;
+    'variant_industry_label': string;
     'default_variant': boolean;
     'active': boolean;
     'b2b_only': boolean;
@@ -1180,9 +1190,17 @@ export interface CourseRunV2 {
      */
     'variant_industry'?: CourseRunV2VariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: CourseRunV2VariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
@@ -1348,9 +1366,17 @@ export interface CourseRunWithCourseV3 {
      */
     'variant_industry'?: CourseRunWithCourseV3VariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: CourseRunWithCourseV3VariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'upgrade_product_id': number | null;
     'upgrade_product_price': string | null;
@@ -4172,6 +4198,14 @@ export interface SupportedVariant {
      * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry': SupportedVariantVariantIndustryEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
+    /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
     'active': boolean;
     'b2b_only': boolean;
     'default_variant': boolean;
@@ -4713,9 +4747,17 @@ export interface V1BaseCourseRun {
      */
     'variant_industry'?: V1BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V1BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<ProductFlexibilePrice>;
     'approved_flexible_price_exists': boolean;
@@ -4876,9 +4918,17 @@ export interface V1CourseRunWithCourse {
      */
     'variant_industry'?: V1CourseRunWithCourseVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V1CourseRunWithCourseVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     /**
      * List of products associated with this course run
@@ -5347,9 +5397,17 @@ export interface V2CourseRunWithCourse {
      */
     'variant_industry'?: V2CourseRunWithCourseVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V2CourseRunWithCourseVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
