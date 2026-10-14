@@ -842,6 +842,12 @@ export type NullEnum = typeof NullEnum[keyof typeof NullEnum];
 
 
 /**
+ * Sets or clears the learner\'s chosen track on a program enrollment.
+ */
+export interface PatchedV3ProgramEnrollmentTrackRequest {
+    'track'?: number | null;
+}
+/**
  * CourseRunCertificate model serializer
  */
 export interface V3CourseRunCertificate {
@@ -866,6 +872,13 @@ export interface V3ProgramCertificate {
  */
 export interface V3ProgramEnrollmentRequestRequest {
     'program_id': number;
+}
+/**
+ * A track node of a program\'s requirement tree.
+ */
+export interface V3ProgramTrack {
+    'id': number;
+    'title'?: string | null;
 }
 /**
  * Program Model Serializer v2
@@ -902,6 +915,7 @@ export interface V3UserProgramEnrollment {
     'program': V3SimpleProgram;
     'certificate': V3ProgramCertificate | null;
     'enrollment_mode'?: string;
+    'track': V3ProgramTrack | null;
 }
 /**
  * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
@@ -1714,6 +1728,42 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             };
         },
         /**
+         * Set or clear the learner\'s chosen track for this program.
+         * @param {number} program_id Program ID
+         * @param {PatchedV3ProgramEnrollmentTrackRequest} [PatchedV3ProgramEnrollmentTrackRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsPartialUpdate: async (program_id: number, PatchedV3ProgramEnrollmentTrackRequest?: PatchedV3ProgramEnrollmentTrackRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'program_id' is not null or undefined
+            assertParamExists('v3ProgramEnrollmentsPartialUpdate', 'program_id', program_id)
+            const localVarPath = `/api/v3/program_enrollments/{program_id}/`
+                .replace('{program_id}', encodeURIComponent(String(program_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedV3ProgramEnrollmentTrackRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {number} program_id 
          * @param {*} [options] Override http request option.
@@ -1791,6 +1841,19 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Set or clear the learner\'s chosen track for this program.
+         * @param {number} program_id Program ID
+         * @param {PatchedV3ProgramEnrollmentTrackRequest} [PatchedV3ProgramEnrollmentTrackRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v3ProgramEnrollmentsPartialUpdate(program_id: number, PatchedV3ProgramEnrollmentTrackRequest?: PatchedV3ProgramEnrollmentTrackRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V3UserProgramEnrollment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsPartialUpdate(program_id, PatchedV3ProgramEnrollmentTrackRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {number} program_id 
          * @param {*} [options] Override http request option.
@@ -1838,6 +1901,15 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
             return localVarFp.v3ProgramEnrollmentsList(options).then((request) => request(axios, basePath));
         },
         /**
+         * Set or clear the learner\'s chosen track for this program.
+         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsPartialUpdate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V3UserProgramEnrollment> {
+            return localVarFp.v3ProgramEnrollmentsPartialUpdate(requestParameters.program_id, requestParameters.PatchedV3ProgramEnrollmentTrackRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -1864,6 +1936,18 @@ export interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest {
      * Program ID
      */
     readonly program_id: number
+}
+
+/**
+ * Request parameters for v3ProgramEnrollmentsPartialUpdate operation in ProgramEnrollmentsApi.
+ */
+export interface ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest {
+    /**
+     * Program ID
+     */
+    readonly program_id: number
+
+    readonly PatchedV3ProgramEnrollmentTrackRequest?: PatchedV3ProgramEnrollmentTrackRequest
 }
 
 /**
@@ -1904,6 +1988,16 @@ export class ProgramEnrollmentsApi extends BaseAPI {
      */
     public v3ProgramEnrollmentsList(options?: RawAxiosRequestConfig) {
         return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Set or clear the learner\'s chosen track for this program.
+     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public v3ProgramEnrollmentsPartialUpdate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsPartialUpdate(requestParameters.program_id, requestParameters.PatchedV3ProgramEnrollmentTrackRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
