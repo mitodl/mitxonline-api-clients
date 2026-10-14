@@ -1,6 +1,10 @@
 ---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+# Generated clients are committed as raw openapi-generator output by the
+# ol-infrastructure pipeline, which never runs these hooks; formatting them
+# here would rewrite every client, only for the next regeneration to undo it.
+exclude: ^src/typescript/mitxonline-api-axios/src/
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
