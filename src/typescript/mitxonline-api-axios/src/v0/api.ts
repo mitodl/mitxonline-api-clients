@@ -239,9 +239,17 @@ export interface BaseCourseRun {
      */
     'variant_industry'?: BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
 }
 
@@ -581,7 +589,7 @@ export interface CheckoutPayload {
      */
     'order_id': number;
     /**
-     * Error message for the order, if there is one.  * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
+     * Error message for the order, if there is one.  * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty * `profile-incomplete` - profile-incomplete
      */
     'error': ErrorEnum;
 }
@@ -768,6 +776,8 @@ export interface ContractVariantSet {
     'language': string;
     'variant_length': string;
     'variant_industry': string;
+    'variant_length_label': string;
+    'variant_industry_label': string;
     'default_variant': boolean;
     'active': boolean;
     'b2b_only': boolean;
@@ -1180,9 +1190,17 @@ export interface CourseRunV2 {
      */
     'variant_industry'?: CourseRunV2VariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: CourseRunV2VariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
@@ -1348,9 +1366,17 @@ export interface CourseRunWithCourseV3 {
      */
     'variant_industry'?: CourseRunWithCourseV3VariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: CourseRunWithCourseV3VariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'upgrade_product_id': number | null;
     'upgrade_product_price': string | null;
@@ -2030,6 +2056,22 @@ export type EmailStatusEnum = typeof EmailStatusEnum[keyof typeof EmailStatusEnu
 
 
 /**
+ * Whether a user may enroll, and a support-facing code when they may not.
+ */
+export interface EnrollmentEligibility {
+    'enrollable': boolean;
+    /**
+     * Null when enrollable. CS_700 when an export compliance check rejected the learner; CS_701 when their profile is missing the information needed to run that check.
+     */
+    'reason_code': string | null;
+}
+export interface EnrollmentEligibilityNotFound {
+    'detail': string;
+}
+export interface EnrollmentEligibilityThrottled {
+    'detail': string;
+}
+/**
  * Enrollment mode serializer.
  */
 export interface EnrollmentMode {
@@ -2056,7 +2098,7 @@ export type EnrollmentModeEnum = typeof EnrollmentModeEnum[keyof typeof Enrollme
 
 
 /**
- * * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty
+ * * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty * `profile-incomplete` - profile-incomplete
  */
 
 export const ErrorEnum = {
@@ -2088,6 +2130,10 @@ export const ErrorEnum = {
     * basket-empty
     */
     BasketEmpty: 'basket-empty',
+    /**
+    * profile-incomplete
+    */
+    ProfileIncomplete: 'profile-incomplete',
 } as const;
 
 export type ErrorEnum = typeof ErrorEnum[keyof typeof ErrorEnum];
@@ -2195,6 +2241,7 @@ export type GenderEnum = typeof GenderEnum[keyof typeof GenderEnum];
  */
 export interface GenerateCheckoutPayload {
     'country_blocked'?: boolean | null;
+    'profile_incomplete'?: boolean | null;
     'purchased_same_courserun'?: boolean | null;
     'purchased_non_upgradeable_courserun'?: boolean | null;
     'invalid_discounts'?: boolean | null;
@@ -2766,6 +2813,10 @@ export interface Nested {
      * The location of this code in the B2B contract\'s code sheet.
      */
     'b2b_sheet_location'?: string | null;
+    /**
+     * The B2B contract this enrollment code belongs to, if it is one.
+     */
+    'b2b_contract'?: number | null;
 }
 
 export const NestedPaymentTypeEnum = {
@@ -2780,7 +2831,7 @@ export const NestedPaymentTypeEnum = {
 export type NestedPaymentTypeEnum = typeof NestedPaymentTypeEnum[keyof typeof NestedPaymentTypeEnum];
 
 /**
- * * `operator` - operator * `course` - course * `program` - program
+ * * `operator` - operator * `course` - course * `program` - program * `track` - track
  */
 
 export const NodeTypeEnum = {
@@ -2796,6 +2847,10 @@ export const NodeTypeEnum = {
     * program
     */
     Program: 'program',
+    /**
+    * track
+    */
+    Track: 'track',
 } as const;
 
 export type NodeTypeEnum = typeof NodeTypeEnum[keyof typeof NodeTypeEnum];
@@ -3409,6 +3464,12 @@ export const PatchedV0DiscountRequestPaymentTypeEnum = {
 
 export type PatchedV0DiscountRequestPaymentTypeEnum = typeof PatchedV0DiscountRequestPaymentTypeEnum[keyof typeof PatchedV0DiscountRequestPaymentTypeEnum];
 
+/**
+ * Sets or clears the learner\'s chosen track on a program enrollment.
+ */
+export interface PatchedV3ProgramEnrollmentTrackRequest {
+    'track'?: number | null;
+}
 /**
  * * `marketing` - marketing * `sales` - sales * `financial-assistance` - financial-assistance * `customer-support` - customer-support * `staff` - staff * `legacy` - legacy
  */
@@ -4172,6 +4233,14 @@ export interface SupportedVariant {
      * Variant: Describes the industry the run is adapted for.  * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
      */
     'variant_industry': SupportedVariantVariantIndustryEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
+    /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
     'active': boolean;
     'b2b_only': boolean;
     'default_variant': boolean;
@@ -4208,6 +4277,7 @@ export interface TestimonialItem {
     'quote': string;
     'name': string;
     'title': string;
+    'date_published': string;
     'image_src': string | null;
 }
 /**
@@ -4713,9 +4783,17 @@ export interface V1BaseCourseRun {
      */
     'variant_industry'?: V1BaseCourseRunVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V1BaseCourseRunVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<ProductFlexibilePrice>;
     'approved_flexible_price_exists': boolean;
@@ -4876,9 +4954,17 @@ export interface V1CourseRunWithCourse {
      */
     'variant_industry'?: V1CourseRunWithCourseVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V1CourseRunWithCourseVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     /**
      * List of products associated with this course run
@@ -5151,6 +5237,7 @@ export interface V1ProgramRequirementData {
     'operator'?: string | null;
     'operator_value'?: string | null;
     'elective_flag'?: boolean | null;
+    'description'?: string;
 }
 
 
@@ -5347,9 +5434,17 @@ export interface V2CourseRunWithCourse {
      */
     'variant_industry'?: V2CourseRunWithCourseVariantIndustryEnum;
     /**
+     * Return the display label for the variant industry.
+     */
+    'variant_industry_label': string;
+    /**
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V2CourseRunWithCourseVariantLengthEnum;
+    /**
+     * Return the display label for the variant length.
+     */
+    'variant_length_label': string;
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
@@ -5786,6 +5881,7 @@ export interface V2ProgramRequirementData {
     'operator'?: string | null;
     'operator_value'?: string | null;
     'elective_flag'?: boolean | null;
+    'description'?: string;
 }
 
 
@@ -5855,6 +5951,13 @@ export interface V3ProgramEnrollmentRequestRequest {
     'program_id': number;
 }
 /**
+ * A track node of a program\'s requirement tree.
+ */
+export interface V3ProgramTrack {
+    'id': number;
+    'title'?: string | null;
+}
+/**
  * Program Model Serializer v2
  */
 export interface V3SimpleProgram {
@@ -5889,6 +5992,7 @@ export interface V3UserProgramEnrollment {
     'program': V3SimpleProgram;
     'certificate': V3ProgramCertificate | null;
     'enrollment_mode'?: string;
+    'track': V3ProgramTrack | null;
 }
 /**
  * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
@@ -12227,6 +12331,39 @@ export class CourseCertificatesApi extends BaseAPI {
 export const CourseRunsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+         * @param {number} run_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseRunsEnrollmentEligible: async (run_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'run_id' is not null or undefined
+            assertParamExists('courseRunsEnrollmentEligible', 'run_id', run_id)
+            const localVarPath = `/api/v3/course_runs/{run_id}/enrollment-eligible/`
+                .replace('{run_id}', encodeURIComponent(String(run_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * API view set for CourseRuns
          * @param {number} [id] 
          * @param {boolean} [live] 
@@ -12308,6 +12445,18 @@ export const CourseRunsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CourseRunsApiAxiosParamCreator(configuration)
     return {
         /**
+         * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+         * @param {number} run_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async courseRunsEnrollmentEligible(run_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrollmentEligibility>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.courseRunsEnrollmentEligible(run_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CourseRunsApi.courseRunsEnrollmentEligible']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * API view set for CourseRuns
          * @param {number} [id] 
          * @param {boolean} [live] 
@@ -12342,6 +12491,15 @@ export const CourseRunsApiFactory = function (configuration?: Configuration, bas
     const localVarFp = CourseRunsApiFp(configuration)
     return {
         /**
+         * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+         * @param {CourseRunsApiCourseRunsEnrollmentEligibleRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        courseRunsEnrollmentEligible(requestParameters: CourseRunsApiCourseRunsEnrollmentEligibleRequest, options?: RawAxiosRequestConfig): AxiosPromise<EnrollmentEligibility> {
+            return localVarFp.courseRunsEnrollmentEligible(requestParameters.run_id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * API view set for CourseRuns
          * @param {CourseRunsApiCourseRunsListRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -12361,6 +12519,13 @@ export const CourseRunsApiFactory = function (configuration?: Configuration, bas
         },
     };
 };
+
+/**
+ * Request parameters for courseRunsEnrollmentEligible operation in CourseRunsApi.
+ */
+export interface CourseRunsApiCourseRunsEnrollmentEligibleRequest {
+    readonly run_id: number
+}
 
 /**
  * Request parameters for courseRunsList operation in CourseRunsApi.
@@ -12385,6 +12550,16 @@ export interface CourseRunsApiCourseRunsRetrieveRequest {
  * CourseRunsApi - object-oriented interface
  */
 export class CourseRunsApi extends BaseAPI {
+    /**
+     * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+     * @param {CourseRunsApiCourseRunsEnrollmentEligibleRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public courseRunsEnrollmentEligible(requestParameters: CourseRunsApiCourseRunsEnrollmentEligibleRequest, options?: RawAxiosRequestConfig) {
+        return CourseRunsApiFp(this.configuration).courseRunsEnrollmentEligible(requestParameters.run_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * API view set for CourseRuns
      * @param {CourseRunsApiCourseRunsListRequest} requestParameters Request parameters.
@@ -19510,6 +19685,42 @@ export const ProgramEnrollmentsApiAxiosParamCreator = function (configuration?: 
             };
         },
         /**
+         * Set or clear the learner\'s chosen track for this program.
+         * @param {number} program_id Program ID
+         * @param {PatchedV3ProgramEnrollmentTrackRequest} [PatchedV3ProgramEnrollmentTrackRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsPartialUpdate: async (program_id: number, PatchedV3ProgramEnrollmentTrackRequest?: PatchedV3ProgramEnrollmentTrackRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'program_id' is not null or undefined
+            assertParamExists('v3ProgramEnrollmentsPartialUpdate', 'program_id', program_id)
+            const localVarPath = `/api/v3/program_enrollments/{program_id}/`
+                .replace('{program_id}', encodeURIComponent(String(program_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PatchedV3ProgramEnrollmentTrackRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {number} program_id 
          * @param {*} [options] Override http request option.
@@ -19657,6 +19868,19 @@ export const ProgramEnrollmentsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Set or clear the learner\'s chosen track for this program.
+         * @param {number} program_id Program ID
+         * @param {PatchedV3ProgramEnrollmentTrackRequest} [PatchedV3ProgramEnrollmentTrackRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async v3ProgramEnrollmentsPartialUpdate(program_id: number, PatchedV3ProgramEnrollmentTrackRequest?: PatchedV3ProgramEnrollmentTrackRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<V3UserProgramEnrollment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.v3ProgramEnrollmentsPartialUpdate(program_id, PatchedV3ProgramEnrollmentTrackRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramEnrollmentsApi.v3ProgramEnrollmentsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {number} program_id 
          * @param {*} [options] Override http request option.
@@ -19756,6 +19980,15 @@ export const ProgramEnrollmentsApiFactory = function (configuration?: Configurat
             return localVarFp.v3ProgramEnrollmentsList(options).then((request) => request(axios, basePath));
         },
         /**
+         * Set or clear the learner\'s chosen track for this program.
+         * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        v3ProgramEnrollmentsPartialUpdate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<V3UserProgramEnrollment> {
+            return localVarFp.v3ProgramEnrollmentsPartialUpdate(requestParameters.program_id, requestParameters.PatchedV3ProgramEnrollmentTrackRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * ViewSet for user program enrollments with v3 serializers.
          * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -19822,6 +20055,18 @@ export interface ProgramEnrollmentsApiV3ProgramEnrollmentsDestroyRequest {
      * Program ID
      */
     readonly program_id: number
+}
+
+/**
+ * Request parameters for v3ProgramEnrollmentsPartialUpdate operation in ProgramEnrollmentsApi.
+ */
+export interface ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest {
+    /**
+     * Program ID
+     */
+    readonly program_id: number
+
+    readonly PatchedV3ProgramEnrollmentTrackRequest?: PatchedV3ProgramEnrollmentTrackRequest
 }
 
 /**
@@ -19923,6 +20168,16 @@ export class ProgramEnrollmentsApi extends BaseAPI {
     }
 
     /**
+     * Set or clear the learner\'s chosen track for this program.
+     * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public v3ProgramEnrollmentsPartialUpdate(requestParameters: ProgramEnrollmentsApiV3ProgramEnrollmentsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ProgramEnrollmentsApiFp(this.configuration).v3ProgramEnrollmentsPartialUpdate(requestParameters.program_id, requestParameters.PatchedV3ProgramEnrollmentTrackRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * ViewSet for user program enrollments with v3 serializers.
      * @param {ProgramEnrollmentsApiV3ProgramEnrollmentsRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -19940,6 +20195,39 @@ export class ProgramEnrollmentsApi extends BaseAPI {
  */
 export const ProgramsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+         * @param {number} program_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programsEnrollmentEligible: async (program_id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'program_id' is not null or undefined
+            assertParamExists('programsEnrollmentEligible', 'program_id', program_id)
+            const localVarPath = `/api/v3/programs/{program_id}/enrollment-eligible/`
+                .replace('{program_id}', encodeURIComponent(String(program_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * List Programs - v1
          * @param {number} [id] 
@@ -20139,6 +20427,18 @@ export const ProgramsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProgramsApiAxiosParamCreator(configuration)
     return {
         /**
+         * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+         * @param {number} program_id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async programsEnrollmentEligible(program_id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrollmentEligibility>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.programsEnrollmentEligible(program_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgramsApi.programsEnrollmentEligible']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * List Programs - v1
          * @param {number} [id] 
          * @param {boolean} [live] 
@@ -20207,6 +20507,15 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = ProgramsApiFp(configuration)
     return {
         /**
+         * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+         * @param {ProgramsApiProgramsEnrollmentEligibleRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        programsEnrollmentEligible(requestParameters: ProgramsApiProgramsEnrollmentEligibleRequest, options?: RawAxiosRequestConfig): AxiosPromise<EnrollmentEligibility> {
+            return localVarFp.programsEnrollmentEligible(requestParameters.program_id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * List Programs - v1
          * @param {ProgramsApiProgramsListV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -20244,6 +20553,13 @@ export const ProgramsApiFactory = function (configuration?: Configuration, baseP
         },
     };
 };
+
+/**
+ * Request parameters for programsEnrollmentEligible operation in ProgramsApi.
+ */
+export interface ProgramsApiProgramsEnrollmentEligibleRequest {
+    readonly program_id: number
+}
 
 /**
  * Request parameters for programsListV1 operation in ProgramsApi.
@@ -20320,6 +20636,16 @@ export interface ProgramsApiProgramsRetrieveV2Request {
  * ProgramsApi - object-oriented interface
  */
 export class ProgramsApi extends BaseAPI {
+    /**
+     * Report whether the authenticated user may enroll, without enrolling them. Only covers export compliance - it says nothing about whether the run or program is open for enrollment, live, or already enrolled in.  A POST because a cache miss triggers a live CyberSource export compliance check and records its result. Rate limited per user, so ask at the point of intent rather than pre-flighting a whole catalogue page.
+     * @param {ProgramsApiProgramsEnrollmentEligibleRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public programsEnrollmentEligible(requestParameters: ProgramsApiProgramsEnrollmentEligibleRequest, options?: RawAxiosRequestConfig) {
+        return ProgramsApiFp(this.configuration).programsEnrollmentEligible(requestParameters.program_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * List Programs - v1
      * @param {ProgramsApiProgramsListV1Request} requestParameters Request parameters.
