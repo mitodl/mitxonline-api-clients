@@ -700,6 +700,42 @@ export interface ContractVariantSet {
     'courses': Array<ContractVariantCourse>;
 }
 /**
+ * What creating a contract\'s missing variant runs did.
+ */
+export interface ContractVariantSync {
+    'runs_created': Array<ContractVariantSyncRun>;
+    /**
+     * Courses that support a set and have no source run for it.
+     */
+    'missing_source_runs': Array<ContractVariantSyncCourse>;
+    /**
+     * Courses with a source run for a set whose run was not created.
+     */
+    'failed': Array<ContractVariantSyncCourse>;
+}
+/**
+ * A course and one of the contract\'s variant sets.
+ */
+export interface ContractVariantSyncCourse {
+    'course_id': number;
+    'readable_id': string;
+    'variant_id': number;
+    'language': string;
+    'variant_length': string;
+    'variant_industry': string;
+}
+/**
+ * A contract run created for a variant set.
+ */
+export interface ContractVariantSyncRun {
+    'courseware_id': string;
+    'course_id': number;
+    'readable_id': string;
+    'language': string;
+    'variant_length': string;
+    'variant_industry': string;
+}
+/**
  * Serializer for pycountry countries, with states for US/CA
  */
 export interface Country {
@@ -4719,7 +4755,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+         * Add a variant set to the contract.  Creates no runs. variants/sync creates them for the courseware already in the contract.
          * @param {number} id A unique integer value identifying this Contract.
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {CreateContractVariantSetRequest} CreateContractVariantSetRequest 
@@ -4835,6 +4871,43 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateContractVariantSetRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create the runs the contract\'s courses are missing for its variant sets.  Run it after adding variant sets to a contract that already has courseware. Courses and variants that already have a run are left alone, so repeating the call creates nothing more. The new runs\' edX clones are queued, and so is the enrollment code check for a contract that uses codes.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsSyncCreate: async (id: number, parent_lookup_organization__org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsSyncCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsVariantsSyncCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/variants/sync/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5860,7 +5933,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+         * Add a variant set to the contract.  Creates no runs. variants/sync creates them for the courseware already in the contract.
          * @param {number} id A unique integer value identifying this Contract.
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {CreateContractVariantSetRequest} CreateContractVariantSetRequest 
@@ -5899,6 +5972,19 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsVariantsPartialUpdate(id, parent_lookup_organization__org_key, variant_id, PatchedUpdateContractVariantSetRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsVariantsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create the runs the contract\'s courses are missing for its variant sets.  Run it after adding variant sets to a contract that already has courseware. Courses and variants that already have a run are left alone, so repeating the call creates nothing more. The new runs\' edX clones are queued, and so is the enrollment code check for a contract that uses codes.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsVariantsSyncCreate(id: number, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ContractVariantSync>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsVariantsSyncCreate(id, parent_lookup_organization__org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsVariantsSyncCreate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6393,7 +6479,7 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bProvisioningOrganizationsContractsSetupStatusRetrieve(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
         },
         /**
-         * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+         * Add a variant set to the contract.  Creates no runs. variants/sync creates them for the courseware already in the contract.
          * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6418,6 +6504,15 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractVariantSet> {
             return localVarFp.b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.variant_id, requestParameters.PatchedUpdateContractVariantSetRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create the runs the contract\'s courses are missing for its variant sets.  Run it after adding variant sets to a contract that already has courseware. Courses and variants that already have a run are left alone, so repeating the call creates nothing more. The new runs\' edX clones are queued, and so is the enrollment code check for a contract that uses codes.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsSyncCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsVariantsSyncCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsSyncCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ContractVariantSync> {
+            return localVarFp.b2bProvisioningOrganizationsContractsVariantsSyncCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
         },
         /**
          * Provision a new organization.  Writes the Keycloak organization first, then the OrganizationPage and its onboarding record in one transaction, compensating by deleting the Keycloak organization if that transaction fails.
@@ -7126,6 +7221,21 @@ export interface B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdat
 }
 
 /**
+ * Request parameters for b2bProvisioningOrganizationsContractsVariantsSyncCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsVariantsSyncCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+}
+
+/**
  * Request parameters for b2bProvisioningOrganizationsCreate operation in B2bApi.
  */
 export interface B2bApiB2bProvisioningOrganizationsCreateRequest {
@@ -7630,7 +7740,7 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
-     * Add a variant set to the contract.  Creates no runs. Adding the courseware to the contract again creates runs for the new set.
+     * Add a variant set to the contract.  Creates no runs. variants/sync creates them for the courseware already in the contract.
      * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7657,6 +7767,16 @@ export class B2bApi extends BaseAPI {
      */
     public b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsVariantsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.variant_id, requestParameters.PatchedUpdateContractVariantSetRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create the runs the contract\'s courses are missing for its variant sets.  Run it after adding variant sets to a contract that already has courseware. Courses and variants that already have a run are left alone, so repeating the call creates nothing more. The new runs\' edX clones are queued, and so is the enrollment code check for a contract that uses codes.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsVariantsSyncCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsVariantsSyncCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsVariantsSyncCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsVariantsSyncCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
