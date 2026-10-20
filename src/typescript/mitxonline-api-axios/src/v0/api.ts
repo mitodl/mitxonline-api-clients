@@ -643,6 +643,10 @@ export interface ContractSetupStatus {
     'status': ContractSetupStatusEnum;
     'runs': Array<ContractRunSetup>;
     'enrollment_codes': ContractEnrollmentCodeSetup;
+    /**
+     * Which of the contract\'s courses have a run for each of its variant sets. A missing run does not change the status.
+     */
+    'variants': Array<ContractVariantSet>;
 }
 
 
@@ -685,7 +689,7 @@ export interface ContractVariantCourse {
     'contract_run'?: string | null;
 }
 /**
- * One of a contract\'s variant sets, with the contract\'s courses it matches.  A listed course with a source run and no contract run gets a run for this set when its courseware is next added to the contract, if the set is active.
+ * One of a contract\'s variant sets, with the contract\'s courses it matches.  A listed course with a source run and no contract run gets a run for this set when its courseware is next added to the contract, if the set is active. A course in unsupported_courses has no active variant set of its own with this language, length and industry, so adding its courseware doesn\'t pick a source run for this set.
  */
 export interface ContractVariantSet {
     'id': number;
@@ -698,6 +702,7 @@ export interface ContractVariantSet {
     'active': boolean;
     'b2b_only': boolean;
     'courses': Array<ContractVariantCourse>;
+    'unsupported_courses': Array<ContractVariantUnsupportedCourse>;
 }
 /**
  * What creating a contract\'s missing variant runs did.
@@ -734,6 +739,18 @@ export interface ContractVariantSyncRun {
     'language': string;
     'variant_length': string;
     'variant_industry': string;
+}
+/**
+ * One of the contract\'s courses that a variant set does not match.
+ */
+export interface ContractVariantUnsupportedCourse {
+    'course_id': number;
+    'readable_id': string;
+    'title': string;
+    /**
+     * The contract\'s run for this variant, if it has one anyway.
+     */
+    'contract_run'?: string | null;
 }
 /**
  * Serializer for pycountry countries, with states for US/CA
@@ -1064,6 +1081,28 @@ export const DiscountTypeEnum = {
 } as const;
 
 export type DiscountTypeEnum = typeof DiscountTypeEnum[keyof typeof DiscountTypeEnum];
+
+
+/**
+ * * `Daily` - Daily * `Weekly` - Weekly * `Immediately` - Immediately
+ */
+
+export const EmailCadenceEnum = {
+    /**
+    * Daily
+    */
+    Daily: 'Daily',
+    /**
+    * Weekly
+    */
+    Weekly: 'Weekly',
+    /**
+    * Immediately
+    */
+    Immediately: 'Immediately',
+} as const;
+
+export type EmailCadenceEnum = typeof EmailCadenceEnum[keyof typeof EmailCadenceEnum];
 
 
 /**
@@ -1861,6 +1900,59 @@ export const NestedPaymentTypeEnum = {
 
 export type NestedPaymentTypeEnum = typeof NestedPaymentTypeEnum[keyof typeof NestedPaymentTypeEnum];
 
+/**
+ * * `web` - web * `push` - push * `email` - email * `email_cadence` - email_cadence
+ */
+
+export const NotificationChannelEnum = {
+    /**
+    * web
+    */
+    Web: 'web',
+    /**
+    * push
+    */
+    Push: 'push',
+    /**
+    * email
+    */
+    Email: 'email',
+    /**
+    * email_cadence
+    */
+    EmailCadence: 'email_cadence',
+} as const;
+
+export type NotificationChannelEnum = typeof NotificationChannelEnum[keyof typeof NotificationChannelEnum];
+
+
+/**
+ * Validates one field-level notification preference change.  The upstream Open edX API updates a single channel per request, so each toggle or cadence change is its own payload. Validating locally keeps a malformed change from spending one of the learner\'s LMS rate-limited requests, and gives the frontend a useful 400 instead of a 502.
+ */
+export interface NotificationPreferenceUpdateRequest {
+    'notification_app': string;
+    'notification_type': string;
+    'notification_channel': NotificationChannelEnum;
+    'value'?: boolean;
+    'email_cadence'?: EmailCadenceEnum;
+}
+
+
+export interface NotificationPreferenceUpdateThrottledResponse {
+    'detail': string;
+}
+export interface NotificationPreferenceUpdateUnavailableResponse {
+    'detail': string;
+}
+export interface NotificationPreferenceUpdateUpstreamErrorResponse {
+    'detail': string;
+}
+export interface NotificationPreferencesUnavailableResponse {
+    'detail': string;
+}
+export interface NotificationPreferencesUpstreamErrorResponse {
+    'detail': string;
+}
 
 export const NullEnum = {
 } as const;
@@ -3465,12 +3557,182 @@ export type YearsExperienceEnum = typeof YearsExperienceEnum[keyof typeof YearsE
 
 
 /**
+ * ApiApi - axios parameter creator
+ */
+export const ApiApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Proxies the learner\'s preferences from Open edX, which owns this state. The body is the LMS response verbatim, so its shape follows the LMS rather than this API.
+         * @summary Get the learner\'s Open edX notification preferences
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        notificationPreferencesRetrieve: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/notification-preferences/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Open edX updates a single channel per request, so each toggle or cadence change is its own call. The body is the LMS response verbatim.
+         * @summary Change one notification preference
+         * @param {NotificationPreferenceUpdateRequest} NotificationPreferenceUpdateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        notificationPreferencesUpdate: async (NotificationPreferenceUpdateRequest: NotificationPreferenceUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'NotificationPreferenceUpdateRequest' is not null or undefined
+            assertParamExists('notificationPreferencesUpdate', 'NotificationPreferenceUpdateRequest', NotificationPreferenceUpdateRequest)
+            const localVarPath = `/api/notification-preferences/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(NotificationPreferenceUpdateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ApiApi - functional programming interface
+ */
+export const ApiApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ApiApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Proxies the learner\'s preferences from Open edX, which owns this state. The body is the LMS response verbatim, so its shape follows the LMS rather than this API.
+         * @summary Get the learner\'s Open edX notification preferences
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async notificationPreferencesRetrieve(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationPreferencesRetrieve(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.notificationPreferencesRetrieve']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Open edX updates a single channel per request, so each toggle or cadence change is its own call. The body is the LMS response verbatim.
+         * @summary Change one notification preference
+         * @param {NotificationPreferenceUpdateRequest} NotificationPreferenceUpdateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async notificationPreferencesUpdate(NotificationPreferenceUpdateRequest: NotificationPreferenceUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.notificationPreferencesUpdate(NotificationPreferenceUpdateRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ApiApi.notificationPreferencesUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ApiApi - factory interface
+ */
+export const ApiApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ApiApiFp(configuration)
+    return {
+        /**
+         * Proxies the learner\'s preferences from Open edX, which owns this state. The body is the LMS response verbatim, so its shape follows the LMS rather than this API.
+         * @summary Get the learner\'s Open edX notification preferences
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        notificationPreferencesRetrieve(options?: RawAxiosRequestConfig): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.notificationPreferencesRetrieve(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Open edX updates a single channel per request, so each toggle or cadence change is its own call. The body is the LMS response verbatim.
+         * @summary Change one notification preference
+         * @param {ApiApiNotificationPreferencesUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        notificationPreferencesUpdate(requestParameters: ApiApiNotificationPreferencesUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.notificationPreferencesUpdate(requestParameters.NotificationPreferenceUpdateRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for notificationPreferencesUpdate operation in ApiApi.
+ */
+export interface ApiApiNotificationPreferencesUpdateRequest {
+    readonly NotificationPreferenceUpdateRequest: NotificationPreferenceUpdateRequest
+}
+
+/**
+ * ApiApi - object-oriented interface
+ */
+export class ApiApi extends BaseAPI {
+    /**
+     * Proxies the learner\'s preferences from Open edX, which owns this state. The body is the LMS response verbatim, so its shape follows the LMS rather than this API.
+     * @summary Get the learner\'s Open edX notification preferences
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public notificationPreferencesRetrieve(options?: RawAxiosRequestConfig) {
+        return ApiApiFp(this.configuration).notificationPreferencesRetrieve(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Open edX updates a single channel per request, so each toggle or cadence change is its own call. The body is the LMS response verbatim.
+     * @summary Change one notification preference
+     * @param {ApiApiNotificationPreferencesUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public notificationPreferencesUpdate(requestParameters: ApiApiNotificationPreferencesUpdateRequest, options?: RawAxiosRequestConfig) {
+        return ApiApiFp(this.configuration).notificationPreferencesUpdate(requestParameters.NotificationPreferenceUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * B2bApi - axios parameter creator
  */
 export const B2bApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code, including a single-use code   that someone else redeemed while this request was in flight - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
          * @param {string} enrollment_code 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4718,7 +4980,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Report the edX clones and enrollment codes still outstanding.
+         * Report the edX clones and enrollment codes still outstanding.  Also lists, per variant set, which of the contract\'s courses have a run for it.
          * @param {number} id A unique integer value identifying this Contract.
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {*} [options] Override http request option.
@@ -5498,7 +5760,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = B2bApiAxiosParamCreator(configuration)
     return {
         /**
-         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code, including a single-use code   that someone else redeemed while this request was in flight - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
          * @param {string} enrollment_code 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5920,7 +6182,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Report the edX clones and enrollment codes still outstanding.
+         * Report the edX clones and enrollment codes still outstanding.  Also lists, per variant set, which of the contract\'s courses have a run for it.
          * @param {number} id A unique integer value identifying this Contract.
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {*} [options] Override http request option.
@@ -6193,7 +6455,7 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
     const localVarFp = B2bApiFp(configuration)
     return {
         /**
-         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
+         * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code, including a single-use code   that someone else redeemed while this request was in flight - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
          * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6470,7 +6732,7 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bProvisioningOrganizationsContractsRetrySetupCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
         },
         /**
-         * Report the edX clones and enrollment codes still outstanding.
+         * Report the edX clones and enrollment codes still outstanding.  Also lists, per variant set, which of the contract\'s courses have a run for it.
          * @param {B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7422,7 +7684,7 @@ export interface B2bApiB2bServiceOrganizationManagerCheckRequest {
  */
 export class B2bApi extends BaseAPI {
     /**
-     * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
+     * Use the provided enrollment code to attach the user to a B2B contract.  This will not create an order, nor will it enroll the user. It will attach the user to the contract and log that the code was used for this purpose (but will _not_ invalidate the code, since we\'re not actually using it at this point).  This will respect the activation and expiration dates (of both the contract and the discount), and will make sure there\'s sufficient available seats in the contract. It will also make sure the code hasn\'t been used for attachment purposes before.  If the user is already in the contract, then we skip it.  Returns: - 201: Code successfully redeemed and user attached to new contract(s) - 200: Code valid but user already attached to all associated contracts - 404: Invalid or expired enrollment code, including a single-use code   that someone else redeemed while this request was in flight - 409: Code valid but no available seats in associated contract(s) - list of ContractPageSerializer - the active contract associated with the code
      * @param {B2bApiB2bAttachCreateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7730,7 +7992,7 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
-     * Report the edX clones and enrollment codes still outstanding.
+     * Report the edX clones and enrollment codes still outstanding.  Also lists, per variant set, which of the contract\'s courses have a run for it.
      * @param {B2bApiB2bProvisioningOrganizationsContractsSetupStatusRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
