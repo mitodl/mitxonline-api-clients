@@ -249,6 +249,7 @@ export interface CourseRunEnrollmentV3 {
     'run': CourseRunWithCourseV3;
     'b2b_organization_id': number | null;
     'b2b_contract_id': number | null;
+    'has_course_staff_role': boolean;
 }
 
 
