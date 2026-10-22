@@ -208,7 +208,7 @@ export interface CoursePageItem {
      */
     'about': string | null;
     /**
-     * *Required for Verifiable Credential generation. What you will learn from this course.
+     * What you will learn from this course.
      */
     'what_you_learn': string | null;
     'feature_image': FeatureImage;
@@ -1067,7 +1067,7 @@ export interface ProgramPageItem {
      */
     'about': string | null;
     /**
-     * *Required for Verifiable Credential generation. What you will learn from this course.
+     * What you will learn from this course.
      */
     'what_you_learn': string | null;
     'feature_image': FeatureImage;
