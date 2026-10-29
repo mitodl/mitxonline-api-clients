@@ -629,9 +629,13 @@ export type DisplayModeEnum = typeof DisplayModeEnum[keyof typeof DisplayModeEnu
 export interface EnrollmentEligibility {
     'enrollable': boolean;
     /**
-     * Null when enrollable. CS_700 when an export compliance check rejected the learner; CS_701 when their profile is missing the information needed to run that check.
+     * Null when enrollable. CS_700 when an export compliance check rejected the learner; CS_701 when their profile is missing information the check needs, or has values CyberSource rejected.
      */
     'reason_code': string | null;
+    /**
+     * With CS_701, the profile fields to fix: empty ones, or ones CyberSource rejected as invalid.
+     */
+    'missing_fields': Array<string>;
 }
 export interface EnrollmentEligibilityNotFound {
     'detail': string;
@@ -849,6 +853,28 @@ export interface PatchedV3ProgramEnrollmentTrackRequest {
     'track'?: number | null;
 }
 /**
+ * * `audit` - audit * `verified` - verified * `upgrade` - upgrade
+ */
+
+export const ProgramEnrollmentModeEnum = {
+    /**
+    * audit
+    */
+    Audit: 'audit',
+    /**
+    * verified
+    */
+    Verified: 'verified',
+    /**
+    * upgrade
+    */
+    Upgrade: 'upgrade',
+} as const;
+
+export type ProgramEnrollmentModeEnum = typeof ProgramEnrollmentModeEnum[keyof typeof ProgramEnrollmentModeEnum];
+
+
+/**
  * CourseRunCertificate model serializer
  */
 export interface V3CourseRunCertificate {
@@ -915,9 +941,11 @@ export type V3SimpleProgramDisplayModeEnum = typeof V3SimpleProgramDisplayModeEn
 export interface V3UserProgramEnrollment {
     'program': V3SimpleProgram;
     'certificate': V3ProgramCertificate | null;
-    'enrollment_mode'?: string;
+    'enrollment_mode': ProgramEnrollmentModeEnum;
     'track': V3ProgramTrack | null;
 }
+
+
 /**
  * * `` - Original * `E` - Energy * `F` - Finance * `HC` - Healthcare * `M` - Manufacturing
  */

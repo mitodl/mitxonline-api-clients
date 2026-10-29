@@ -508,6 +508,10 @@ export interface CheckoutPayload {
      * Error message for the order, if there is one.  * `enroll-blocked` - enroll-blocked * `enroll-duplicated` - enroll-duplicated * `course-non-upgradable` - course-non-upgradable * `discount-invalid` - discount-invalid * `b2b-error-missing-enrollment-code` - b2b-error-missing-enrollment-code * `b2b-invalid-basket` - b2b-invalid-basket * `basket-empty` - basket-empty * `profile-incomplete` - profile-incomplete
      */
     'error': ErrorEnum;
+    /**
+     * With a profile-incomplete error, the profile fields to fix.
+     */
+    'missing_fields': Array<string>;
 }
 
 
@@ -1350,7 +1354,6 @@ export type GenderEnum = typeof GenderEnum[keyof typeof GenderEnum];
  */
 export interface GenerateCheckoutPayload {
     'country_blocked'?: boolean | null;
-    'profile_incomplete'?: boolean | null;
     'purchased_same_courserun'?: boolean | null;
     'purchased_non_upgradeable_courserun'?: boolean | null;
     'invalid_discounts'?: boolean | null;
