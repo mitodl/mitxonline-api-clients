@@ -392,7 +392,7 @@ export interface CourseRunV2 {
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
-    'b2b_contract'?: number | null;
+    'b2b_contract': number | null;
     /**
      * Indicates if the course run is B2B only
      */
@@ -1376,7 +1376,7 @@ export interface V2CourseRunWithCourse {
     'course_id': number;
     'products': Array<BaseProduct>;
     'approved_flexible_price_exists': boolean;
-    'b2b_contract'?: number | null;
+    'b2b_contract': number | null;
     /**
      * Indicates if the course run is B2B only
      */
@@ -1513,7 +1513,6 @@ export interface V2CourseRunWithCourseRequest {
      * Variant: Describes the length of the run (short/long).  * `` - Full * `S` - Short
      */
     'variant_length'?: V2CourseRunWithCourseRequestVariantLengthEnum;
-    'b2b_contract'?: number | null;
     /**
      * Indicates if the course run is B2B only
      */
