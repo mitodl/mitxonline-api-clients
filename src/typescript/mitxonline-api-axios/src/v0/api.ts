@@ -2103,6 +2103,39 @@ export interface OrganizationIdentityProvider {
 
 
 /**
+ * A single identity provider, with the attribute mappers Keycloak holds.  The mappers are stored only in Keycloak, so the view reads them back and attaches them. They are left off the list and off an organization\'s nested identity providers, which would cost a Keycloak call per IdP.
+ */
+export interface OrganizationIdentityProviderDetail {
+    'id': number;
+    /**
+     * The Keycloak IdP alias. Realm-wide, not per-organization.
+     */
+    'alias': string;
+    'protocol': IdentityProviderProtocolEnum;
+    'display_name': string;
+    'lifecycle_state': IdentityProviderLifecycleStateEnum;
+    /**
+     * Keycloak\'s internalId for the IdP instance.
+     */
+    'internal_id': string;
+    /**
+     * The metadata URL, or the inline XML, the config was parsed from. Not blankable: refreshing an IdP re-reads this, so a row without one cannot be refreshed.
+     */
+    'metadata_source': string;
+    /**
+     * The config map Keycloak parsed out of the metadata. Persisted so a partner\'s metadata endpoint going away can neither destroy config nor block a deploy.
+     */
+    'metadata_artifact': any | null;
+    'metadata_fetched_at': string | null;
+    'service_provider': IdentityProviderServiceProvider;
+    'created_on': string;
+    'updated_on': string;
+    'attribute_map': { [key: string]: string; };
+    'attribute_name_map': { [key: string]: string; };
+}
+
+
+/**
  * Response shape for the org-manager check.
  */
 export interface OrganizationManagerCheck {
@@ -5442,7 +5475,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Return a single identity provider.
+         * Return an identity provider, including its attribute mappers.
          * @param {string} alias 
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {*} [options] Override http request option.
@@ -6344,13 +6377,13 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Return a single identity provider.
+         * Return an identity provider, including its attribute mappers.
          * @param {string} alias 
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async b2bProvisioningOrganizationsIdentityProvidersRetrieve(alias: string, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProvider>> {
+        async b2bProvisioningOrganizationsIdentityProvidersRetrieve(alias: string, parent_lookup_organization__org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentityProviderDetail>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsIdentityProvidersRetrieve(alias, parent_lookup_organization__org_key, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsIdentityProvidersRetrieve']?.[localVarOperationServerIndex]?.url;
@@ -6843,12 +6876,12 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bProvisioningOrganizationsIdentityProvidersRefreshMetadataCreate(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
         },
         /**
-         * Return a single identity provider.
+         * Return an identity provider, including its attribute mappers.
          * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProvider> {
+        b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters: B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrganizationIdentityProviderDetail> {
             return localVarFp.b2bProvisioningOrganizationsIdentityProvidersRetrieve(requestParameters.alias, requestParameters.parent_lookup_organization__org_key, options).then((request) => request(axios, basePath));
         },
         /**
@@ -8115,7 +8148,7 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
-     * Return a single identity provider.
+     * Return an identity provider, including its attribute mappers.
      * @param {B2bApiB2bProvisioningOrganizationsIdentityProvidersRetrieveRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

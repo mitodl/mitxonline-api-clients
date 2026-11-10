@@ -1275,7 +1275,7 @@ export interface V2CourseRunCertificate {
     'certificate_page': CertificatePageModel;
     'verifiable_credential_json': any;
     'course_run': V2CourseRunWithCourse;
-    'certificate_page_revision': number | null;
+    'certificate_page_revision': number;
 }
 /**
  * CourseRun model serializer - also serializes the parent Course.
@@ -1686,7 +1686,7 @@ export interface V2ProgramCertificate {
     'certificate_page': CertificatePageModel;
     'verifiable_credential_json': any;
     'program': V2Program;
-    'certificate_page_revision': number | null;
+    'certificate_page_revision': number;
 }
 /**
  * Serializer for ProgramCollection
