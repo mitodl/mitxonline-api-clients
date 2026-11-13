@@ -622,6 +622,15 @@ export interface ContractProgram {
     'sort_order': number | null;
 }
 /**
+ * Request body for putting a contract\'s programs in order.
+ */
+export interface ContractProgramOrderRequest {
+    /**
+     * The readable IDs of every program in the contract, first to last.
+     */
+    'programs': Array<string>;
+}
+/**
  * The edX clone status of one contract run.
  */
 export interface ContractRunSetup {
@@ -805,6 +814,7 @@ export type CourseRunCloneStatusEnum = typeof CourseRunCloneStatusEnum[keyof typ
 export interface CoursewareAddition {
     'runs_added': number;
     'courses_without_source_run': number;
+    'courses_with_invalid_key': number;
     'skipped_reason': string;
 }
 /**
@@ -854,6 +864,10 @@ export interface CreateContractRequest {
      */
     'welcome_message'?: string;
     /**
+     * Additional welcome message content for learners.
+     */
+    'welcome_message_extra'?: string;
+    /**
      * The start date of the contract.
      */
     'contract_start'?: string | null;
@@ -869,6 +883,14 @@ export interface CreateContractRequest {
      * The fixed price for enrollment under this contract. (Set to zero or leave blank for free.)
      */
     'enrollment_fixed_price'?: string | null;
+    /**
+     * The URL for the Google Sheet to use to send codes and updates.
+     */
+    'google_sheet_target'?: string | null;
+    /**
+     * The index or title of the worksheet in the Google Sheet to put the codes.
+     */
+    'google_sheet_target_tab'?: string;
 }
 
 
@@ -2381,6 +2403,10 @@ export interface PatchedUpdateContractRequest {
      */
     'welcome_message'?: string;
     /**
+     * Additional welcome message content for learners.
+     */
+    'welcome_message_extra'?: string;
+    /**
      * The start date of the contract.
      */
     'contract_start'?: string | null;
@@ -2396,6 +2422,14 @@ export interface PatchedUpdateContractRequest {
      * The fixed price for enrollment under this contract. (Set to zero or leave blank for free.)
      */
     'enrollment_fixed_price'?: string | null;
+    /**
+     * The URL for the Google Sheet to use to send codes and updates.
+     */
+    'google_sheet_target'?: string | null;
+    /**
+     * The index or title of the worksheet in the Google Sheet to put the codes.
+     */
+    'google_sheet_target_tab'?: string;
     /**
      * Whether this contract is active or not. Date rules still apply.
      */
@@ -2621,6 +2655,10 @@ export interface ProvisionedContract {
      */
     'welcome_message': string;
     /**
+     * Additional welcome message content for learners.
+     */
+    'welcome_message_extra': string;
+    /**
      * The start date of the contract.
      */
     'contract_start': string | null;
@@ -2640,6 +2678,14 @@ export interface ProvisionedContract {
      * The fixed price for enrollment under this contract. (Set to zero or leave blank for free.)
      */
     'enrollment_fixed_price': string | null;
+    /**
+     * The URL for the Google Sheet to use to send codes and updates.
+     */
+    'google_sheet_target': string | null;
+    /**
+     * The index or title of the worksheet in the Google Sheet to put the codes.
+     */
+    'google_sheet_target_tab': string;
     'programs': Array<ContractProgram>;
 }
 
@@ -4902,7 +4948,7 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes. A changed Google Sheet or tab gets the codes written out to it from scratch.
          * @param {number} id A unique integer value identifying this Contract.
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {PatchedUpdateContractRequest} [PatchedUpdateContractRequest] 
@@ -4935,6 +4981,48 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(PatchedUpdateContractRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Put the contract\'s programs in order.  The list must name each of the contract\'s programs once. Add and remove programs with the courseware routes.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {ContractProgramOrderRequest} ContractProgramOrderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsProgramsOrderCreate: async (id: number, parent_lookup_organization__org_key: string, ContractProgramOrderRequest: ContractProgramOrderRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsProgramsOrderCreate', 'id', id)
+            // verify required parameter 'parent_lookup_organization__org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsProgramsOrderCreate', 'parent_lookup_organization__org_key', parent_lookup_organization__org_key)
+            // verify required parameter 'ContractProgramOrderRequest' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsContractsProgramsOrderCreate', 'ContractProgramOrderRequest', ContractProgramOrderRequest)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{parent_lookup_organization__org_key}/contracts/{id}/programs/order/`
+                .replace('{id}', encodeURIComponent(String(id)))
+                .replace('{parent_lookup_organization__org_key}', encodeURIComponent(String(parent_lookup_organization__org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(ContractProgramOrderRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6178,7 +6266,7 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes. A changed Google Sheet or tab gets the codes written out to it from scratch.
          * @param {number} id A unique integer value identifying this Contract.
          * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
          * @param {PatchedUpdateContractRequest} [PatchedUpdateContractRequest] 
@@ -6189,6 +6277,20 @@ export const B2bApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsPartialUpdate(id, parent_lookup_organization__org_key, PatchedUpdateContractRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsPartialUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Put the contract\'s programs in order.  The list must name each of the contract\'s programs once. Add and remove programs with the courseware routes.
+         * @param {number} id A unique integer value identifying this Contract.
+         * @param {string} parent_lookup_organization__org_key The organization\&#39;s org key.
+         * @param {ContractProgramOrderRequest} ContractProgramOrderRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsContractsProgramsOrderCreate(id: number, parent_lookup_organization__org_key: string, ContractProgramOrderRequest: ContractProgramOrderRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedContract>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsContractsProgramsOrderCreate(id, parent_lookup_organization__org_key, ContractProgramOrderRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsContractsProgramsOrderCreate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6741,13 +6843,22 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.b2bProvisioningOrganizationsContractsList(requestParameters.parent_lookup_organization__org_key, requestParameters.page, requestParameters.page_size, options).then((request) => request(axios, basePath));
         },
         /**
-         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+         * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes. A changed Google Sheet or tab gets the codes written out to it from scratch.
          * @param {B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedContract> {
             return localVarFp.b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.PatchedUpdateContractRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Put the contract\'s programs in order.  The list must name each of the contract\'s programs once. Add and remove programs with the courseware routes.
+         * @param {B2bApiB2bProvisioningOrganizationsContractsProgramsOrderCreateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsContractsProgramsOrderCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsProgramsOrderCreateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedContract> {
+            return localVarFp.b2bProvisioningOrganizationsContractsProgramsOrderCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.ContractProgramOrderRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Return a contract.
@@ -7420,6 +7531,23 @@ export interface B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest
 }
 
 /**
+ * Request parameters for b2bProvisioningOrganizationsContractsProgramsOrderCreate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsContractsProgramsOrderCreateRequest {
+    /**
+     * A unique integer value identifying this Contract.
+     */
+    readonly id: number
+
+    /**
+     * The organization\&#39;s org key.
+     */
+    readonly parent_lookup_organization__org_key: string
+
+    readonly ContractProgramOrderRequest: ContractProgramOrderRequest
+}
+
+/**
  * Request parameters for b2bProvisioningOrganizationsContractsRetrieve operation in B2bApi.
  */
 export interface B2bApiB2bProvisioningOrganizationsContractsRetrieveRequest {
@@ -7998,13 +8126,23 @@ export class B2bApi extends BaseAPI {
     }
 
     /**
-     * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes.
+     * Update a contract.  Queues the enrollment code check for a contract that uses codes, so a changed price, seat cap or membership type reaches its codes. A changed Google Sheet or tab gets the codes written out to it from scratch.
      * @param {B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     public b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsPartialUpdateRequest, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsPartialUpdate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.PatchedUpdateContractRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Put the contract\'s programs in order.  The list must name each of the contract\'s programs once. Add and remove programs with the courseware routes.
+     * @param {B2bApiB2bProvisioningOrganizationsContractsProgramsOrderCreateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsContractsProgramsOrderCreate(requestParameters: B2bApiB2bProvisioningOrganizationsContractsProgramsOrderCreateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsContractsProgramsOrderCreate(requestParameters.id, requestParameters.parent_lookup_organization__org_key, requestParameters.ContractProgramOrderRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
