@@ -591,6 +591,10 @@ export interface CourseV3 {
      * Return true if the course should be included in the Learn catalog.  This is controlled in the CoursePage for the course, and will default to False if there isn\'t one.
      */
     'include_in_learn_catalog': boolean;
+    /**
+     * Return true if the course has a product page that can be shown: the course and its CoursePage are live and the page is in the Learn catalog.
+     */
+    'has_live_product_page': boolean;
 }
 /**
  * Course serializer
@@ -920,6 +924,10 @@ export interface V3SimpleProgram {
      * Set to \'course\' to treat this program as a course in APIs.  * `course` - course
      */
     'display_mode'?: V3SimpleProgramDisplayModeEnum | null;
+    /**
+     * Return true if the program has a product page that can be shown: the program and its ProgramPage are live, the page is in the Learn catalog, and the program isn\'t B2B-only.
+     */
+    'has_live_product_page': boolean;
 }
 
 export const V3SimpleProgramDisplayModeEnum = {
