@@ -3,12 +3,12 @@ name: CI - Axios TypeScript Package
 on:
   push:
     branches: [main]
-    paths:
-      - "src/typescript/mitxonline-api-axios/**"
+  # Every PR, not just ones touching the package: this is the required check that shows
+  # the generated client still builds, and a path-filtered required check never reports.
   pull_request:
     branches: [main]
-    paths:
-      - "src/typescript/mitxonline-api-axios/**"
+
+permissions: {}
 
 jobs:
   test-axios-package:
