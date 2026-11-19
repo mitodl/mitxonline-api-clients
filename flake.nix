@@ -19,7 +19,6 @@
         devenv.shells.default = {
           packages = with pkgs; [
             detect-secrets
-            poetry
           ];
 
           languages.javascript = {
