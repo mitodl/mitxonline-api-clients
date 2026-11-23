@@ -155,7 +155,7 @@ export interface CoursePageItem {
      */
     'title': string;
     /**
-     * The description shown on the home page and product page.
+     * The description shown on the product page.
      */
     'description': string;
     /**
@@ -195,10 +195,7 @@ export interface CoursePageItem {
      * A short description indicating prerequisites of this course/program.
      */
     'prerequisites': string | null;
-    /**
-     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
-     */
-    'faq_url': string | null;
+    'faq_url': CoursePageItemFaqUrl | null;
     /**
      * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
      */
@@ -212,10 +209,7 @@ export interface CoursePageItem {
      */
     'what_you_learn': string | null;
     'feature_image': FeatureImage;
-    /**
-     * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
-     */
-    'video_url': string | null;
+    'video_url': CoursePageItemVideoUrl | null;
     /**
      * The title text to display in the faculty cards section of the product page.
      */
@@ -240,6 +234,18 @@ export interface CoursePageItem {
     'show_course_outline': boolean;
     'how_youll_learn': Array<HowYoullLearn>;
 }
+/**
+ * @type CoursePageItemFaqUrl
+ * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
+ */
+export type CoursePageItemFaqUrl = string;
+
+/**
+ * @type CoursePageItemVideoUrl
+ * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
+ */
+export type CoursePageItemVideoUrl = string;
+
 /**
  * Serializer for a list of course pages, including metadata and items.
  */
@@ -981,7 +987,7 @@ export interface ProgramPage {
     'page_url': string;
     'financial_assistance_form_url': string;
     /**
-     * The description shown on the home page and product page.
+     * The description shown on the product page.
      */
     'description': string;
     'live': boolean;
@@ -1014,7 +1020,7 @@ export interface ProgramPageItem {
      */
     'title': string;
     /**
-     * The description shown on the home page and product page.
+     * The description shown on the product page.
      */
     'description': string;
     /**
@@ -1054,10 +1060,7 @@ export interface ProgramPageItem {
      * A short description indicating prerequisites of this course/program.
      */
     'prerequisites': string | null;
-    /**
-     * External link to a separate FAQ page (opens in a new tab on the legacy site). For on-page FAQs shown on MIT Learn, use the FAQs section below instead.
-     */
-    'faq_url': string | null;
+    'faq_url': CoursePageItemFaqUrl | null;
     /**
      * HubSpot form ID for this page\'s \'Stay Updated\' sign-up form. Set to show the form on this page; leave blank to hide it.
      */
@@ -1071,10 +1074,7 @@ export interface ProgramPageItem {
      */
     'what_you_learn': string | null;
     'feature_image': FeatureImage;
-    /**
-     * URL to the video to be displayed for this course/program. It can be an HLS or Youtube video URL.
-     */
-    'video_url': string | null;
+    'video_url': CoursePageItemVideoUrl | null;
     /**
      * The title text to display in the faculty cards section of the product page.
      */

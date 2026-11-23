@@ -943,9 +943,9 @@ export interface CreateIdentityProviderRequest {
     'alias': string;
     'protocol': IdentityProviderProtocolEnum;
     'display_name'?: string;
-    'metadata_url'?: string;
+    'metadata_url'?: CreateIdentityProviderRequestMetadataUrl;
     'metadata_xml'?: string;
-    'discovery_url'?: string;
+    'discovery_url'?: CreateIdentityProviderRequestMetadataUrl;
     'client_id'?: string;
     'client_secret'?: string;
     'attribute_map'?: { [key: string]: string; };
@@ -954,16 +954,26 @@ export interface CreateIdentityProviderRequest {
 
 
 /**
+ * @type CreateIdentityProviderRequestMetadataUrl
+ */
+export type CreateIdentityProviderRequestMetadataUrl = string;
+
+/**
  * Request body for provisioning a new organization.
  */
 export interface CreateOrganizationRequest {
     'name': string;
     'org_key': string;
-    'org_key_prefix'?: string;
+    'org_key_prefix'?: CreateOrganizationRequestOrgKeyPrefix;
     'domains'?: Array<string>;
     'description'?: string;
     'redirect_url'?: string;
 }
+/**
+ * @type CreateOrganizationRequestOrgKeyPrefix
+ */
+export type CreateOrganizationRequestOrgKeyPrefix = string;
+
 export interface DataConsentFieldErrors {
     /**
      * Errors for the \'consented\' field, e.g. if missing or not a boolean.
@@ -1709,7 +1719,48 @@ export interface Line {
     'unit_price': string;
     'total_price': string;
     'id': number;
-    'product': Product;
+    'product': LineProduct;
+}
+/**
+ * A line\'s product and the courseware it bought, without the CMS page.
+ */
+export interface LineProduct {
+    'id': number;
+    'price': string;
+    'description': string;
+    /**
+     * Controls visibility of the product in the app.
+     */
+    'is_active'?: boolean;
+    'purchasable_object': LineProductPurchasableObject;
+}
+/**
+ * @type LineProductPurchasableObject
+ */
+export type LineProductPurchasableObject = LineProductPurchasableObjectOneOf | LineProductPurchasableObjectOneOf1 | LineProductPurchasableObjectOneOf1Course;
+
+export interface LineProductPurchasableObjectOneOf {
+    'id'?: number;
+    'run_tag'?: string;
+    'start_date'?: string;
+    'end_date'?: string;
+}
+export interface LineProductPurchasableObjectOneOf1 {
+    'id'?: number;
+    'title'?: string;
+    'run_tag'?: string;
+    'start_date'?: string;
+    'end_date'?: string;
+    'course'?: LineProductPurchasableObjectOneOf1Course;
+    'readable_id'?: string;
+    'enrollment_start'?: string;
+    'enrollment_end'?: string;
+    'course_number'?: string;
+}
+export interface LineProductPurchasableObjectOneOf1Course {
+    'id'?: number;
+    'title'?: string;
+    'readable_id'?: string;
 }
 /**
  * Serializer for detailed contract view with statistics.
@@ -2203,7 +2254,7 @@ export interface OrganizationPage {
     /**
      * The organization\'s logo. Will be displayed in the app in various places.
      */
-    'logo': string;
+    'logo': string | null;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
      */
@@ -2335,7 +2386,7 @@ export interface PaginatedV0DiscountList {
  */
 export interface ParseMetadataRequest {
     'protocol': IdentityProviderProtocolEnum;
-    'metadata_url'?: string;
+    'metadata_url'?: CreateIdentityProviderRequestMetadataUrl;
     'metadata_xml'?: string;
 }
 
@@ -2591,35 +2642,29 @@ export interface ProductFlexiblePrice {
 /**
  * @type ProductPurchasableObject
  */
-export type ProductPurchasableObject = ProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf1 | ProductPurchasableObjectOneOf2;
+export type ProductPurchasableObject = LineProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf | ProductPurchasableObjectOneOf1;
 
 export interface ProductPurchasableObjectOneOf {
-    'id'?: number;
-    'run_tag'?: string;
-    'start_date'?: string;
-    'end_date'?: string;
-}
-export interface ProductPurchasableObjectOneOf1 {
     'id'?: number;
     'title'?: string;
     'run_tag'?: string;
     'start_date'?: string;
     'end_date'?: string;
-    'course'?: ProductPurchasableObjectOneOf1Course;
+    'course'?: ProductPurchasableObjectOneOfCourse;
     'readable_id'?: string;
     'enrollment_start'?: string;
     'enrollment_end'?: string;
     'course_number'?: string;
 }
-export interface ProductPurchasableObjectOneOf1Course {
-    'id'?: number;
-    'title'?: string;
-    'page'?: object;
-}
-export interface ProductPurchasableObjectOneOf2 {
+export interface ProductPurchasableObjectOneOf1 {
     'id'?: number;
     'title'?: string;
     'readable_id'?: string;
+    'page'?: object;
+}
+export interface ProductPurchasableObjectOneOfCourse {
+    'id'?: number;
+    'title'?: string;
     'page'?: object;
 }
 /**
@@ -3291,7 +3336,7 @@ export interface UserOrganizationPage {
     /**
      * The organization\'s logo. Will be displayed in the app in various places.
      */
-    'logo': string;
+    'logo': string | null;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
      */

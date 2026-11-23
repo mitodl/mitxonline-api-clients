@@ -538,7 +538,7 @@ export interface ProgramPage {
     'page_url': string;
     'financial_assistance_form_url': string;
     /**
-     * The description shown on the home page and product page.
+     * The description shown on the product page.
      */
     'description': string;
     'live': boolean;
