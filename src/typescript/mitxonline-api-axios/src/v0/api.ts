@@ -24,7 +24,7 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * * `organization_created` - Organization created * `organization_updated` - Organization updated * `onboarding_changed` - Onboarding state changed * `identity_provider_created` - Identity provider created * `identity_provider_updated` - Identity provider updated * `identity_provider_transitioned` - Identity provider state changed * `identity_provider_metadata_refreshed` - Identity provider metadata refreshed * `identity_provider_deleted` - Identity provider deleted * `contract_variant_added` - Contract variant set added * `contract_variant_updated` - Contract variant set changed
+ * * `organization_created` - Organization created * `organization_updated` - Organization updated * `onboarding_changed` - Onboarding state changed * `identity_provider_created` - Identity provider created * `identity_provider_adopted` - Identity provider adopted * `identity_provider_updated` - Identity provider updated * `identity_provider_transitioned` - Identity provider state changed * `identity_provider_metadata_refreshed` - Identity provider metadata refreshed * `identity_provider_deleted` - Identity provider deleted * `contract_variant_added` - Contract variant set added * `contract_variant_updated` - Contract variant set changed
  */
 
 export const ActionEnum = {
@@ -44,6 +44,10 @@ export const ActionEnum = {
     * Identity provider created
     */
     IdentityProviderCreated: 'identity_provider_created',
+    /**
+    * Identity provider adopted
+    */
+    IdentityProviderAdopted: 'identity_provider_adopted',
     /**
     * Identity provider updated
     */
@@ -2169,6 +2173,10 @@ export interface OrganizationIdentityProvider {
      */
     'metadata_artifact': any | null;
     'metadata_fetched_at': string | null;
+    /**
+     * Created by ol-infrastructure and still in its Pulumi state. The provisioning API won\'t change it until it is released, because the next pulumi up would revert the change, and a metadata refresh can drop settings Pulumi chose on purpose.
+     */
+    'pulumi_managed': boolean;
     'service_provider': IdentityProviderServiceProvider;
     /**
      * A link that signs a user in through this IdP. Null when the login client isn\'t configured.
@@ -2204,6 +2212,10 @@ export interface OrganizationIdentityProviderDetail {
      */
     'metadata_artifact': any | null;
     'metadata_fetched_at': string | null;
+    /**
+     * Created by ol-infrastructure and still in its Pulumi state. The provisioning API won\'t change it until it is released, because the next pulumi up would revert the change, and a metadata refresh can drop settings Pulumi chose on purpose.
+     */
+    'pulumi_managed': boolean;
     'service_provider': IdentityProviderServiceProvider;
     /**
      * A link that signs a user in through this IdP. Null when the login client isn\'t configured.
@@ -2764,6 +2776,10 @@ export interface ProvisionedOrganization {
      * Any useful extra information about the organization
      */
     'description': string;
+    /**
+     * The organization\'s logo. Will be displayed in the app in various places.
+     */
+    'logo': string | null;
     /**
      * The name of the page as it will appear in URLs e.g http://domain.com/blog/[my-slug]/
      */
@@ -5744,6 +5760,82 @@ export const B2bApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Remove the organization\'s logo.
+         * @param {string} org_key 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsLogoDestroy: async (org_key: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsLogoDestroy', 'org_key', org_key)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{org_key}/logo/`
+                .replace('{org_key}', encodeURIComponent(String(org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Replace the organization\'s logo.  The logo is stored only in MITx Online, so this works for an organization with no Keycloak record, and the response does not read domains or redirect_url from Keycloak (they are null, as in the list).
+         * @param {string} org_key 
+         * @param {File} logo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsLogoUpdate: async (org_key: string, logo: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'org_key' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsLogoUpdate', 'org_key', org_key)
+            // verify required parameter 'logo' is not null or undefined
+            assertParamExists('b2bProvisioningOrganizationsLogoUpdate', 'logo', logo)
+            const localVarPath = `/api/v0/b2b/provisioning/organizations/{org_key}/logo/`
+                .replace('{org_key}', encodeURIComponent(String(org_key)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (logo !== undefined) { 
+                localVarFormParams.append('logo', logo as any);
+            }
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
          * @param {string} org_key 
          * @param {SetOnboardingStateRequest} SetOnboardingStateRequest 
@@ -6574,6 +6666,31 @@ export const B2bApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Remove the organization\'s logo.
+         * @param {string} org_key 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsLogoDestroy(org_key: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedOrganization>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsLogoDestroy(org_key, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsLogoDestroy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Replace the organization\'s logo.  The logo is stored only in MITx Online, so this works for an organization with no Keycloak record, and the response does not read domains or redirect_url from Keycloak (they are null, as in the list).
+         * @param {string} org_key 
+         * @param {File} logo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async b2bProvisioningOrganizationsLogoUpdate(org_key: string, logo: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProvisionedOrganization>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.b2bProvisioningOrganizationsLogoUpdate(org_key, logo, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['B2bApi.b2bProvisioningOrganizationsLogoUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
          * @param {string} org_key 
          * @param {SetOnboardingStateRequest} SetOnboardingStateRequest 
@@ -7065,6 +7182,24 @@ export const B2bApiFactory = function (configuration?: Configuration, basePath?:
          */
         b2bProvisioningOrganizationsList(requestParameters: B2bApiB2bProvisioningOrganizationsListRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedProvisionedOrganizationList> {
             return localVarFp.b2bProvisioningOrganizationsList(requestParameters.l, requestParameters.o, requestParameters.onboarding_state, requestParameters.q, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Remove the organization\'s logo.
+         * @param {B2bApiB2bProvisioningOrganizationsLogoDestroyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsLogoDestroy(requestParameters: B2bApiB2bProvisioningOrganizationsLogoDestroyRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedOrganization> {
+            return localVarFp.b2bProvisioningOrganizationsLogoDestroy(requestParameters.org_key, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Replace the organization\'s logo.  The logo is stored only in MITx Online, so this works for an organization with no Keycloak record, and the response does not read domains or redirect_url from Keycloak (they are null, as in the list).
+         * @param {B2bApiB2bProvisioningOrganizationsLogoUpdateRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        b2bProvisioningOrganizationsLogoUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsLogoUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<ProvisionedOrganization> {
+            return localVarFp.b2bProvisioningOrganizationsLogoUpdate(requestParameters.org_key, requestParameters.logo, options).then((request) => request(axios, basePath));
         },
         /**
          * Record where this organization is in the onboarding sequence.  Descriptive only. Nothing in this API gates on the state; it exists so a human can answer \"what is left for this customer\" without reading four systems.
@@ -7850,6 +7985,22 @@ export interface B2bApiB2bProvisioningOrganizationsListRequest {
 }
 
 /**
+ * Request parameters for b2bProvisioningOrganizationsLogoDestroy operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsLogoDestroyRequest {
+    readonly org_key: string
+}
+
+/**
+ * Request parameters for b2bProvisioningOrganizationsLogoUpdate operation in B2bApi.
+ */
+export interface B2bApiB2bProvisioningOrganizationsLogoUpdateRequest {
+    readonly org_key: string
+
+    readonly logo: File
+}
+
+/**
  * Request parameters for b2bProvisioningOrganizationsOnboardingCreate operation in B2bApi.
  */
 export interface B2bApiB2bProvisioningOrganizationsOnboardingCreateRequest {
@@ -8366,6 +8517,26 @@ export class B2bApi extends BaseAPI {
      */
     public b2bProvisioningOrganizationsList(requestParameters: B2bApiB2bProvisioningOrganizationsListRequest = {}, options?: RawAxiosRequestConfig) {
         return B2bApiFp(this.configuration).b2bProvisioningOrganizationsList(requestParameters.l, requestParameters.o, requestParameters.onboarding_state, requestParameters.q, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Remove the organization\'s logo.
+     * @param {B2bApiB2bProvisioningOrganizationsLogoDestroyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsLogoDestroy(requestParameters: B2bApiB2bProvisioningOrganizationsLogoDestroyRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsLogoDestroy(requestParameters.org_key, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Replace the organization\'s logo.  The logo is stored only in MITx Online, so this works for an organization with no Keycloak record, and the response does not read domains or redirect_url from Keycloak (they are null, as in the list).
+     * @param {B2bApiB2bProvisioningOrganizationsLogoUpdateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public b2bProvisioningOrganizationsLogoUpdate(requestParameters: B2bApiB2bProvisioningOrganizationsLogoUpdateRequest, options?: RawAxiosRequestConfig) {
+        return B2bApiFp(this.configuration).b2bProvisioningOrganizationsLogoUpdate(requestParameters.org_key, requestParameters.logo, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
